@@ -14,12 +14,14 @@ const MAX_PROJECTILES = 5;
 const FROG_SPRITE = ['frog_s1', 'frog_s1', 'frog_s2', 'frog_s3', 'frog_s4', 'frog_k1', 'frog_k2', 'frog_k3', 'frog_k4', 'frog_k5'];
 
 export class Play {
-  constructor({ app, stage, textures, audio, hud, frogState, score = 0, density = 1, cols = 13 }) {
+  constructor({ app, stage, textures, audio, hud, frogState, score = 0, density = 1, cols = 13, ach = null }) {
     this.app = app; this.stage = stage; this.tex = textures; this.audio = audio; this.hud = hud;
     this.grid = new Grid(cols, 15, CELL);
     this.rng = makeRng();
     this.shake = new Shake(Math.random);
     this.score = score;
+    this.ach = ach;
+    this.tookHit = false;
     this.density = density;
     this.time = 0;
     this.over = false;
@@ -53,6 +55,7 @@ export class Play {
     this.projectiles = [];
     this.sprites = new Map();
 
+    if (ach && stage.act === 2 && stage.id === 'K1') ach.bump('kaijuReached');
     this.hud.setStage(stage.name, stage.subtitle);
     this.hud.setFuse(0);
     this.hud.setLives(this.frog.isKaiju() ? this.frog.hearts : this.frog.lives, this.frog.isKaiju());
@@ -147,6 +150,10 @@ export class Play {
     // goal
     if (this.frog.reachedGoal()) {
       this.over = true;
+      if (this.ach) {
+        this.ach.bump('stagesCleared');
+        if (!this.tookHit) this.ach.bump('cleanStages');
+      }
       if (this.frog.fuse >= FUSE_TARGET) { this.emit('goal', { score: this.score }); }
       else { this.audio.win(); this.emit('stillHungry', { fuse: this.frog.fuse, score: this.score }); }
       return;
@@ -159,6 +166,7 @@ export class Play {
     const b = e.bounds();
     const cx = (b.x + b.w / 2) * CELL, cy = (b.y + b.h / 2) * CELL;
     if (result === 'eat') {
+      if (this.ach && 'vx' in e) this.ach.bump('midairEats');
       e.alive = false;
       const n = this.frog.eat();
       this.audio.eat();
@@ -190,10 +198,12 @@ export class Play {
       this.particles.smoke(cx, cy, 4);
       this.addScore(90);
       this.shake.add(3);
+      this.ach?.bump('burns');
     } else if (result === 'squash') {
       e.squash(); this.audio.squash();
       this.particles.debris(cx, cy, 16); this.particles.smoke(cx, cy, 5);
       this.addScore(120); this.shake.add(5);
+      this.ach?.bump('squashes');
     } else if (result === 'push') {
       const dir = this.frog.col < this.grid.cols / 2 ? 1 : -1;
       const nc = Math.max(0, Math.min(this.grid.cols - 1, this.frog.col + dir));
@@ -202,6 +212,7 @@ export class Play {
     } else if (result === 'damage') {
       const out = this.frog.takeHit();
       if (out === 'none') return;
+      this.tookHit = true;
       this.audio.hit();
       const fp = this.frog.position();
       this.particles.burst((fp.col + 0.5) * CELL, (fp.row + 0.5) * CELL, 0xe23c2f, 20);

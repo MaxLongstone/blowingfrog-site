@@ -19,9 +19,11 @@ export class Overlays {
   }
   hide() { this.node.classList.remove('in'); this.node.style.display = 'none'; }
 
-  title(onStart, best) {
+  title(onStart, best, ach, onAchievements) {
     const btn = el('button', 'bf-btn', 'BEGIN THE SHOW');
     btn.onclick = onStart;
+    const achBtn = el('button', 'bf-btn ghost', ach ? `ACHIEVEMENTS ${ach.count}/${ach.total}` : 'ACHIEVEMENTS');
+    achBtn.onclick = onAchievements;
     this._show([
       el('div', 'bf-eyebrow', 'SWAMP BITCH REGISTRATION · NON-REFUNDABLE'),
       el('h1', 'bf-title', 'FROG<span>POCALYPSE</span>'),
@@ -29,6 +31,7 @@ export class Overlays {
       el('div', 'bf-keys', '<b>← ↑ ↓ →</b> to hop &nbsp;·&nbsp; <b>SHIFT</b> to snap your tongue &nbsp;·&nbsp; on mobile, swipe to hop and tap to snap'),
       el('p', 'bf-note', 'Anything that explodes is food, even in mid-air. Everything else is just going to hurt you.'),
       btn,
+      achBtn,
       best ? el('div', 'bf-best', `PREVIOUS BEST: ${String(best).padStart(6, '0')}`) : el('div', 'bf-best', ''),
     ], 'title');
   }
@@ -44,6 +47,36 @@ export class Overlays {
     ], 'hungry');
   }
 
+  achievements(ach, best, onShare, onBack) {
+    const grid = el('div', 'bf-ach-grid');
+    for (const a of ach.list()) {
+      const cell = el('div', `bf-ach ${a.unlocked ? 'got' : 'locked'}`);
+      const badge = el('div', 'bf-ach-badge');
+      const img = document.createElement('img');
+      img.alt = '';
+      img.src = `assets/game/ach_${a.id}.png`;
+      // No art yet? Fall back to the emoji rather than a broken image.
+      img.onerror = () => { img.remove(); badge.textContent = a.emoji; };
+      badge.append(img);
+      cell.append(
+        badge,
+        el('div', 'bf-ach-title', a.unlocked ? a.title : 'LOCKED'),
+        el('div', 'bf-ach-blurb', a.unlocked ? a.blurb : a.hint),
+      );
+      grid.append(cell);
+    }
+    const share = el('button', 'bf-btn', 'SHARE ACHIEVEMENTS');
+    share.onclick = onShare;
+    const back = el('button', 'bf-btn ghost', 'BACK');
+    back.onclick = onBack;
+    this._show([
+      el('div', 'bf-eyebrow', 'PERMANENT RECORD · CANNOT BE APPEALED'),
+      el('h2', 'bf-title small', `${ach.count} OF ${ach.total}`),
+      grid,
+      share, back,
+    ], 'achievements');
+  }
+
   stageCard(stage, size, onGo) {
     const btn = el('button', 'bf-btn', 'CONTINUE');
     btn.onclick = onGo;
@@ -57,9 +90,11 @@ export class Overlays {
     ], 'stage');
   }
 
-  gameOver(score, best, stageName, onRetry, onTitle) {
+  gameOver(score, best, stageName, onRetry, onTitle, onAchievements, ach) {
     const retry = el('button', 'bf-btn', 'TRY AGAIN');
     retry.onclick = onRetry;
+    const achBtn = el('button', 'bf-btn ghost', ach ? `ACHIEVEMENTS ${ach.count}/${ach.total}` : 'ACHIEVEMENTS');
+    achBtn.onclick = onAchievements;
     const home = el('button', 'bf-btn ghost', 'BACK TO TITLE');
     home.onclick = onTitle;
     this._show([
@@ -67,13 +102,15 @@ export class Overlays {
       el('h2', 'bf-title small', 'AND THAT IS THE EPISODE'),
       el('p', 'bf-body', `Flattened on ${stageName}. Four hundred billion viewers are already forgetting your name, and frankly so am I. Reward? Dead frogs don't get rewards. Season pass holders may retry immediately.`),
       el('div', 'bf-scoreline', `SCORE ${String(score).padStart(6, '0')}<br><span>BEST ${String(best).padStart(6, '0')}</span>`),
-      retry, home,
+      retry, achBtn, home,
     ], 'over');
   }
 
-  ending(score, best, onShare, onReplay) {
+  ending(score, best, onShare, onReplay, onAchievements, ach) {
     const share = el('button', 'bf-btn', 'SHARE');
     share.onclick = onShare;
+    const achBtn = el('button', 'bf-btn ghost', ach ? `ACHIEVEMENTS ${ach.count}/${ach.total}` : 'ACHIEVEMENTS');
+    achBtn.onclick = onAchievements;
     const again = el('button', 'bf-btn ghost', 'PLAY AGAIN');
     again.onclick = onReplay;
     this._show([
@@ -81,7 +118,7 @@ export class Overlays {
       el('h2', 'bf-title', 'THE END'),
       el('p', 'bf-body', 'You ate every bomb they had, grew until the sky was too small for you, and sat on the planet like it was a beanbag. Ratings: unprecedented. Planet: unavailable. I really liked that. You are in so much trouble.'),
       el('div', 'bf-scoreline', `FINAL SCORE ${String(score).padStart(6, '0')}<br><span>BEST ${String(best).padStart(6, '0')}</span>`),
-      share, again,
+      share, achBtn, again,
       el('div', 'bf-note', 'Made by Blowing Frog. Yes, the frog always explodes. That is the whole point of the frog.'),
     ], 'ending');
   }

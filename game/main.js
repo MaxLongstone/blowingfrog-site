@@ -7,6 +7,7 @@ import { Overlays } from './ui/overlays.js';
 import { preloadFrames, playDetonation, playEnding } from './ui/cutscene.js';
 import { Play } from './systems/play.js';
 import { STAGES, getStage, nextStage, validateStage } from './config/stages.js';
+import { Achievements } from './systems/achievements.js';
 
 const CELL = 64, ROWS = 15;
 // A phone screen is far taller than it is wide, so a 13-wide field would leave the
@@ -28,6 +29,11 @@ class Game {
     this.overlayRoot = overlayRoot;
     this.frames = [];
     this.best = readBest();
+    this.ach = new Achievements();
+    this.ach.onUnlock((a) => {
+      this.hud.say(`ACHIEVEMENT: ${a.title}`, 2600);
+      this.audio.win();
+    });
     this.play = null;
     this.paused = false;
 
@@ -47,7 +53,9 @@ class Game {
   title() {
     this.clearPlay();
     this.hud.show(false);
-    this.overlays.title(() => { this.audio.unlock(); this.overlays.hide(); this.start(this.startStage || '1'); }, this.best);
+    this.overlays.title(
+      () => { this.audio.unlock(); this.overlays.hide(); this.start(this.startStage || '1'); },
+      this.best, this.ach, () => this.showAchievements(() => this.title()));
   }
 
   start(stageId, carry = null, score = 0) {
@@ -59,6 +67,7 @@ class Game {
       frogState: carry, score,
       density: carry?.density || 1,
       cols: COLS,
+      ach: this.ach,
     });
     this.play.on('goal', ({ score }) => this.onGoal(stage, score));
     this.play.on('stillHungry', ({ fuse, score }) => this.onStillHungry(stage, fuse, score));
@@ -69,6 +78,7 @@ class Game {
     const state = this.play.frogState();
     this.paused = true;
     this.hud.show(false);
+    this.ach.bump('detonations');
     await playDetonation({ frames: this.frames, host: this.mount, audio: this.audio });
     this.clearPlay();
     this.paused = false;
@@ -100,20 +110,45 @@ class Game {
 
   onDead(stage, score) {
     this.saveBest(score);
+    this.ach.bump('deaths');
     this.paused = true;
     this.hud.show(false);
     this.overlays.gameOver(score, this.best, stage.name,
       () => { this.overlays.hide(); this.paused = false; this.start(stage.id, null, 0); },
-      () => { this.overlays.hide(); this.paused = false; this.title(); });
+      () => { this.overlays.hide(); this.paused = false; this.title(); },
+      () => this.showAchievements(() => this.onDead(stage, score)), this.ach);
   }
 
   async finish(score) {
     this.hud.show(false);
+    this.ach.bump('finishes');
     await playEnding({ host: this.mount, audio: this.audio });
     this.saveBest(score);
     this.overlays.ending(score, this.best,
       () => this.share(score),
-      () => { this.overlays.hide(); this.start('1', null, 0); });
+      () => { this.overlays.hide(); this.start('1', null, 0); },
+      () => this.showAchievements(() => this.finishCard(score)), this.ach);
+  }
+
+  showAchievements(onBack) {
+    this.overlays.achievements(this.ach, this.best,
+      () => this.shareAchievements(),
+      () => { this.overlays.hide(); onBack(); });
+  }
+
+  shareAchievements() {
+    const text = this.ach.shareText(this.best);
+    const url = location.href.split('?')[0];
+    if (navigator.share) navigator.share({ title: 'Frogpocalypse', text, url }).catch(() => {});
+    else navigator.clipboard?.writeText(`${text}\n${url}`)
+      .then(() => this.hud.say('COPIED TO CLIPBOARD', 1800)).catch(() => {});
+  }
+
+  finishCard(score) {
+    this.overlays.ending(score, this.best,
+      () => this.share(score),
+      () => { this.overlays.hide(); this.start('1', null, 0); },
+      () => this.showAchievements(() => this.finishCard(score)), this.ach);
   }
 
   share(score) {

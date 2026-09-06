@@ -34,6 +34,8 @@ SHEETS = {
     "F": (3, 2, ["pw_invuln", "pw_freeze", "pw_fire", "pw_armor", "pw_life", "food"]),
     "G": (3, 3, ["torpedo", "nuke", "bullet", "strafe", "fork",
                  "jetlaunch", "laser", "hand", "flare"]),
+    "H": (3, 3, ["ach_sentient", "ach_piggy", "ach_wing", "ach_breach", "ach_pest",
+                 "ach_revolting", "ach_untouched", "ach_daddy", "ach_unavailable"]),
 }
 
 WHITE_CUTOFF = 234   # a pixel this bright in every channel counts as background

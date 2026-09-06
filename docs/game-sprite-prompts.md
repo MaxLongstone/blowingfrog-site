@@ -1,6 +1,6 @@
 # Frogpocalypse sprite sheets
 
-Sixty sprites in **seven generations**, not sixty. Each prompt produces one square sheet of
+Sixty-nine sprites in **eight generations**, not sixty-nine. Each prompt produces one square sheet of
 evenly spaced cells; a script then cuts the sheet, knocks out the white, and files each sprite
 under the right name.
 
@@ -237,6 +237,37 @@ The nine cells, left to right, top row first:
 8. an enormous human hand descending palm-down, fingers spread, holding a red plastic fly swatter
 9. a horizontal solar flare streak travelling right, a chain of overlapping orange and yellow
    plasma blobs, brightest at the leading edge
+```
+
+## Sheet H — achievement badges
+
+3 × 3. Reading order: `ach_sentient` `ach_piggy` `ach_wing` / `ach_breach` `ach_pest` `ach_revolting` / `ach_untouched` `ach_daddy` `ach_unavailable`
+
+These are UI badges, not game sprites. They appear in the achievements panel and want a different
+treatment: enamel-pin style, readable at 46 pixels, one clear silhouette each. Until this sheet
+exists the panel falls back to emoji, so it is safe to leave for last.
+
+```
+A single square sheet on a pure white background, arranged as a clean 3 by 3 grid of nine equal
+square cells with wide even white gutters. Each badge is centred in its own cell at the same
+scale, fully separated from its neighbours, nothing touching or overlapping. No grid lines, no
+borders, no numbers, no text, no lettering, no labels, no watermark.
+
+Art direction for every cell: a circular enamel achievement pin seen straight on, glossy hard
+enamel fill inside a thick dark charcoal metal rim, one bold simple symbol per badge, high
+contrast, readable when very small, soft specular highlight in the upper left, muted olive and
+cream palette with one saturated accent per badge, no cast shadow, no background scenery.
+
+The nine badges, left to right, top row first:
+1. a small cheerful olive-green frog head facing forward, huge white eyes
+2. an orange and yellow comic explosion burst, jagged star shape
+3. a small missile caught in mid-air with a pink tongue curled around it
+4. a snarling dark green monster frog silhouette with a spiny back, red accent
+5. a heavy olive boot print stamped over a flattened crumpled car
+6. a bright orange flame with a curling tongue shape inside it
+7. a clean white four-pointed sparkle over a pale blue shield
+8. a tipped-over amber beer bottle with a single drip falling from the neck
+9. a small blue and green planet Earth with a flat dent pressed into the top of it
 ```
 
 ---

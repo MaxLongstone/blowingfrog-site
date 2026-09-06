@@ -126,6 +126,34 @@
     .bf-btn.ghost { background: transparent; color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.25); padding: 12px 30px; font-size: 12px; }
     .bf-btn.ghost:hover { background: rgba(255,255,255,0.08); }
 
+    .bf-overlay.achievements .bf-card { max-width: 560px; }
+    .bf-ach-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+      width: 100%; margin: 4px 0 2px;
+    }
+    .bf-ach {
+      background: rgba(255,255,255,0.05); border-radius: 10px; padding: 10px 8px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08); text-align: center;
+    }
+    .bf-ach.locked { opacity: .42; filter: grayscale(1); }
+    .bf-ach.got { box-shadow: inset 0 0 0 1px rgba(170,180,42,0.55); background: rgba(139,148,33,0.12); }
+    .bf-ach-badge {
+      width: 46px; height: 46px; margin: 0 auto 7px; display: grid; place-items: center;
+      font-size: 26px; line-height: 1;
+    }
+    .bf-ach-badge img { width: 46px; height: 46px; object-fit: contain; }
+    .bf-ach-badge img[src=""], .bf-ach-badge img:not([src]) { display: none; }
+    .bf-ach-title {
+      font-family: var(--f-display); font-size: 10px; font-weight: 800;
+      letter-spacing: .06em; line-height: 1.2; margin-bottom: 4px;
+    }
+    .bf-ach.got .bf-ach-title { color: var(--accent-lt); }
+    .bf-ach-blurb { font-size: 9.5px; line-height: 1.4; color: rgba(255,255,255,0.55); }
+    @media (max-width: 560px) {
+      .bf-ach-grid { grid-template-columns: repeat(2, 1fr); gap: 7px; }
+      .bf-ach-blurb { display: none; }
+    }
+
     .bf-cutscene {
       position: absolute; inset: 0; z-index: 20; background: #000;
       opacity: 1; transition: opacity .3s ease;
@@ -176,6 +204,6 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/pixi.js@8.20.1/dist/pixi.min.js"></script>
-  <script type="module" src="game/main.js?v=7"></script>
+  <script type="module" src="game/main.js?v=8"></script>
 </body>
 </html>
