@@ -1,6 +1,8 @@
 // Full-screen DOM cards: title, still hungry, game over, ending.
 const el = (tag, cls, html) => { const n = document.createElement(tag); if (cls) n.className = cls; if (html != null) n.innerHTML = html; return n; };
 
+import { MODES } from '../core/mode.js';
+
 export class Overlays {
   constructor(root) {
     this.root = root;
@@ -15,21 +17,44 @@ export class Overlays {
     children.forEach(c => card.append(c));
     this.node.append(card);
     this.node.style.display = 'flex';
-    requestAnimationFrame(() => this.node.classList.add('in'));
+    // Retrigger the entrance animation; the resting state is already visible,
+    // so a skipped or interrupted animation cannot leave the card hidden.
+    this.node.style.animation = 'none';
+    void this.node.offsetWidth;
+    this.node.style.animation = '';
+    this.node.classList.add('in');
   }
   hide() { this.node.classList.remove('in'); this.node.style.display = 'none'; }
 
-  title(onStart, best, ach, onAchievements) {
+  title({ onStart, best, ach, onAchievements, mode = 'atari', artCount = 0, onMode }) {
     const btn = el('button', 'bf-btn', 'BEGIN THE SHOW');
     btn.onclick = onStart;
     const achBtn = el('button', 'bf-btn ghost', ach ? `ACHIEVEMENTS ${ach.count}/${ach.total}` : 'ACHIEVEMENTS');
     achBtn.onclick = onAchievements;
+
+    const picker = el('div', 'bf-modes');
+    for (const m of Object.values(MODES)) {
+      const chosen = m.id === mode;
+      const noArt = m.id === 'modern' && artCount === 0;
+      const card = el('button', `bf-mode ${chosen ? 'on' : ''} ${noArt ? 'bare' : ''}`);
+      card.append(
+        el('div', 'bf-mode-kicker', m.kicker),
+        el('div', 'bf-mode-title', m.title),
+        el('div', 'bf-mode-body', m.body),
+        el('div', 'bf-mode-tag', noArt
+          ? 'NO PAINTED ART INSTALLED YET · LOOKS THE SAME FOR NOW'
+          : (m.id === 'modern' ? `${artCount} PAINTED SPRITES INSTALLED` : m.tag)),
+      );
+      card.onclick = () => { if (!chosen) onMode?.(m.id); };
+      picker.append(card);
+    }
     this._show([
       el('div', 'bf-eyebrow', 'SWAMP BITCH REGISTRATION · NON-REFUNDABLE'),
       el('h1', 'bf-title', 'FROG<span>POCALYPSE</span>'),
       el('p', 'bf-body', 'You are a frog. You cross a road. You eat five bombs and explode, and each time you come back larger, until you are the size of the planet and the planet is the problem.'),
       el('div', 'bf-keys', '<b>← ↑ ↓ →</b> to hop &nbsp;·&nbsp; <b>SHIFT</b> to snap your tongue &nbsp;·&nbsp; on mobile, swipe to hop and tap to snap'),
       el('p', 'bf-note', 'Anything that explodes is food, even in mid-air. Everything else is just going to hurt you.'),
+      picker,
       btn,
       achBtn,
       best ? el('div', 'bf-best', `PREVIOUS BEST: ${String(best).padStart(6, '0')}`) : el('div', 'bf-best', ''),

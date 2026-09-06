@@ -8,6 +8,7 @@ import { preloadFrames, playDetonation, playEnding } from './ui/cutscene.js';
 import { Play } from './systems/play.js';
 import { STAGES, getStage, nextStage, validateStage } from './config/stages.js';
 import { Achievements } from './systems/achievements.js';
+import { MODES, readMode, writeMode, usesPaintedArt } from './core/mode.js';
 
 const CELL = 64, ROWS = 15;
 // A phone screen is far taller than it is wide, so a 13-wide field would leave the
@@ -21,8 +22,9 @@ const readBest = () => { try { return Number(localStorage.getItem(BEST_KEY)) || 
 const writeBest = (n) => { try { localStorage.setItem(BEST_KEY, String(n)); } catch { /* private mode */ } };
 
 class Game {
-  constructor(app, textures, mount, overlayRoot) {
+  constructor(app, textures, mount, overlayRoot, mode = 'atari') {
     this.app = app; this.tex = textures; this.mount = mount;
+    this.mode = mode;
     this.audio = new Audio();
     this.hud = new Hud(overlayRoot);
     this.overlays = new Overlays(overlayRoot);
@@ -50,12 +52,27 @@ class Game {
 
   clearPlay() { this.play?.destroy(); this.play = null; }
 
+  // Swapping mode rebuilds every texture, so it only happens from the title screen.
+  async setMode(mode) {
+    if (mode === this.mode || !MODES[mode]) return;
+    this.mode = mode;
+    writeMode(mode);
+    this.tex = await loadSprites(this.app, { usePng: usesPaintedArt(mode) });
+    this.title();
+  }
+
   title() {
     this.clearPlay();
     this.hud.show(false);
-    this.overlays.title(
-      () => { this.audio.unlock(); this.overlays.hide(); this.start(this.startStage || '1'); },
-      this.best, this.ach, () => this.showAchievements(() => this.title()));
+    this.overlays.title({
+      onStart: () => { this.audio.unlock(); this.overlays.hide(); this.start(this.startStage || '1'); },
+      best: this.best,
+      ach: this.ach,
+      onAchievements: () => this.showAchievements(() => this.title()),
+      mode: this.mode,
+      artCount: this.tex.overrideCount || 0,
+      onMode: (m) => this.setMode(m),
+    });
   }
 
   start(stageId, carry = null, score = 0) {
@@ -191,8 +208,9 @@ async function boot() {
   fit(app, mount);
   window.addEventListener('resize', () => fit(app, mount), { passive: true });
 
-  const textures = await loadSprites(app);
-  const game = new Game(app, textures, mount, overlayRoot);
+  const mode = readMode();
+  const textures = await loadSprites(app, { usePng: usesPaintedArt(mode) });
+  const game = new Game(app, textures, mount, overlayRoot, mode);
 
   const qs = new URLSearchParams(location.search);
   const jump = qs.get('stage');

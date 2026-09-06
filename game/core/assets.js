@@ -71,6 +71,7 @@ export async function loadSprites(app, { usePng = true } = {}) {
 
   const missing = new Set();
   return {
+    overrideCount: wanted.length,
     get(kind) {
       const t = map.get(kind);
       if (!t) {
