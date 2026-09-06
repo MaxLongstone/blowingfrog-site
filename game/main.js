@@ -9,6 +9,7 @@ import { Play } from './systems/play.js';
 import { STAGES, getStage, nextStage, validateStage } from './config/stages.js';
 import { Achievements } from './systems/achievements.js';
 import { MODES, readMode, writeMode, usesPaintedArt } from './core/mode.js';
+import { buildShareCard, shareCardNatively, downloadCard } from './ui/sharecard.js';
 
 const CELL = 64, ROWS = 15;
 // A phone screen is far taller than it is wide, so a 13-wide field would leave the
@@ -150,16 +151,33 @@ class Game {
 
   showAchievements(onBack) {
     this.overlays.achievements(this.ach, this.best,
-      () => this.shareAchievements(),
+      () => this.shareAchievements(() => this.showAchievements(onBack)),
       () => { this.overlays.hide(); onBack(); });
   }
 
-  shareAchievements() {
+  async shareAchievements(onBack) {
     const text = this.ach.shareText(this.best);
     const url = location.href.split('?')[0];
-    if (navigator.share) navigator.share({ title: 'Frogpocalypse', text, url }).catch(() => {});
-    else navigator.clipboard?.writeText(`${text}\n${url}`)
-      .then(() => this.hud.say('COPIED TO CLIPBOARD', 1800)).catch(() => {});
+    const open = (previewUrl, blob) => this.overlays.shareSheet({
+      previewUrl, text, url,
+      canNativeShare: typeof navigator.share === 'function',
+      onNative: async () => {
+        const ok = await shareCardNatively(blob, text, url);
+        if (!ok) this.hud.say('SHARING WAS CANCELLED', 1600);
+      },
+      onSave: () => { downloadCard(blob); this.hud.say('IMAGE SAVED — NOW POST IT', 2200); },
+      onCopy: () => navigator.clipboard?.writeText(`${text}\n${url}`)
+        .then(() => this.hud.say('COPIED TO CLIPBOARD', 1800)).catch(() => {}),
+      onBack,
+    });
+
+    open(null, null);                       // show the sheet while the card renders
+    let blob = null;
+    try { blob = await buildShareCard(this.ach, this.best); } catch (e) { console.warn('[bf] share card failed', e); }
+    if (!blob) { this.hud.say('COULD NOT BUILD THE IMAGE — LINKS STILL WORK', 2600); return; }
+    if (this._shareUrl) URL.revokeObjectURL(this._shareUrl);
+    this._shareUrl = URL.createObjectURL(blob);
+    open(this._shareUrl, blob);
   }
 
   finishCard(score) {

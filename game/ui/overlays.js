@@ -2,6 +2,7 @@
 const el = (tag, cls, html) => { const n = document.createElement(tag); if (cls) n.className = cls; if (html != null) n.innerHTML = html; return n; };
 
 import { MODES } from '../core/mode.js';
+import { socialTargets } from './sharecard.js';
 
 export class Overlays {
   constructor(root) {
@@ -70,6 +71,53 @@ export class Overlays {
       el('p', 'bf-body', `You crossed with ${fuse} of 5. You did not explode. Do you know what an audience does when the frog fails to explode, you damp little disappointment? They change the channel. Get back in there and eat properly.`),
       btn,
     ], 'hungry');
+  }
+
+  // previewUrl is an object URL for the rendered card; null while it is building.
+  shareSheet({ previewUrl, text, url, canNativeShare, onNative, onSave, onCopy, onBack }) {
+    const preview = el('div', 'bf-share-preview');
+    if (previewUrl) {
+      const img = document.createElement('img');
+      img.src = previewUrl; img.alt = 'Your achievement card';
+      preview.append(img);
+    } else {
+      preview.append(el('div', 'bf-share-building', 'BUILDING YOUR CARD…'));
+    }
+
+    const row = el('div', 'bf-share-row');
+    if (canNativeShare) {
+      const b = el('button', 'bf-btn', 'SHARE…');
+      b.onclick = onNative;
+      row.append(b);
+    }
+    const save = el('button', 'bf-btn' + (canNativeShare ? ' ghost' : ''), 'SAVE IMAGE');
+    save.onclick = onSave;
+    row.append(save);
+
+    const links = el('div', 'bf-share-links');
+    for (const t of socialTargets(text, url)) {
+      const a = document.createElement('a');
+      a.className = 'bf-share-link';
+      a.href = t.href; a.target = '_blank'; a.rel = 'noopener noreferrer';
+      a.textContent = t.label;
+      links.append(a);
+    }
+    const copy = el('button', 'bf-share-link as-btn', 'Copy text');
+    copy.onclick = onCopy;
+    links.append(copy);
+
+    const back = el('button', 'bf-btn ghost', 'BACK');
+    back.onclick = onBack;
+
+    this._show([
+      el('div', 'bf-eyebrow', 'BROADCAST YOUR RECORD'),
+      el('h2', 'bf-title small', 'SHARE'),
+      preview,
+      el('p', 'bf-note', 'Instagram has no web share link, so save the image and post it. On a phone, Share hands the picture straight to any app.'),
+      row,
+      links,
+      back,
+    ], 'share');
   }
 
   achievements(ach, best, onShare, onBack) {
