@@ -343,15 +343,17 @@ if (track) {
   var links = document.querySelector('.nav-links');
   if (!links) return;
   // Only add if not already present
-  if (links.querySelector('[href="blog.html"]')) return;
+  var existing = links.querySelector('[href="blog.html"]') ||
+    Array.from(links.querySelectorAll('a')).find(function(a){ return a.textContent.trim() === 'Blog'; });
+  if (existing) return;
   var a = document.createElement('a');
   a.href = 'blog.html';
   a.className = 'nav-link' + (window.location.pathname.includes('blog') ? ' active' : '');
   a.textContent = 'Blog';
   links.appendChild(a);
-  // Also add to mobile menu if it exists
+  // Also add to mobile menu if not already present
   var mob = document.getElementById('mobileMenu');
-  if (mob) {
+  if (mob && !mob.querySelector('[href="blog.html"]')) {
     var ma = document.createElement('a');
     ma.href = 'blog.html';
     ma.className = 'mobile-menu-link';
