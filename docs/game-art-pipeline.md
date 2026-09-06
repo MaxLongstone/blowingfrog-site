@@ -49,6 +49,8 @@ Export at 2x for crispness. The `cells` column below gives the intended footprin
 | `missile` `bomb` `cruise` `torpedo` `nuke` | see code | 2x cells | Edible incoming ordnance |
 | `bullet` `strafe` `fork` `jetlaunch` `laser` `hand` `flare` | see code | 2x cells | Non-edible, dodge only |
 
+> Per-sprite prompts for all 60 kinds live in `game-sprite-prompts.md`.
+
 ## Style prompt
 
 Use this prefix on every generation so the set stays coherent:
