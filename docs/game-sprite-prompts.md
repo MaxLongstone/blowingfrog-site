@@ -1,6 +1,6 @@
 # Frogpocalypse sprite sheets
 
-Sixty-nine sprites in **eight generations**, not sixty-nine. Each prompt produces one square sheet of
+Ninety-six sprites in **eleven generations**. Sheets A to H are the main game; I, J and K are boss one. Each prompt produces one square sheet of
 evenly spaced cells; a script then cuts the sheet, knocks out the white, and files each sprite
 under the right name.
 
@@ -268,6 +268,110 @@ The nine badges, left to right, top row first:
 7. a clean white four-pointed sparkle over a pale blue shield
 8. a tipped-over amber beer bottle with a single drip falling from the neck
 9. a small blue and green planet Earth with a flat dent pressed into the top of it
+```
+
+## Boss one: Chaco the Narco Chupacabra
+
+These three sheets are **side-on character art**, not top-down, so they use a different art
+direction block from sheets A to H. Keep Chaco identical across all twelve of his poses: that
+consistency is what sells a boxing fight.
+
+**Chaco, in one line, to reuse in every cell:** a gaunt leathery chupacabra boxer, grey-green
+hide, bony dorsal spines down his back, red eyes, an oversized fanged jaw, heavy gold chains,
+one gold fang, gold-trimmed black boxing trunks and red hand wraps.
+
+### Sheet I — Chaco, the fight
+
+3 × 3. Reading order: `chaco_idle` `chaco_tell_jab` `chaco_jab` / `chaco_tell_hay` `chaco_hay` `chaco_chupada` / `chaco_stunned` `chaco_polvo` `chaco_down`
+
+```
+A single square sprite sheet on a pure white background, arranged as a clean 3 by 3 grid of nine
+equal square cells with wide even white gutters. Each pose is centred in its own cell at the same
+scale and the same distance from camera, fully separated from its neighbours, nothing touching or
+overlapping. No grid lines, no borders, no numbers, no text, no labels, no watermark.
+
+Art direction for every cell: a full-body character pose seen from the front in three-quarter
+view, soft 3D felt and clay render, matte fabric texture, thick dark charcoal outline, warm rim
+light from the upper left, chunky cartoon proportions, muted palette with saturated gold accents,
+no cast shadow, no ground plane, no background scenery.
+
+The same character in all nine cells: a gaunt leathery chupacabra boxer, grey-green hide, bony
+dorsal spines down his back, red eyes, an oversized fanged jaw, heavy gold chains, one gold fang,
+gold-trimmed black boxing trunks and red hand wraps.
+
+The nine poses, left to right, top row first:
+1. standing in a boxing guard, both fists raised, weight on the back foot, sneering and confident
+2. winding up a jab, his left shoulder dipped low, weight shifting forward, clearly telegraphing
+3. throwing a straight jab, left arm fully extended toward the viewer, snarling
+4. winding up a haymaker, stepped back with his right arm cocked far behind him, gold chains
+   swung out wide, red eyes flaring
+5. throwing the haymaker, right arm swung all the way across in a huge hook, body twisted through
+6. lunging forward with his jaw open impossibly wide, fangs bared, long tongue out, arms spread
+7. stunned and dazed, arms hanging loose, head lolling, eyes crossed, knees buckling
+8. flinging a spray of fine white powder forward with one hand while the other pulls back from
+   his trunks
+9. knocked flat on his back, limbs splayed, chains scattered across his chest
+```
+
+### Sheet J — Chaco's finale, and the frog boxer
+
+3 × 3. Reading order: `chaco_berserk` `chaco_dead` `chaco_belt` / `boxfrog_guard` `boxfrog_left` `boxfrog_right` / `boxfrog_duck` `boxfrog_tongue` `boxfrog_down`
+
+```
+A single square sprite sheet on a pure white background, arranged as a clean 3 by 3 grid of nine
+equal square cells with wide even white gutters. Each pose is centred in its own cell, fully
+separated from its neighbours, nothing touching or overlapping. No grid lines, no borders, no
+numbers, no text, no labels, no watermark.
+
+Art direction for every cell: a full-body character pose seen from the front in three-quarter
+view, soft 3D felt and clay render, matte fabric texture, thick dark charcoal outline, warm rim
+light from the upper left, chunky cartoon proportions, no cast shadow, no ground plane, no
+background scenery.
+
+Cells 1 to 3 are a gaunt leathery chupacabra boxer: grey-green hide, bony dorsal spines, red eyes,
+oversized fanged jaw, gold chains, one gold fang, gold-trimmed black trunks, red hand wraps.
+Cells 4 to 9 are a small round olive-green cartoon frog with huge white bulging eyes and a cream
+belly, wearing tiny red boxing gloves that are far too big for it.
+
+The nine poses, left to right, top row first:
+1. the chupacabra with a burst bag of white powder smashed against his own face, white dust
+   billowing, eyes bloodshot and bulging, veins standing out on his neck, feral snarl
+2. the chupacabra collapsed face-down and motionless, tongue lolling out, white powder still on
+   his snout, one arm folded under him
+3. the chupacabra swinging a gaudy gold championship belt overhead like a flail, feral and wild
+4. the frog standing in a boxing guard, gloves up, small and determined
+5. the frog leaning hard to its own left, dodging, gloves still raised
+6. the frog leaning hard to its own right, dodging, gloves still raised
+7. the frog crouched right down, ducking under a punch, eyes squeezed shut
+8. the frog snapping its long pink tongue straight forward in a counter attack
+9. the frog knocked flat on its back, dazed, gloves splayed out
+```
+
+### Sheet K — the ring and its props
+
+3 × 3. Reading order: `ring_canvas` `ring_fence` `ring_light` / `ring_crowd` `boss_dynamite` `boss_bag` / `boss_belt` `ring_post` `boss_stars`
+
+```
+A single square sprite sheet on a pure white background, arranged as a clean 3 by 3 grid of nine
+equal square cells with wide even white gutters. Each object is centred in its own cell, fully
+separated from its neighbours, nothing touching or overlapping. No grid lines, no borders, no
+numbers, no text, no labels, no watermark.
+
+Art direction for every cell: a game asset seen straight on, soft 3D felt and clay render, matte
+surfaces, thick dark charcoal outline, warm rim light from the upper left, chunky cartoon
+proportions, grimy underground venue mood, muted palette with one saturated accent, no cast
+shadow, no background scenery.
+
+The nine cells, left to right, top row first:
+1. a square patch of worn stained boxing ring canvas, flat and seamless, scuffed and blood-flecked
+2. a rectangular panel of grey chain-link fencing, slightly bent, seen face on
+3. a battered industrial floodlight on a tripod stand, one bright bulb, cables trailing
+4. a horizontal row of flat black crowd silhouettes, heads and raised arms, no faces
+5. a single red stick of dynamite with a lit fuse and a bright spark
+6. a small clear plastic bag of white powder, taped shut, one corner split open
+7. a gaudy oversized gold championship belt with a huge ornate buckle and a red leather strap
+8. a boxing ring corner post wrapped in tape with three sagging ropes attached
+9. a burst of cartoon knockout stars, yellow and white, arranged in a ring
 ```
 
 ---

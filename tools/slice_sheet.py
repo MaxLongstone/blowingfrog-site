@@ -38,6 +38,13 @@ SHEETS = {
                  "jetlaunch", "laser", "hand", "flare"]),
     "H": (3, 3, ["ach_sentient", "ach_piggy", "ach_wing", "ach_breach", "ach_pest",
                  "ach_revolting", "ach_untouched", "ach_daddy", "ach_unavailable"]),
+    # Boss one: Chaco the Narco Chupacabra
+    "I": (3, 3, ["chaco_idle", "chaco_tell_jab", "chaco_jab", "chaco_tell_hay", "chaco_hay",
+                 "chaco_chupada", "chaco_stunned", "chaco_polvo", "chaco_down"]),
+    "J": (3, 3, ["chaco_berserk", "chaco_dead", "chaco_belt", "boxfrog_guard", "boxfrog_left",
+                 "boxfrog_right", "boxfrog_duck", "boxfrog_tongue", "boxfrog_down"]),
+    "K": (3, 3, ["ring_canvas", "ring_fence", "ring_light", "ring_crowd", "boss_dynamite",
+                 "boss_bag", "boss_belt", "ring_post", "boss_stars"]),
 }
 
 WHITE_CUTOFF = 234   # a pixel this bright in every channel counts as background
