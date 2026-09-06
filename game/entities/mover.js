@@ -16,6 +16,7 @@ export class Mover {
     this.alive = true;
     this.squashed = false;
     this.mem = {};        // behavior scratch space
+    this.warnT = 0;       // seconds of telegraph left before it lunges
     this.age = 0;
     this.dropTimer = 0;
   }

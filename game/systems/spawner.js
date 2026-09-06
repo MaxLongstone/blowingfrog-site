@@ -7,12 +7,31 @@ import { PROJECTILES } from '../config/stages.js';
 // ctx: { frog:{col,row,x,y,isKaiju}, grid, time, rng }
 const dist = (m, ctx) => Math.abs(m.x - ctx.frog.x);
 
+// Aggressive moves telegraph before they commit: the mover lights up for TELL
+// seconds so the player can read the threat and get out of the lane.
+const TELL = 0.55;
+
+// Returns true while the wind-up is still running. `fire` runs once, at the end.
+function windUp(m, dt, fire) {
+  if (m.mem.arm == null) return false;
+  m.mem.arm -= dt;
+  m.warnT = Math.max(0, m.mem.arm);
+  if (m.mem.arm <= 0) {
+    m.mem.arm = null;
+    m.warnT = 0;
+    fire();
+  }
+  return true;
+}
+const arm = (m, sign) => { m.mem.arm = TELL; m.mem.armSign = sign; m.warnT = TELL; };
+
 export const behaviors = {
-  // Adjacent-lane cars nudge half a cell toward the frog, then return.
+  // Adjacent-lane cars nudge half a cell toward the frog, after lighting up first.
   swerve(m, dt, ctx) {
+    if (windUp(m, dt, () => { m.mem.swerve = { t: 0, sign: m.mem.armSign }; })) return;
     const rowDiff = ctx.frog.row - m.homeRow;
-    if (!m.mem.swerve && Math.abs(rowDiff) === 1 && dist(m, ctx) < 2.5 && !m.mem.swerved) {
-      m.mem.swerve = { t: 0, sign: Math.sign(rowDiff) }; m.mem.swerved = true;
+    if (!m.mem.swerve && Math.abs(rowDiff) === 1 && dist(m, ctx) < 4.2 && !m.mem.swerved) {
+      arm(m, Math.sign(rowDiff)); m.mem.swerved = true;
     }
     if (m.mem.swerve) {
       const s = m.mem.swerve; s.t += dt;
@@ -21,11 +40,12 @@ export const behaviors = {
       if (s.t > 0.7) { m.mem.swerve = null; m.yOff = 0; }
     }
   },
-  // Drones drop a full row toward the frog when close, then climb back.
+  // Drones drop a full row toward the frog, flashing before they commit.
   dive(m, dt, ctx) {
+    if (windUp(m, dt, () => { m.mem.dive = { t: 0, sign: m.mem.armSign }; })) return;
     const below = ctx.frog.row - m.homeRow;
-    if (!m.mem.dive && !m.mem.dived && below >= 1 && below <= 2 && dist(m, ctx) < 2.5) {
-      m.mem.dive = { t: 0, sign: Math.sign(below) }; m.mem.dived = true;
+    if (!m.mem.dive && !m.mem.dived && below >= 1 && below <= 2 && dist(m, ctx) < 4.0) {
+      arm(m, Math.sign(below)); m.mem.dived = true;
     }
     if (m.mem.dive) {
       const d = m.mem.dive; d.t += dt;
@@ -49,6 +69,8 @@ export const behaviors = {
     if (towards !== 0 && towards !== m.dir && dist(m, ctx) < 4 && Math.abs(ctx.frog.row - m.homeRow) <= 1) {
       m.speed = Math.max(0.6, m.baseSpeed * 0.4);
     } else m.speed = m.baseSpeed;
+    const closing = Math.abs(ctx.frog.row - m.homeRow) <= 1 && dist(m, ctx) < 4;
+    m.warnT = closing ? TELL : 0;
     if (Math.abs(ctx.frog.row - m.homeRow) === 1 && dist(m, ctx) < 1.5) {
       m.yOff += Math.sign(ctx.frog.row - m.homeRow) * dt * 1.2;
       m.yOff = Math.max(-0.8, Math.min(0.8, m.yOff));
@@ -68,10 +90,13 @@ export const behaviors = {
     m.yOff = Math.sin(m.age * 4) * 0.15;
     m.speed = dist(m, ctx) < 1.2 ? m.baseSpeed * 0.35 : m.baseSpeed;
   },
-  // Heron dips its beak a row toward the frog as it passes.
+  // Heron dips its beak a row toward the frog, flaring first.
   swoop(m, dt, ctx) {
+    if (windUp(m, dt, () => { m.mem.swoop = { t: 0, sign: m.mem.armSign }; })) return;
     const d = ctx.frog.row - m.homeRow;
-    if (!m.mem.swoop && Math.abs(d) === 1 && dist(m, ctx) < 3) m.mem.swoop = { t: 0, sign: Math.sign(d) };
+    if (!m.mem.swoop && !m.mem.swooped && Math.abs(d) === 1 && dist(m, ctx) < 4.5) {
+      arm(m, Math.sign(d)); m.mem.swooped = true;
+    }
     if (m.mem.swoop) {
       const s = m.mem.swoop; s.t += dt;
       m.yOff = s.sign * 0.9 * Math.sin(Math.min(1, s.t / 0.8) * Math.PI);

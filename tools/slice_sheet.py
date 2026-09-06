@@ -31,7 +31,9 @@ SHEETS = {
                  "dynamite", "mine", "tanker", "gasstation"]),
     "E": (3, 3, ["propane", "silo", "volcano", "sub", "oilrig",
                  "nukesilo", "missile", "bomb", "cruise"]),
-    "F": (3, 2, ["pw_invuln", "pw_freeze", "pw_fire", "pw_armor", "pw_life", "food"]),
+    # The generator repeated the final row, so the last three cells are ignored.
+    "F": (3, 3, ["pw_invuln", "pw_freeze", "pw_fire", "pw_armor", "pw_life", "food",
+                 None, None, None]),
     "G": (3, 3, ["torpedo", "nuke", "bullet", "strafe", "fork",
                  "jetlaunch", "laser", "hand", "flare"]),
     "H": (3, 3, ["ach_sentient", "ach_piggy", "ach_wing", "ach_breach", "ach_pest",
@@ -40,6 +42,10 @@ SHEETS = {
 
 WHITE_CUTOFF = 234   # a pixel this bright in every channel counts as background
 PAD = 6              # transparent pixels kept around each trimmed sprite
+INSET = 14           # trimmed off each cell edge, so printed grid rules never survive
+# Some sheets place each subject on a white card over a tinted background. The
+# flood has to start on the card, not the gutter, so those need a deeper inset.
+INSETS = {"E": 44}
 
 
 def drop_background(cell):
@@ -101,14 +107,18 @@ def main():
 
     key = sys.argv[1].upper()
     cols, rows, names = SHEETS[key]
+    inset = INSETS.get(key, INSET)
     sheet = Image.open(sys.argv[2]).convert("RGBA")
     cw, ch = sheet.width // cols, sheet.height // rows
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
     written = []
     for i, name in enumerate(names):
+        if not name:
+            continue                     # duplicate or blank cell
         cx, cy = (i % cols) * cw, (i // cols) * ch
-        sprite = trim(drop_background(sheet.crop((cx, cy, cx + cw, cy + ch))))
+        box = (cx + inset, cy + inset, cx + cw - inset, cy + ch - inset)
+        sprite = trim(drop_background(sheet.crop(box)))
         if sprite is None:
             print(f"  !  {name}: cell came out empty, skipped")
             continue

@@ -14,13 +14,14 @@ const MAX_PROJECTILES = 5;
 const FROG_SPRITE = ['frog_s1', 'frog_s1', 'frog_s2', 'frog_s3', 'frog_s4', 'frog_k1', 'frog_k2', 'frog_k3', 'frog_k4', 'frog_k5'];
 
 export class Play {
-  constructor({ app, stage, textures, audio, hud, frogState, score = 0, density = 1, cols = 13, ach = null }) {
+  constructor({ app, stage, textures, audio, hud, frogState, score = 0, density = 1, cols = 13, ach = null, painted = false }) {
     this.app = app; this.stage = stage; this.tex = textures; this.audio = audio; this.hud = hud;
     this.grid = new Grid(cols, 15, CELL);
     this.rng = makeRng();
     this.shake = new Shake(Math.random);
     this.score = score;
     this.ach = ach;
+    this.painted = painted;
     this.tookHit = false;
     this.density = density;
     this.time = 0;
@@ -30,6 +31,8 @@ export class Play {
     this.world = new PIXI.Container();
     this.app.stage.addChild(this.world);
     this.backdrop = new Backdrop(this.world, this.grid, stage);
+    this.warnG = new PIXI.Graphics();      // telegraph rings sit under the sprites
+    this.world.addChild(this.warnG);
     this.layer = new PIXI.Container();
     this.world.addChild(this.layer);
     this.particles = new Particles(this.world, CELL);
@@ -246,12 +249,29 @@ export class Play {
       s.x = x; s.y = y;
       s.visible = true;
       s.alpha = opts.alpha ?? 1;
-      s.scale.set(opts.flip ? -1 : 1, 1);
+      const k = this.tex.scaleFor(e.kind);
+      s.scale.set(opts.flip ? -k : k, k);
       if (opts.rotation != null) s.rotation = opts.rotation;
       return s;
     };
 
-    for (const m of this.movers) place(m, m.x * CELL, (m.y + 0.5) * CELL, { flip: m.dir < 0 });
+    const wg = this.warnG; wg.clear();
+    for (const m of this.movers) {
+      const sp = place(m, m.x * CELL, (m.y + 0.5) * CELL, { flip: m.dir < 0 });
+      if (m.warnT > 0) {
+        const beat = 0.5 + 0.5 * Math.sin(this.time * 22);
+        sp.tint = beat > 0.5 ? 0xffd0c0 : 0xff6a4a;
+        const cxw = m.x * CELL, cyw = (m.y + 0.5) * CELL;
+        wg.circle(cxw, cyw, CELL * (0.5 + beat * 0.22))
+          .stroke({ width: 3 + beat * 3, color: 0xff5533, alpha: 0.35 + beat * 0.5 });
+        const dy = Math.sign(m.mem.armSign || 0) || (this.frog.row > m.homeRow ? 1 : -1);
+        wg.poly([cxw - 11, cyw + dy * CELL * 0.5, cxw + 11, cyw + dy * CELL * 0.5,
+                 cxw, cyw + dy * CELL * (0.5 + 0.26 + beat * 0.1)])
+          .fill({ color: 0xff5533, alpha: 0.55 + beat * 0.4 });
+      } else if (sp.tint !== 0xffffff) {
+        sp.tint = 0xffffff;
+      }
+    }
     for (const p of this.pickups) place(p, (p.col + 0.5) * CELL, (p.row + 0.5) * CELL, { alpha: 0.85 + Math.sin(this.time * 4 + p.col) * 0.15 });
     for (const p of this.projectiles) {
       const alpha = p.telegraphing ? 0.25 + Math.sin(this.time * 30) * 0.2 : 1;
@@ -269,10 +289,16 @@ export class Play {
     fs.texture = this.tex.get(FROG_SPRITE[Math.min(9, this.frog.sizeClass)]);
     fs.x = (fp.col + 0.5) * CELL;
     fs.y = (fp.row + 0.5) * CELL - fp.arc * 16;
-    const base = this.frog.scale;
+    const base = this.frog.scale * this.tex.scaleFor(FROG_SPRITE[Math.min(9, this.frog.sizeClass)]);
     fs.scale.set(base * (1 + fp.arc * 0.12), base * (1 - fp.arc * 0.06));
     fs.alpha = this.frog.invuln > 0 ? (Math.sin(this.time * 30) > 0 ? 0.35 : 1) : 1;
-    fs.rotation = { up: 0, down: Math.PI, left: -Math.PI / 2, right: Math.PI / 2 }[this.frog.dir] || 0;
+    if (this.painted) {
+      fs.rotation = 0;
+      const face = this.frog.dir === 'left' ? -1 : 1;
+      fs.scale.x = Math.abs(fs.scale.x) * face;
+    } else {
+      fs.rotation = { up: 0, down: Math.PI, left: -Math.PI / 2, right: Math.PI / 2 }[this.frog.dir] || 0;
+    }
     this.layer.addChild(fs);
 
     // tongue

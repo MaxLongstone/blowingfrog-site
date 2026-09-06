@@ -9,13 +9,13 @@ test('two modes, each with full title-card copy', () => {
     assert.ok(m.body.length > 80, `${m.id} body should be a real paragraph`);
   }
 });
-test('atari is the default and needs no painted art', () => {
-  assert.equal(DEFAULT_MODE, 'atari');
+test('painted art is the default now that the sprites exist', () => {
+  assert.equal(DEFAULT_MODE, 'modern');
   assert.equal(usesPaintedArt('atari'), false);
   assert.equal(usesPaintedArt('modern'), true);
 });
 test('reads the default and ignores junk when storage is unavailable', () => {
-  assert.equal(readMode(), 'atari');
+  assert.equal(readMode(), DEFAULT_MODE);
   writeMode('nonsense');
-  assert.equal(readMode(), 'atari');
+  assert.equal(readMode(), DEFAULT_MODE);
 });

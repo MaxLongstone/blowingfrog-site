@@ -85,6 +85,7 @@ class Game {
       density: carry?.density || 1,
       cols: COLS,
       ach: this.ach,
+      painted: usesPaintedArt(this.mode),
     });
     this.play.on('goal', ({ score }) => this.onGoal(stage, score));
     this.play.on('stillHungry', ({ fuse, score }) => this.onStillHungry(stage, fuse, score));

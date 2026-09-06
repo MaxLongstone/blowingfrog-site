@@ -19,7 +19,7 @@ export const MODES = {
   },
 };
 
-export const DEFAULT_MODE = 'atari';
+export const DEFAULT_MODE = 'modern';
 
 export function readMode() {
   try {

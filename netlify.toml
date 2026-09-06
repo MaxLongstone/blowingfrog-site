@@ -2,3 +2,15 @@
   for = "/admin/*"
   [headers.values]
     Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval' https://identity.netlify.com https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://api.netlify.com https://identity.netlify.com https://api.github.com;"
+
+# ES modules are imported by fixed URLs with no content hash, so a stale copy in a
+# browser cache can pair new code with old. Always revalidate the game's modules.
+[[headers]]
+  for = "/game/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/assets/game/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"

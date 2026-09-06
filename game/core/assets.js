@@ -2,6 +2,10 @@
 // otherwise the procedural drawing is rendered once into a RenderTexture.
 import { SPRITES, CELL } from '../config/sprites.js';
 
+// Painted PNGs come in at whatever size they were generated. Procedural textures
+// are already drawn at their true footprint, so only overrides need fitting.
+const BLEED = 1.18;   // outlines and glows are allowed a little past the cell
+
 const PNG_DIR = 'assets/game/';
 const SUPERSAMPLE = 2;
 
@@ -55,6 +59,7 @@ async function readManifest() {
 
 export async function loadSprites(app, { usePng = true } = {}) {
   const map = new Map();
+  const scales = new Map();
   const kinds = Object.keys(SPRITES);
   const overrides = usePng ? await readManifest() : [];
   const wanted = kinds.filter(k => overrides.includes(k));
@@ -62,16 +67,27 @@ export async function loadSprites(app, { usePng = true } = {}) {
   if (wanted.length) console.info(`[bf] art overrides: ${wanted.length}`);
 
   kinds.forEach((kind) => {
+    const def = SPRITES[kind];
     const img = loaded.get(kind);
     if (img) {
-      try { map.set(kind, PIXI.Texture.from(img)); return; } catch (e) { /* fall through */ }
+      try {
+        const tex = PIXI.Texture.from(img);
+        map.set(kind, tex);
+        // Fit the painted art inside the footprint the game expects, keeping aspect.
+        const targetW = def.w * CELL * BLEED, targetH = def.h * CELL * BLEED;
+        scales.set(kind, Math.min(targetW / tex.width, targetH / tex.height));
+        return;
+      } catch (e) { /* fall through to the drawing */ }
     }
-    map.set(kind, drawToTexture(app, kind, SPRITES[kind]));
+    map.set(kind, drawToTexture(app, kind, def));
+    scales.set(kind, 1);
   });
 
   const missing = new Set();
   return {
     overrideCount: wanted.length,
+    // Multiplier that brings a texture to its intended on-grid size.
+    scaleFor(kind) { return scales.get(kind) ?? 1; },
     get(kind) {
       const t = map.get(kind);
       if (!t) {

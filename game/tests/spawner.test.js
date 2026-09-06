@@ -67,3 +67,30 @@ test('dropFrom makes food behind a food truck and bombs under a bomber', () => {
   const bomb = sp.dropFrom(bomber, ctxFor());
   assert.equal(bomb.kind, 'bomb'); assert.ok(bomb.explosive); assert.ok(bomb.vy > 0);
 });
+
+test('swerve lights up before it commits, and only commits after the wind-up', () => {
+  const m = new Mover({ kind: 'police', row: 9, dir: 1, speed: 2, x: 5.5, behaviors: ['swerve'] });
+  const ctx = ctxFor({ col: 6, row: 10, x: 6.5, y: 10.5, isKaiju: false });
+  m.update(0.016, ctx);
+  assert.ok(m.warnT > 0, 'warning starts immediately');
+  assert.equal(m.mem.swerve, undefined, 'has not moved yet');
+  assert.equal(m.yOff, 0);
+  for (let t = 0; t < 0.6; t += 0.05) m.update(0.05, ctx);
+  assert.equal(m.warnT, 0, 'warning clears');
+  assert.ok(m.mem.swerve, 'now it lunges');
+});
+test('dive telegraphs too, and each mover only lunges once', () => {
+  const m = new Mover({ kind: 'drone', row: 8, dir: 1, speed: 2, x: 6.0, behaviors: ['dive'] });
+  const ctx = ctxFor({ col: 6, row: 9, x: 6.5, y: 9.5, isKaiju: false });
+  m.update(0.016, ctx);
+  assert.ok(m.warnT > 0);
+  for (let t = 0; t < 2.0; t += 0.05) m.update(0.05, ctx);
+  assert.equal(m.mem.dived, true);
+  assert.equal(m.mem.arm, null, 'not re-armed');
+});
+test('a mover that never gets near the frog never lights up', () => {
+  const m = new Mover({ kind: 'police', row: 2, dir: 1, speed: 2, x: 1.5, behaviors: ['swerve'] });
+  const ctx = ctxFor({ col: 6, row: 12, x: 6.5, y: 12.5, isKaiju: false });
+  for (let t = 0; t < 1; t += 0.05) m.update(0.05, ctx);
+  assert.equal(m.warnT, 0);
+});
