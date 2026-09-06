@@ -1,13 +1,14 @@
-import { FUSE_TARGET, KAIJU_SIZE } from '../config/stages.js';
+import { FUSE_TARGET, KAIJU_SIZE, POWERS } from '../config/stages.js';
 
 const DIRS = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
 export const HOP_TIME = 0.14;
 export const TONGUE_TIME = 0.12;
 export const TONGUE_REACH = 2;
+export const FIRE_REACH = 4;
 export const INVULN_TIME = 1.0;
 
 export class Frog {
-  constructor({ sizeClass = 1, lives = 3, hearts = 3, col = 6, row = 14 } = {}) {
+  constructor({ sizeClass = 1, lives = 5, hearts = 3, col = 6, row = 14 } = {}) {
     // col/row default to the classic 13x15 field; Play passes the live grid's center.
     this.sizeClass = sizeClass;
     this.lives = lives;
@@ -21,7 +22,23 @@ export class Frog {
     this.tongue = null;   // {cells:[{col,row}], t, dir}
     this.invuln = 0;
     this.dead = false;
+    this.shield = 0;                      // battle-damage hits left
+    this.powers = { invuln: 0, freeze: 0, fire: 0 };
   }
+
+  // Timed powers only; armor and life resolve immediately.
+  gainPower(name) {
+    const def = POWERS[name];
+    if (!def) return null;
+    if (name === 'life') { if (this.act === 1) this.lives += 1; else this.hearts += 1; return 'life'; }
+    if (name === 'armor') { this.shield = def.hits; return 'armor'; }
+    this.powers[name] = def.duration;
+    if (name === 'invuln') this.invuln = Math.max(this.invuln, def.duration);
+    return name;
+  }
+  hasPower(name) { return (this.powers[name] || 0) > 0; }
+  get frozen() { return this.powers.freeze > 0; }
+  get breathingFire() { return this.powers.fire > 0; }
   get act() { return this.sizeClass >= KAIJU_SIZE ? 2 : 1; }
   isKaiju() { return this.act === 2; }
   get hopProgress() { return this.hopAnim ? Math.min(1, this.hopAnim.t / HOP_TIME) : 1; }
@@ -50,8 +67,9 @@ export class Frog {
     const useDir = dir || this.dir;
     this.dir = useDir;
     const d = DIRS[useDir];
+    const reach = this.breathingFire ? FIRE_REACH : TONGUE_REACH;
     const cells = [];
-    for (let i = 1; i <= TONGUE_REACH; i++) cells.push({ col: this.col + d[0] * i, row: this.row + d[1] * i });
+    for (let i = 1; i <= reach; i++) cells.push({ col: this.col + d[0] * i, row: this.row + d[1] * i });
     this.tongue = { cells, t: 0, dir: useDir };
     return this.tongue;
   }
@@ -61,6 +79,11 @@ export class Frog {
   // Returns 'none' | 'reset' | 'hurt' | 'dead'
   takeHit() {
     if (this.invuln > 0 || this.dead) return 'none';
+    if (this.shield > 0) {
+      this.shield -= 1;
+      this.invuln = INVULN_TIME;
+      return 'shielded';
+    }
     if (this.act === 1) {
       this.lives -= 1;
       if (this.lives <= 0) { this.dead = true; return 'dead'; }
@@ -81,9 +104,18 @@ export class Frog {
     return this.sizeClass;
   }
 
+  // Longest-running timed power, for the HUD.
+  activePower() {
+    let best = null;
+    for (const [name, t] of Object.entries(this.powers)) if (t > 0 && (!best || t > best.time)) best = { name, time: t };
+    if (!best && this.shield > 0) return { name: 'armor', hits: this.shield };
+    return best;
+  }
+
   resetForStage() {
     this.col = this.startCol; this.row = this.startRow;
     this.fuse = 0; this.hopAnim = null; this.tongue = null; this.invuln = 0; this.dead = false;
+    this.shield = 0; this.powers = { invuln: 0, freeze: 0, fire: 0 };
     this.dir = 'up';
   }
 
@@ -112,5 +144,6 @@ export class Frog {
     if (this.hopAnim) { this.hopAnim.t += dt; if (this.hopAnim.t >= HOP_TIME) this.hopAnim = null; }
     if (this.tongue) { this.tongue.t += dt; if (this.tongue.t >= TONGUE_TIME) this.tongue = null; }
     if (this.invuln > 0) this.invuln = Math.max(0, this.invuln - dt);
+    for (const k of Object.keys(this.powers)) if (this.powers[k] > 0) this.powers[k] = Math.max(0, this.powers[k] - dt);
   }
 }

@@ -7,8 +7,8 @@ function cellOf(e) {
   return { col: Math.floor(e.x), row: Math.floor(e.y) };
 }
 
-// Returns one of: 'none' | 'eat' | 'food' | 'damage' | 'squash' | 'push'
-// ctx: { tongueCells: [{col,row}] | null, invulnerable: bool, kaiju: bool }
+// Returns one of: 'none' | 'eat' | 'food' | 'power' | 'burn' | 'damage' | 'squash' | 'push'
+// ctx: { tongueCells: [{col,row}] | null, invulnerable: bool, kaiju: bool, fire: bool }
 export function resolve(frog, entity, ctx = {}) {
   const kaiju = !!ctx.kaiju;
   const invuln = !!ctx.invulnerable;
@@ -16,19 +16,22 @@ export function resolve(frog, entity, ctx = {}) {
   const eb = entity.bounds();
   const tongueHit = ctx.tongueCells?.some(c => overlaps({ x: c.col, y: c.row, w: 1, h: 1 }, eb));
 
-  if (entity.type === 'explosive' || entity.type === 'food') {
+  if (entity.type === 'explosive' || entity.type === 'food' || entity.type === 'power') {
     if (!overlaps(fb, eb) && !tongueHit) return 'none';
-    return entity.type === 'explosive' ? 'eat' : 'food';
+    if (entity.type === 'explosive') return 'eat';
+    return entity.type === 'power' ? 'power' : 'food';
   }
 
   if ('explosive' in entity && 'vx' in entity) {      // projectile
     if (entity.explosive && tongueHit) return 'eat';
+    if (ctx.fire && tongueHit) return 'burn';
     if (!entity.dangerous) return 'none';
     if (!overlaps(fb, eb)) return 'none';
     return invuln ? 'none' : 'damage';
   }
 
   // mover
+  if (ctx.fire && tongueHit) return 'burn';
   if (!overlaps(fb, eb)) return 'none';
   if (entity.push) return 'push';
   if (kaiju) {

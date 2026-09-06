@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { Frog, HOP_TIME, INVULN_TIME } from '../entities/frog.js';
+import { Frog, HOP_TIME, INVULN_TIME, FIRE_REACH } from '../entities/frog.js';
 import { Grid } from '../core/grid.js';
 
 const grid = new Grid();
@@ -27,7 +27,7 @@ test('eat caps the fuse at 5', () => {
   assert.ok(f.fuseFull);
 });
 test('act 1 hit costs a life and resets position, keeps fuse', () => {
-  const f = new Frog();
+  const f = new Frog({ lives: 3 });
   f.hop('up', grid); f.update(1); f.eat();
   assert.equal(f.takeHit(), 'reset');
   assert.equal(f.lives, 2); assert.equal(f.row, 14); assert.equal(f.fuse, 1);
@@ -69,4 +69,55 @@ test('reachedGoal only when landed on row 0', () => {
   assert.equal(f.reachedGoal(), false);
   f.update(HOP_TIME);
   assert.equal(f.reachedGoal(), true);
+});
+
+test('a fresh frog starts with five lives', () => {
+  assert.equal(new Frog().lives, 5);
+});
+test('battle damage soaks three hits before lives are touched', () => {
+  const f = new Frog({ lives: 3 });
+  assert.equal(f.gainPower('armor'), 'armor');
+  assert.equal(f.shield, 3);
+  for (let i = 0; i < 3; i++) {
+    assert.equal(f.takeHit(), 'shielded');
+    f.update(INVULN_TIME);
+  }
+  assert.equal(f.shield, 0);
+  assert.equal(f.takeHit(), 'reset', 'fourth hit finally costs a life');
+  assert.equal(f.lives, 2);
+});
+test('extra life adds a life in act 1 and a heart in act 2', () => {
+  const a = new Frog({ lives: 3 });
+  a.gainPower('life');
+  assert.equal(a.lives, 4);
+  const k = new Frog({ sizeClass: 6, hearts: 3 });
+  k.gainPower('life');
+  assert.equal(k.hearts, 4);
+});
+test('invulnerability and freeze run on timers and expire', () => {
+  const f = new Frog();
+  f.gainPower('invuln');
+  assert.ok(f.hasPower('invuln'));
+  assert.equal(f.takeHit(), 'none', 'untouchable while it lasts');
+  f.gainPower('freeze');
+  assert.ok(f.frozen);
+  f.update(6);
+  assert.equal(f.frozen, false, 'freeze is the shorter power');
+  f.update(4);
+  assert.equal(f.hasPower('invuln'), false);
+});
+test('fire breath doubles the tongue reach', () => {
+  const f = new Frog({ col: 6, row: 10 });
+  assert.equal(f.startTongue('up').cells.length, 2);
+  f.update(1);
+  f.gainPower('fire');
+  assert.equal(f.startTongue('up').cells.length, FIRE_REACH);
+});
+test('activePower reports the running power, falling back to armor', () => {
+  const f = new Frog();
+  assert.equal(f.activePower(), null);
+  f.gainPower('armor');
+  assert.deepEqual(f.activePower(), { name: 'armor', hits: 3 });
+  f.gainPower('fire');
+  assert.equal(f.activePower().name, 'fire');
 });

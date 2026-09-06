@@ -66,3 +66,23 @@ test('telegraphed strikes are harmless until they fire', () => {
   hand.update(0.5, { grid: { cols: 13, rows: 15 } });
   assert.equal(hand.alive, false);
 });
+
+test('power pickups are collected on contact and by tongue', () => {
+  const f = frogAt(3, 5);
+  assert.equal(resolve(f, new Pickup({ kind: 'pw_fire', col: 3, row: 5 })), 'power');
+  const t = f.startTongue('up');
+  assert.equal(resolve(f, new Pickup({ kind: 'pw_life', col: 3, row: 3 }), { tongueCells: t.cells }), 'power');
+});
+test('fire breath burns whatever the tongue reaches, explosives still feed the fuse', () => {
+  const f = frogAt(3, 5, 6);
+  const t = f.startTongue('up');
+  const ctx = { tongueCells: t.cells, kaiju: true, fire: true };
+  assert.equal(resolve(f, moverOn('jet', 3, 3), ctx), 'burn', 'burns an air mover out of reach of a squash');
+  assert.equal(resolve(f, new Projectile({ kind: 'bullet', x: 3.5, y: 3.5, vx: 1 }), ctx), 'burn');
+  assert.equal(resolve(f, new Projectile({ kind: 'missile', x: 3.5, y: 3.5, vy: 1 }), ctx), 'eat');
+});
+test('without fire the tongue does not burn', () => {
+  const f = frogAt(3, 5, 6);
+  const t = f.startTongue('up');
+  assert.equal(resolve(f, moverOn('jet', 3, 3), { tongueCells: t.cells, kaiju: true }), 'none');
+});

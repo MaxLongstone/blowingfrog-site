@@ -4,7 +4,7 @@ export class Pickup {
   constructor({ kind, col, row }) {
     const def = PICKUPS[kind];
     if (!def) throw new Error(`unknown pickup ${kind}`);
-    this.kind = kind; this.type = def.type;
+    this.kind = kind; this.type = def.type; this.power = def.power || null;
     this.col = col; this.row = row;
     this.alive = true;
     this.age = 0;

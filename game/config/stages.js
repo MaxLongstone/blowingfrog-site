@@ -30,7 +30,16 @@ export const MOVERS = {
   alienship: { w: 1.8, h: 0.9, air: true, drops: 'nuke' },
 };
 
-// Pickup kinds. explosive = counts toward the fuse. food = points only.
+// Power-ups. duration is in seconds; armor and life apply instantly instead.
+export const POWERS = {
+  invuln: { label: 'UNTOUCHABLE',   duration: 7, color: 0x7fc7e8, blurb: 'Nothing can touch you' },
+  freeze: { label: 'TIME FROZEN',   duration: 5, color: 0x9fd8ff, blurb: 'Everything stops' },
+  fire:   { label: 'FIRE BREATH',   duration: 9, color: 0xf08a24, blurb: 'Your tongue burns what it touches' },
+  armor:  { label: 'BATTLE DAMAGE', hits: 3,     color: 0xc0c4cc, blurb: 'Soak three hits' },
+  life:   { label: 'EXTRA LIFE',    color: 0xe23c2f, blurb: 'One more go' },
+};
+
+// Pickup kinds. explosive = counts toward the fuse. food = points only. power = upgrade.
 export const PICKUPS = {
   dynamite:   { type: 'explosive' }, mine:      { type: 'explosive' },
   tanker:     { type: 'explosive' }, gasstation:{ type: 'explosive' },
@@ -38,6 +47,11 @@ export const PICKUPS = {
   volcano:    { type: 'explosive' }, sub:       { type: 'explosive' },
   oilrig:     { type: 'explosive' }, nukesilo:  { type: 'explosive' },
   food:       { type: 'food' },
+  pw_invuln:  { type: 'power', power: 'invuln' },
+  pw_freeze:  { type: 'power', power: 'freeze' },
+  pw_fire:    { type: 'power', power: 'fire' },
+  pw_armor:   { type: 'power', power: 'armor' },
+  pw_life:    { type: 'power', power: 'life' },
 };
 
 // Projectile kinds. explosive = edible via tongue. from: top | side | above.
@@ -65,7 +79,7 @@ const lane = (row, movers, o = {}) => ({
 export const STAGES = [
   {
     id: '1', act: 1, sizeClass: 1, bg: 'highway', name: 'Rush Hour 2028', subtitle: 'Eat 5. Cross. Boom.',
-    hearts: 3, lives: 3,
+    hearts: 3, lives: 5,
     lanes: [
       lane(13, ['robotaxi'], { speed: 1.5, gap: 3.77 }), lane(12, ['robotaxi', 'foodtruck'], { speed: 1.4, gap: 4.35 }),
       lane(11, ['robotaxi'], { speed: 1.7, gap: 3.48 }), safe(10),
@@ -77,11 +91,18 @@ export const STAGES = [
       lane(1, ['robotaxi'], { speed: 2.0, gap: 2.9 }),
     ],
     pickups: { explosive: ['dynamite', 'mine'], count: 7 },
+    powers: { pool: ['invuln', 'freeze', 'fire', 'armor', 'life'], count: 2 },
+    announce: {
+      eyebrow: 'SEASON 12 · EPISODE 1 · LIVE',
+      title: 'RUSH HOUR 2028',
+      body: 'Welcome to the show, Crawler. Four hundred billion viewers just tuned in to watch an amphibian cross a road. The premise is simple, which is lucky, because you are a frog. Eat five bombs. Reach the top. Detonate. Try to make it interesting, the ad breaks are already sold.',
+    },
+
     attacks: [],
   },
   {
     id: '2', act: 1, sizeClass: 2, bg: 'highway', name: 'Autonomous Lane', subtitle: 'Semis take two lanes. Drones dip.',
-    hearts: 3, lives: 3,
+    hearts: 3, lives: 5,
     lanes: [
       lane(13, ['robotaxi'], { speed: 1.8, gap: 3.3 }), lane(12, ['semi'], { speed: 1.5, gap: 5.1 }),
       lane(11, ['robotaxi', 'foodtruck'], { speed: 1.9, gap: 3.3 }), lane(10, ['drone'], { kind: 'air', speed: 2.2, gap: 3.6, behaviors: ['dive'] }),
@@ -93,11 +114,18 @@ export const STAGES = [
       lane(1, ['robotaxi'], { speed: 2.3, gap: 2.86 }),
     ],
     pickups: { explosive: ['dynamite', 'mine'], count: 7 },
+    powers: { pool: ['invuln', 'freeze', 'fire', 'armor', 'life'], count: 2 },
+    announce: {
+      eyebrow: 'EPISODE 2 · THE NOVELTY WEARS OFF',
+      title: 'AUTONOMOUS LANE',
+      body: 'You exploded. The audience adored it. Management has upgraded the traffic accordingly, so the lorries drive themselves now and they have opinions about you. We also let the delivery drones dip into your lane. That one was my idea.',
+    },
+
     attacks: [],
   },
   {
     id: '3', act: 1, sizeClass: 3, bg: 'highway', name: 'Frog Control', subtitle: 'The cops swerve. Everything swerves.',
-    hearts: 3, lives: 3,
+    hearts: 3, lives: 5,
     lanes: [
       lane(13, ['police', 'robotaxi'], { speed: 2.2, gap: 2.9, behaviors: ['swerve'] }), lane(12, ['semi'], { speed: 1.8, gap: 4.35 }),
       lane(11, ['robotaxi'], { speed: 2.3, gap: 2.75, behaviors: ['swerve'] }), lane(10, ['drone'], { kind: 'air', speed: 2.6, gap: 2.9, behaviors: ['dive'] }),
@@ -109,11 +137,18 @@ export const STAGES = [
       lane(1, ['police'], { speed: 2.8, gap: 2.61, behaviors: ['swerve'] }),
     ],
     pickups: { explosive: ['dynamite', 'mine'], count: 7 },
+    powers: { pool: ['invuln', 'freeze', 'fire', 'armor', 'life'], count: 2 },
+    announce: {
+      eyebrow: 'EPISODE 3 · SPONSORED SEGMENT',
+      title: 'FROG CONTROL',
+      body: 'Local authorities have formally declared you a public menace, which is wonderful for the numbers. They will now swerve into you on purpose. Legal has asked me to note that this is entirely lawful and also extremely funny.',
+    },
+
     attacks: [],
   },
   {
     id: '4', act: 1, sizeClass: 4, bg: 'highway', name: 'They Hunt Now', subtitle: 'Trucks boost. Drones dive. Good luck.',
-    hearts: 3, lives: 3,
+    hearts: 3, lives: 5,
     lanes: [
       lane(13, ['police', 'robotaxi'], { speed: 2.6, gap: 2.7, behaviors: ['swerve'] }), lane(12, ['semi', 'foodtruck'], { speed: 2.2, gap: 3.6, behaviors: ['boost'] }),
       lane(11, ['drone'], { kind: 'air', speed: 3.0, gap: 2.55, behaviors: ['dive'] }), lane(10, ['robotaxi', 'police'], { speed: 2.8, gap: 2.55, behaviors: ['swerve'] }),
@@ -124,11 +159,18 @@ export const STAGES = [
       lane(2, ['foodtruck'], { speed: 2.4, gap: 3.3, behaviors: ['boost'] }), lane(1, ['police', 'robotaxi'], { speed: 3.3, gap: 2.4, behaviors: ['swerve'] }),
     ],
     pickups: { explosive: ['dynamite', 'mine'], count: 7 },
+    powers: { pool: ['invuln', 'freeze', 'fire', 'armor', 'life'], count: 3 },
+    announce: {
+      eyebrow: 'EPISODE 4 · NO MORE COMMUTING',
+      title: 'THEY HUNT NOW',
+      body: 'The traffic has stopped commuting and started hunting. Trucks accelerate when they see you. Drones dive. Somewhere a very stupid man has bet his house on you dying in this exact lane. Prove him right or don\'t, I am paid either way.',
+    },
+
     attacks: [],
   },
   {
     id: 'K1', act: 2, sizeClass: 5, bg: 'highway', name: 'KAIJU I: Rampage', subtitle: 'You are bigger than the cars now.',
-    hearts: 3, lives: 3,
+    hearts: 3, lives: 5,
     lanes: [
       lane(13, ['robotaxi', 'police'], { speed: 2.4, gap: 2.17, behaviors: ['flee'] }), lane(12, ['semi'], { speed: 2.0, gap: 3.41, behaviors: ['flee'] }),
       lane(11, ['robotaxi', 'foodtruck'], { speed: 2.4, gap: 2.33, behaviors: ['flee'] }), lane(10, ['police'], { speed: 2.8, gap: 2.48, behaviors: ['flee'] }),
@@ -139,11 +181,18 @@ export const STAGES = [
       lane(2, ['police'], { speed: 3.0, gap: 2.33, behaviors: ['flee'] }), lane(1, ['robotaxi', 'semi'], { speed: 2.6, gap: 2.17, behaviors: ['flee'] }),
     ],
     pickups: { explosive: ['tanker'], count: 7 },
+    powers: { pool: ['invuln', 'freeze', 'fire', 'armor', 'life'], count: 2 },
+    announce: {
+      eyebrow: 'MID-SEASON TURN · CONTAINMENT FAILED',
+      title: 'KAIJU I: RAMPAGE',
+      body: 'Look at you. You are bigger than the cars now. Go on. Step on one. Magnificent. That screaming is roughly forty percent genuine terror and sixty percent merchandising opportunity.',
+    },
+
     attacks: [],
   },
   {
     id: 'K2', act: 2, sizeClass: 6, bg: 'city', name: 'KAIJU II: Downtown', subtitle: 'Now they have air support.',
-    hearts: 3, lives: 3,
+    hearts: 3, lives: 5,
     lanes: [
       lane(13, ['tank', 'tubeman'], { speed: 1.8, gap: 2.7, behaviors: ['flee'] }), lane(12, ['heli'], { kind: 'air', speed: 2.6, gap: 3.6, behaviors: ['hover'] }),
       lane(11, ['swattervan'], { speed: 2.4, gap: 3.9, behaviors: ['hunt'] }), lane(10, ['tubeman', 'tubeman'], { speed: 1.6, gap: 2.1, behaviors: ['flee'] }),
@@ -154,6 +203,13 @@ export const STAGES = [
       lane(2, ['tubeman', 'tubeman'], { speed: 1.4, gap: 1.8 }), lane(1, ['tank', 'swattervan'], { speed: 2.4, gap: 2.7, behaviors: ['hunt'] }),
     ],
     pickups: { explosive: ['gasstation', 'propane'], count: 6 },
+    powers: { pool: ['invuln', 'freeze', 'fire', 'armor', 'life'], count: 3 },
+    announce: {
+      eyebrow: 'EPISODE 6 · THEY CALLED THE ARMY',
+      title: 'KAIJU II: DOWNTOWN',
+      body: 'They have deployed the military, which is adorable. Helicopters, jets, tanks, and a van with a novelty fly swatter bolted to the roof. Reminder, Crawler: anything that explodes is food. They are catering your ascent and they have not worked it out yet.',
+    },
+
     attacks: [
       { kind: 'missile', from: 'top', every: 3.6 },
       { kind: 'bullet', from: 'side', every: 3.0 },
@@ -161,7 +217,7 @@ export const STAGES = [
   },
   {
     id: 'K3', act: 2, sizeClass: 7, bg: 'continent', name: 'KAIJU III: The Continent', subtitle: 'Someone brought a fork.',
-    hearts: 3, lives: 3,
+    hearts: 3, lives: 5,
     lanes: [
       lane(13, ['tank', 'tank'], { speed: 2.2, gap: 2.48, behaviors: ['flee'] }), lane(12, ['bomber'], { kind: 'air', speed: 2.4, gap: 4.65 }),
       lane(11, ['chef'], { speed: 2.0, gap: 5.27, behaviors: ['hunt'] }), lane(10, ['heron'], { kind: 'air', speed: 3.4, gap: 4.03, behaviors: ['swoop'] }),
@@ -172,6 +228,13 @@ export const STAGES = [
       lane(2, ['jet'], { kind: 'air', speed: 5.0, gap: 2.79 }), lane(1, ['chef'], { speed: 2.4, gap: 4.65, behaviors: ['hunt'] }),
     ],
     pickups: { explosive: ['silo', 'volcano'], count: 6 },
+    powers: { pool: ['invuln', 'freeze', 'fire', 'armor', 'life'], count: 3 },
+    announce: {
+      eyebrow: 'EPISODE 7 · CONTINENTAL BREAKFAST',
+      title: 'KAIJU III: THE CONTINENT',
+      body: 'You have outgrown the city, so we got you a continent. Note the heron, the government mech disguised as a housefly, and the eleven-metre French chef with cutlery. He is contractually obligated to try. He will fail. Do not eat the fork.',
+    },
+
     attacks: [
       { kind: 'cruise', from: 'side', every: 3.2 },
       { kind: 'fork', from: 'top', every: 4.0 },
@@ -180,7 +243,7 @@ export const STAGES = [
   },
   {
     id: 'K4', act: 2, sizeClass: 8, bg: 'ocean', name: 'KAIJU IV: The Ocean', subtitle: 'The weather has opinions.',
-    hearts: 3, lives: 3,
+    hearts: 3, lives: 5,
     lanes: [
       lane(13, ['carrier'], { kind: 'water', speed: 1.8, gap: 4.96, behaviors: ['flee'] }), lane(12, ['duck', 'duck'], { kind: 'water', speed: 2.4, gap: 2.79, behaviors: ['flee'] }),
       lane(11, ['kraken'], { kind: 'water', speed: 1.6, gap: 5.58, behaviors: ['hunt'] }), lane(10, ['hurricane'], { kind: 'air', speed: 2.2, gap: 5.27 }),
@@ -191,6 +254,13 @@ export const STAGES = [
       lane(2, ['jet'], { kind: 'air', speed: 5.4, gap: 2.48 }), lane(1, ['carrier'], { kind: 'water', speed: 2.2, gap: 4.34, behaviors: ['flee'] }),
     ],
     pickups: { explosive: ['sub', 'oilrig'], count: 6 },
+    powers: { pool: ['invuln', 'freeze', 'fire', 'armor', 'life'], count: 3 },
+    announce: {
+      eyebrow: 'EPISODE 8 · BROUGHT TO YOU BY BATH TIME',
+      title: 'KAIJU IV: THE OCEAN',
+      body: 'An ocean, a kraken, a hurricane with a face, and the Statue of Liberty, who has waded out here personally to fight you. This segment is sponsored by a rubber duck conglomerate whose battleship is somewhere in the shipping lane. No, we don\'t know why either.',
+    },
+
     attacks: [
       { kind: 'torpedo', from: 'side', every: 2.9 },
       { kind: 'strafe', from: 'top', every: 2.6 },
@@ -199,7 +269,7 @@ export const STAGES = [
   },
   {
     id: 'K5', act: 2, sizeClass: 9, bg: 'orbit', name: 'KAIJU V: Orbit', subtitle: 'Everyone is here to stop you. Everyone.',
-    hearts: 3, lives: 3,
+    hearts: 3, lives: 5,
     lanes: [
       lane(13, ['station'], { kind: 'air', speed: 3.0, gap: 4.8, behaviors: ['hunt'] }), lane(12, ['alienship', 'alienship'], { kind: 'air', speed: 2.6, gap: 3.2 }),
       lane(11, ['moon'], { kind: 'air', speed: 2.4, gap: 6.4 }), lane(10, ['alienship'], { kind: 'air', speed: 2.8, gap: 3.52 }),
@@ -210,6 +280,13 @@ export const STAGES = [
       lane(2, ['station', 'station'], { kind: 'air', speed: 3.6, gap: 3.52, behaviors: ['hunt'] }), lane(1, ['moon', 'alienship'], { kind: 'air', speed: 3.4, gap: 3.84 }),
     ],
     pickups: { explosive: ['nukesilo'], count: 5 },
+    powers: { pool: ['invuln', 'freeze', 'fire', 'armor', 'life'], count: 3 },
+    announce: {
+      eyebrow: 'SEASON FINALE · EVERYTHING WE HAVE LEFT',
+      title: 'KAIJU V: ORBIT',
+      body: 'Final round. Every nuclear weapon on Earth is currently airborne and aimed at you, which is convenient, because you eat those. There is also an alien fleet here to stop you, since they wanted this planet first. Somebody is going to throw the Moon. Chew with your mouth open, Crawler. The galaxy is watching.',
+    },
+
     attacks: [
       { kind: 'nuke', from: 'top', every: 2.9 },
       { kind: 'laser', from: 'above', every: 3.4 },
@@ -239,6 +316,10 @@ export function validateStage(s) {
   }
   if (!s.pickups || !s.pickups.explosive.length || !(s.pickups.count >= FUSE_TARGET)) fail('need at least 5 explosive pickups');
   for (const p of s.pickups.explosive) if (!PICKUPS[p] || PICKUPS[p].type !== 'explosive') fail(`bad explosive pickup ${p}`);
+  if (!s.powers || !Array.isArray(s.powers.pool) || !s.powers.pool.length) fail('missing power pool');
+  for (const w of s.powers.pool) if (!POWERS[w]) fail(`unknown power ${w}`);
+  if (!(s.powers.count >= 1)) fail('power count must be at least 1');
+  if (!s.announce || !s.announce.title || !s.announce.body) fail('missing announcer copy');
   for (const a of s.attacks) {
     if (!PROJECTILES[a.kind]) fail(`unknown projectile ${a.kind}`);
     if (!['top', 'side', 'above'].includes(a.from)) fail(`bad attack origin ${a.from}`);
