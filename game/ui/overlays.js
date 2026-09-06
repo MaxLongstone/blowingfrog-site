@@ -23,7 +23,7 @@ export class Overlays {
     const btn = el('button', 'bf-btn', 'BEGIN THE SHOW');
     btn.onclick = onStart;
     this._show([
-      el('div', 'bf-eyebrow', 'CONTESTANT REGISTRATION · NON-REFUNDABLE'),
+      el('div', 'bf-eyebrow', 'SWAMP BITCH REGISTRATION · NON-REFUNDABLE'),
       el('h1', 'bf-title', 'FROG<span>POCALYPSE</span>'),
       el('p', 'bf-body', 'You are a frog. You cross a road. You eat five bombs and explode, and each time you come back larger, until you are the size of the planet and the planet is the problem.'),
       el('div', 'bf-keys', '<b>← ↑ ↓ →</b> to hop &nbsp;·&nbsp; <b>SHIFT</b> to snap your tongue &nbsp;·&nbsp; on mobile, swipe to hop and tap to snap'),
@@ -39,7 +39,7 @@ export class Overlays {
     this._show([
       el('div', 'bf-eyebrow', 'ACHIEVEMENT: TECHNICALLY ALIVE'),
       el('h2', 'bf-title small', 'NO BOOM, NO GLORY'),
-      el('p', 'bf-body', `You crossed with ${fuse} of 5. You did not explode. Do you know what an audience does when the frog fails to explode, Crawler? They change the channel. Get back in there and eat properly.`),
+      el('p', 'bf-body', `You crossed with ${fuse} of 5. You did not explode. Do you know what an audience does when the frog fails to explode, you damp little disappointment? They change the channel. Get back in there and eat properly.`),
       btn,
     ], 'hungry');
   }
@@ -65,7 +65,7 @@ export class Overlays {
     this._show([
       el('div', 'bf-eyebrow', 'ACHIEVEMENT: ROADKILL'),
       el('h2', 'bf-title small', 'AND THAT IS THE EPISODE'),
-      el('p', 'bf-body', `Flattened on ${stageName}. Four hundred billion viewers are already forgetting your name, and frankly so am I. Reward? Corpses don't get rewards. Season pass holders may retry immediately.`),
+      el('p', 'bf-body', `Flattened on ${stageName}. Four hundred billion viewers are already forgetting your name, and frankly so am I. Reward? Dead frogs don't get rewards. Season pass holders may retry immediately.`),
       el('div', 'bf-scoreline', `SCORE ${String(score).padStart(6, '0')}<br><span>BEST ${String(best).padStart(6, '0')}</span>`),
       retry, home,
     ], 'over');
