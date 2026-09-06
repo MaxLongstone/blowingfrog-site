@@ -17,6 +17,10 @@ export const CHACO = {
       body: 'Somebody ran the entire nineteen nineties through a centrifuge and this is what settled at the bottom. Daytime television screaming at itself. A president and his hot sauce. And that one sweaty year when the two most beautiful men alive decided vampirism was a love language and an entire generation quietly agreed. Twilight has nothing on this. Twilight was written by people who had never met one on a bad night in Miami.',
     },
     {
+      heading: 'A NOTE FROM COMPLIANCE',
+      body: 'Before we go on, the network is obliged to inform you that everything you are about to watch is cultural appropriation. We took a Puerto Rican farm rumour, bolted it onto a Miami cartel fantasy that was already a Hollywood invention, put the result in a linen suit and taught it to box. This is the Jack Skellington school of research. We saw a thing we did not understand, we loved it instantly, and we have made it significantly worse.\n\nWe await the complaint. I would genuinely pay to watch that press conference: a person standing up in public to say the narco is theirs, that the whole blood-soaked costume is family property and we have no right to it.\n\nNobody is coming. Nobody has ever queued up to claim this one. So to the three of you already drafting the post: he is yours. Take him. Frame him. Put him on the fucking mantelpiece. That he belongs to no one is the entire point of him.',
+    },
+    {
       heading: 'THE TRUTH WAS OUT THERE. IT IS IN HERE NOW.',
       body: 'He is what happens when Mulder and Scully stop arguing for one night. Every satellite dish in the hemisphere swung toward the same rumour at the same moment, and something crawled up the signal. The truth was out there. The truth is in a chain-link ring behind a warehouse, doing lines off a belt he did not win.',
     },
@@ -27,7 +31,7 @@ export const CHACO = {
     },
     {
       heading: 'ANYWAY',
-      body: 'He is going to try to do that to you. He is undefeated in eleven fights, nine of which were against livestock. His mouth is the only soft thing on him, so it is the only way in, which is unfortunate, because it is also how he takes your bombs.\n\nWatch the chains. When they swing, he has already decided.',
+      body: 'He is going to try to do that to you. Undefeated in eleven fights, nine of which were against livestock. He will not be removing the jacket. He has never removed the jacket. Two of those eleven opponents went down without him creasing it.\n\nHis mouth is the only soft thing on him, so it is the only way in, which is unfortunate, because it is also how he takes your bombs. Watch the chains. When they swing, he has already decided.',
     },
   ],
 

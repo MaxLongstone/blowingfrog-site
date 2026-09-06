@@ -276,9 +276,11 @@ These three sheets are **side-on character art**, not top-down, so they use a di
 direction block from sheets A to H. Keep Chaco identical across all twelve of his poses: that
 consistency is what sells a boxing fight.
 
-**Chaco, in one line, to reuse in every cell:** a gaunt leathery chupacabra boxer, grey-green
-hide, bony dorsal spines down his back, red eyes, an oversized fanged jaw, heavy gold chains,
-one gold fang, gold-trimmed black boxing trunks and red hand wraps.
+**Chaco, in one line, to reuse in every cell:** a gaunt leathery chupacabra in a cream white
+linen suit worn over a bare grey-green chest, bony dorsal spines pushing through the back of the
+jacket, red eyes behind gold aviator sunglasses, an oversized fanged jaw with one gold fang, heavy
+gold chains and rings, white loafers with no socks, and hands wrapped in red boxing tape over the
+linen cuffs. He never takes the jacket off, and it gets progressively destroyed across the poses.
 
 ### Sheet I — Chaco, the fight
 
@@ -295,22 +297,30 @@ view, soft 3D felt and clay render, matte fabric texture, thick dark charcoal ou
 light from the upper left, chunky cartoon proportions, muted palette with saturated gold accents,
 no cast shadow, no ground plane, no background scenery.
 
-The same character in all nine cells: a gaunt leathery chupacabra boxer, grey-green hide, bony
-dorsal spines down his back, red eyes, an oversized fanged jaw, heavy gold chains, one gold fang,
-gold-trimmed black boxing trunks and red hand wraps.
+The same character in all nine cells: a gaunt leathery chupacabra in a cream white linen suit worn
+over a bare grey-green chest, bony dorsal spines pushing through the back of the jacket, red eyes
+behind gold aviator sunglasses, an oversized fanged jaw with one gold fang, heavy gold chains and
+rings, white loafers with no socks, hands wrapped in red boxing tape over the linen cuffs. He is a
+Miami cartel boss who has not changed clothes to fight. The suit gets worse as the poses go on.
 
 The nine poses, left to right, top row first:
-1. standing in a boxing guard, both fists raised, weight on the back foot, sneering and confident
-2. winding up a jab, his left shoulder dipped low, weight shifting forward, clearly telegraphing
-3. throwing a straight jab, left arm fully extended toward the viewer, snarling
-4. winding up a haymaker, stepped back with his right arm cocked far behind him, gold chains
-   swung out wide, red eyes flaring
-5. throwing the haymaker, right arm swung all the way across in a huge hook, body twisted through
-6. lunging forward with his jaw open impossibly wide, fangs bared, long tongue out, arms spread
-7. stunned and dazed, arms hanging loose, head lolling, eyes crossed, knees buckling
+1. standing in a lazy boxing guard, taped fists half raised, a fat cigar clamped in his fangs,
+   suit immaculate, utterly unbothered
+2. winding up a jab, left shoulder dipped low, the linen jacket falling open across his chest,
+   clearly telegraphing
+3. throwing a straight jab, left arm fully extended toward the viewer, cigar ash flying, snarling
+4. winding up a haymaker, stepped back with his right arm cocked far behind him, gold chains and
+   jacket flaring out wide, red eyes blazing behind the sunglasses
+5. throwing the haymaker, right arm swung all the way across in a huge hook, body twisted through,
+   the gold sunglasses flying off and his bare red eyes showing for the first time
+6. lunging forward with his jaw open impossibly wide, fangs bared, long tongue out, linen pulled
+   tight across his shoulders, arms spread
+7. stunned and dazed, arms hanging loose, head lolling, jacket sliding off one shoulder,
+   sunglasses gone, knees buckling
 8. flinging a spray of fine white powder forward with one hand while the other pulls back from
-   his trunks
-9. knocked flat on his back, limbs splayed, chains scattered across his chest
+   inside his jacket, powder settling on the white linen
+9. knocked flat on his back, limbs splayed, the suit sweat-stained and filthy, chains across his
+   chest, cigar still smouldering beside him
 ```
 
 ### Sheet J — Chaco's finale, and the frog boxer
@@ -328,17 +338,20 @@ view, soft 3D felt and clay render, matte fabric texture, thick dark charcoal ou
 light from the upper left, chunky cartoon proportions, no cast shadow, no ground plane, no
 background scenery.
 
-Cells 1 to 3 are a gaunt leathery chupacabra boxer: grey-green hide, bony dorsal spines, red eyes,
-oversized fanged jaw, gold chains, one gold fang, gold-trimmed black trunks, red hand wraps.
+Cells 1 to 3 are a gaunt leathery chupacabra in a ruined cream white linen suit over a bare
+grey-green chest, bony dorsal spines torn through the back of the jacket, red eyes, oversized
+fanged jaw with one gold fang, heavy gold chains and rings, red boxing tape on his hands.
 Cells 4 to 9 are a small round olive-green cartoon frog with huge white bulging eyes and a cream
 belly, wearing tiny red boxing gloves that are far too big for it.
 
 The nine poses, left to right, top row first:
 1. the chupacabra with a burst bag of white powder smashed against his own face, white dust
-   billowing, eyes bloodshot and bulging, veins standing out on his neck, feral snarl
+   billowing, eyes bloodshot and bulging, veins standing out on his neck, feral snarl, the linen
+   suit now filthy with sweat and powder and his spines fully through the shredded jacket
 2. the chupacabra collapsed face-down and motionless, tongue lolling out, white powder still on
-   his snout, one arm folded under him
-3. the chupacabra swinging a gaudy gold championship belt overhead like a flail, feral and wild
+   his snout, one arm folded under him, the ruined suit soaked through
+3. the chupacabra swinging a gaudy gold championship belt overhead like a flail, feral and wild,
+   the jacket hanging off him in tatters
 4. the frog standing in a boxing guard, gloves up, small and determined
 5. the frog leaning hard to its own left, dodging, gloves still raised
 6. the frog leaning hard to its own right, dodging, gloves still raised
