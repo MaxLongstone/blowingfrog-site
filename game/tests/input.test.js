@@ -2,13 +2,17 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { keyToIntent, swipeToIntent, tapToIntent } from '../core/input.js';
 
-test('arrow and wasd keys hop', () => {
+test('arrow keys hop', () => {
   assert.deepEqual(keyToIntent('ArrowUp'), { type: 'hop', dir: 'up' });
-  assert.deepEqual(keyToIntent('w'), { type: 'hop', dir: 'up' });
-  assert.deepEqual(keyToIntent('d'), { type: 'hop', dir: 'right' });
+  assert.deepEqual(keyToIntent('ArrowRight'), { type: 'hop', dir: 'right' });
 });
-test('space is tongue in facing direction', () => {
+test('shift snaps the tongue, space still works', () => {
+  assert.deepEqual(keyToIntent('Shift'), { type: 'tongue', dir: null });
   assert.deepEqual(keyToIntent(' '), { type: 'tongue', dir: null });
+});
+test('wasd no longer hops', () => {
+  assert.equal(keyToIntent('w'), null);
+  assert.equal(keyToIntent('d'), null);
 });
 test('unknown keys are null', () => { assert.equal(keyToIntent('q'), null); });
 test('swipes map to hops, tiny moves are null', () => {

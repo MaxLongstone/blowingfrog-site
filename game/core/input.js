@@ -2,12 +2,11 @@
 //   { type: 'hop', dir }  or  { type: 'tongue', dir }   (dir may be null = "facing")
 const KEYS = {
   ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right',
-  w: 'up', s: 'down', a: 'left', d: 'right',
-  W: 'up', S: 'down', A: 'left', D: 'right',
 };
+const TONGUE_KEYS = ['Shift', ' ', 'Spacebar', 'Enter'];
 
 export function keyToIntent(key) {
-  if (key === ' ' || key === 'Spacebar' || key === 'Enter') return { type: 'tongue', dir: null };
+  if (TONGUE_KEYS.includes(key)) return { type: 'tongue', dir: null };
   const dir = KEYS[key];
   return dir ? { type: 'hop', dir } : null;
 }
