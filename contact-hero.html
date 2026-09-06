@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Hero — Blowing Frog</title>
+
+  <script>
+    /* ═══════════════════════════════════════════════════════
+       CONFIGURATION — edit these 6 lines to swap sequences
+       ═══════════════════════════════════════════════════════ */
+    var FRAME_FOLDER = 'assets/contact-hero-frames/'; // trailing slash required
+    var FRAME_PREFIX = 'ezgif-frame-';
+    var FRAME_SUFFIX = '.jpg';
+    var FRAME_COUNT  = 283;
+    var FRAME_PAD    = 3;    // zero-pad width: 001, 002 …
+    var PX_PER_FRAME = 7;    // scroll px per frame — raise for slower scrub
+    /* ═══════════════════════════════════════════════════════ */
+  </script>
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.6s ease;
+    }
+    #loader.hidden { opacity: 0; pointer-events: none; }
+    #loader-ring {
+      width: 56px; height: 56px;
+      border: 2px solid rgba(255,255,255,0.12);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.85s linear infinite;
+      margin-bottom: 20px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #loader-text { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+    #loader-pct  { font-size: 30px; font-weight: 700; margin-top: 6px; }
+
+    #hero-section { position: relative; }
+
+    #canvas-wrap {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      background: #000;
+    }
+
+    #hero-canvas { display: block; width: 100%; height: 100%; }
+
+    #hero-label {
+      position: absolute;
+      bottom: 52px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.5s;
+      white-space: nowrap;
+    }
+    #hero-label.visible { opacity: 1; }
+    #hero-eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 8px;
+    }
+    #hero-title {
+      font-size: clamp(36px, 6vw, 80px);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      line-height: 1;
+    }
+
+    #scroll-cue {
+      position: absolute;
+      bottom: 28px;
+      right: 36px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.38);
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+    #scroll-cue.visible { opacity: 1; }
+    #scroll-line {
+      width: 1px;
+      height: 32px;
+      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.38));
+      animation: pulse 1.7s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity:0.3; transform:scaleY(0.6); }
+      50%      { opacity:1;   transform:scaleY(1);   }
+    }
+
+    #below { padding: 80px 48px; max-width: 960px; margin: 0 auto; }
+  </style>
+</head>
+<body>
+
+  <div id="loader">
+    <div id="loader-ring"></div>
+    <div id="loader-text">Loading</div>
+    <div id="loader-pct">0%</div>
+  </div>
+
+  <section id="hero-section">
+    <div id="canvas-wrap">
+      <canvas id="hero-canvas"></canvas>
+      <div id="hero-label">
+        <div id="hero-eyebrow">Get In Touch</div>
+        <div id="hero-title">Let's Make<br>Something</div>
+      </div>
+      <div id="scroll-cue">
+        <span>Scroll</span>
+        <div id="scroll-line"></div>
+      </div>
+    </div>
+  </section>
+
+  <div id="below">
+    <!-- contact form goes here -->
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <script>
+    /* ── helpers ── */
+    function pad(n, w) { return String(n).padStart(w, '0'); }
+    function src(i)    { return FRAME_FOLDER + FRAME_PREFIX + pad(i + 1, FRAME_PAD) + FRAME_SUFFIX; }
+
+    /* ── canvas / DPR ── */
+    var canvas  = document.getElementById('hero-canvas');
+    var ctx     = canvas.getContext('2d');
+    var dpr     = Math.min(window.devicePixelRatio || 1, 2);
+
+    function resizeCanvas() {
+      var w = canvas.clientWidth, h = canvas.clientHeight;
+      canvas.width  = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function drawFrame(img) {
+      var cw = canvas.clientWidth, ch = canvas.clientHeight;
+      var iw = img.naturalWidth || 1920, ih = img.naturalHeight || 1080;
+      var scale = Math.max(cw / iw, ch / ih);
+      var sw = iw * scale, sh = ih * scale;
+      ctx.clearRect(0, 0, cw, ch);
+      ctx.drawImage(img, (cw - sw) / 2, (ch - sh) / 2, sw, sh);
+    }
+
+    /* ── reduced motion fallback ── */
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reducedMotion) {
+      document.getElementById('loader').classList.add('hidden');
+      var still = new Image();
+      still.src = src(0);
+      still.onload = function() {
+        requestAnimationFrame(function() {
+          resizeCanvas();
+          drawFrame(still);
+          document.getElementById('hero-label').classList.add('visible');
+        });
+      };
+      /* no ScrollTrigger, no pinned height */
+    } else {
+
+      /* ── preload all frames ── */
+      var frames  = [];
+      var loader  = document.getElementById('loader');
+      var pctEl   = document.getElementById('loader-pct');
+      var done    = 0;
+
+      function preload() {
+        return new Promise(function(resolve) {
+          for (var i = 0; i < FRAME_COUNT; i++) {
+            (function(idx) {
+              var img = new Image();
+              img.onload = img.onerror = function() {
+                frames[idx] = img;
+                done++;
+                pctEl.textContent = Math.round((done / FRAME_COUNT) * 100) + '%';
+                if (done === FRAME_COUNT) resolve();
+              };
+              img.src = src(idx);
+            })(i);
+          }
+        });
+      }
+
+      preload().then(function() {
+        /* hide loader */
+        loader.classList.add('hidden');
+        setTimeout(function() { loader.remove(); }, 700);
+
+        /* size pinned section */
+        var section = document.getElementById('hero-section');
+        section.style.height = (window.innerHeight + FRAME_COUNT * PX_PER_FRAME) + 'px';
+
+        /* init — defer one frame so canvas is fully laid out before measuring */
+        requestAnimationFrame(function() {
+          resizeCanvas();
+          drawFrame(frames[0]);
+        });
+
+        var currentFrame = 0;
+
+        window.addEventListener('resize', function() {
+          resizeCanvas();
+          drawFrame(frames[currentFrame]);
+        }, { passive: true });
+
+        setTimeout(function() {
+          document.getElementById('hero-label').classList.add('visible');
+          document.getElementById('scroll-cue').classList.add('visible');
+        }, 500);
+
+        /* ── GSAP ScrollTrigger ── */
+        gsap.registerPlugin(ScrollTrigger);
+
+        ScrollTrigger.create({
+          trigger: '#hero-section',
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 0.5,
+          onUpdate: function(self) {
+            var idx = Math.round(self.progress * (FRAME_COUNT - 1));
+            if (idx !== currentFrame && frames[idx] && frames[idx].naturalWidth) {
+              currentFrame = idx;
+              drawFrame(frames[idx]);
+            }
+          },
+          onLeave: function() {
+            document.getElementById('scroll-cue').classList.remove('visible');
+          },
+          onEnterBack: function() {
+            document.getElementById('scroll-cue').classList.add('visible');
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html>

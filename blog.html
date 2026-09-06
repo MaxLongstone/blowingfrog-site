@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — Blowing Frog Creative Agency</title>
+  <meta name="description" content="Insights on AI, visual storytelling, branding, and creative strategy from the Blowing Frog team.">
+  <meta name="keywords" content="creative agency blog, AI creative, branding tips, visual storytelling, video production, graphic design, Buenos Aires creative agency">
+  <meta property="og:title" content="Blog — Blowing Frog">
+  <meta property="og:description" content="Insights on AI, visual storytelling, branding, and creative strategy.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/png" href="assets/images/logo_blowingfrog.png">
+  <link rel="apple-touch-icon" href="assets/images/logo_blowingfrog.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;700;800;900&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Playfair+Display:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css?v=6">
+  <style>
+    .blog-hero {
+      padding: calc(var(--nav-h) + 80px) 64px 64px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .blog-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent-lt);
+      margin-bottom: 20px;
+    }
+    .blog-hero-title {
+      font-family: var(--f-display);
+      font-weight: 900;
+      font-size: clamp(52px, 8vw, 110px);
+      text-transform: uppercase;
+      line-height: 0.92;
+      letter-spacing: -0.02em;
+      margin-bottom: 28px;
+    }
+    .blog-hero-desc {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 480px;
+      line-height: 1.7;
+    }
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      padding: 0 0 120px;
+    }
+    .blog-card {
+      display: block;
+      text-decoration: none;
+      color: var(--text);
+      background: var(--bg-surface);
+      padding: 40px 36px;
+      border: 1px solid var(--border);
+      transition: background 0.3s, border-color 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .blog-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s var(--ease);
+    }
+    .blog-card:hover { background: var(--bg); border-color: var(--accent); }
+    .blog-card:hover::before { transform: scaleX(1); }
+    .blog-card-tag {
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-lt);
+      margin-bottom: 20px;
+    }
+    .blog-card-title {
+      font-family: var(--f-display);
+      font-weight: 800;
+      font-size: clamp(22px, 2.5vw, 30px);
+      text-transform: uppercase;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+    }
+    .blog-card-excerpt {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+    .blog-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .blog-card-read {
+      margin-left: auto;
+      color: var(--accent-lt);
+      font-weight: 600;
+      transition: letter-spacing 0.3s;
+    }
+    .blog-card:hover .blog-card-read { letter-spacing: 0.18em; }
+    @media (max-width: 1100px) { .blog-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 860px) {
+      .blog-hero { padding: calc(var(--nav-h) + 48px) 28px 48px; }
+      .blog-grid { grid-template-columns: 1fr; }
+      .blog-card { padding: 32px 24px; }
+    }
+  </style>
+</head>
+<body class="page-body">
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <nav class="nav scrolled" id="nav">
+    <a href="index.html" class="nav-logo" aria-label="Home">
+      <img src="assets/images/logo_blowingfrog.png" alt="Blowing Frog" class="logo-img"
+           onerror="this.outerHTML='<div class=logo-fallback>BF</div>'">
+      <span class="logo-wordmark">Blowing Frog</span>
+    </a>
+    <div class="nav-links">
+      <a href="about.html"    class="nav-link">About Us</a>
+      <a href="services.html" class="nav-link">Services</a>
+      <a href="blog.html"     class="nav-link active">Blog</a>
+      <a href="contact.html"  class="nav-link">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="search-btn" aria-label="Search">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </button>
+      <button class="nav-hamburger" id="navHamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="page-content">
+
+    <div class="blog-hero reveal">
+      <div class="blog-eyebrow">From The Swamp</div>
+      <h1 class="blog-hero-title">The<br>Blog</h1>
+      <p class="blog-hero-desc">No fluff. No filler. Just bold ideas on creativity, AI, branding, and making things that actually matter.</p>
+    </div>
+
+    <div class="blog-grid">
+
+      <a href="blog/ai-in-creative-agencies.html" class="blog-card reveal">
+        <div class="blog-card-tag">AI &amp; Creativity</div>
+        <h2 class="blog-card-title">How AI Is Changing Creative Agencies (And Why We Embrace It)</h2>
+        <p class="blog-card-excerpt">Everyone's scared. We're excited. Here's how Blowing Frog uses AI not to replace creativity—but to amplify it beyond what's humanly possible.</p>
+        <div class="blog-card-meta">
+          <span>June 2025</span>
+          <span>·</span>
+          <span>5 min read</span>
+          <span class="blog-card-read">Read →</span>
+        </div>
+      </a>
+
+      <a href="blog/visual-storytelling-for-brands.html" class="blog-card reveal reveal-d1">
+        <div class="blog-card-tag">Branding</div>
+        <h2 class="blog-card-title">Visual Storytelling: The One Thing Your Brand Can't Afford to Ignore</h2>
+        <p class="blog-card-excerpt">People don't remember logos. They remember feelings. Learn how the right visual story turns a forgettable brand into an unforgettable experience.</p>
+        <div class="blog-card-meta">
+          <span>May 2025</span>
+          <span>·</span>
+          <span>4 min read</span>
+          <span class="blog-card-read">Read →</span>
+        </div>
+      </a>
+
+      <a href="blog/signs-your-brand-needs-a-refresh.html" class="blog-card reveal reveal-d2">
+        <div class="blog-card-tag">Strategy</div>
+        <h2 class="blog-card-title">5 Signs Your Brand Needs a Creative Overhaul Right Now</h2>
+        <p class="blog-card-excerpt">Your brand is either growing or rotting—there's no middle ground. We break down the five warning signs that your visual identity is quietly killing your business.</p>
+        <div class="blog-card-meta">
+          <span>April 2025</span>
+          <span>·</span>
+          <span>6 min read</span>
+          <span class="blog-card-read">Read →</span>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="footer-cta reveal">
+      <div class="footer-cta-text">Got a <span>PROJECT</span><br><span>IN MIND?</span></div>
+      <a href="contact.html" class="cta-btn">Let's Talk →</a>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

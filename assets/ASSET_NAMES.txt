@@ -1,0 +1,47 @@
+BLOWING FROG — ASSET NAMES
+==========================
+
+── assets/videos/ ──────────────────────────────────────────
+
+slide_01_one_stop_shop.mp4
+slide_02_animation_video.mp4
+slide_03_ai_solutions.mp4
+slide_04_photography.mp4
+slide_05_music_narration.mp4
+slide_06_graphic_design.mp4
+slide_07_automation_optimization.mp4
+slide_08_web_design.mp4
+slide_09_influencer_marketing.mp4
+services_hero_couple.mp4
+
+── assets/images/ ──────────────────────────────────────────
+
+logo_blowingfrog.png
+
+about_gallery_01_glitch_portrait.jpg
+about_gallery_02_floating_castle.jpg
+about_gallery_03_collage_woman.jpg
+about_gallery_04_cat_eye.jpg
+
+team_luis_gomez_baez.jpg
+team_johanna_p.jpg
+team_rodrigo_henriquez.jpg
+team_maria_oyarzabal.jpg
+
+logo_devenup_agency.png
+logo_parleypro.png
+logo_utrada.png
+logo_us_ghost_adventures.png
+logo_lizzie_borden_house.png
+logo_sandy.png
+logo_canada_satellite.png
+logo_miami_take.png
+logo_empty_night.png
+logo_sprig_co.png
+logo_ghost_daddy.png
+logo_sandwatch.png
+logo_we_talk_tv.png
+logo_ai_foundation.png
+logo_blue_carbon.png
+logo_wonderframe.png
+logo_monday.png

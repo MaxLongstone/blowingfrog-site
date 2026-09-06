@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Media Kit — Blowing Frog</title>
+  <link rel="icon" type="image/png" href="assets/images/logo_blowingfrog.png">
+  <link rel="apple-touch-icon" href="assets/images/logo_blowingfrog.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;700;800;900&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Playfair+Display:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css?v=5">
+  <style>
+    :root {
+      --bfp-teal:     #789B95;
+      --bfp-yellow:   #F2E06E;
+      --bfp-orange:   #F0904A;
+      --bfp-ink:      #1F2B2A;
+      --bfp-cream:    #F3EFE2;
+      --bfp-red:      #C0392B;
+      --bfp-muted:    #8A9492;
+    }
+
+    .mk-hero {
+      background: var(--bfp-teal);
+      min-height: 82vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 2rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .mk-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(31,43,42,.3) 0%, transparent 65%);
+    }
+    .mk-hero-logo {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid rgba(255,255,255,.3);
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+    .mk-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--bfp-orange);
+      margin-bottom: .75rem;
+      position: relative;
+      z-index: 1;
+    }
+    .mk-hero-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(4rem, 9vw, 8rem);
+      line-height: .92;
+      text-transform: uppercase;
+      color: var(--bfp-ink);
+      letter-spacing: -.01em;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    .mk-hero-title span { color: var(--bfp-cream); }
+    .mk-hero-sub {
+      font-family: 'Barlow', sans-serif;
+      font-size: 1rem;
+      color: rgba(31,43,42,.7);
+      max-width: 460px;
+      line-height: 1.65;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 2rem;
+    }
+    .mk-hero-handle {
+      display: inline-block;
+      padding: .6rem 1.4rem;
+      background: var(--bfp-ink);
+      color: var(--bfp-cream);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: .85rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      position: relative;
+      z-index: 1;
+      transition: background .2s;
+    }
+    .mk-hero-handle:hover { background: var(--bfp-orange); }
+
+    .mk-stats-section {
+      background: var(--bfp-ink);
+      padding: 4rem 2rem;
+    }
+    .mk-section-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--bfp-muted);
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .mk-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      max-width: 860px;
+      margin: 0 auto;
+      gap: 1px;
+      background: rgba(138,148,146,.18);
+    }
+    .mk-stat-card {
+      background: var(--bfp-ink);
+      padding: 2.75rem 1.5rem;
+      text-align: center;
+    }
+    .mk-stat-number {
+      display: block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      line-height: 1;
+      color: var(--bfp-yellow);
+      margin-bottom: .5rem;
+    }
+    .mk-stat-label {
+      font-family: 'Barlow', sans-serif;
+      font-size: .72rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--bfp-muted);
+    }
+
+    .mk-pitch-section {
+      background: var(--bfp-cream);
+      padding: 5.5rem 2rem;
+    }
+    .mk-pitch-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .mk-pitch-logo { width: 100%; border-radius: 10px; }
+    .mk-pitch-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--bfp-orange);
+      margin-bottom: .75rem;
+    }
+    .mk-pitch-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 2.75rem;
+      line-height: 1.02;
+      text-transform: uppercase;
+      color: var(--bfp-ink);
+      margin-bottom: 1.25rem;
+    }
+    .mk-pitch-body {
+      font-family: 'Barlow', sans-serif;
+      font-size: .93rem;
+      line-height: 1.75;
+      color: rgba(31,43,42,.72);
+    }
+
+    .mk-rates-section {
+      background: var(--bfp-ink);
+      padding: 5.5rem 2rem;
+    }
+    .mk-rates-header {
+      max-width: 800px;
+      margin: 0 auto 2.5rem;
+    }
+    .mk-rates-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      text-transform: uppercase;
+      color: var(--bfp-cream);
+      line-height: .95;
+    }
+    .mk-rate-table {
+      max-width: 800px;
+      margin: 0 auto;
+      border: 1px solid rgba(138,148,146,.18);
+    }
+    .mk-rate-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 1.5rem;
+      border-bottom: 1px solid rgba(138,148,146,.12);
+      gap: 1.5rem;
+    }
+    .mk-rate-row:last-child { border-bottom: none; }
+    .mk-rate-row--featured { background: var(--bfp-orange); }
+    .mk-rate-name {
+      font-family: 'Barlow', sans-serif;
+      font-size: .93rem;
+      color: var(--bfp-cream);
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      flex-wrap: wrap;
+    }
+    .mk-rate-row--featured .mk-rate-name { color: var(--bfp-ink); font-weight: 600; }
+    .mk-rate-badge {
+      display: inline-block;
+      padding: .18rem .5rem;
+      background: var(--bfp-ink);
+      color: var(--bfp-cream);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 9px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      border-radius: 2px;
+    }
+    .mk-rate-price {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 1.45rem;
+      color: var(--bfp-yellow);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .mk-rate-row--featured .mk-rate-price { color: var(--bfp-ink); }
+
+    .mk-nope-section {
+      background: #111c1b;
+      border-top: 1px solid rgba(138,148,146,.15);
+      padding: 5rem 2rem;
+    }
+    .mk-nope-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .mk-nope-heading {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: 2.25rem;
+      text-transform: uppercase;
+      color: var(--bfp-cream);
+      line-height: 1.05;
+    }
+    .mk-nope-heading span { color: var(--bfp-red); }
+    .mk-nope-list {
+      list-style: none;
+      margin: 0; padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: .85rem;
+    }
+    .mk-nope-list li {
+      font-family: 'Barlow', sans-serif;
+      font-size: .88rem;
+      color: var(--bfp-muted);
+      display: flex;
+      gap: .7rem;
+      align-items: flex-start;
+      line-height: 1.5;
+    }
+    .mk-nope-list li::before {
+      content: '\2715';
+      color: var(--bfp-red);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .mk-cta-section {
+      background: var(--bfp-teal);
+      padding: 5.5rem 2rem;
+      text-align: center;
+    }
+    .mk-cta-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: rgba(31,43,42,.55);
+      margin-bottom: 1rem;
+    }
+    .mk-cta-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2.75rem, 7vw, 5.5rem);
+      text-transform: uppercase;
+      line-height: .93;
+      color: var(--bfp-ink);
+      margin-bottom: 3rem;
+    }
+    .mk-cta-contacts {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+    .mk-cta-lbl {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 10px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(31,43,42,.5);
+      margin-bottom: .35rem;
+    }
+    .mk-cta-val {
+      font-family: 'Barlow', sans-serif;
+      font-size: .88rem;
+      color: var(--bfp-ink);
+    }
+    .mk-cta-val a {
+      color: var(--bfp-ink);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(31,43,42,.3);
+      transition: border-color .2s;
+    }
+    .mk-cta-val a:hover { border-bottom-color: var(--bfp-ink); }
+    .mk-cta-btn {
+      display: inline-block;
+      padding: .95rem 2.5rem;
+      background: var(--bfp-ink);
+      color: var(--bfp-cream);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: background .2s, transform .18s;
+    }
+    .mk-cta-btn:hover { background: var(--bfp-orange); transform: translateY(-2px); }
+
+    @media (max-width: 700px) {
+      .mk-stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .mk-pitch-inner,
+      .mk-nope-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .mk-pitch-logo { max-width: 120px; }
+      .mk-cta-contacts { gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body class="page-body">
+
+  <div class="cursor"     id="cursor"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav-logo" aria-label="Home">
+      <img src="assets/images/logo_blowingfrog.png" alt="Blowing Frog" class="logo-img"
+           onerror="this.outerHTML='<div class=logo-fallback>BF</div>'">
+      <span class="logo-wordmark">Blowing Frog</span>
+    </a>
+    <div class="nav-links">
+      <a href="about.html"    class="nav-link">About Us</a>
+      <a href="services.html" class="nav-link">Services</a>
+      <a href="contact.html"  class="nav-link">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="search-btn" aria-label="Search">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </button>
+      <button class="nav-hamburger" id="navHamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="page-content">
+
+    <section class="mk-hero">
+      <img src="assets/images/logo_blowingfrog.png" alt="Blowing Frog Productions" class="mk-hero-logo">
+      <div class="mk-eyebrow">Blowing Frog Productions</div>
+      <h1 class="mk-hero-title">Media<br><span>Kit</span></h1>
+      <p class="mk-hero-sub">Visual creative agency — photography, video, design, and digital content that refuses to be ignored.</p>
+      <a href="https://www.instagram.com/blowingfrog" target="_blank" rel="noopener" class="mk-hero-handle">@blowingfrog</a>
+    </section>
+
+    <section class="mk-stats-section">
+      <div class="mk-section-label">Instagram · 2026</div>
+      <div class="mk-stats-grid">
+        <div class="mk-stat-card">
+          <span class="mk-stat-number" data-target="7900"  data-format="K">0</span>
+          <span class="mk-stat-label">Followers</span>
+        </div>
+        <div class="mk-stat-card">
+          <span class="mk-stat-number" data-target="4.2"   data-format="pct">0</span>
+          <span class="mk-stat-label">Engagement Rate</span>
+        </div>
+        <div class="mk-stat-card">
+          <span class="mk-stat-number" data-target="12"    data-format="plain">0</span>
+          <span class="mk-stat-label">Posts / Month</span>
+        </div>
+        <div class="mk-stat-card">
+          <span class="mk-stat-number" data-target="3200"  data-format="K">0</span>
+          <span class="mk-stat-label">Avg. Reach</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="mk-pitch-section">
+      <div class="mk-pitch-inner">
+        <img src="assets/images/logo_blowingfrog.png" alt="Blowing Frog" class="mk-pitch-logo">
+        <div>
+          <div class="mk-pitch-eyebrow">Who We Are</div>
+          <h2 class="mk-pitch-title">Visual rebels.<br>With purpose.</h2>
+          <p class="mk-pitch-body">
+            Blowing Frog Productions is a Buenos Aires-based creative agency turning brands
+            into visual experiences. We have partnered with startups, established brands, and
+            everything in between, delivering photography, video, AI-powered content, and
+            campaigns that actually move people.<br><br>
+            Our audience follows because we do not do boring. If your brand is ready for that
+            kind of attention, let's talk.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mk-rates-section">
+      <div class="mk-rates-header">
+        <div class="mk-section-label" style="text-align:left;margin-bottom:1rem;">Collaboration Rates</div>
+        <h2 class="mk-rates-title">What it<br>costs to<br>collab.</h2>
+      </div>
+      <div class="mk-rate-table">
+        <div class="mk-rate-row">
+          <span class="mk-rate-name">Story Mention (3-frame)</span>
+          <span class="mk-rate-price">$150</span>
+        </div>
+        <div class="mk-rate-row">
+          <span class="mk-rate-name">Feed Post &mdash; Static</span>
+          <span class="mk-rate-price">$250</span>
+        </div>
+        <div class="mk-rate-row mk-rate-row--featured">
+          <span class="mk-rate-name">
+            Reel &mdash; Integrated (15&ndash;30s)
+            <span class="mk-rate-badge">Most Requested</span>
+          </span>
+          <span class="mk-rate-price">$450</span>
+        </div>
+        <div class="mk-rate-row">
+          <span class="mk-rate-name">Dedicated Reel (~60s)</span>
+          <span class="mk-rate-price">$750</span>
+        </div>
+        <div class="mk-rate-row">
+          <span class="mk-rate-name">Campaign Package (4 posts)</span>
+          <span class="mk-rate-price">$1,400</span>
+        </div>
+        <div class="mk-rate-row">
+          <span class="mk-rate-name">Brand Ambassador (Monthly)</span>
+          <span class="mk-rate-price">$2,000<small style="font-size:.65em;font-weight:400;opacity:.7;">/mo</small></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="mk-nope-section">
+      <div class="mk-nope-inner">
+        <h2 class="mk-nope-heading">What we<br><span>won&apos;t</span><br>do.</h2>
+        <ul class="mk-nope-list">
+          <li>Direct competitor promotions without prior written agreement</li>
+          <li>Political or partisan campaigns of any kind</li>
+          <li>Adult, explicit, or age-restricted content</li>
+          <li>Products we have not personally reviewed or used</li>
+          <li>Misleading or unsubstantiated health and wellness claims</li>
+          <li>Brands whose values conflict with ours</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="mk-cta-section">
+      <div class="mk-cta-eyebrow">Ready to partner?</div>
+      <h2 class="mk-cta-title">Let's make<br>something<br>bold.</h2>
+      <div class="mk-cta-contacts">
+        <div>
+          <div class="mk-cta-lbl">Email</div>
+          <div class="mk-cta-val"><a href="mailto:blowingfrog@gmail.com">blowingfrog@gmail.com</a></div>
+        </div>
+        <div>
+          <div class="mk-cta-lbl">Instagram</div>
+          <div class="mk-cta-val"><a href="https://www.instagram.com/blowingfrog" target="_blank" rel="noopener">@blowingfrog</a></div>
+        </div>
+        <div>
+          <div class="mk-cta-lbl">Web</div>
+          <div class="mk-cta-val"><a href="index.html">blowingfrog.com</a></div>
+        </div>
+        <div>
+          <div class="mk-cta-lbl">Phone</div>
+          <div class="mk-cta-val">+54 (9)11 6350 0407</div>
+        </div>
+      </div>
+      <a href="mailto:blowingfrog@gmail.com" class="mk-cta-btn">Get in touch &rarr;</a>
+    </section>
+
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    (function () {
+      function formatStat(val, fmt) {
+        if (fmt === 'K')   return (val / 1000).toFixed(1) + 'K';
+        if (fmt === 'pct') return parseFloat(val).toFixed(1) + '%';
+        return Math.round(val).toString();
+      }
+      function animateCounter(el, target, format, duration) {
+        var start = performance.now();
+        (function step(now) {
+          var t     = Math.min((now - start) / duration, 1);
+          var eased = 1 - Math.pow(1 - t, 3);
+          el.textContent = formatStat(target * eased, format);
+          if (t < 1) requestAnimationFrame(step);
+          else       el.textContent = formatStat(target, format);
+        })(start);
+      }
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var num    = entry.target.querySelector('.mk-stat-number');
+          var target = parseFloat(num.dataset.target);
+          var fmt    = num.dataset.format;
+          animateCounter(num, target, fmt, 1800);
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.4 });
+      document.querySelectorAll('.mk-stat-card').forEach(function (c) { observer.observe(c); });
+    })();
+  </script>
+</body>
+</html>

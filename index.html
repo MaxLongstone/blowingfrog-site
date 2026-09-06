@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blowing Frog — A One Stop Shop</title>
+  <link rel="icon" type="image/png" href="assets/images/logo_blowingfrog.png">
+  <link rel="apple-touch-icon" href="assets/images/logo_blowingfrog.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;700;800;900&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Playfair+Display:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css?v=5">
+</head>
+<body class="landing-page">
+
+  <!-- ═══ INTRO SPLASH ═══ -->
+  <div class="intro" id="intro">
+    <div class="intro-curtain intro-curtain--left"  id="curtainL"></div>
+    <div class="intro-curtain intro-curtain--right" id="curtainR"></div>
+    <div class="intro-logo" id="introLogo">
+      <img src="assets/images/logo_blowingfrog.png" alt="Blowing Frog">
+    </div>
+  </div>
+
+  <!-- Custom cursor -->
+  <div class="cursor"     id="cursor"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <!-- ═══ NAV ═══ -->
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav-logo" aria-label="Blowing Frog home">
+      <img src="assets/images/logo_blowingfrog.png" alt="Blowing Frog" class="logo-img"
+           onerror="this.outerHTML='<div class=logo-fallback>BF</div>'">
+      <span class="logo-wordmark">Blowing Frog</span>
+    </a>
+    <div class="nav-links">
+      <a href="about.html"    class="nav-link">About Us</a>
+      <a href="services.html" class="nav-link">Services</a>
+      <a href="contact.html"  class="nav-link">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="search-btn" aria-label="Search">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </button>
+      <button class="nav-hamburger" id="navHamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- ═══ SLIDES ═══ -->
+  <main class="slides-container" id="slidesContainer">
+    <div class="slides-track" id="slidesTrack">
+
+      <!-- 01 — A ONE STOP SHOP -->
+      <section class="slide" data-index="0">
+        <div class="slide-bg">
+          <div class="slide-bg-color"></div>
+          <!-- REPLACE: assets/videos/slide_01_one_stop_shop.mp4
+               Colorful knit/clay fantasy village, girl in pink dress walking a path -->
+          <video class="slide-video" src="assets/videos/slide_01_one_stop_shop.mp4" muted loop playsinline autoplay></video>
+          <div class="slide-overlay"></div>
+      </div>
+        <div class="slide-content">
+          <div class="slide-inner">
+            <span class="slide-eyebrow">CROAK BABY!</span>
+            <h1 class="slide-title">A ONE STOP<br>SHOP</h1>
+            <p class="slide-desc">We're Blowing Frog, a visual creative agency. Our own swamp. Our own ecosystem.<br>You name it, we have a professional for it. One stop solution for EVERYTHING you need.</p>
+            <a href="about.html" class="slide-link">
+              <span class="link-dot"></span>The people. The process. The purpose.
+            </a>
+      </div>
+      </div>
+      </section>
+
+      <!-- 02 — VIDEO -->
+      <section class="slide" data-index="1">
+        <div class="slide-bg">
+          <div class="slide-bg-color"></div>
+          <!-- REPLACE: assets/videos/slide_02_animation_video.mp4
+               Anime-style warrior woman in rain, dark cyberpunk palette -->
+          <video class="slide-video" src="assets/videos/slide_02_animation_video.mp4" muted loop playsinline></video>
+          <div class="slide-overlay"></div>
+      </div>
+        <div class="slide-content">
+          <div class="slide-inner">
+            <span class="slide-eyebrow">ANIMATION</span>
+            <h1 class="slide-title">VIDEO</h1>
+            <p class="slide-desc">Your ideas, brought to life—frame by damn frame.<br>Traditional. AI.</p>
+            <a href="services.html" class="slide-link">
+              <span class="link-dot"></span>What we do
+            </a>
+      </div>
+      </div>
+      </section>
+
+      <!-- 03 — AI SOLUTIONS -->
+      <section class="slide" data-index="2">
+        <div class="slide-bg">
+          <div class="slide-bg-color"></div>
+          <!-- REPLACE: assets/videos/slide_03_ai_solutions.mp4
+               Surreal clay/human figure rising underwater, teal-green palette -->
+          <video class="slide-video" src="assets/videos/slide_03_ai_solutions.mp4" muted loop playsinline></video>
+          <div class="slide-overlay"></div>
+      </div>
+        <div class="slide-content">
+          <div class="slide-inner">
+            <span class="slide-eyebrow">CREATIVITY</span>
+            <h1 class="slide-title">AI<br>SOLUTIONS</h1>
+            <p class="slide-desc">Smarter tools, wilder results.<br>Algorithms with attitude.</p>
+            <a href="contact.html" class="slide-link">
+              <span class="link-dot"></span>Contact Us
+            </a>
+      </div>
+      </div>
+      </section>
+
+      <!-- 04 — PHOTOGRAPHY -->
+      <section class="slide" data-index="3">
+        <div class="slide-bg">
+          <div class="slide-bg-color"></div>
+          <!-- REPLACE: assets/videos/slide_04_photography.mp4
+               Giant mechanical robot with umbrella hat holding beehive, warm orange sky -->
+          <video class="slide-video" src="assets/videos/slide_04_photography.mp4" muted loop playsinline></video>
+          <div class="slide-overlay"></div>
+      </div>
+        <div class="slide-content">
+          <div class="slide-inner">
+            <span class="slide-eyebrow">IMAGERY</span>
+            <h1 class="slide-title">PHOTOGRAPHY</h1>
+            <p class="slide-desc">Because boring photos are a crime.</p>
+            <a href="https://www.instagram.com/blowingfrog" target="_blank" rel="noopener" class="slide-link">
+              <span class="link-dot"></span>@blowingfrog
+            </a>
+      </div>
+      </div>
+      </section>
+
+      <!-- 05 — MUSIC & NARRATION -->
+      <section class="slide" data-index="4">
+        <div class="slide-bg">
+          <div class="slide-bg-color"></div>
+          <!-- REPLACE: assets/videos/slide_05_music_narration.mp4
+               Black & white close-up portrait of woman in rain, stark contrast -->
+          <video class="slide-video" src="assets/videos/slide_05_music_narration.mp4" muted loop playsinline></video>
+          <div class="slide-overlay"></div>
+      </div>
+        <div class="slide-content">
+          <div class="slide-inner">
+            <span class="slide-eyebrow">SOUND</span>
+            <h1 class="slide-title">MUSIC &<br>NARRATION</h1>
+            <p class="slide-desc">From goosebumps to head bops, we nail the sound for your projects.</p>
+            <a href="https://open.spotify.com/user/blowingfrog" target="_blank" rel="noopener" class="slide-link">
+              <span class="link-dot"></span>@blowingfrog
+            </a>
+      </div>
+      </div>
+      </section>
+
+      <!-- 06 — GRAPHIC DESIGN -->
+      <section class="slide" data-index="5">
+        <div class="slide-bg">
+          <div class="slide-bg-color"></div>
+          <!-- REPLACE: assets/videos/slide_06_graphic_design.mp4
+               Surreal bird-nest scarecrow figure in misty field, muted olive/grey -->
+          <video class="slide-video" src="assets/videos/slide_06_graphic_design.mp4" muted loop playsinline></video>
+          <div class="slide-overlay"></div>
+      </div>
+        <div class="slide-content">
+          <div class="slide-inner">
+            <span class="slide-eyebrow">BRANDING &amp; VISUALS</span>
+            <h1 class="slide-title">GRAPHIC<br>DESIGN</h1>
+            <p class="slide-desc">Make your brand a visual rebel.<br>No fluff, just WOW.</p>
+            <a href="services.html" class="slide-link">
+              <span class="link-dot"></span>What we do
+            </a>
+      </div>
+      </div>
+      </section>
+
+      <!-- 07 — AUTOMATION & OPTIMIZATION -->
+      <section class="slide" data-index="6">
+        <div class="slide-bg">
+          <div class="slide-bg-color"></div>
+          <!-- REPLACE: assets/videos/slide_07_automation_optimization.mp4
+               Person floating upside-down underwater, teal-green water, hair flowing -->
+          <video class="slide-video" src="assets/videos/slide_07_automation_optimization.mp4" muted loop playsinline></video>
+          <div class="slide-overlay"></div>
+      </div>
+        <div class="slide-content">
+          <div class="slide-inner">
+            <span class="slide-eyebrow">OPTIMIZE</span>
+            <h1 class="slide-title">AUTOMATION &amp;<br>OPTIMIZATION</h1>
+            <p class="slide-desc">Streamline your operations with cutting-edge automations. Whether it's workflow efficiency, customer engagement, or data optimization—we build tools that ribbit louder and faster.</p>
+            <a href="services.html" class="slide-link">
+              <span class="link-dot"></span>What we do
+            </a>
+      </div>
+      </div>
+      </section>
+
+      <!-- 08 — WEB DESIGN -->
+      <section class="slide" data-index="7">
+        <div class="slide-bg">
+          <div class="slide-bg-color"></div>
+          <!-- REPLACE: assets/videos/slide_08_web_design.mp4
+               Giant creature with massive antlers in deep blue fog, lone figure below -->
+          <video class="slide-video" src="assets/videos/slide_08_web_design.mp4" muted loop playsinline></video>
+          <div class="slide-overlay"></div>
+      </div>
+        <div class="slide-content">
+          <div class="slide-inner">
+            <span class="slide-eyebrow">SITES</span>
+            <h1 class="slide-title">WEB<br>DESIGN</h1>
+            <p class="slide-desc">Websites that hypnotize, mesmerize, and convert.</p>
+            <a href="services.html" class="slide-link">
+              <span class="link-dot"></span>What we do
+            </a>
+      </div>
+      </div>
+      </section>
+
+      <!-- 09 — INFLUENCER MARKETING -->
+      <section class="slide" data-index="8">
+        <div class="slide-bg">
+          <div class="slide-bg-color"></div>
+          <!-- REPLACE: assets/videos/slide_09_influencer_marketing.mp4
+               Aerial drone shot of city skyline in golden fog, warm yellow palette -->
+          <video class="slide-video" src="assets/videos/slide_09_influencer_marketing.mp4" muted loop playsinline></video>
+          <div class="slide-overlay"></div>
+      </div>
+        <div class="slide-content">
+          <div class="slide-inner">
+            <span class="slide-eyebrow">SOCIAL</span>
+            <h1 class="slide-title">INFLUENCER<br>MARKETING</h1>
+            <p class="slide-desc">Voices that amplify your message.</p>
+            <a href="services.html" class="slide-link">
+              <span class="link-dot"></span>What we do
+            </a>
+      </div>
+      </div>
+      </section>
+
+    </div><!-- /slides-track -->
+  </main>
+
+  <!-- ═══ SLIDE CONTROLS ═══ -->
+  <div class="slide-nav">
+    <button class="nav-arrow" id="navPrev" aria-label="Previous">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </button>
+    <div class="slide-counter">
+      <span class="counter-current" id="counterCurrent">01</span>
+      <div class="counter-progress"><div class="counter-bar" id="counterBar"></div></div>
+      <span class="counter-total"   id="counterTotal">09</span>
+    </div>
+    <button class="nav-arrow" id="navNext" aria-label="Next">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

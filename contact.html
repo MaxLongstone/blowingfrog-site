@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Blowing Frog</title>
+  <link rel="icon" type="image/png" href="assets/images/logo_blowingfrog.png">
+  <link rel="apple-touch-icon" href="assets/images/logo_blowingfrog.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;700;800;900&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Playfair+Display:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css?v=5">
+
+  <!-- ═══ HERO SEQUENCE CONFIG ═══ -->
+  <script>
+    var FRAME_FOLDER = 'assets/contact-hero-frames/';
+    var FRAME_PREFIX = 'ezgif-frame-';
+    var FRAME_SUFFIX = '.jpg';
+    var FRAME_COUNT  = 283;
+    var FRAME_PAD    = 3;
+    var PX_PER_FRAME = 7;
+  </script>
+  <style>
+    #ch-loader {
+      position: fixed; inset: 0; background: #000;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      z-index: 10001; transition: opacity 0.6s ease;
+    }
+    #ch-loader.hidden { opacity: 0; pointer-events: none; }
+    #ch-loader-ring {
+      width: 56px; height: 56px;
+      border: 2px solid rgba(255,255,255,0.12);
+      border-top-color: #fff; border-radius: 50%;
+      animation: ch-spin 0.85s linear infinite; margin-bottom: 20px;
+    }
+    @keyframes ch-spin { to { transform: rotate(360deg); } }
+    #ch-loader-text { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+    #ch-loader-pct  { font-size: 30px; font-weight: 700; margin-top: 6px; color: #fff; }
+    #ch-hero { position: relative; }
+    #ch-canvas-wrap {
+      position: sticky; top: 0; width: 100%; height: 100vh;
+      overflow: hidden; background: #000;
+    }
+    #ch-canvas { display: block; width: 100%; height: 100%; }
+    #ch-label {
+      position: absolute; bottom: 52px; left: 50%; transform: translateX(-50%);
+      text-align: center; pointer-events: none; opacity: 0;
+      transition: opacity 0.5s; white-space: nowrap; color: #fff;
+    }
+    #ch-label.visible { opacity: 1; }
+    #ch-eyebrow { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 8px; }
+    #ch-title { font-size: clamp(36px, 6vw, 80px); font-weight: 800; text-transform: uppercase; letter-spacing: -0.01em; line-height: 1; }
+    #ch-cue {
+      position: absolute; bottom: 28px; right: 36px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(255,255,255,0.38); opacity: 0; transition: opacity 0.5s;
+    }
+    #ch-cue.visible { opacity: 1; }
+    #ch-line {
+      width: 1px; height: 32px;
+      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.38));
+      animation: ch-pulse 1.7s ease-in-out infinite;
+    }
+    @keyframes ch-pulse {
+      0%,100% { opacity:0.3; transform:scaleY(0.6); }
+      50%      { opacity:1;   transform:scaleY(1); }
+    }
+  </style>
+</head>
+<body class="page-body">
+
+  <div class="cursor"     id="cursor"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <!-- ═══ NAV ═══ -->
+  <nav class="nav scrolled" id="nav">
+    <a href="index.html" class="nav-logo" aria-label="Home">
+      <img src="assets/images/logo_blowingfrog.png" alt="Blowing Frog" class="logo-img"
+           onerror="this.outerHTML='<div class=logo-fallback>BF</div>'">
+      <span class="logo-wordmark">Blowing Frog</span>
+    </a>
+    <div class="nav-links">
+      <a href="about.html"    class="nav-link">About Us</a>
+      <a href="services.html" class="nav-link">Services</a>
+      <a href="contact.html"  class="nav-link active">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="search-btn" aria-label="Search">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </button>
+      <button class="nav-hamburger" id="navHamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+
+  <!-- ═══ HERO SEQUENCE ═══ -->
+  <div id="ch-loader">
+    <div id="ch-loader-ring"></div>
+    <div id="ch-loader-text">Loading</div>
+    <div id="ch-loader-pct">0%</div>
+  </div>
+
+  <section id="ch-hero">
+    <div id="ch-canvas-wrap">
+      <canvas id="ch-canvas"></canvas>
+      <div id="ch-label">
+        <div id="ch-eyebrow">Get In Touch</div>
+        <div id="ch-title">Let's Make<br>Something</div>
+      </div>
+      <div id="ch-cue"><span>Scroll</span><div id="ch-line"></div></div>
+    </div>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <div class="page-content">
+
+    <!-- ═══ CONTACT FORM ═══ -->
+    <section class="contact-section">
+      <div class="contact-left reveal">
+        <div class="contact-label">Send A Request</div>
+        <h2 class="contact-title">Got A Project Or<br>A Partnership<br>In Mind?</h2>
+        <p class="contact-desc">Let's cut the noise and start something bold. Whether you're launching a brand, fixing a broken one, or just want to make something unforgettable—we're here to ribbit into action. Drop us a line, and let's create chaos with purpose.</p>
+        <div class="contact-info-cols">
+          <div>
+            <div class="contact-info-lbl">Phone:</div>
+            <div class="contact-info-val">
+              +54 (9)11 6350 0407<br>
+              +54 (9)11 3676 1401
+      </div>
+      </div>
+          <div>
+            <div class="contact-info-lbl">Email:</div>
+            <div class="contact-info-val">
+              <a href="mailto:blowingfrog@gmail.com">blowingfrog@gmail.com</a><br>
+              <a href="mailto:info@blowingfrog.com">info@blowingfrog.com</a>
+      </div>
+      </div>
+          <div>
+            <div class="contact-info-lbl">Media Kit:</div>
+            <div class="contact-info-val">
+              <a href="mediakit.html">View Media Kit &rarr;</a>
+      </div>
+      </div>
+      </div>
+      </div>
+
+      <div class="reveal reveal-d1">
+        <form class="contact-form" onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-field"><input type="text"  placeholder="Name"  required></div>
+            <div class="form-field"><input type="email" placeholder="Email" required></div>
+      </div>
+          <div class="form-field"><input type="text" placeholder="Title"></div>
+          <div class="form-field"><textarea placeholder="Message"></textarea></div>
+          <button type="submit" class="form-submit">Send</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ═══ FOOTER CTA ═══ -->
+    <div class="footer-cta reveal">
+      <div class="footer-cta-text">Got a <span>PROJECT</span><br><span>IN MIND?</span></div>
+      <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" class="cta-btn">Let's Talk →</a>
+    </div>
+
+  </div><!-- /page-content -->
+
+
+  <!-- ═══ HERO SEQUENCE JS ═══ -->
+  <script>
+    (function() {
+      function pad(n,w){ return String(n).padStart(w,'0'); }
+      function src(i){ return FRAME_FOLDER+FRAME_PREFIX+pad(i+1,FRAME_PAD)+FRAME_SUFFIX; }
+
+      var canvas  = document.getElementById('ch-canvas');
+      var ctx     = canvas.getContext('2d');
+      var dpr     = Math.min(window.devicePixelRatio||1,2);
+
+      function resizeCanvas(){
+        var w=canvas.clientWidth, h=canvas.clientHeight;
+        canvas.width=Math.round(w*dpr); canvas.height=Math.round(h*dpr);
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+      }
+      function drawFrame(img){
+        var cw=canvas.clientWidth, ch=canvas.clientHeight;
+        var iw=img.naturalWidth||1920, ih=img.naturalHeight||1080;
+        var scale=Math.max(cw/iw,ch/ih);
+        var sw=iw*scale, sh=ih*scale;
+        ctx.clearRect(0,0,cw,ch);
+        ctx.drawImage(img,(cw-sw)/2,(ch-sh)/2,sw,sh);
+      }
+
+      var frames=[], loader=document.getElementById('ch-loader'), pctEl=document.getElementById('ch-loader-pct'), done=0;
+        function preload(){
+          return new Promise(function(resolve){
+            for(var i=0;i<FRAME_COUNT;i++){
+              (function(idx){
+                var img=new Image();
+                img.onload=img.onerror=function(){
+                  frames[idx]=img; done++;
+                  pctEl.textContent=Math.round((done/FRAME_COUNT)*100)+'%';
+                  if(done===FRAME_COUNT) resolve();
+                };
+                img.src=src(idx);
+              })(i);
+            }
+          });
+        }
+        preload().then(function(){
+          loader.classList.add('hidden');
+          setTimeout(function(){ loader.remove(); },700);
+
+          var section=document.getElementById('ch-hero');
+          section.style.height=(window.innerHeight+FRAME_COUNT*PX_PER_FRAME)+'px';
+
+          requestAnimationFrame(function(){ resizeCanvas(); drawFrame(frames[0]); });
+
+          var currentFrame=0;
+          window.addEventListener('resize',function(){ resizeCanvas(); drawFrame(frames[currentFrame]); },{passive:true});
+
+          setTimeout(function(){
+            document.getElementById('ch-label').classList.add('visible');
+            document.getElementById('ch-cue').classList.add('visible');
+          },500);
+
+          gsap.registerPlugin(ScrollTrigger);
+          ScrollTrigger.normalizeScroll(true);
+          ScrollTrigger.create({
+            trigger:'#ch-hero', start:'top top', end:'bottom bottom', scrub:0.5,
+            onUpdate:function(self){
+              var idx=Math.round(self.progress*(FRAME_COUNT-1));
+              if(idx!==currentFrame && frames[idx] && frames[idx].naturalWidth){ currentFrame=idx; drawFrame(frames[idx]); }
+            },
+            onLeave:function(){ document.getElementById('ch-cue').classList.remove('visible'); },
+            onEnterBack:function(){ document.getElementById('ch-cue').classList.add('visible'); }
+          });
+        });
+    })();
+  </script>
+  <script src="app.js"></script>
+  <script>
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('.form-submit');
+      btn.textContent = 'Sent ✓';
+      btn.style.background = '#4a7c1a';
+      setTimeout(() => { btn.textContent = 'Send'; btn.style.background = ''; e.target.reset(); }, 3000);
+    }
+  </script>
+</body>
+</html>
