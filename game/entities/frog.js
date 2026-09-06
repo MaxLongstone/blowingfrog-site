@@ -8,6 +8,7 @@ export const INVULN_TIME = 1.0;
 
 export class Frog {
   constructor({ sizeClass = 1, lives = 3, hearts = 3, col = 6, row = 14 } = {}) {
+    // col/row default to the classic 13x15 field; Play passes the live grid's center.
     this.sizeClass = sizeClass;
     this.lives = lives;
     this.hearts = hearts;

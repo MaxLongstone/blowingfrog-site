@@ -8,7 +8,11 @@ import { preloadFrames, playDetonation, playEnding } from './ui/cutscene.js';
 import { Play } from './systems/play.js';
 import { STAGES, getStage, nextStage, validateStage } from './config/stages.js';
 
-const CELL = 64, COLS = 13, ROWS = 15;
+const CELL = 64, ROWS = 15;
+// A phone screen is far taller than it is wide, so a 13-wide field would leave the
+// playfield floating in dead space. Narrow screens get a 9-column field instead.
+const pickCols = () => (window.innerWidth < 700 ? 9 : 13);
+const COLS = pickCols();
 const LOGICAL_W = COLS * CELL, LOGICAL_H = ROWS * CELL;
 const BEST_KEY = 'bf-game-best';
 
@@ -54,6 +58,7 @@ class Game {
       app: this.app, stage, textures: this.tex, audio: this.audio, hud: this.hud,
       frogState: carry, score,
       density: carry?.density || 1,
+      cols: COLS,
     });
     this.play.on('goal', ({ score }) => this.onGoal(stage, score));
     this.play.on('stillHungry', ({ fuse, score }) => this.onStillHungry(stage, fuse, score));

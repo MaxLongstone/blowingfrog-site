@@ -14,9 +14,9 @@ const MAX_PROJECTILES = 5;
 const FROG_SPRITE = ['frog_s1', 'frog_s1', 'frog_s2', 'frog_s3', 'frog_s4', 'frog_k1', 'frog_k2', 'frog_k3', 'frog_k4', 'frog_k5'];
 
 export class Play {
-  constructor({ app, stage, textures, audio, hud, frogState, score = 0, density = 1 }) {
+  constructor({ app, stage, textures, audio, hud, frogState, score = 0, density = 1, cols = 13 }) {
     this.app = app; this.stage = stage; this.tex = textures; this.audio = audio; this.hud = hud;
-    this.grid = new Grid(13, 15, CELL);
+    this.grid = new Grid(cols, 15, CELL);
     this.rng = makeRng();
     this.shake = new Shake(Math.random);
     this.score = score;
@@ -38,6 +38,8 @@ export class Play {
       sizeClass: frogState?.sizeClass ?? stage.sizeClass,
       lives: frogState?.lives ?? stage.lives,
       hearts: stage.hearts,
+      col: Math.floor(cols / 2),
+      row: 14,
     });
     this.frogSprite = new PIXI.Sprite(this.tex.get(FROG_SPRITE[this.frog.sizeClass]));
     this.frogSprite.anchor.set(0.5);
