@@ -2,3 +2,4 @@
 *.mp4
 assets/contact-hero-frames/
 .DS_Store
+!assets/videos/blog-hero.mp4

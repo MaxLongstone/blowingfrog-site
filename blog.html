@@ -16,32 +16,62 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;700;800;900&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Playfair+Display:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="shared.css?v=6">
   <style>
-    .blog-hero {
-      padding: calc(var(--nav-h) + 80px) 64px 64px;
-      max-width: 1200px;
-      margin: 0 auto;
+    /* ── cursor-scrub video hero ── */
+    .blog-vid-hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      background: #000;
     }
-    .blog-eyebrow {
+    #blog-hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .blog-vid-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.55) 100%);
+      pointer-events: none;
+    }
+    .blog-vid-label {
+      position: absolute;
+      bottom: 56px;
+      left: 56px;
+      pointer-events: none;
+    }
+    .blog-vid-eyebrow {
       font-size: 11px;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--accent-lt);
-      margin-bottom: 20px;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 14px;
     }
-    .blog-hero-title {
+    .blog-vid-title {
       font-family: var(--f-display);
       font-weight: 900;
       font-size: clamp(52px, 8vw, 110px);
       text-transform: uppercase;
       line-height: 0.92;
       letter-spacing: -0.02em;
-      margin-bottom: 28px;
+      color: #fff;
     }
-    .blog-hero-desc {
-      font-size: 16px;
-      color: var(--text-muted);
-      max-width: 480px;
-      line-height: 1.7;
+    .blog-vid-hint {
+      position: absolute;
+      bottom: 32px;
+      right: 40px;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      pointer-events: none;
+    }
+    @media (max-width: 860px) {
+      .blog-vid-label { left: 28px; bottom: 40px; }
     }
     .blog-grid {
       display: grid;
@@ -148,10 +178,14 @@
 
   <div class="page-content">
 
-    <div class="blog-hero reveal">
-      <div class="blog-eyebrow">From The Swamp</div>
-      <h1 class="blog-hero-title">The<br>Blog</h1>
-      <p class="blog-hero-desc">No fluff. No filler. Just bold ideas on creativity, AI, branding, and making things that actually matter.</p>
+    <div class="blog-vid-hero" id="blogVidHero">
+      <video id="blog-hero-video" muted playsinline preload="auto" disableremoteplayback></video>
+      <div class="blog-vid-overlay"></div>
+      <div class="blog-vid-label">
+        <div class="blog-vid-eyebrow">From The Swamp</div>
+        <h1 class="blog-vid-title">The<br>Blog</h1>
+      </div>
+      <div class="blog-vid-hint">Move cursor to explore</div>
     </div>
 
     <div class="blog-grid">
@@ -203,5 +237,44 @@
 
   <script src="app.js"></script>
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+  <script>
+    (function () {
+      var video = document.getElementById('blog-hero-video');
+      if (!video) return;
+      video.src = 'assets/videos/blog-hero.mp4';
+
+      var ready = false;
+      var targetTime = 0;
+      var currentTime = 0;
+      var seeking = false;
+      var SMOOTHING = 0.18;
+
+      video.load();
+      video.play().then(function(){ video.pause(); }).catch(function(){});
+      video.currentTime = 0;
+
+      video.addEventListener('canplaythrough', function(){ ready = true; });
+      video.addEventListener('seeking', function(){ seeking = true; });
+      video.addEventListener('seeked', function(){ seeking = false; });
+
+      window.addEventListener('pointermove', function(e) {
+        var pos = e.clientX / window.innerWidth;
+        pos = Math.max(0, Math.min(1, pos));
+        targetTime = pos * (video.duration || 0);
+      }, { passive: true });
+
+      (function loop() {
+        if (ready && isFinite(video.duration) && !seeking) {
+          var next = currentTime + (targetTime - currentTime) * SMOOTHING;
+          if (Math.abs(video.currentTime - next) > 0.008) {
+            video.currentTime = next;
+          }
+          currentTime = next;
+        }
+        requestAnimationFrame(loop);
+      })();
+    })();
+  </script>
 </body>
 </html>
