@@ -245,6 +245,51 @@ export const SPRITES = {
   nukesilo: { w: 1, h: 1, draw: (g, W, H) => { SPRITES.silo.draw(g, W, H); g.circle(0, 0, 9).fill(C.yellow); for (let i = 0; i < 3; i++) { const a = i * Math.PI * 2 / 3 - Math.PI / 2; g.poly([0, 0, Math.cos(a - 0.5) * 9, Math.sin(a - 0.5) * 9, Math.cos(a + 0.5) * 9, Math.sin(a + 0.5) * 9]).fill(C.black); } g.circle(0, 0, 2.5).fill(C.black); } },
   food: { w: 1, h: 1, draw: (g, W, H) => { g.circle(0, -6, 16).fill(C.yellow); stroke(g, 2); g.roundRect(-18, -6, 36, 8, 3).fill(C.green); g.roundRect(-16, 0, 32, 8, 3).fill(C.brown); g.roundRect(-18, 6, 36, 12, 6).fill(C.yellow); stroke(g, 2); g.circle(-6, -10, 2).fill(C.white); g.circle(4, -8, 2).fill(C.white); } },
 
+  // ---- power-ups --------------------------------------------------------
+  pw_invuln: { w: 1, h: 1, draw: (g, W, H) => {
+    glowDisc(g, 0, 0, 20, C.glass, 0.55);
+    g.circle(0, 0, 19).stroke({ width: 4, color: C.glass, alpha: 0.9 });
+    g.poly([0, -18, 15, -8, 15, 8, 0, 20, -15, 8, -15, -8]).fill({ color: C.white, alpha: 0.85 }); stroke(g, 2.5);
+    g.poly([0, -11, 9, -5, 9, 5, 0, 12, -9, 5, -9, -5]).fill(C.glass);
+    shine(g, -5, -6, 5, 3);
+  } },
+  pw_freeze: { w: 1, h: 1, draw: (g, W, H) => {
+    glowDisc(g, 0, 0, 18, 0x9fd8ff, 0.5);
+    for (let i = 0; i < 6; i++) {
+      const a = i * Math.PI / 3;
+      g.moveTo(0, 0).lineTo(Math.cos(a) * 19, Math.sin(a) * 19).stroke({ width: 4, color: 0xe8f6ff, cap: 'round' });
+      for (const b of [-0.7, 0.7]) g.moveTo(Math.cos(a) * 11, Math.sin(a) * 11)
+        .lineTo(Math.cos(a) * 11 + Math.cos(a + b) * 7, Math.sin(a) * 11 + Math.sin(a + b) * 7)
+        .stroke({ width: 3, color: 0xe8f6ff, cap: 'round' });
+    }
+    g.circle(0, 0, 4.5).fill(C.white);
+  } },
+  pw_fire: { w: 1, h: 1, draw: (g, W, H) => {
+    glowDisc(g, 0, 2, 18, C.orange, 0.6);
+    g.moveTo(0, -22).quadraticCurveTo(14, -4, 10, 8).quadraticCurveTo(8, 20, 0, 21)
+      .quadraticCurveTo(-8, 20, -10, 8).quadraticCurveTo(-14, -4, 0, -22).fill(C.orange); stroke(g, 2.5);
+    g.moveTo(0, -11).quadraticCurveTo(7, -1, 5, 7).quadraticCurveTo(4, 14, 0, 15)
+      .quadraticCurveTo(-4, 14, -5, 7).quadraticCurveTo(-7, -1, 0, -11).fill(C.yellow);
+    g.circle(0, 9, 3).fill(C.white);
+  } },
+  pw_armor: { w: 1, h: 1, draw: (g, W, H) => {
+    glowDisc(g, 0, 0, 17, 0xc0c4cc, 0.35);
+    g.moveTo(0, -20).lineTo(16, -13).lineTo(16, 5).quadraticCurveTo(16, 16, 0, 21)
+      .quadraticCurveTo(-16, 16, -16, 5).lineTo(-16, -13).fill(0xc0c4cc); stroke(g);
+    for (const [x, y, r] of [[-6, -6, 3], [5, 2, 4], [-2, 9, 2.5]]) g.circle(x, y, r).fill({ color: OUT, alpha: 0.45 });
+    g.moveTo(-10, -12).lineTo(9, 12).stroke({ width: 3, color: OUT, alpha: 0.5 });
+    g.moveTo(9, -10).lineTo(-6, 6).stroke({ width: 2.5, color: OUT, alpha: 0.4 });
+    shine(g, -7, -12, 5, 2.5);
+  } },
+  pw_life: { w: 1, h: 1, draw: (g, W, H) => {
+    glowDisc(g, 0, 0, 17, C.red, 0.5);
+    g.moveTo(0, 19).quadraticCurveTo(-19, 4, -19, -6).quadraticCurveTo(-19, -19, -9, -19)
+      .quadraticCurveTo(-2, -19, 0, -11).quadraticCurveTo(2, -19, 9, -19)
+      .quadraticCurveTo(19, -19, 19, -6).quadraticCurveTo(19, 4, 0, 19).fill(C.red); stroke(g);
+    shine(g, -8, -9, 5, 3.5);
+    g.circle(7, -3, 2.5).fill({ color: C.white, alpha: 0.5 });
+  } },
+
   // ---- projectiles ------------------------------------------------------
   missile: { w: 0.5, h: 1.2, draw: (g, W, H) => missileBody(g, W, H) },
   bomb: { w: 0.6, h: 0.8, draw: (g, W, H) => { g.ellipse(0, H * 0.1, W / 2, H * 0.38).fill(C.black); stroke(g, 2); g.rect(-W * 0.2, -H / 2, W * 0.4, H * 0.25).fill(C.steelDark); shine(g, -W * 0.15, 0, W * 0.15, H * 0.1); } },

@@ -65,6 +65,17 @@
     .bf-pip.on { background: #f08a24; box-shadow: 0 0 12px rgba(240,138,36,0.85); }
     .bf-fuse.full .bf-pip.on { background: #e23c2f; box-shadow: 0 0 16px rgba(226,60,47,1); animation: bf-tick .42s infinite; }
     @keyframes bf-tick { 0%,100% { opacity: 1; } 50% { opacity: .45; } }
+    .bf-power {
+      margin-top: 7px; font-size: 10px; font-weight: 800; letter-spacing: .14em;
+      opacity: 0; transition: opacity .2s ease; min-height: 13px;
+      font-variant-numeric: tabular-nums;
+    }
+    .bf-power.on { opacity: 1; }
+    .bf-power.invuln { color: #7fc7e8; text-shadow: 0 0 12px rgba(127,199,232,.9); }
+    .bf-power.freeze { color: #9fd8ff; text-shadow: 0 0 12px rgba(159,216,255,.9); }
+    .bf-power.fire   { color: #f08a24; text-shadow: 0 0 12px rgba(240,138,36,.9); }
+    .bf-power.armor  { color: #c0c4cc; text-shadow: 0 0 12px rgba(192,196,204,.8); }
+
     .bf-hud-right { text-align: right; }
     .bf-lives { display: flex; gap: 3px; justify-content: flex-end; font-size: 15px; line-height: 1; }
     .bf-lives.hearts .bf-life { color: #e23c2f; font-size: 17px; }
@@ -165,6 +176,6 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/pixi.js@8.20.1/dist/pixi.min.js"></script>
-  <script type="module" src="game/main.js?v=4"></script>
+  <script type="module" src="game/main.js?v=6"></script>
 </body>
 </html>

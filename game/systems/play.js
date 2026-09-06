@@ -6,7 +6,7 @@ import { resolve } from './collision.js';
 import { Particles } from './particles.js';
 import { Backdrop } from './backdrop.js';
 import { SPRITES } from '../config/sprites.js';
-import { MOVERS, FUSE_TARGET, KAIJU_SIZE } from '../config/stages.js';
+import { MOVERS, FUSE_TARGET, KAIJU_SIZE, POWERS, PICKUPS } from '../config/stages.js';
 import { makeRng } from '../core/rng.js';
 
 const CELL = 64;
@@ -49,6 +49,7 @@ export class Play {
     this.spawner = new Spawner(stage, this.grid, this.rng, { density });
     this.movers = this.spawner.prewarm();
     this.pickups = this.spawner.seedPickups();
+    this.pickups.push(...this.spawner.seedPowers(this.pickups));
     this.projectiles = [];
     this.sprites = new Map();
 
@@ -101,8 +102,11 @@ export class Play {
     if (room > 0) this.projectiles.push(...made.projectiles.slice(0, room));
     if (made.projectiles.some(p => p.warn > 0)) this.audio.warn();
 
+    const frozen = this.frog.frozen;
+    if (frozen) this.freezeFlash = (this.freezeFlash || 0) + dt;
+
     // movers
-    for (const m of this.movers) {
+    for (const m of (frozen ? [] : this.movers)) {
       m.update(dt, ctx);
       if (m.def.drops) {
         m.dropTimer -= dt;
@@ -115,12 +119,15 @@ export class Play {
         }
       }
     }
-    for (const p of this.projectiles) p.update(dt, ctx);
+    if (!frozen) for (const p of this.projectiles) p.update(dt, ctx);
     for (const p of this.pickups) p.update(dt);
 
     // collisions
     const tongueCells = this.frog.tongue?.cells || null;
-    const cctx = { tongueCells, invulnerable: this.frog.invuln > 0, kaiju: this.frog.isKaiju() };
+    const cctx = {
+      tongueCells, invulnerable: this.frog.invuln > 0,
+      kaiju: this.frog.isKaiju(), fire: this.frog.breathingFire,
+    };
 
     for (const list of [this.pickups, this.movers, this.projectiles]) {
       for (const e of list) {
@@ -165,6 +172,24 @@ export class Play {
     } else if (result === 'food') {
       e.alive = false; this.audio.food();
       this.particles.spark(cx, cy, 0x4f9a3c); this.addScore(50);
+    } else if (result === 'power') {
+      e.alive = false;
+      const name = e.power;
+      const def = POWERS[name];
+      this.frog.gainPower(name);
+      this.audio.win();
+      this.particles.burst(cx, cy, def.color, 22);
+      this.particles.ring(cx, cy, def.color);
+      this.addScore(250);
+      this.hud.say(def.shout, 2200);
+      this.hud.setLives(this.frog.isKaiju() ? this.frog.hearts : this.frog.lives, this.frog.isKaiju());
+    } else if (result === 'burn') {
+      e.alive = false;
+      this.audio.squash();
+      this.particles.burst(cx, cy, 0xf08a24, 14);
+      this.particles.smoke(cx, cy, 4);
+      this.addScore(90);
+      this.shake.add(3);
     } else if (result === 'squash') {
       e.squash(); this.audio.squash();
       this.particles.debris(cx, cy, 16); this.particles.smoke(cx, cy, 5);
@@ -185,6 +210,7 @@ export class Play {
       if ('vx' in e && !e.warn) e.alive = false;
       this.hud.setLives(this.frog.isKaiju() ? this.frog.hearts : this.frog.lives, this.frog.isKaiju());
       if (out === 'dead') { this.over = true; this.audio.lose(); this.emit('dead', { score: this.score }); }
+      else if (out === 'shielded') this.hud.say(`ARMOUR HOLDING · ${this.frog.shield} LEFT`);
       else if (out === 'reset') this.hud.say('BACK TO THE START');
       else this.hud.say('HIT');
     }
@@ -243,11 +269,25 @@ export class Play {
     if (this.frog.tongue) {
       const k = 1 - Math.abs(this.frog.tongue.t / TONGUE_TIME - 0.5) * 2;
       const d = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] }[this.frog.tongue.dir];
+      const reach = this.frog.tongue.cells.length;
       const x0 = (fp.col + 0.5) * CELL, y0 = (fp.row + 0.5) * CELL;
-      const x1 = x0 + d[0] * CELL * 2 * k, y1 = y0 + d[1] * CELL * 2 * k;
-      g.moveTo(x0, y0).lineTo(x1, y1).stroke({ width: 9, color: 0xe86fa7, cap: 'round' });
-      g.circle(x1, y1, 8).fill(0xe86fa7);
+      const x1 = x0 + d[0] * CELL * reach * k, y1 = y0 + d[1] * CELL * reach * k;
+      if (this.frog.breathingFire) {
+        g.moveTo(x0, y0).lineTo(x1, y1).stroke({ width: 30 * k, color: 0xf08a24, alpha: 0.35, cap: 'round' });
+        g.moveTo(x0, y0).lineTo(x1, y1).stroke({ width: 16 * k, color: 0xf2c53d, alpha: 0.8, cap: 'round' });
+        g.circle(x1, y1, 13 * k).fill({ color: 0xffffff, alpha: 0.9 });
+      } else {
+        g.moveTo(x0, y0).lineTo(x1, y1).stroke({ width: 9, color: 0xe86fa7, cap: 'round' });
+        g.circle(x1, y1, 8).fill(0xe86fa7);
+      }
     }
+    if (this.frog.frozen) {
+      g.rect(0, 0, this.grid.width, this.grid.height).fill({ color: 0x9fd8ff, alpha: 0.12 });
+    }
+    if (this.frog.hasPower('invuln')) {
+      g.circle(fs.x, fs.y, CELL * 0.72).stroke({ width: 4, color: 0x7fc7e8, alpha: 0.55 + Math.sin(this.time * 8) * 0.25 });
+    }
+    this.hud.setPower(this.frog.activePower());
 
     const s = this.shake.update(1 / 60);
     this.world.x = s.x; this.world.y = s.y;

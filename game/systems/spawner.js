@@ -107,6 +107,23 @@ export class Spawner {
     return out;
   }
 
+  // Power-ups sit on lane cells too, away from the explosives already placed.
+  seedPowers(taken = []) {
+    const out = [];
+    const used = new Set(taken.map(t => `${t.col},${t.row}`));
+    const { pool, count } = this.stage.powers;
+    let guard = 0;
+    while (out.length < count && guard++ < 500) {
+      const col = this.rng.int(0, this.grid.cols - 1);
+      const row = this.rng.int(1, this.grid.rows - 2);
+      const key = `${col},${row}`;
+      if (used.has(key)) continue;
+      used.add(key);
+      out.push(new Pickup({ kind: `pw_${this.rng.pick(pool)}`, col, row }));
+    }
+    return out;
+  }
+
   // Pre-warm lanes so the road is not empty at stage start.
   prewarm() {
     const movers = [];

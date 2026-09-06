@@ -166,7 +166,7 @@ async function boot() {
   if (jump && getStage(jump)) {
     const st = getStage(jump);
     game.audio.unlock();
-    game.start(st.id, { sizeClass: st.sizeClass, lives: 3, hearts: 3 }, 0);
+    game.start(st.id, { sizeClass: st.sizeClass, lives: st.lives, hearts: st.hearts }, 0);
   } else {
     game.title();
   }

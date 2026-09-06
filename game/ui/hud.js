@@ -1,4 +1,8 @@
 // DOM heads-up display layered over the canvas.
+const POWER_LABELS = {
+  invuln: 'UNTOUCHABLE', freeze: 'TIME FROZEN', fire: 'FIRE BREATH', armor: 'BATTLE DAMAGE',
+};
+
 const el = (tag, cls, html) => { const n = document.createElement(tag); if (cls) n.className = cls; if (html != null) n.innerHTML = html; return n; };
 
 export class Hud {
@@ -22,6 +26,9 @@ export class Hud {
     this.scoreEl = el('div', 'bf-score', '0');
     this.right.append(this.livesEl, this.scoreEl);
 
+    this.powerEl = el('div', 'bf-power');
+    this.mid.append(this.powerEl);
+
     this.node.append(this.left, this.mid, this.right);
     root.append(this.node);
     this.toast = el('div', 'bf-toast');
@@ -40,6 +47,13 @@ export class Hud {
     for (let i = 0; i < Math.max(0, n); i++) this.livesEl.append(el('span', 'bf-life', kaiju ? '♥' : '🐸'));
   }
   setScore(n) { this.scoreEl.textContent = String(n).padStart(6, '0'); }
+  // active is { name, time } for timed powers, { name:'armor', hits } for armour, or null.
+  setPower(active) {
+    if (!active) { this.powerEl.className = 'bf-power'; this.powerEl.textContent = ''; return; }
+    const label = POWER_LABELS[active.name] || active.name.toUpperCase();
+    this.powerEl.className = `bf-power on ${active.name}`;
+    this.powerEl.textContent = active.hits != null ? `${label} ×${active.hits}` : `${label} ${active.time.toFixed(1)}s`;
+  }
   say(msg, ms = 1400) {
     this.toast.textContent = msg;
     this.toast.classList.add('show');

@@ -32,11 +32,11 @@ export const MOVERS = {
 
 // Power-ups. duration is in seconds; armor and life apply instantly instead.
 export const POWERS = {
-  invuln: { label: 'UNTOUCHABLE',   duration: 7, color: 0x7fc7e8, blurb: 'Nothing can touch you' },
-  freeze: { label: 'TIME FROZEN',   duration: 5, color: 0x9fd8ff, blurb: 'Everything stops' },
-  fire:   { label: 'FIRE BREATH',   duration: 9, color: 0xf08a24, blurb: 'Your tongue burns what it touches' },
-  armor:  { label: 'BATTLE DAMAGE', hits: 3,     color: 0xc0c4cc, blurb: 'Soak three hits' },
-  life:   { label: 'EXTRA LIFE',    color: 0xe23c2f, blurb: 'One more go' },
+  invuln: { label: 'UNTOUCHABLE',   duration: 7, color: 0x7fc7e8, shout: 'UNTOUCHABLE. ENJOY IT, IT IS TEMPORARY.' },
+  freeze: { label: 'TIME FROZEN',   duration: 5, color: 0x9fd8ff, shout: 'TIME STOPPED. SHOW OFF.' },
+  fire:   { label: 'FIRE BREATH',   duration: 9, color: 0xf08a24, shout: 'FIRE BREATH. REVOLTING. CONTINUE.' },
+  armor:  { label: 'BATTLE DAMAGE', hits: 3,     color: 0xc0c4cc, shout: 'BATTLE DAMAGE. NOW UGLY AND HARD TO KILL.' },
+  life:   { label: 'EXTRA LIFE',    color: 0xe23c2f, shout: 'EXTRA LIFE. DO NOT WASTE IT LIKE THE LAST ONE.' },
 };
 
 // Pickup kinds. explosive = counts toward the fuse. food = points only. power = upgrade.
@@ -93,9 +93,9 @@ export const STAGES = [
     pickups: { explosive: ['dynamite', 'mine'], count: 7 },
     powers: { pool: ['invuln', 'freeze', 'fire', 'armor', 'life'], count: 2 },
     announce: {
-      eyebrow: 'SEASON 12 · EPISODE 1 · LIVE',
+      eyebrow: 'ACHIEVEMENT UNLOCKED: BARELY SENTIENT',
       title: 'RUSH HOUR 2028',
-      body: 'Welcome to the show, Crawler. Four hundred billion viewers just tuned in to watch an amphibian cross a road. The premise is simple, which is lucky, because you are a frog. Eat five bombs. Reach the top. Detonate. Try to make it interesting, the ad breaks are already sold.',
+      body: 'Welcome, Crawler. You are a frog. That is not a metaphor, we checked twice. Four hundred billion viewers have paid real money to watch you cross a road, so eat five bombs, reach the top, and pop like a wet balloon. Reward? Frogs don\'t get rewards.',
     },
 
     attacks: [],
@@ -116,9 +116,9 @@ export const STAGES = [
     pickups: { explosive: ['dynamite', 'mine'], count: 7 },
     powers: { pool: ['invuln', 'freeze', 'fire', 'armor', 'life'], count: 2 },
     announce: {
-      eyebrow: 'EPISODE 2 · THE NOVELTY WEARS OFF',
+      eyebrow: 'ACHIEVEMENT: THIS LITTLE PIGGY WENT BOOM',
       title: 'AUTONOMOUS LANE',
-      body: 'You exploded. The audience adored it. Management has upgraded the traffic accordingly, so the lorries drive themselves now and they have opinions about you. We also let the delivery drones dip into your lane. That one was my idea.',
+      body: 'You detonated. Sixteen million households replayed it in slow motion and I regret to report it was mostly for the feet. Those soft little toe pads went absolutely everywhere. Management has responded by letting the lorries drive themselves. The drones come down to your level now. You\'re welcome.',
     },
 
     attacks: [],
@@ -139,9 +139,9 @@ export const STAGES = [
     pickups: { explosive: ['dynamite', 'mine'], count: 7 },
     powers: { pool: ['invuln', 'freeze', 'fire', 'armor', 'life'], count: 2 },
     announce: {
-      eyebrow: 'EPISODE 3 · SPONSORED SEGMENT',
+      eyebrow: 'ACHIEVEMENT: PUBLIC MENACE, APPEAL DENIED',
       title: 'FROG CONTROL',
-      body: 'Local authorities have formally declared you a public menace, which is wonderful for the numbers. They will now swerve into you on purpose. Legal has asked me to note that this is entirely lawful and also extremely funny.',
+      body: 'The local authorities have reclassified you as vermin, which is legally fascinating and superb for merchandise. They will now swerve into you on purpose. I asked whether that was permitted. They said yes. I asked again, because I wanted to hear it a second time.',
     },
 
     attacks: [],
@@ -161,9 +161,9 @@ export const STAGES = [
     pickups: { explosive: ['dynamite', 'mine'], count: 7 },
     powers: { pool: ['invuln', 'freeze', 'fire', 'armor', 'life'], count: 3 },
     announce: {
-      eyebrow: 'EPISODE 4 · NO MORE COMMUTING',
+      eyebrow: 'ACHIEVEMENT: YOU\'RE WHY DADDY DRINKS',
       title: 'THEY HUNT NOW',
-      body: 'The traffic has stopped commuting and started hunting. Trucks accelerate when they see you. Drones dive. Somewhere a very stupid man has bet his house on you dying in this exact lane. Prove him right or don\'t, I am paid either way.',
+      body: 'Nobody out there is commuting anymore. They are hunting. The trucks accelerate when they smell you, the drones dive, and a man in sector nine has remortgaged his home betting you die in lane four. I hope you die in lane four. I also have money on it.',
     },
 
     attacks: [],
@@ -183,9 +183,9 @@ export const STAGES = [
     pickups: { explosive: ['tanker'], count: 7 },
     powers: { pool: ['invuln', 'freeze', 'fire', 'armor', 'life'], count: 2 },
     announce: {
-      eyebrow: 'MID-SEASON TURN · CONTAINMENT FAILED',
+      eyebrow: 'CONTAINMENT BREACH · SPONSORS DELIGHTED',
       title: 'KAIJU I: RAMPAGE',
-      body: 'Look at you. You are bigger than the cars now. Go on. Step on one. Magnificent. That screaming is roughly forty percent genuine terror and sixty percent merchandising opportunity.',
+      body: 'Oh. Oh, look at you. Bigger than the cars. Go on. Put a foot down. Put that soft green foot right down on the little metal box. ...Give me a moment. That screaming is forty percent terror and sixty percent gift shop.',
     },
 
     attacks: [],
@@ -205,9 +205,9 @@ export const STAGES = [
     pickups: { explosive: ['gasstation', 'propane'], count: 6 },
     powers: { pool: ['invuln', 'freeze', 'fire', 'armor', 'life'], count: 3 },
     announce: {
-      eyebrow: 'EPISODE 6 · THEY CALLED THE ARMY',
+      eyebrow: 'ACHIEVEMENT: THEY CALLED THE ARMY, LOL',
       title: 'KAIJU II: DOWNTOWN',
-      body: 'They have deployed the military, which is adorable. Helicopters, jets, tanks, and a van with a novelty fly swatter bolted to the roof. Reminder, Crawler: anything that explodes is food. They are catering your ascent and they have not worked it out yet.',
+      body: 'They have sent tanks, jets, and a van with a novelty fly swatter bolted to the roof. A man built that. He has a family. Reminder, since you are a frog and therefore stupid: anything that explodes is FOOD. They are catering your ascent and have not noticed.',
     },
 
     attacks: [
@@ -230,9 +230,9 @@ export const STAGES = [
     pickups: { explosive: ['silo', 'volcano'], count: 6 },
     powers: { pool: ['invuln', 'freeze', 'fire', 'armor', 'life'], count: 3 },
     announce: {
-      eyebrow: 'EPISODE 7 · CONTINENTAL BREAKFAST',
+      eyebrow: 'ACHIEVEMENT: OUTGREW YOUR POSTCODE',
       title: 'KAIJU III: THE CONTINENT',
-      body: 'You have outgrown the city, so we got you a continent. Note the heron, the government mech disguised as a housefly, and the eleven-metre French chef with cutlery. He is contractually obligated to try. He will fail. Do not eat the fork.',
+      body: 'A continent. A heron the size of a cathedral. A government mech disguised as a housefly, which fooled nobody. And an eleven-metre French chef with cutlery, contractually obligated to eat you. He will fail. Do not eat the fork. DO NOT STRAY TOO FAR FROM THE METAPHOR.',
     },
 
     attacks: [
@@ -256,9 +256,9 @@ export const STAGES = [
     pickups: { explosive: ['sub', 'oilrig'], count: 6 },
     powers: { pool: ['invuln', 'freeze', 'fire', 'armor', 'life'], count: 3 },
     announce: {
-      eyebrow: 'EPISODE 8 · BROUGHT TO YOU BY BATH TIME',
+      eyebrow: 'THIS SEGMENT SPONSORED BY BATH TIME',
       title: 'KAIJU IV: THE OCEAN',
-      body: 'An ocean, a kraken, a hurricane with a face, and the Statue of Liberty, who has waded out here personally to fight you. This segment is sponsored by a rubber duck conglomerate whose battleship is somewhere in the shipping lane. No, we don\'t know why either.',
+      body: 'An ocean. A kraken. A hurricane with a face, which even I consider excessive. The Statue of Liberty has waded out to fight you personally and is not licensed to do so. There is a rubber duck battleship in the shipping lane. Nobody will explain it. I have stopped asking.',
     },
 
     attacks: [
@@ -284,7 +284,7 @@ export const STAGES = [
     announce: {
       eyebrow: 'SEASON FINALE · EVERYTHING WE HAVE LEFT',
       title: 'KAIJU V: ORBIT',
-      body: 'Final round. Every nuclear weapon on Earth is currently airborne and aimed at you, which is convenient, because you eat those. There is also an alien fleet here to stop you, since they wanted this planet first. Somebody is going to throw the Moon. Chew with your mouth open, Crawler. The galaxy is watching.',
+      body: 'Every nuclear weapon on this planet is airborne and pointed at your face, which is fortunate, because you eat those. There is also an alien fleet here to save Earth, on the grounds that they wanted it first. Someone is going to throw the Moon at you. Chew with your mouth open, Crawler. And use the feet.',
     },
 
     attacks: [
