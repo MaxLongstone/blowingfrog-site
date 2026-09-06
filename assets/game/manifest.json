@@ -1,0 +1,4 @@
+{
+  "note": "List sprite kinds here once a PNG exists at assets/game/<kind>.png. Anything not listed uses the built-in procedural drawing.",
+  "sprites": []
+}

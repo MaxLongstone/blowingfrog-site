@@ -114,8 +114,8 @@ export class Spawner {
       if (l.kind === 'safe') continue;
       let x = l.dir > 0 ? this.rng.range(-2, 1) : this.grid.cols - this.rng.range(-2, 1);
       const step = l.speed * l.gap / this.density;
-      for (let i = 0; i < 6; i++) {
-        x += l.dir * step * this.rng.range(0.8, 1.2);
+      for (let i = 0; i < 4; i++) {
+        x += l.dir * step * this.rng.range(0.95, 1.25);
         if (x < -1 || x > this.grid.cols + 1) break;
         movers.push(this._mover(l, x));
       }
