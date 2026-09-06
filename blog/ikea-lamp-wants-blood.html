@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The IKEA Lamp Wants Blood: AI Video and the Flat-Pack Slasher</title>
+  <meta name="description" content="A Runway AI film, a Spike Jonze IKEA commercial, and a Grady Hendrix novel walk into my skull. What happened next says everything about how consumers actually think.">
+  <meta name="keywords" content="IKEA lamp commercial, Runway AI film, Horrorstör Grady Hendrix, AI filmmaking 2026, sentient object horror, Final Girl trope, consumer psychology advertising">
+  <meta property="og:title" content="The IKEA Lamp Wants Blood: AI Video and the Flat-Pack Slasher">
+  <meta property="og:description" content="A Runway AI film, a Spike Jonze IKEA commercial, and a Grady Hendrix novel walk into my skull.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="/assets/blog-images/ikea-lamp-header.jpg">
+  <link rel="canonical" href="https://blowingfrog.com/blog/ikea-lamp-wants-blood">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the IKEA lamp commercial everyone references?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "\"Lamp,\" directed by Spike Jonze for IKEA in 2002. A discarded desk lamp sits in the rain while a narrator informs the viewer that feeling sorry for it makes them crazy. It won the Grand Prix at Cannes Lions and has been quietly ripped off ever since."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is Horrorstör about?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Grady Hendrix's 2014 novel, set in ORSK, a knockoff Scandinavian furniture superstore built on the site of a former prison. Staff work an overnight shift. Things go badly. The book is physically designed as a furniture catalog, complete with product illustrations, which is the best formal joke in modern horror."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is AI video actually good now?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Good enough that the argument moved. When the conversation about a piece stops being \"does the hand have six fingers\" and starts being \"what does this remind me of,\" the technology has left the room and the story is standing there alone."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is there really a horror movie about a killer tire?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Rubber, 2010, Quentin Dupieux. The tire is named Robert. It kills with psychic powers. The film opens by explaining that everything in it happens for no reason. I have seen it three times."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="icon" type="image/png" href="../assets/images/logo_blowingfrog.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;700;800;900&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Playfair+Display:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared.css?v=6">
+  <style>
+    .post-hero {
+      width: 100%;
+      height: 70vh;
+      min-height: 480px;
+      object-fit: cover;
+      display: block;
+    }
+    .post-wrap {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 64px 32px 120px;
+    }
+    .post-tag {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent-lt);
+      margin-bottom: 20px;
+    }
+    .post-title {
+      font-family: var(--f-display);
+      font-weight: 900;
+      font-size: clamp(36px, 5vw, 64px);
+      text-transform: uppercase;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+    .post-meta {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--border);
+    }
+    .post-body { font-size: 17px; line-height: 1.8; color: var(--text); }
+    .post-body p { margin-bottom: 1.5em; }
+    .post-body h2 {
+      font-family: var(--f-display);
+      font-weight: 800;
+      font-size: clamp(24px, 3vw, 36px);
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      margin: 2.5em 0 0.8em;
+      color: var(--text);
+    }
+    .post-body h3 {
+      font-weight: 600;
+      font-size: 18px;
+      margin: 2em 0 0.6em;
+    }
+    .lamp-fact {
+      border-left: 3px solid var(--accent);
+      padding: 16px 24px;
+      margin: 2em 0;
+      background: var(--bg-surface);
+      font-size: 15px;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+    .lamp-fact strong { color: var(--accent-lt); font-style: normal; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; display: block; margin-bottom: 8px; }
+    .pull-quote {
+      font-family: var(--f-display);
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 800;
+      text-transform: uppercase;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--accent-lt);
+      margin: 2em 0;
+      padding: 0;
+    }
+    .post-body a { color: var(--accent-lt); text-decoration: underline; text-underline-offset: 3px; }
+    .post-body a:hover { color: var(--text); }
+    .faq-section { margin-top: 3em; padding-top: 2em; border-top: 1px solid var(--border); }
+    .faq-section h2 { margin-top: 0; }
+    .faq-item { margin-bottom: 2em; }
+    .faq-q { font-weight: 600; margin-bottom: 0.5em; }
+    .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--border); }
+    .tag { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; background: var(--bg-surface); border: 1px solid var(--border); padding: 5px 12px; color: var(--text-muted); }
+    .back-link { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); text-decoration: none; margin-bottom: 40px; transition: color 0.2s; }
+    .back-link:hover { color: var(--text); }
+  </style>
+</head>
+<body class="page-body">
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <nav class="nav scrolled" id="nav">
+    <a href="../index.html" class="nav-logo" aria-label="Home">
+      <img src="../assets/images/logo_blowingfrog.png" alt="Blowing Frog" class="logo-img" onerror="this.outerHTML='<div class=logo-fallback>BF</div>'">
+      <span class="logo-wordmark">Blowing Frog</span>
+    </a>
+    <div class="nav-links">
+      <a href="../about.html"    class="nav-link">About Us</a>
+      <a href="../services.html" class="nav-link">Services</a>
+      <a href="../blog.html"     class="nav-link active">Blog</a>
+      <a href="../contact.html"  class="nav-link">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="nav-hamburger" id="navHamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <img src="../assets/blog-images/ikea-lamp-header.jpg" alt="A vintage desk lamp standing alone in a child's bedroom at 3am" class="post-hero">
+
+  <div class="page-content">
+    <div class="post-wrap">
+      <a href="../blog.html" class="back-link">← Back to Blog</a>
+      <div class="post-tag">AI / Cinema / Musings · 7 min read</div>
+      <h1 class="post-title">The IKEA Lamp Wants Blood: One AI Video, Four Hijacked Brains, and the Slasher Hiding in Your Flat-Pack</h1>
+      <div class="post-meta">September 6, 2026 &nbsp;·&nbsp; Blowing Frog</div>
+
+      <div class="post-body">
+
+        <p>Somebody at Runway made a beautiful little film about a lamp.</p>
+
+        <p>Good film. No sarcasm, no hedging. Lighting like a Vermeer that got a job in retail, timing that lands, the whole thing sitting in that spot where you stop counting fingers and start caring. That is the trick, and they pulled it off.</p>
+
+        <p>And my first thought — my very first, unfiltered, straight-from-the-lizard-cortex thought — was:</p>
+
+        <p><em>That thing is going to murder a family in Ohio.</em></p>
+
+        <p>Not "wow, the tech matured." Not "the pipeline has shifted." Nope. Murder. Ohio. A lamp, dragging its cord across a shag carpet at 3 a.m. like a sommelier of bad intentions.</p>
+
+        <p>STOP.</p>
+
+        <p>Pull the jalopy over. Kill the engine. Because before we go tearing off into the swamp I owe you the setup, and the setup is twenty-four years old and it involves a Swedish man telling America to get a grip.</p>
+
+        <h2>The Commercial That Made a Continent Cry Over Furniture</h2>
+
+        <p>In 2002, Spike Jonze — the man who would later make a movie about a guy falling in love with an operating system, so file that under foreshadowing — directed a sixty-second <a href="https://en.wikipedia.org/wiki/Lamp_(advertisement)" target="_blank" rel="noopener">IKEA spot called "Lamp."</a></p>
+
+        <p>The plot, such as it is: a woman hauls an old desk lamp to the curb. Rain. Wind. The lamp sits out there in the gutter looking up at the warm yellow window of the apartment where a shiny new lamp is now glowing in its spot. Music does what music does. Your throat closes.</p>
+
+        <p>Then a man in a windbreaker walks into frame, points at the lamp and says: "Many of you feel bad for this lamp. That is because you're crazy. It has no feelings. And the new one is much better."</p>
+
+        <p>Cut to logo. Cannes Lions Grand Prix. Roll credits on a generation of copywriters who have been trying to do that again ever since and mostly producing greeting cards with a budget.</p>
+
+        <div class="lamp-fact">
+          <strong>Lamp Fact</strong>
+          IKEA Canada made a <a href="https://www.fastcompany.com/90234381/check-out-ikeas-smart-sequel-to-spike-jonzes-classic-2002-lamp-ad" target="_blank" rel="noopener">sequel in 2018</a>, again with Jonze, in which the abandoned lamp gets picked up and taken home by somebody who wants it. Sixteen years to walk back one punchline. That is the longest apology in advertising history.
+        </div>
+
+        <p>Here is the part nobody says out loud. That ad works because it hands you a haunted object and then dares you to admit you felt something. It weaponizes the exact glitch in the human OS that lets a child bury a stuffed rabbit with military honors. Jonze pulls the trigger and then blames you for bleeding.</p>
+
+        <p>Fine. Great. Beautiful. Now let me tell you what my brain did with it, because my brain has been marinating in bad literature for forty years and does not follow instructions.</p>
+
+        <h2>Grady Hendrix Ruined Furniture for Me, Permanently</h2>
+
+        <p>If you have not read <a href="https://www.goodreads.com/book/show/13129925-horrorst-r" target="_blank" rel="noopener">Horrorstör</a>, stop reading me and go read him.</p>
+
+        <p>Grady Hendrix wrote a haunted house novel and then, in a move I consider borderline criminal genius, disguised it as an IKEA catalog. The book is shaped like a catalog. Product illustrations. Order forms. Item names in that Nordic-adjacent gibberish that sounds like a sneeze in a sauna. The store is called ORSK. The staff are working a night shift. The building sits on top of something that used to be a prison, and the merchandise starts developing opinions.</p>
+
+        <p>The umlaut in the title is over an o. It is doing nothing. That is the joke. That umlaut is the entire thesis of the novel wearing a tiny hat.</p>
+
+        <p>And there is a moment in there — the one that stuck in my ribs like a fishbone — where the household object does not attack, exactly. It arrives. It comes into the room where you sleep, quietly, the way a cat does, except it is not a cat, it is a thing that was manufactured, and it has decided to be somewhere.</p>
+
+        <p>So when <a href="https://runwayml.com/news/project-luxo" target="_blank" rel="noopener">Runway's lamp</a> did its warm little pantomime for me, Hendrix opened the trapdoor and I went straight down.</p>
+
+        <p>Cute lamp. Cute, cute lamp.</p>
+
+        <p>Cute lamp slinking into a kid's bedroom.</p>
+
+        <div class="lamp-fact">
+          <strong>Lamp Fact</strong>
+          The horror-hardware genre has a proud and stupid lineage. <em>Christine</em> (car). <em>Maximum Overdrive</em> (all of them, plus Emilio Estevez). <a href="https://en.wikipedia.org/wiki/Rubber_(2010_film)" target="_blank" rel="noopener"><em>Rubber</em> (2010)</a> — a French film about a discarded tire named Robert that discovers it can make heads explode with its mind, and which spends its first ten minutes explaining that the whole thing is happening for no reason. Quentin Dupieux got that funded. Anything is possible.
+        </div>
+
+        <h2>The Book Club Thing, Which Is the Actual Point of This Post</h2>
+
+        <p>Here is where I stopped laughing at myself and started taking notes.</p>
+
+        <p>I showed the video to my book group.</p>
+
+        <p>Every single one of them said Horrorstör.</p>
+
+        <p>Not one of them said "nice color grade." Not one said "which model is that." Four adults, four skulls, one lamp, same haunted bookshop in all four heads.</p>
+
+        <div class="pull-quote">That is not a coincidence and it is not a compliment to me.</div>
+
+        <p>It is priming, and it is the least understood force in the entire marketing business. You do not release content into an empty room. You release it into a room that is already full of every book, ad, movie, trauma and Tuesday your audience has ever had. The work does not land on them. The work collides with them, and what comes out the other side is a mongrel — half yours, half theirs, and the half that's theirs is the half they'll repeat at dinner.</p>
+
+        <p>Jonze's ad taught a generation that a lamp has feelings. Hendrix taught a smaller, weirder generation that feelings in furniture end in blood. Runway hands us a lamp with a soul in 2026 and a subset of the audience — the ones who read the wrong books — hear the second sentence, not the first.</p>
+
+        <p>You cannot control this. You can only be aware that it is happening and stop pretending your beautiful thing is arriving in a vacuum.</p>
+
+        <h2>So: Give Us CARL</h2>
+
+        <p>Runway. Ladies and gentlemen. I am formally requesting you flip the script.</p>
+
+        <p>You have the story sitting right there in the frame. You built the character already. Now hand him the shiv.</p>
+
+        <p>Act One. CARL is a lamp. Good lamp. Loyal lamp. He has been on that nightstand for eleven years. He has seen homework, first heartbreak, a bout of flu, one truly regrettable haircut. He glows warm at 2,700 Kelvin and thinks of himself as staff.</p>
+
+        <p>Act Two. The family buys a Nordic smart-thing. Bluetooth. Sixteen million colors. It says the child's name out loud, incorrectly, in a soothing voice. Carl goes to the garage. Then the curb. Rain, obviously — we are quoting Jonze on purpose and everyone will get it.</p>
+
+        <p>This is the Lotso beat. <em>Toy Story 3</em>, the strawberry-scented bear who was replaced and came back running a plastic gulag. Pixar found the exact vein and then, being Pixar, only nicked it. You are not Pixar. Open the artery.</p>
+
+        <p>Act Three. Carl comes home. Carl has spent time in the alley. Carl has ideas now. And when the Final Girl backs into the corner of that bedroom, the only weapon in reach is the gnarly wooden leg of a lamp that used to love her.</p>
+
+        <p>You want the title? <strong>Warm Light.</strong> You want the tagline? <em>"He was in the family longer than you were."</em></p>
+
+        <div class="lamp-fact">
+          <strong>Lamp Fact</strong>
+          "Final Girl" is not marketing slang. It comes from Carol Clover's 1992 book <em>Men, Women, and Chain Saws</em>, which argued that the surviving woman in a slasher film is the character male audiences are actually identifying with. The genre has been smarter than its reputation since before most of its fans were born.
+        </div>
+
+        <h2>What This Actually Means If You Make Things for a Living</h2>
+
+        <p>Strip the gag off and there is a real thing underneath, and it is the reason I keep pestering people about it:</p>
+
+        <p>One asset, four audiences, four different movies. The video did not change. The viewers changed it. Your brand film is a Rorschach blot with a budget, and every person who watches it is bringing their own ghosts to fill in the shape.</p>
+
+        <p>Which gives you two choices and only two.</p>
+
+        <p>Pretend it isn't happening, ship the pretty thing, and let the internet decide what your lamp is. Or aim it. Know which ghosts your people are carrying — the books, the movies, the childhood grief, the specific and stupid cultural furniture crowding their attic — and build the piece so it collides with those on purpose.</p>
+
+        <p>The <a href="../services.html">tools got cheap this year</a>. Anybody can make the beautiful lamp now. Four hours and a subscription and you have got a beautiful lamp. What did not get cheap is knowing what the lamp is going to do inside somebody else's head at 3 a.m.</p>
+
+        <p>That part is still the job. That part was always the job.</p>
+
+        <p>Rant over. Not sorry.</p>
+
+        <p>If you build one, I want a credit, a poster, and Carl's original bulb in a shadow box.</p>
+
+        <p><em>Now go check on your lamp.</em></p>
+
+        <div class="faq-section">
+          <h2>Quick Questions From the Cheap Seats</h2>
+
+          <div class="faq-item">
+            <p class="faq-q">What is the IKEA lamp commercial everyone references?</p>
+            <p>"Lamp," directed by Spike Jonze for IKEA in 2002. A discarded desk lamp sits in the rain while a narrator informs the viewer that feeling sorry for it makes them crazy. It won the Grand Prix at Cannes Lions and has been quietly ripped off ever since.</p>
+          </div>
+
+          <div class="faq-item">
+            <p class="faq-q">What is Horrorstör about?</p>
+            <p>Grady Hendrix's 2014 novel, set in ORSK, a knockoff Scandinavian furniture superstore built on the site of a former prison. Staff work an overnight shift. Things go badly. The book is physically designed as a furniture catalog, complete with product illustrations, which is the best formal joke in modern horror.</p>
+          </div>
+
+          <div class="faq-item">
+            <p class="faq-q">Is AI video actually good now?</p>
+            <p>Good enough that the argument moved. When the conversation about a piece stops being "does the hand have six fingers" and starts being "what does this remind me of," the technology has left the room and the story is standing there alone. That is what happened to me with a lamp, and I did not ask for it.</p>
+          </div>
+
+          <div class="faq-item">
+            <p class="faq-q">Is there really a horror movie about a killer tire?</p>
+            <p>Rubber, 2010, Quentin Dupieux. The tire is named Robert. It kills with psychic powers. The film opens by explaining that everything in it happens for no reason. I have seen it three times.</p>
+          </div>
+        </div>
+
+        <div class="tags">
+          <span class="tag">ikea</span>
+          <span class="tag">ai filmmaking</span>
+          <span class="tag">horror</span>
+          <span class="tag">consumer mindset</span>
+          <span class="tag">runway</span>
+          <span class="tag">grady hendrix</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../app.js"></script>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    setTimeout(function(){
+      var igImg = document.querySelector('.ig-float img');
+      if(igImg) igImg.src = '../assets/files Icons/InstagramICON.png';
+    }, 0);
+  </script>
+</body>
+</html>
