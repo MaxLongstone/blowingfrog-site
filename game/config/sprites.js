@@ -312,5 +312,135 @@ export const SPRITES = {
   flare: { w: 3, h: 0.8, draw: (g, W, H) => { for (let i = 0; i < 6; i++) g.ellipse(-W / 2 + i * W / 6 + W / 12, 0, W / 10, H * (0.2 + i * 0.06)).fill({ color: i % 2 ? C.orange : C.yellow, alpha: 0.75 }); glowDisc(g, W / 2 - 10, 0, H * 0.5, C.white, 0.8); } },
 };
 
+
+// ---- boss one: Chaco, the frog boxer, and the ring ----------------------
+// One parameterised drawing per character so all twelve poses stay on-model.
+function chaco(g, W, H, o = {}) {
+  const s = Math.min(W, H) / 100;          // 100-unit design space
+  const px = (x, y) => [x * s, y * s];
+  const hide = o.wrecked ? 0x6d7566 : 0x7c846f;
+  const suit = o.wrecked ? 0xb9b19b : 0xefe9d8;
+  const lean = o.lean || 0, arm = o.arm || 0;
+  if (o.glow) glowDisc(g, 0, 0, 46 * s, C.red, 0.35);
+  // legs
+  for (const d of [-1, 1]) {
+    g.roundRect(...px(d * 13 - 7, 18), 14 * s, 30 * s, 6 * s).fill(suit); stroke(g, 2.5);
+    g.ellipse(...px(d * 13 + lean * 3, 50), 10 * s, 5 * s).fill(0xf6f3ea); stroke(g, 2);
+  }
+  // torso and open jacket
+  g.roundRect(...px(-20 + lean * 2, -18), 40 * s, 40 * s, 8 * s).fill(suit); stroke(g);
+  g.poly([...px(-6, -18), ...px(6, -18), ...px(2, 14), ...px(-2, 14)]).fill(hide);
+  for (let i = 0; i < 4; i++) g.circle(...px(-2, -8 + i * 7), 1.6 * s).fill(0xc9a227);
+  // arms
+  const ay = o.armY ?? 0;
+  g.roundRect(...px(-34 - arm * 16, -12 + ay), 18 * s, 10 * s, 5 * s).fill(suit); stroke(g, 2.5);
+  g.circle(...px(-38 - arm * 20, -7 + ay), 8 * s).fill(C.red); stroke(g, 2.5);
+  g.roundRect(...px(16 + arm * 10, -12 - ay), 18 * s, 10 * s, 5 * s).fill(suit); stroke(g, 2.5);
+  g.circle(...px(36 + arm * 22, -7 - ay), 8 * s).fill(C.red); stroke(g, 2.5);
+  // spines and head
+  for (let i = -2; i <= 2; i++) g.poly([...px(i * 7 - 4, -22), ...px(i * 7 + 4, -22), ...px(i * 7, -34)]).fill(hide);
+  g.ellipse(...px(lean * 4, -34), 19 * s, 16 * s).fill(hide); stroke(g);
+  g.poly([...px(-19, -40), ...px(-9, -34), ...px(-19, -28)]).fill(hide);
+  g.poly([...px(19, -40), ...px(9, -34), ...px(19, -28)]).fill(hide);
+  if (o.mouth === 'wide') {
+    g.ellipse(...px(lean * 4, -27), 12 * s, 11 * s).fill(0x2a0f12);
+    for (let i = -2; i <= 2; i++) { g.poly([...px(i * 5 - 2, -36), ...px(i * 5 + 2, -36), ...px(i * 5, -30)]).fill(0xfffaf0);
+      g.poly([...px(i * 5 - 2, -18), ...px(i * 5 + 2, -18), ...px(i * 5, -24)]).fill(0xfffaf0); }
+    g.ellipse(...px(lean * 4, -22), 7 * s, 5 * s).fill(C.pink);
+  } else {
+    g.moveTo(...px(-9, -28)).lineTo(...px(9, -28)).stroke({ width: 3 * s, color: OUT });
+    if (o.fang !== false) g.poly([...px(4, -28), ...px(8, -28), ...px(6, -22)]).fill(0xd9b430);
+  }
+  if (o.shades) { g.roundRect(...px(-16, -40), 32 * s, 9 * s, 3 * s).fill(0xc9a227); stroke(g, 2); }
+  else { for (const d of [-1, 1]) { g.circle(...px(d * 8, -37), 4 * s).fill(o.dazed ? 0xf3e6c8 : C.red);
+    if (o.dazed) { g.moveTo(...px(d * 8 - 3, -40)).lineTo(...px(d * 8 + 3, -34)).stroke({ width: 2 * s, color: OUT });
+      g.moveTo(...px(d * 8 + 3, -40)).lineTo(...px(d * 8 - 3, -34)).stroke({ width: 2 * s, color: OUT }); } } }
+  if (o.cigar) { g.roundRect(...px(8, -30), 14 * s, 3.5 * s, 1.5 * s).fill(0x6f4d2c); glowDisc(g, ...px(23, -28), 2.5 * s, C.orange, .9); }
+  if (o.powder) for (let i = 0; i < 22; i++) g.circle(...px(30 + (i % 7) * 6, -14 + ((i * 5) % 24) - 12), (1 + (i % 3)) * s).fill({ color: 0xffffff, alpha: .85 });
+  if (o.dust) for (let i = 0; i < 26; i++) g.circle(...px(-30 + (i * 7) % 62, -46 + ((i * 11) % 26)), (2 + (i % 4)) * s).fill({ color: 0xffffff, alpha: .7 });
+}
+
+function boxfrog(g, W, H, o = {}) {
+  const s = Math.min(W, H) / 100;
+  const px = (x, y) => [x * s, y * s];
+  const lean = o.lean || 0, squat = o.squat || 0;
+  for (const d of [-1, 1]) g.ellipse(...px(d * 20, 34 - squat * 4), 9 * s, 6 * s).fill(C.frog), stroke(g, 2);
+  g.ellipse(...px(lean * 8, 8 + squat * 10), 30 * s, (28 - squat * 6) * s).fill(C.frog); stroke(g);
+  g.ellipse(...px(lean * 8, 16 + squat * 8), 20 * s, 15 * s).fill(C.belly);
+  for (const [x, y] of [[-14, -4], [12, -8], [2, -14]]) g.circle(...px(x + lean * 8, y), 2.2 * s).fill({ color: C.frogDark, alpha: .7 });
+  // gloves
+  const gy = o.gloveY ?? 0;
+  for (const d of [-1, 1]) {
+    const gx = o.punch && d === 1 ? 40 : d * 30;
+    g.circle(...px(gx + lean * 6, -4 + gy + (o.up ? -26 : 0)), 11 * s).fill(C.red); stroke(g, 2.5);
+  }
+  // head
+  const hy = -20 + squat * 8;
+  g.ellipse(...px(lean * 9, hy), 22 * s, 18 * s).fill(C.frog); stroke(g);
+  for (const d of [-1, 1]) {
+    g.circle(...px(d * 11 + lean * 9, hy - 12), 9 * s).fill(C.frog); stroke(g, 2.5);
+    g.circle(...px(d * 11 + lean * 9, hy - 12), 6.5 * s).fill(C.eye);
+    if (o.dazed) { g.moveTo(...px(d * 11 + lean * 9 - 4, hy - 16)).lineTo(...px(d * 11 + lean * 9 + 4, hy - 8)).stroke({ width: 2.5 * s, color: OUT });
+      g.moveTo(...px(d * 11 + lean * 9 + 4, hy - 16)).lineTo(...px(d * 11 + lean * 9 - 4, hy - 8)).stroke({ width: 2.5 * s, color: OUT }); }
+    else if (o.shut) g.moveTo(...px(d * 11 + lean * 9 - 5, hy - 12)).lineTo(...px(d * 11 + lean * 9 + 5, hy - 12)).stroke({ width: 3 * s, color: OUT });
+    else g.circle(...px(d * 11 + lean * 9 + (o.lean ? lean * 2 : 0), hy - 12), 3 * s).fill(C.pupil);
+  }
+  if (o.tongue) { g.roundRect(...px(lean * 9, hy - 3), 46 * s, 7 * s, 3.5 * s).fill(C.pink); stroke(g, 2); g.circle(...px(lean * 9 + 46, hy + 0.5), 6 * s).fill(C.pink); }
+  else if (o.open) { g.ellipse(...px(lean * 9, hy + 2), 11 * s, 8 * s).fill(0x7d2130); g.ellipse(...px(lean * 9, hy + 5), 7 * s, 4 * s).fill(C.pink); }
+  else g.moveTo(...px(lean * 9 - 9, hy + 2)).quadraticCurveTo(...px(lean * 9, hy + (o.happy ? 7 : 4)), ...px(lean * 9 + 9, hy + 2)).stroke({ width: 3 * s, color: OUT, alpha: .8 });
+  if (o.stars) for (let i = 0; i < 5; i++) { const a = i * 1.26; g.poly([...px(Math.cos(a) * 30, hy - 26 + Math.sin(a) * 9), ...px(Math.cos(a) * 30 + 5, hy - 20 + Math.sin(a) * 9), ...px(Math.cos(a) * 30 - 5, hy - 20 + Math.sin(a) * 9)]).fill(C.yellow); }
+  if (o.dyn) { g.roundRect(...px(lean * 9 + 4, hy - 4), 22 * s, 7 * s, 3 * s).fill(C.red); stroke(g, 2); glowDisc(g, ...px(lean * 9 + 28, hy - 1), 3 * s, C.yellow, .9); }
+}
+
+Object.assign(SPRITES, {
+  chaco_idle:    { w: 3, h: 3.4, draw: (g, W, H) => chaco(g, W, H, { shades: true, cigar: true }) },
+  chaco_tell_jab:{ w: 3, h: 3.4, draw: (g, W, H) => chaco(g, W, H, { shades: true, cigar: true, lean: -0.6, armY: 6 }) },
+  chaco_jab:     { w: 3, h: 3.4, draw: (g, W, H) => chaco(g, W, H, { shades: true, arm: 0.9, lean: 0.5 }) },
+  chaco_tell_hay:{ w: 3, h: 3.4, draw: (g, W, H) => chaco(g, W, H, { shades: true, lean: -1, arm: -0.5, armY: -8 }) },
+  chaco_hay:     { w: 3, h: 3.4, draw: (g, W, H) => chaco(g, W, H, { arm: 1.3, lean: 1 }) },
+  chaco_chupada: { w: 3, h: 3.4, draw: (g, W, H) => chaco(g, W, H, { mouth: 'wide', arm: 0.5, lean: 0.4 }) },
+  chaco_stunned: { w: 3, h: 3.4, draw: (g, W, H) => chaco(g, W, H, { dazed: true, lean: -0.3, armY: 14, wrecked: true }) },
+  chaco_polvo:   { w: 3, h: 3.4, draw: (g, W, H) => chaco(g, W, H, { shades: true, powder: true, arm: 0.6 }) },
+  chaco_down:    { w: 3.4, h: 2.2, draw: (g, W, H) => chaco(g, W, H, { dazed: true, wrecked: true, armY: 20 }) },
+  chaco_intro:   { w: 3, h: 3.4, draw: (g, W, H) => chaco(g, W, H, { shades: true, cigar: true, arm: -0.6 }) },
+  chaco_taunt:   { w: 3, h: 3.4, draw: (g, W, H) => chaco(g, W, H, { shades: true, cigar: true, arm: 0.3, armY: -6 }) },
+  chaco_hurt:    { w: 3, h: 3.4, draw: (g, W, H) => chaco(g, W, H, { lean: -0.7, armY: 8 }) },
+  chaco_stagger: { w: 3, h: 3.4, draw: (g, W, H) => chaco(g, W, H, { dazed: true, lean: -1, armY: -12, wrecked: true }) },
+  chaco_belt:    { w: 3.2, h: 3.4, draw: (g, W, H) => chaco(g, W, H, { wrecked: true, arm: -0.8, armY: -18, mouth: 'wide' }) },
+  chaco_berserk: { w: 3, h: 3.4, draw: (g, W, H) => chaco(g, W, H, { wrecked: true, dust: true, glow: true, mouth: 'wide' }) },
+  chaco_rage:    { w: 3.2, h: 3.4, draw: (g, W, H) => chaco(g, W, H, { wrecked: true, glow: true, arm: 1.2, mouth: 'wide' }) },
+  chaco_dead:    { w: 3.4, h: 2.2, draw: (g, W, H) => chaco(g, W, H, { wrecked: true, dazed: true, armY: 22 }) },
+  chaco_win:     { w: 3, h: 3.4, draw: (g, W, H) => chaco(g, W, H, { wrecked: true, arm: -0.9, armY: -20, mouth: 'wide' }) },
+
+  boxfrog_guard: { w: 1.6, h: 1.6, draw: (g, W, H) => boxfrog(g, W, H, {}) },
+  boxfrog_left:  { w: 1.6, h: 1.6, draw: (g, W, H) => boxfrog(g, W, H, { lean: -1 }) },
+  boxfrog_right: { w: 1.6, h: 1.6, draw: (g, W, H) => boxfrog(g, W, H, { lean: 1 }) },
+  boxfrog_duck:  { w: 1.6, h: 1.6, draw: (g, W, H) => boxfrog(g, W, H, { squat: 1, shut: true, up: true }) },
+  boxfrog_tongue:{ w: 1.6, h: 1.6, draw: (g, W, H) => boxfrog(g, W, H, { tongue: true, punch: true }) },
+  boxfrog_eat:   { w: 1.6, h: 1.6, draw: (g, W, H) => boxfrog(g, W, H, { open: true, dyn: true }) },
+  boxfrog_hurt:  { w: 1.6, h: 1.6, draw: (g, W, H) => boxfrog(g, W, H, { dazed: true, lean: -0.6, open: true }) },
+  boxfrog_down:  { w: 1.8, h: 1.4, draw: (g, W, H) => boxfrog(g, W, H, { dazed: true, stars: true, squat: 1 }) },
+  boxfrog_win:   { w: 1.6, h: 1.6, draw: (g, W, H) => boxfrog(g, W, H, { up: true, open: true, happy: true }) },
+
+  ring_canvas: { w: 1, h: 1, draw: (g, W, H) => { g.rect(-W / 2, -H / 2, W, H).fill(0x8a7f6a);
+    for (let i = 0; i < 14; i++) g.circle((i * 37 % W) - W / 2, (i * 53 % H) - H / 2, 3 + (i % 3)).fill({ color: 0x6d6353, alpha: .5 }); } },
+  ring_fence: { w: 2, h: 2, draw: (g, W, H) => { for (let i = -6; i <= 6; i++) { g.moveTo(i * 16 - W / 2, -H / 2).lineTo(i * 16 + H - W / 2, H / 2).stroke({ width: 2, color: 0x8f95a0, alpha: .55 });
+    g.moveTo(i * 16 - W / 2, H / 2).lineTo(i * 16 + H - W / 2, -H / 2).stroke({ width: 2, color: 0x8f95a0, alpha: .55 }); } } },
+  ring_light: { w: 1.4, h: 2, draw: (g, W, H) => { g.rect(-3, -H * 0.1, 6, H * 0.6).fill(C.steelDark);
+    g.poly([-W * 0.3, -H * 0.5, W * 0.3, -H * 0.5, W * 0.22, -H * 0.16, -W * 0.22, -H * 0.16]).fill(C.steel); stroke(g, 2);
+    glowDisc(g, 0, -H * 0.32, W * 0.22, C.yellow, .95); } },
+  ring_crowd: { w: 4, h: 1, draw: (g, W, H) => { for (let i = 0; i < 18; i++) { const x = -W / 2 + i * (W / 17), h = H * (0.5 + (i % 4) * 0.1);
+    g.ellipse(x, H / 2 - h, 9, 11).fill(0x111114); g.roundRect(x - 11, H / 2 - h + 8, 22, h, 6).fill(0x111114); } } },
+  boss_dynamite: { w: 1, h: 1, draw: (g, W, H) => SPRITES.dynamite.draw(g, W, H) },
+  boss_bag: { w: 1, h: 1, draw: (g, W, H) => { g.roundRect(-W * 0.22, -H * 0.26, W * 0.44, H * 0.52, 6).fill({ color: 0xfdfdfd, alpha: .95 }); stroke(g, 2.5);
+    g.roundRect(-W * 0.1, -H * 0.34, W * 0.2, H * 0.1, 3).fill(0xd8d8d8); for (let i = 0; i < 9; i++) g.circle(-W * 0.14 + (i % 3) * W * 0.14, -H * 0.1 + Math.floor(i / 3) * H * 0.14, 3).fill({ color: 0xe6e6e6, alpha: .9 }); } },
+  boss_belt: { w: 2, h: 1, draw: (g, W, H) => { g.roundRect(-W / 2, -H * 0.18, W, H * 0.36, 5).fill(0x7a3d1d); stroke(g, 2);
+    g.ellipse(0, 0, W * 0.26, H * 0.46).fill(0xd9b430); stroke(g); g.ellipse(0, 0, W * 0.16, H * 0.3).fill(0xf0d878); } },
+  ring_post: { w: 1, h: 2.4, draw: (g, W, H) => { g.roundRect(-W * 0.16, -H / 2, W * 0.32, H, 5).fill(0x9b1f28); stroke(g);
+    for (let i = 0; i < 3; i++) g.roundRect(W * 0.1, -H * 0.34 + i * H * 0.28, W * 0.9, 6, 3).fill(0xe8e4d8); } },
+  boss_stars: { w: 1.6, h: 1.6, draw: (g, W, H) => { for (let i = 0; i < 6; i++) { const a = i * 1.05, r = Math.min(W, H) * 0.32;
+    g.poly([Math.cos(a) * r, Math.sin(a) * r - 8, Math.cos(a) * r + 7, Math.sin(a) * r + 5, Math.cos(a) * r - 7, Math.sin(a) * r + 5]).fill(C.yellow); } } },
+});
+
 export const SPRITE_KINDS = Object.keys(SPRITES);
 export { CELL, C as PALETTE };

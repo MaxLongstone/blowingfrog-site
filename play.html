@@ -34,7 +34,7 @@
     }
     #game-portal::after {
       content: ''; position: absolute; inset: 0;
-      background: radial-gradient(60% 55% at 50% 68%, rgba(0,0,0,.55), rgba(0,0,0,.86) 70%);
+      background: radial-gradient(52% 46% at 50% 68%, rgba(0,0,0,.72), rgba(0,0,0,.30) 78%);
     }
     /* While a stage is being played the art drops back so the game reads. */
     body.playing #game-portal { opacity: .28; filter: saturate(.5) blur(2px); transform: scale(1.09); }
@@ -106,7 +106,7 @@
     /* ── Overlay cards ── */
     .bf-overlay {
       position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-      background: rgba(6,6,8,0.88); backdrop-filter: blur(8px); z-index: 10;
+      background: rgba(6,6,8,0.86); backdrop-filter: blur(8px); z-index: 10;
       opacity: 1; padding: 20px;
       animation: bf-overlay-in .28s ease both;
     }
@@ -142,7 +142,13 @@
     .bf-btn.ghost { background: transparent; color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.25); padding: 12px 30px; font-size: 12px; }
     .bf-btn.ghost:hover { background: rgba(255,255,255,0.08); }
 
-    .bf-overlay.title .bf-card { max-width: 600px; }
+    /* The cabinet art is the point of the title screen, so let it through. */
+    .bf-overlay.title { background: rgba(6,6,8,0.42); backdrop-filter: blur(2px); }
+    .bf-overlay.title .bf-card {
+      max-width: 600px; padding: 26px 30px; border-radius: 18px;
+      background: rgba(6,6,8,0.80); backdrop-filter: blur(9px);
+      box-shadow: 0 24px 70px rgba(0,0,0,.7), inset 0 0 0 1px rgba(255,255,255,.09);
+    }
     .bf-modes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin: 6px 0 2px; }
     .bf-mode {
       text-align: left; background: rgba(255,255,255,0.04); border: 0; cursor: pointer;
@@ -193,6 +199,14 @@
       .bf-ach-grid { grid-template-columns: repeat(2, 1fr); gap: 7px; }
       .bf-ach-blurb { display: none; }
     }
+
+    .bf-overlay.boss .bf-card { max-width: 560px; }
+    .bf-overlay.boss .bf-body { font-size: 15.5px; }
+    .bf-overlay.boss.menace { background: rgba(2,2,3,0.94); }
+    .bf-overlay.boss.menace .bf-title { color: #e23c2f; }
+    .bf-beats { display: flex; gap: 7px; justify-content: center; margin-top: 6px; }
+    .bf-beat { width: 22px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.16); }
+    .bf-beat.on { background: var(--accent-lt); }
 
     .bf-overlay.share .bf-card { max-width: 470px; }
     .bf-share-preview {
@@ -270,6 +284,6 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/pixi.js@8.20.1/dist/pixi.min.js"></script>
-  <script type="module" src="game/main.js?v=18"></script>
+  <script type="module" src="game/main.js?v=24"></script>
 </body>
 </html>

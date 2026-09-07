@@ -10,6 +10,8 @@ import { STAGES, getStage, nextStage, validateStage } from './config/stages.js';
 import { Achievements } from './systems/achievements.js';
 import { MODES, readMode, writeMode, usesPaintedArt } from './core/mode.js';
 import { buildShareCard, shareCardNatively, downloadCard } from './ui/sharecard.js';
+import { BossFight } from './systems/bossfight.js';
+import { bossAfter } from './config/bosses.js';
 
 const CELL = 64, ROWS = 15;
 // A phone screen is far taller than it is wide, so a 13-wide field would leave the
@@ -94,6 +96,48 @@ class Game {
     this.play.on('dead', ({ score }) => this.onDead(stage, score));
   }
 
+  bossIntro(boss, carry, score, index = 0) {
+    this.paused = true;
+    this.hud.show(false);
+    const start = () => { this.overlays.hide(); this.startBoss(boss, carry, score); };
+    if (index >= boss.intro.length) { start(); return; }
+    this.overlays.bossIntro(boss, index,
+      () => (index === boss.intro.length - 1 ? start() : this.bossIntro(boss, carry, score, index + 1)),
+      start);
+  }
+
+  startBoss(boss, carry, score) {
+    this.overlays.hide();
+    this.clearPlay();
+    this.paused = false;
+    this.hud.show(true);
+    document.body.classList.add('playing');
+    this.play = new BossFight({
+      app: this.app, textures: this.tex, audio: this.audio, hud: this.hud,
+      frogState: carry, score, ach: this.ach,
+    });
+    this.play.on('won', ({ score }) => {
+      (this.beaten ||= new Set()).add(boss.id);
+      this.clearPlay();
+      const next = getStage(boss.after) && nextStage(boss.after);
+      this.saveBest(score);
+      this.hud.show(false);
+      if (!next) { this.title(); return; }
+      const st = { sizeClass: next.sizeClass, lives: 5, hearts: 3 };
+      this.overlays.stageCard(next, next.sizeClass, () => { this.overlays.hide(); this.start(next.id, st, score); });
+    });
+    this.play.on('lost', ({ score }) => {
+      this.saveBest(score);
+      this.ach.bump('deaths');
+      this.clearPlay();
+      this.hud.show(false);
+      this.overlays.gameOver(score, this.best, 'CHACO THE NARCO CHUPACABRA',
+        () => { this.overlays.hide(); this.startBoss(boss, carry, 0); },
+        () => { this.overlays.hide(); this.title(); },
+        () => this.showAchievements(() => this.title()), this.ach);
+    });
+  }
+
   async onGoal(stage, score) {
     document.body.classList.remove('playing');
     const state = this.play.frogState();
@@ -105,6 +149,9 @@ class Game {
     this.paused = false;
     score += 1000;
     this.saveBest(score);
+
+    const boss = bossAfter(stage.id);
+    if (boss && !this.beaten?.has(boss.id)) { this.bossIntro(boss, state, score); return; }
 
     const next = nextStage(stage.id);
     if (!next) { await this.finish(score); return; }

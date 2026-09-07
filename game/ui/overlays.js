@@ -150,6 +150,26 @@ export class Overlays {
     ], 'achievements');
   }
 
+  // Chaco's monologue, one beat at a time. The last beat starts the bout.
+  bossIntro(boss, index, onNext, onSkip) {
+    const beat = boss.intro[index];
+    const last = index === boss.intro.length - 1;
+    const go = el('button', 'bf-btn', last ? 'RING THE BELL' : 'GO ON');
+    go.onclick = onNext;
+    const skip = el('button', 'bf-btn ghost', 'SKIP THE SPEECH');
+    skip.onclick = onSkip;
+    const dots = el('div', 'bf-beats');
+    boss.intro.forEach((_, i) => dots.append(el('span', `bf-beat ${i <= index ? 'on' : ''}`)));
+    const kids = [
+      el('div', 'bf-eyebrow', index === 0 ? boss.eyebrow : boss.name),
+      el('h2', `bf-title small${beat.menace ? ' menace' : ''}`, beat.heading),
+    ];
+    for (const para of beat.body.split('\n\n')) kids.push(el('p', 'bf-body', para));
+    kids.push(dots, go);
+    if (!last) kids.push(skip);
+    this._show(kids, 'boss' + (beat.menace ? ' menace' : ''));
+  }
+
   stageCard(stage, size, onGo) {
     const btn = el('button', 'bf-btn', 'CONTINUE');
     btn.onclick = onGo;
