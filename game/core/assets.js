@@ -57,6 +57,13 @@ async function readManifest() {
   }
 }
 
+// How many painted sprites are installed, independent of which mode is active.
+// The loader only fetches art in painted mode, so the count has to come from here.
+export async function countPaintedSprites() {
+  const kinds = new Set(Object.keys(SPRITES));
+  return (await readManifest()).filter(k => kinds.has(k)).length;
+}
+
 export async function loadSprites(app, { usePng = true } = {}) {
   const map = new Map();
   const scales = new Map();

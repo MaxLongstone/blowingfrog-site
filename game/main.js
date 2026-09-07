@@ -1,5 +1,5 @@
 // Boot + state machine: title -> play -> cutscene -> next stage -> ... -> ending
-import { loadSprites } from './core/assets.js';
+import { loadSprites, countPaintedSprites } from './core/assets.js';
 import { Input } from './core/input.js';
 import { Audio } from './core/audio.js';
 import { Hud } from './ui/hud.js';
@@ -25,9 +25,10 @@ const readBest = () => { try { return Number(localStorage.getItem(BEST_KEY)) || 
 const writeBest = (n) => { try { localStorage.setItem(BEST_KEY, String(n)); } catch { /* private mode */ } };
 
 class Game {
-  constructor(app, textures, mount, overlayRoot, mode = 'atari') {
+  constructor(app, textures, mount, overlayRoot, mode = 'atari', artCount = 0) {
     this.app = app; this.tex = textures; this.mount = mount;
     this.mode = mode;
+    this.artCount = artCount;
     this.audio = new Audio();
     this.hud = new Hud(overlayRoot);
     this.overlays = new Overlays(overlayRoot);
@@ -59,6 +60,7 @@ class Game {
   async setMode(mode) {
     if (mode === this.mode || !MODES[mode]) return;
     this.mode = mode;
+    this.artCount = artCount;
     writeMode(mode);
     this.tex = await loadSprites(this.app, { usePng: usesPaintedArt(mode) });
     this.title();
@@ -73,7 +75,7 @@ class Game {
       ach: this.ach,
       onAchievements: () => this.showAchievements(() => this.title()),
       mode: this.mode,
-      artCount: this.tex.overrideCount || 0,
+      artCount: this.artCount,
       onMode: (m) => this.setMode(m),
     });
   }
@@ -279,8 +281,11 @@ async function boot() {
   window.addEventListener('resize', () => fit(app, mount), { passive: true });
 
   const mode = readMode();
-  const textures = await loadSprites(app, { usePng: usesPaintedArt(mode) });
-  const game = new Game(app, textures, mount, overlayRoot, mode);
+  const [textures, artCount] = await Promise.all([
+    loadSprites(app, { usePng: usesPaintedArt(mode) }),
+    countPaintedSprites(),
+  ]);
+  const game = new Game(app, textures, mount, overlayRoot, mode, artCount);
 
   const qs = new URLSearchParams(location.search);
   const jump = qs.get('stage');

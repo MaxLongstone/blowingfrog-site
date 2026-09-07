@@ -41,12 +41,14 @@ export class Overlays {
     const picker = el('div', 'bf-modes');
     for (const m of Object.values(MODES)) {
       const chosen = m.id === mode;
-      const noArt = m.id === 'modern' && artCount === 0;
-      const card = el('button', `bf-mode ${chosen ? 'on' : ''} ${noArt ? 'bare' : ''}`);
+      const card = el('button', `bf-mode ${chosen ? 'on' : ''}`);
       card.append(
         el('div', 'bf-mode-kicker', m.kicker),
         el('div', 'bf-mode-title', m.title),
-        el('div', 'bf-mode-tag', noArt ? 'NO ART YET' : (m.id === 'modern' ? `${artCount} PAINTED SPRITES` : m.tag)),
+        // The full pitch is worth reading but too long for the card, so it waits
+        // for a hover. On touch, the stylesheet shows it inline instead.
+        el('div', 'bf-mode-hover', m.body),
+        el('div', 'bf-mode-tag', m.id === 'modern' ? `${artCount} PAINTED SPRITES` : m.tag),
       );
       card.onclick = () => { if (!chosen) onMode?.(m.id); };
       picker.append(card);

@@ -213,6 +213,12 @@
       .bf-screen .bf-mode-title { font-size: 13px; }
       .bf-screen .bf-mode-tag { font-size: 8px; }
       .bf-screen .bf-mode { padding: 10px 11px; }
+      .bf-mode-hover {
+        position: static; transform: none; opacity: 1; width: auto;
+        padding: 7px 0 0; background: none; backdrop-filter: none; box-shadow: none;
+        font-size: 11px; line-height: 1.45; color: rgba(255,255,255,.6);
+      }
+      .bf-mode-hover::after { display: none; }
       .bf-below {
         position: static; transform: none; padding: 0; gap: 10px;
         background: none; backdrop-filter: none; box-shadow: none;
@@ -236,7 +242,26 @@
     .bf-mode-title { font-family: var(--f-display); font-size: 15px; font-weight: 900; letter-spacing: .02em; margin: 3px 0 6px; line-height: 1.05; }
     .bf-mode-body { font-size: 10.5px; line-height: 1.5; color: rgba(255,255,255,0.62); }
     .bf-mode-tag { margin-top: 7px; font-family: var(--f-display); font-size: 8.5px; letter-spacing: .13em; color: rgba(255,255,255,0.38); }
-    .bf-mode.bare .bf-mode-tag { color: #f08a24; }
+    /* The full pitch, held back until you hover the card. */
+    .bf-mode { position: relative; }
+    .bf-mode-hover {
+      position: absolute; left: 50%; bottom: calc(100% + 10px);
+      transform: translate(-50%, 6px);
+      width: max(260px, 116%); padding: 12px 14px; border-radius: 11px;
+      font-family: var(--f-body); font-size: 12.5px; line-height: 1.55;
+      color: rgba(255,255,255,.86); text-align: left;
+      background: rgba(8,8,11,.96); backdrop-filter: blur(10px);
+      box-shadow: 0 16px 44px rgba(0,0,0,.75), inset 0 0 0 1px rgba(255,255,255,.12);
+      opacity: 0; pointer-events: none; z-index: 8;
+      transition: opacity .16s ease, transform .16s var(--ease);
+    }
+    .bf-mode-hover::after {
+      content: ''; position: absolute; top: 100%; left: 50%; margin-left: -7px;
+      border: 7px solid transparent; border-top-color: rgba(8,8,11,.96);
+    }
+    .bf-mode:hover .bf-mode-hover,
+    .bf-mode:focus-visible .bf-mode-hover { opacity: 1; transform: translate(-50%, 0); }
+    .bf-mode.on .bf-mode-hover { box-shadow: 0 16px 44px rgba(0,0,0,.75), inset 0 0 0 1px rgba(170,180,42,.5); }
     @media (max-width: 560px) {
       .bf-modes { grid-template-columns: 1fr; }
       .bf-mode-body { display: none; }
@@ -354,6 +379,6 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/pixi.js@8.20.1/dist/pixi.min.js"></script>
-  <script type="module" src="game/main.js?v=30"></script>
+  <script type="module" src="game/main.js?v=31"></script>
 </body>
 </html>
