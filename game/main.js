@@ -11,7 +11,7 @@ import { Achievements } from './systems/achievements.js';
 import { MODES, readMode, writeMode, usesPaintedArt } from './core/mode.js';
 import { buildShareCard, shareCardNatively, downloadCard } from './ui/sharecard.js';
 import { BossFight } from './systems/bossfight.js';
-import { bossAfter } from './config/bosses.js';
+import { bossAfter, getBoss, BOSSES } from './config/bosses.js';
 
 const CELL = 64, ROWS = 15;
 // A phone screen is far taller than it is wide, so a 13-wide field would leave the
@@ -289,9 +289,17 @@ async function boot() {
 
   const qs = new URLSearchParams(location.search);
   const jump = qs.get('stage');
+  // ?boss=chaco drops straight into a bout. Add &skip=1 to bypass the monologue.
+  const bossParam = qs.get('boss');
+  const boss = bossParam && (getBoss(bossParam) || (bossParam === '1' ? BOSSES[0] : null));
   loading?.remove();
 
-  if (jump && getStage(jump)) {
+  if (boss) {
+    game.audio.unlock();
+    const carry = { sizeClass: 3, lives: 5, hearts: 3 };
+    if (qs.get('skip')) game.startBoss(boss, carry, 0);
+    else game.bossIntro(boss, carry, 0);
+  } else if (jump && getStage(jump)) {
     const st = getStage(jump);
     game.audio.unlock();
     game.start(st.id, { sizeClass: st.sizeClass, lives: st.lives, hearts: st.hearts }, 0);
