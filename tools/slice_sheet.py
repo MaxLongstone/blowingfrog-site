@@ -45,6 +45,11 @@ SHEETS = {
                  "chaco_berserk", "chaco_rage", "chaco_dead", "chaco_win"]),
     "L": (3, 3, ["boxfrog_guard", "boxfrog_left", "boxfrog_right", "boxfrog_duck",
                  "boxfrog_tongue", "boxfrog_eat", "boxfrog_hurt", "boxfrog_down", "boxfrog_win"]),
+    # Boss two: the Landlord
+    "M": (3, 3, ["landlord_idle", "landlord_lift", "landlord_throw", "landlord_notes",
+                 "landlord_fling", "landlord_heft", "landlord_valve", "landlord_sit", "landlord_end"]),
+    "N": (3, 3, ["climb_plank", "climb_plank_rot", "boss_boiler", "boss_radiator",
+                 "boss_notice", "boss_box", "climb_scaffold", "climb_dish", "climb_ac"]),
     "K": (3, 3, ["ring_canvas", "ring_fence", "ring_light", "ring_crowd", "boss_dynamite",
                  "boss_bag", "boss_belt", "ring_post", "boss_stars"]),
 }

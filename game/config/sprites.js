@@ -442,5 +442,49 @@ Object.assign(SPRITES, {
     g.poly([Math.cos(a) * r, Math.sin(a) * r - 8, Math.cos(a) * r + 7, Math.sin(a) * r + 5, Math.cos(a) * r - 7, Math.sin(a) * r + 5]).fill(C.yellow); } } },
 });
 
+
+// ---- boss two: the Landlord ---------------------------------------------
+function landlord(g, W, H, o = {}) {
+  const s = Math.min(W, H) / 100;
+  const px = (x, y) => [x * s, y * s];
+  const vest = o.grim ? 0xb9b3a4 : 0xe6e1d2;
+  const skin = 0xd7a882;
+  for (const d of [-1, 1]) {                       // legs, socks, sandals
+    g.roundRect(...px(d * 13 - 8, 16), 16 * s, 30 * s, 5 * s).fill(0x5b6069); stroke(g, 2.5);
+    g.roundRect(...px(d * 13 - 9, 44), 18 * s, 7 * s, 3 * s).fill(0xf0ece0);
+    g.roundRect(...px(d * 13 - 11, 49), 22 * s, 6 * s, 3 * s).fill(0x8a6a44); stroke(g, 2);
+  }
+  g.ellipse(...px(0, 2), 30 * s, 26 * s).fill(skin); stroke(g);   // belly
+  g.roundRect(...px(-24, -22), 48 * s, 44 * s, 7 * s).fill(vest); stroke(g);
+  g.rect(...px(-7, -22), 14 * s, 44 * s).fill(skin);
+  for (const [x, y, r] of [[-12, -6, 3], [9, 4, 4], [-3, 12, 2.5]]) g.circle(...px(x, y), r * s).fill({ color: 0x9a8f7a, alpha: 0.5 });
+  const ay = o.armY ?? 0;
+  g.roundRect(...px(-42, -18 + ay), 20 * s, 11 * s, 5 * s).fill(skin); stroke(g, 2.5);
+  g.roundRect(...px(22, -18 - ay), 20 * s, 11 * s, 5 * s).fill(skin); stroke(g, 2.5);
+  g.ellipse(...px(0, -34), 19 * s, 17 * s).fill(skin); stroke(g);  // head
+  g.ellipse(...px(0, -46), 19 * s, 7 * s).fill(0x6d6255);
+  g.roundRect(...px(-16, -38), 32 * s, 8 * s, 3 * s).fill({ color: 0xdfe6ef, alpha: 0.75 }); stroke(g, 2);
+  for (const d of [-1, 1]) g.circle(...px(d * 8, -35), 2.6 * s).fill(OUT);
+  g.moveTo(...px(-8, -25)).quadraticCurveTo(...px(0, o.grim ? -28 : -23), ...px(8, -25)).stroke({ width: 3 * s, color: OUT, alpha: .8 });
+  g.roundRect(...px(-30, 6), 9 * s, 12 * s, 2 * s).fill(0xc9a227);  // keys on the belt
+  for (let i = 0; i < 3; i++) g.rect(...px(-28 + i * 3, 16), 2 * s, 7 * s).fill(0xc9a227);
+  if (o.clipboard) { g.roundRect(...px(28, -14), 16 * s, 22 * s, 2 * s).fill(0xa9743f); stroke(g, 2);
+    for (let i = 0; i < 4; i++) g.rect(...px(31, -9 + i * 5), 10 * s, 1.6 * s).fill({ color: OUT, alpha: .45 }); }
+  if (o.dust) for (let i = 0; i < 22; i++) g.circle(...px(-34 + (i * 7) % 70, -48 + ((i * 13) % 30)), (2 + i % 3) * s).fill({ color: 0x8a8078, alpha: .5 });
+}
+
+Object.assign(SPRITES, {
+  landlord_idle: { w: 3.2, h: 3.4, draw: (g, W, H) => landlord(g, W, H, { clipboard: true }) },
+  landlord_end:  { w: 3.2, h: 3.4, draw: (g, W, H) => landlord(g, W, H, { grim: true, dust: true, armY: -10 }) },
+  landlord_win:  { w: 3.2, h: 3.4, draw: (g, W, H) => landlord(g, W, H, { clipboard: true, armY: -14 }) },
+  boss_box: { w: 1.8, h: 1.6, draw: (g, W, H) => {
+    g.roundRect(-W * 0.4, -H * 0.55, W * 0.8, H * 0.55, 5).fill(0x171519); stroke(g);
+    g.roundRect(-W * 0.4, -H * 0.62, W * 0.8, W * 0.09, 3).fill(0x24212a);
+    g.rect(-W * 0.05, -H * 0.55, W * 0.1, H * 0.55).fill({ color: 0x3a3540, alpha: .8 });
+    g.circle(0, -H * 0.30, W * 0.07).fill(0xc9a227);
+    shine(g, -W * 0.2, -H * 0.46, W * 0.12, H * 0.05);
+  } },
+});
+
 export const SPRITE_KINDS = Object.keys(SPRITES);
 export { CELL, C as PALETTE };

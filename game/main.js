@@ -11,6 +11,7 @@ import { Achievements } from './systems/achievements.js';
 import { MODES, readMode, writeMode, usesPaintedArt } from './core/mode.js';
 import { buildShareCard, shareCardNatively, downloadCard } from './ui/sharecard.js';
 import { BossFight } from './systems/bossfight.js';
+import { ClimbFight } from './systems/climbfight.js';
 import { bossAfter, getBoss, BOSSES } from './config/bosses.js';
 
 const CELL = 64, ROWS = 15;
@@ -113,7 +114,8 @@ class Game {
     this.paused = false;
     this.hud.show(true);
     document.body.classList.add('playing');
-    this.play = new BossFight({
+    const Fight = boss.kind === 'climb' ? ClimbFight : BossFight;
+    this.play = new Fight({
       app: this.app, textures: this.tex, audio: this.audio, hud: this.hud,
       frogState: carry, score, ach: this.ach,
     });
@@ -132,7 +134,7 @@ class Game {
       this.ach.bump('deaths');
       this.clearPlay();
       this.hud.show(false);
-      this.overlays.gameOver(score, this.best, 'CHACO THE NARCO CHUPACABRA',
+      this.overlays.gameOver(score, this.best, boss.name,
         () => { this.overlays.hide(); this.startBoss(boss, carry, 0); },
         () => { this.overlays.hide(); this.title(); },
         () => this.showAchievements(() => this.title()), this.ach);
