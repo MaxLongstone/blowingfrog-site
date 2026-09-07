@@ -14,7 +14,7 @@ export const MODES = {
     id: 'modern',
     kicker: 'MODE TWO',
     title: 'THE 2026 VERSION',
-    body: 'Rendered felt, scorched hide and wet highlights. Every bolt on the tanks, every hair in the chef’s moustache, every glistening toe pad on you. It costs more to look at and it is worth every credit. This is what four hundred billion viewers actually paid for.',
+    body: 'Rendered felt, scorched hide and wet highlights. Every bolt on the tanks, every hair in the chef’s moustache, every glistening toe pad on you. It costs more to look at and it is worth every credit. This is what somebody sat up all night drawing, so look at it properly.',
     tag: 'NEEDS PAINTED ART',
   },
 };

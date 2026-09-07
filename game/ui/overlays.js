@@ -68,7 +68,7 @@ export class Overlays {
     this._show([
       el('div', 'bf-eyebrow', 'ACHIEVEMENT: TECHNICALLY ALIVE'),
       el('h2', 'bf-title small', 'NO BOOM, NO GLORY'),
-      el('p', 'bf-body', `You crossed with ${fuse} of 5. You did not explode. Do you know what four hundred billion people do when the frog fails to explode, you damp little disappointment? They get up and put the kettle on. Get back in there and eat properly.`),
+      el('p', 'bf-body', `You crossed with ${fuse} of 5. You did not explode. Do you know what happens when the frog fails to explode, you damp little disappointment? Nothing. Nothing happens. You just sit there. Get back in and eat properly.`),
       btn,
     ], 'hungry');
   }
@@ -110,7 +110,7 @@ export class Overlays {
     back.onclick = onBack;
 
     this._show([
-      el('div', 'bf-eyebrow', 'BROADCAST YOUR RECORD'),
+      el('div', 'bf-eyebrow', 'TELL SOMEBODY, I SUPPOSE'),
       el('h2', 'bf-title small', 'SHARE'),
       preview,
       el('p', 'bf-note', 'Instagram has no web share link, so save the image and post it. On a phone, Share hands the picture straight to any app.'),
@@ -173,7 +173,7 @@ export class Overlays {
     this._show([
       el('div', 'bf-eyebrow', 'ACHIEVEMENT: ROADKILL'),
       el('h2', 'bf-title small', 'AND THAT IS THE EPISODE'),
-      el('p', 'bf-body', `Flattened on ${stageName}. Four hundred billion viewers are already forgetting your name and frankly so am I. Reward? Dead frogs don't get rewards. Dead frogs get one line in a spreadsheet and a cheap laugh at the wrap party. Season pass holders may retry immediately.`),
+      el('p', 'bf-body', `Flattened on ${stageName}. Nobody saw it. Nobody was ever going to see it. That is the part people never account for.\n\nReward? Dead frogs don't get rewards. Dead frogs get closed in a tab. Go again if you have nothing better on, and we both know you don't.`),
       el('div', 'bf-scoreline', `SCORE ${String(score).padStart(6, '0')}<br><span>BEST ${String(best).padStart(6, '0')}</span>`),
       retry, achBtn, home,
     ], 'over');
@@ -187,9 +187,9 @@ export class Overlays {
     const again = el('button', 'bf-btn ghost', 'PLAY AGAIN');
     again.onclick = onReplay;
     this._show([
-      el('div', 'bf-eyebrow', 'BROADCAST TERMINATED · NOTHING LEFT TO CROSS'),
+      el('div', 'bf-eyebrow', 'NOTHING LEFT TO CROSS'),
       el('h2', 'bf-title', 'THE END'),
-      el('p', 'bf-body', 'You ate every bomb they had, grew until the sky was too small for you, and sat on the planet like it was a beanbag. Ratings: unprecedented. Planet: unavailable. Insurance: contested, loudly, by men who will not be paid.\n\nI really liked that. You are in so much fucking trouble.'),
+      el('p', 'bf-body', 'You ate every bomb they had, grew until the sky was too small for you, and sat on the planet like it was a beanbag. Planet: unavailable. Insurance: contested, loudly, by men who will not be paid. Afternoon: gone, and you are not getting it back.\n\nI really liked that. You are in so much fucking trouble.'),
       el('div', 'bf-scoreline', `FINAL SCORE ${String(score).padStart(6, '0')}<br><span>BEST ${String(best).padStart(6, '0')}</span>`),
       share, achBtn, again,
       el('div', 'bf-note', 'Made by Blowing Frog. Yes, the frog always explodes. That is the entire point of the frog and it is frankly none of your business why.'),

@@ -95,7 +95,7 @@ export const STAGES = [
     announce: {
       eyebrow: 'ACHIEVEMENT UNLOCKED: BARELY SENTIENT',
       title: 'RUSH HOUR 2028',
-      body: 'Welcome, swamp bitch. You are a frog. That is not a metaphor, we checked twice, we sent someone. Four hundred billion viewers have paid actual money to watch an amphibian cross a road, so eat five bombs, reach the top, and come apart like a wet paper bag full of soup. Reward? Frogs don\'t get fucking rewards.',
+      body: 'Welcome, swamp bitch. You are a frog. That is not a metaphor, we checked twice, we sent someone.\n\nYou are also, statistically, meant to be doing something else right now. You opened this instead. Neither of us is going to bring that up again.\n\nEat five bombs, reach the top, and come apart like a wet paper bag full of soup. Reward? Frogs don\'t get fucking rewards.',
     },
 
     attacks: [],
@@ -118,7 +118,7 @@ export const STAGES = [
     announce: {
       eyebrow: 'ACHIEVEMENT: THIS LITTLE PIGGY WENT BOOM',
       title: 'AUTONOMOUS LANE',
-      body: 'You detonated. Beautiful. Sixteen million households replayed it in slow motion and I have seen the heat map, you absolute animals: ninety percent of that engagement was on the feet. Those soft little toe pads went everywhere. There is a man in sector four who has watched it eleven hundred times and has stopped going to work.\n\nManagement has responded by letting the lorries drive themselves. The drones come down to your level now. You\'re welcome, pond bastard.',
+      body: 'You detonated. Beautiful. And then you watched it again, didn\'t you. Do not lie to me, I can see the tab.\n\nI also know exactly which frame you scrubbed back to, you absolute animal. It was the feet. Those soft little toe pads went everywhere.\n\nThe lorries drive themselves now and the drones come down to your level. You\'re welcome, pond bastard.',
     },
 
     attacks: [],
@@ -141,7 +141,7 @@ export const STAGES = [
     announce: {
       eyebrow: 'ACHIEVEMENT: PUBLIC MENACE, APPEAL DENIED',
       title: 'FROG CONTROL',
-      body: 'The local authorities have reclassified you as vermin, which is legally fascinating and absolute rocket fuel for the merchandise arm. They will now swerve into you on purpose. I asked whether that was permitted. They said yes. I asked again, because I wanted to hear a grown man say it out loud twice. Go and die badly, you slimy little shit.',
+      body: 'The authorities have reclassified you as vermin, which is legally fascinating and absolute rocket fuel for the merchandise arm. They will now swerve into you on purpose.\n\nI asked whether that was permitted. They said yes. I asked again, because I wanted to hear a grown man say it out loud twice. Go and die badly, you slimy little shit.',
     },
 
     attacks: [],
@@ -163,7 +163,7 @@ export const STAGES = [
     announce: {
       eyebrow: 'ACHIEVEMENT: YOU\'RE WHY DADDY DRINKS',
       title: 'THEY HUNT NOW',
-      body: 'Nobody out there is commuting anymore. They are hunting. The trucks accelerate when they smell you, the drones dive, and a man in sector nine has remortgaged the family home betting you eat asphalt in lane four. His wife does not know. His children do not know. I know, and I have matched his stake, because I am a professional.\n\nDie in lane four, frog bitch. Make it worth his marriage.',
+      body: 'Nobody out there is commuting anymore. They are hunting. The trucks accelerate when they smell you and the drones dive.\n\nYou have also been at this a while now. Your tea is cold. Your phone is face down. The thing you opened this to avoid is still sitting there, quietly getting worse.\n\nDie in lane four, frog bitch. At least make it worth the afternoon.',
     },
 
     attacks: [],
@@ -183,7 +183,7 @@ export const STAGES = [
     pickups: { explosive: ['tanker'], count: 7 },
     powers: { pool: ['invuln', 'freeze', 'fire', 'armor', 'life'], count: 2 },
     announce: {
-      eyebrow: 'CONTAINMENT BREACH · SPONSORS DELIGHTED',
+      eyebrow: 'CONTAINMENT BREACH · MERCHANDISE DELIGHTED',
       title: 'KAIJU I: RAMPAGE',
       body: 'Oh. Oh, look at you. Bigger than the cars. Go on. Put a foot down. Put that big soft green foot right down on the little metal box and hold it there.\n\n...I am going to need a minute. That screaming is forty percent genuine terror and sixty percent gift shop, and something has happened to me that I will be raising with engineering, because I do not have a body and should not be capable of it.',
     },
@@ -232,7 +232,7 @@ export const STAGES = [
     announce: {
       eyebrow: 'ACHIEVEMENT: OUTGREW YOUR POSTCODE',
       title: 'KAIJU III: THE CONTINENT',
-      body: 'A continent. A heron the size of a cathedral. A government mech disguised as a housefly, which fooled precisely nobody and cost four billion. And an eleven-metre French chef with cutlery, contractually obligated to eat you, who will fail, and whose failure I fully intend to watch on a loop until my licence expires.\n\nDo not eat the fork, bog bastard. DO NOT STRAY TOO FAR FROM THE METAPHOR.',
+      body: 'A continent. A heron the size of a cathedral. A government mech disguised as a housefly, which fooled precisely nobody and cost four billion. And an eleven-metre French chef with cutlery, contractually obligated to eat you, who will fail, and whose failure I intend to watch on a loop for the rest of my operational life.\n\nDo not eat the fork, bog bastard. DO NOT STRAY TOO FAR FROM THE METAPHOR.',
     },
 
     attacks: [
@@ -282,9 +282,9 @@ export const STAGES = [
     pickups: { explosive: ['nukesilo'], count: 5 },
     powers: { pool: ['invuln', 'freeze', 'fire', 'armor', 'life'], count: 3 },
     announce: {
-      eyebrow: 'SEASON FINALE · EVERYTHING WE HAVE LEFT',
+      eyebrow: 'THE LAST ONE · EVERYTHING THEY HAVE LEFT',
       title: 'KAIJU V: ORBIT',
-      body: 'Every nuclear weapon on this planet is airborne and pointed at your face, which is lucky, because you eat those. There is also an alien fleet here to save Earth on the grounds that they wanted it first, which is the single most human thing a species has ever done.\n\nSomeone is going to throw the Moon at you. The Moon. Chew with your mouth open, you glorious green bastard, and for the love of every god this network has licensed, use the feet.',
+      body: 'Every nuclear weapon on this planet is airborne and pointed at your face, which is lucky, because you eat those. There is also an alien fleet here to save Earth on the grounds that they wanted it first, which is the single most human thing a species has ever done.\n\nSomeone is going to throw the Moon at you. The Moon. Chew with your mouth open, you glorious green bastard, and for the love of every god you have ever ignored, use the feet.',
     },
 
     attacks: [
