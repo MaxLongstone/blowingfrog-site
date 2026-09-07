@@ -21,11 +21,24 @@
     #game-root {
       position: fixed; inset: var(--nav-h) 0 0 0;
       display: flex; align-items: center; justify-content: center;
-      background:
-        radial-gradient(120% 90% at 50% 0%, rgba(139,148,33,0.16), transparent 62%),
-        var(--bg);
+      background: var(--bg);
       overflow: hidden;
     }
+    /* The cabinet art. Its painted screen is the black rectangle at 50% / 68%,
+       so the playfield is offset down to sit on it rather than dead centre. */
+    #game-portal {
+      position: absolute; inset: 0; z-index: 0;
+      background: url('assets/images/game-portal.jpg') center 42% / cover no-repeat;
+      transition: opacity .6s ease, filter .6s ease, transform 8s linear;
+      transform: scale(1.04);
+    }
+    #game-portal::after {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(60% 55% at 50% 68%, rgba(0,0,0,.55), rgba(0,0,0,.86) 70%);
+    }
+    /* While a stage is being played the art drops back so the game reads. */
+    body.playing #game-portal { opacity: .28; filter: saturate(.5) blur(2px); transform: scale(1.09); }
+    #game-stack { position: relative; z-index: 1; }
     #game-stack { position: relative; }
     #game-mount {
       position: relative; border-radius: 16px; overflow: hidden;
@@ -247,6 +260,7 @@
   </nav>
 
   <main id="game-root">
+    <div id="game-portal" aria-hidden="true"></div>
     <div id="game-stack">
       <div id="game-mount">
         <div id="game-loading">Loading the swamp…</div>
@@ -256,6 +270,6 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/pixi.js@8.20.1/dist/pixi.min.js"></script>
-  <script type="module" src="game/main.js?v=17"></script>
+  <script type="module" src="game/main.js?v=18"></script>
 </body>
 </html>

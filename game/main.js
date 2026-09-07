@@ -51,7 +51,7 @@ class Game {
     preloadFrames().then(f => { this.frames = f; });
   }
 
-  clearPlay() { this.play?.destroy(); this.play = null; }
+  clearPlay() { this.play?.destroy(); this.play = null; document.body.classList.remove('playing'); }
 
   // Swapping mode rebuilds every texture, so it only happens from the title screen.
   async setMode(mode) {
@@ -88,12 +88,14 @@ class Game {
       ach: this.ach,
       painted: usesPaintedArt(this.mode),
     });
+    document.body.classList.add('playing');
     this.play.on('goal', ({ score }) => this.onGoal(stage, score));
     this.play.on('stillHungry', ({ fuse, score }) => this.onStillHungry(stage, fuse, score));
     this.play.on('dead', ({ score }) => this.onDead(stage, score));
   }
 
   async onGoal(stage, score) {
+    document.body.classList.remove('playing');
     const state = this.play.frogState();
     this.paused = true;
     this.hud.show(false);
@@ -116,6 +118,7 @@ class Game {
   }
 
   onStillHungry(stage, fuse, score) {
+    document.body.classList.remove('playing');
     const state = this.play.frogState();
     this.paused = true;
     this.hud.show(false);
@@ -128,6 +131,7 @@ class Game {
   }
 
   onDead(stage, score) {
+    document.body.classList.remove('playing');
     this.saveBest(score);
     this.ach.bump('deaths');
     this.paused = true;
