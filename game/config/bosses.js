@@ -77,28 +77,56 @@ export const LANDLORD = {
   intro: [
     {
       heading: 'HE IS AWARE OF THE BOILER',
-      body: 'That is a man. Not a monster, not a cryptid, not something the nineties coughed up. A man in a vest, sat at the top of a building he has owned since 1994 and repaired precisely never.\n\nHe is aware of the boiler. He has been aware of the boiler for thirty-one years. He will get to it.',
+      body: 'That is a man. Not a cryptid, not something the nineties coughed up, not a monster with a backstory and a grievance. A man in a vest.
+
+He has owned this building since 1994 and repaired it never. He is aware of the boiler. He has been aware of the boiler for thirty-one years, and awareness, swamp bitch, is the entirety of his contribution to it.
+
+Do not stand there waiting for him to turn evil. He will not. That would take doing something.',
     },
     {
-      heading: 'THE BUILDING IS THE FIGHT',
-      body: 'Look at what you are climbing. Scaffolding that went up for a fortnight and stayed a decade. Tarpaulin doing the job of a wall. Nine satellite dishes and no aerial. Air conditioning units dripping onto the washing of the flat below, which is also his, which he also has not fixed.\n\nNothing you stand on will hold you for long. That is not a trap he set. That is just the building.',
+      heading: 'NOTHING HERE WAS DESTROYED',
+      body: 'Look at what you are climbing. Scaffolding that went up for a fortnight in 2007. Tarpaulin doing the job of a wall. Nine satellite dishes and not one working aerial. An extractor fan venting directly into somebody\'s kitchen, which he knows about, because they told him, in writing, twice.
+
+Nothing here was destroyed. Everything here was simply left.
+
+That is the one trick your species has that no other animal managed. A dog cannot look at a problem and think: later. You invented later. You built an entire civilisation on later and then acted surprised that it smells of damp.',
     },
     {
       heading: 'HE WILL NOT BE SPEAKING',
-      body: 'Do not wait for a threat. He does not threaten. He does not negotiate. He will drop a boiler on you with the face of a man putting the bins out, and if you survive it he will make a note on the clipboard.\n\nThe good news, and I use the word loosely, is that the boilers are full of gas. He is arming you out of sheer negligence. Catch five and you go off in his stairwell.',
+      body: 'Do not wait for a threat. He does not threaten. He does not gloat. He will drop a boiler on you with the face of a man putting the bins out on the wrong day, and when it misses he will make a note and get to it.
+
+The good news, and I want to be clear about how thin the good news is, is that those boilers are full of gas, because he never serviced them either. He is arming you out of pure neglect. Catch five and you go off in his stairwell like a bad decision.
+
+He will not fix that either.',
     },
     {
       heading: 'THE BOX',
-      body: 'Note the black box beside him. He has one hand on it at all times. He has had that hand on it for as long as anyone in this building can remember.\n\nMy professional assessment, and I want to be clear that I have run the numbers: pornography. Obviously pornography. Let us not embarrass ourselves pretending it could be anything else.',
+      body: 'Note the black box. His hand has not left it. Nobody in this building has ever seen it open.
+
+My professional assessment: pornography. Obviously pornography. Let us not humiliate ourselves pretending a man like this is guarding anything else.
+
+I will revise as we go. I have never once been right about a box, and I have never once stopped guessing, which if you think about it makes me the second most human thing on this scaffolding.',
     },
     {
-      heading: 'WHAT A BUILDING LIKE THIS IS',
-      body: 'And you should understand what you are actually climbing, swamp bitch. Not a tower. A decision. Somebody worked out, on paper, with a calculator, that fixing it costs more than not fixing it, and that the people inside would absorb the difference with their lungs and their winters and their children.\n\nHe did not do anything to this building. That is the whole of it. Thirty-one years of not doing anything, stacked up, and now it is tall enough to climb.',
+      heading: 'HE IS YOU, WITH A BIGGER BOILER',
+      body: 'Understand what you are actually climbing. Not a tower. A decision, taken once, on paper, with a calculator, and never opened again.
+
+Somebody worked out that fixing it cost more than not fixing it, and that the difference would be absorbed by other people\'s lungs, other people\'s winters, other people\'s children coughing in a room he has never once stood in.
+
+There is no villain in this building. That is the worst thing about it.
+
+He is not cruel. He is you, with a bigger boiler. Every one of you has a thing you were told about in writing, twice. A message you have not answered that is older than some marriages. A noise the car makes. A mole.
+
+The species that split the atom cannot ring a plumber.
+
+Thirty-one years of not doing anything, stacked up and stacked up, until not doing anything got tall enough to climb.',
       menace: true,
     },
     {
       heading: 'GO ON THEN',
-      body: 'Up you go. Nothing holds for long, so keep moving. ARROWS climb in any direction you like, SPACE is your tongue for anything he drops, SHIFT is the glove for anything boarded shut.\n\nReach him three times and the building will do the rest. It has been waiting thirty-one years for an excuse.',
+      body: 'Up you go. Nothing holds for long, because nothing here was ever built to. ARROWS climb, SPACE is your tongue for whatever he drops, SHIFT punches a plank back together, which is one more repair than this building has had since 1994.
+
+Reach him three times. The building will see to the rest. It has been waiting thirty-one years for an excuse and you are close enough to one.',
     },
   ],
 
@@ -126,10 +154,10 @@ export const LANDLORD = {
     'Pornography. Obviously pornography.',
     'Correction. Magazines. Physical ones. Which is worse.',
     'Every deposit he has ever taken, in cash, in the original envelopes.',
-    'The boiler manual. Still shrink-wrapped.',
+    'The boiler manual, still shrink-wrapped, from a boiler he replaced in 1998 with a worse one.',
     'His wife. Not deceased. Just in there.',
     'Thirty years of post for a Mr G. Haddad, who has never lived here.',
-    'A smaller box.',
+    'A smaller box. Inside it, a smaller box. He has never checked.',
     'One tooth. Not his.',
     'The deed, which would prove he does not own this building.',
     'A film that was never released and should never be watched.',
