@@ -27,11 +27,16 @@ export class Overlays {
   }
   hide() { this.node.classList.remove('in'); this.node.style.display = 'none'; }
 
+  // The cabinet art already carries the logo, so the title screen only supplies
+  // what the art cannot: the rules, the mode choice, and the way in. Everything
+  // sits inside the painted black screen; the buttons drop below it.
   title({ onStart, best, ach, onAchievements, mode = 'atari', artCount = 0, onMode }) {
-    const btn = el('button', 'bf-btn', 'BEGIN THE SHOW');
-    btn.onclick = onStart;
-    const achBtn = el('button', 'bf-btn ghost', ach ? `ACHIEVEMENTS ${ach.count}/${ach.total}` : 'ACHIEVEMENTS');
-    achBtn.onclick = onAchievements;
+    const screen = el('div', 'bf-screen');
+    screen.append(
+      el('p', 'bf-screen-line', 'You are a frog. You cross a road. You eat five bombs and come apart, and each time you come back bigger, until you are the size of the planet and the planet is the one with the problem.'),
+      el('div', 'bf-keys', '<b>← ↑ ↓ →</b> hop &nbsp;·&nbsp; <b>SHIFT</b> tongue &nbsp;·&nbsp; on mobile, swipe and tap'),
+      el('p', 'bf-note', 'Anything that explodes is food, even in mid-air. Everything else is just going to hurt you.'),
+    );
 
     const picker = el('div', 'bf-modes');
     for (const m of Object.values(MODES)) {
@@ -41,36 +46,27 @@ export class Overlays {
       card.append(
         el('div', 'bf-mode-kicker', m.kicker),
         el('div', 'bf-mode-title', m.title),
-        el('div', 'bf-mode-body', m.body),
-        el('div', 'bf-mode-tag', noArt
-          ? 'NO PAINTED ART INSTALLED YET · LOOKS THE SAME FOR NOW'
-          : (m.id === 'modern' ? `${artCount} PAINTED SPRITES INSTALLED` : m.tag)),
+        el('div', 'bf-mode-tag', noArt ? 'NO ART YET' : (m.id === 'modern' ? `${artCount} PAINTED SPRITES` : m.tag)),
       );
       card.onclick = () => { if (!chosen) onMode?.(m.id); };
       picker.append(card);
     }
-    this._show([
-      el('div', 'bf-eyebrow', 'SWAMP BITCH REGISTRATION · NON-REFUNDABLE'),
-      el('h1', 'bf-title', 'FROG<span>POCALYPSE</span>'),
-      el('p', 'bf-body', 'You are a frog. You cross a road. You eat five bombs and come apart, and each time you come back bigger, until you are the size of the planet and the planet is the one with the problem.'),
-      el('div', 'bf-keys', '<b>← ↑ ↓ →</b> to hop &nbsp;·&nbsp; <b>SHIFT</b> to snap your tongue &nbsp;·&nbsp; on mobile, swipe to hop and tap to snap'),
-      el('p', 'bf-note', 'Anything that explodes is food, even in mid-air. Everything else is just going to hurt you.'),
-      picker,
-      btn,
-      achBtn,
-      best ? el('div', 'bf-best', `PREVIOUS BEST: ${String(best).padStart(6, '0')}`) : el('div', 'bf-best', ''),
-    ], 'title');
-  }
+    screen.append(picker);
 
-  stillHungry(fuse, onContinue) {
-    const btn = el('button', 'bf-btn', 'GO BACK IN');
-    btn.onclick = onContinue;
-    this._show([
-      el('div', 'bf-eyebrow', 'ACHIEVEMENT: TECHNICALLY ALIVE'),
-      el('h2', 'bf-title small', 'NO BOOM, NO GLORY'),
-      el('p', 'bf-body', `You crossed with ${fuse} of 5. You did not explode. Do you know what happens when the frog fails to explode, you damp little disappointment? Nothing. Nothing happens. You just sit there. Get back in and eat properly.`),
-      btn,
-    ], 'hungry');
+    const go = el('button', 'bf-btn', 'BEGIN THE SHOW');
+    go.onclick = onStart;
+    const achBtn = el('button', 'bf-btn ghost', ach ? `ACHIEVEMENTS ${ach.count}/${ach.total}` : 'ACHIEVEMENTS');
+    achBtn.onclick = onAchievements;
+    const below = el('div', 'bf-below');
+    below.append(go, achBtn);
+    if (best) below.append(el('div', 'bf-best', `PREVIOUS BEST: ${String(best).padStart(6, '0')}`));
+
+    this.node.innerHTML = '';
+    this.node.className = 'bf-overlay title';
+    this.node.append(screen, below);
+    this.node.style.display = 'block';
+    this.node.style.animation = 'none'; void this.node.offsetWidth; this.node.style.animation = '';
+    this.node.classList.add('in');
   }
 
   // previewUrl is an object URL for the rendered card; null while it is building.
