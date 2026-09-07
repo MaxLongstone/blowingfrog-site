@@ -10,28 +10,28 @@ export const CHACO = {
   intro: [
     {
       heading: 'THIRD OF A THIRD OF A THIRD',
-      body: 'Third son of a third son of a third daughter, which where he comes from means he was always going to end up either a saint or exactly this. The records are unclear. The records are also on fire.',
+      body: 'Third son of a third son of a third daughter, which where he comes from means he was always going to end up either a saint or exactly this. The records are unclear. The records are also on fire. The man who kept the records is in a drum.',
     },
     {
       heading: 'HE IS NOT AN ANIMAL, HE IS A DECADE',
-      body: 'Somebody ran the entire nineteen nineties through a centrifuge and this is what settled at the bottom. Daytime television screaming at itself. A president and his hot sauce. And that one sweaty year when the two most beautiful men alive decided vampirism was a love language and an entire generation quietly agreed. Twilight has nothing on this. Twilight was written by people who had never met one on a bad night in Miami.',
+      body: 'Somebody ran the entire nineteen nineties through a centrifuge and this is what settled at the bottom. Daytime television screaming at itself. A president and his hot sauce. And that one sweaty year when the two most beautiful men alive decided vampirism was a love language, and an entire generation went home, thought about it in the dark, and told absolutely nobody. Twilight has nothing on this. Twilight was written by people who have never had to hose out a barn.',
     },
     {
       heading: 'A NOTE FROM COMPLIANCE',
-      body: 'Before we go on, the network is obliged to inform you that everything you are about to watch is cultural appropriation. We took a Puerto Rican farm rumour, bolted it onto a Miami cartel fantasy that was already a Hollywood invention, put the result in a linen suit and taught it to box. This is the Jack Skellington school of research. We saw a thing we did not understand, we loved it instantly, and we have made it significantly worse.\n\nWe await the complaint. I would genuinely pay to watch that press conference: a person standing up in public to say the narco is theirs, that the whole blood-soaked costume is family property and we have no right to it.\n\nNobody is coming. Nobody has ever queued up to claim this one. So to the three of you already drafting the post: he is yours. Take him. Frame him. Put him on the fucking mantelpiece. That he belongs to no one is the entire point of him.',
+      body: 'Before we go on, the network is obliged to inform you that everything you are about to watch is cultural appropriation. We took a Puerto Rican farm rumour, bolted it onto a Miami cartel fantasy that was already a Hollywood invention, put the result in a linen suit and taught it to box. This is the Jack Skellington school of research. We saw a thing we did not understand, we loved it instantly, and we have made it significantly and irreversibly worse.\n\nWe await the complaint. I would genuinely pay to watch that press conference: a person standing up in public to say the narco is theirs, that the whole blood-soaked costume is family property and we have no right to it.\n\nNobody is coming. Nobody has ever queued up to claim this one. So to the three of you already drafting the post with your thumbs going like a fucking sewing machine: he is yours. Take him. Frame him. Put him on the mantelpiece next to your nan. That he belongs to no one is the entire point of him.',
     },
     {
       heading: 'THE TRUTH WAS OUT THERE. IT IS IN HERE NOW.',
-      body: 'He is what happens when Mulder and Scully stop arguing for one night. Every satellite dish in the hemisphere swung toward the same rumour at the same moment, and something crawled up the signal. The truth was out there. The truth is in a chain-link ring behind a warehouse, doing lines off a belt he did not win.',
+      body: 'He is what happens when Mulder and Scully finally stop arguing and get it out of their systems. Every satellite dish in the hemisphere swung toward the same rumour at the same moment, and something crawled up the signal. The truth was out there. The truth is in a chain-link ring behind a warehouse in Hialeah, doing lines off a belt he did not win, off the stomach of a man who is not going home.',
     },
     {
       heading: 'WHY THEY NEEDED HIM',
-      body: 'Ask yourself why a whole decade had to invent him, swamp bitch. Nineteen ninety-five. Everything being signed away in rooms nobody was invited to. Work going somewhere nobody would name out loud. And out in the fields the animals kept turning up bloodless and whole. Not eaten. Drained. Left intact, so you could see precisely what had been taken.\n\nThat is the monster a decade builds when it can feel itself being emptied and has nothing to point at.',
+      body: 'Ask yourself why a whole decade had to invent him, swamp bitch. Nineteen ninety-five. Everything being signed away in rooms nobody was invited to. Work going somewhere nobody would name out loud. And out in the fields the animals kept turning up bloodless and whole. Not eaten. Drained. Left whole and hollow in the dirt, so you could walk out at dawn and see precisely what had been taken and precisely how little mess it takes to do it.\n\nThat is the monster a decade builds when it can feel itself being emptied and has nothing to point at.',
       menace: true,
     },
     {
       heading: 'ANYWAY',
-      body: 'He is going to try to do that to you. Undefeated in eleven fights, nine of which were against livestock. He will not be removing the jacket. He has never removed the jacket. Two of those eleven opponents went down without him creasing it.\n\nHis mouth is the only soft thing on him, so it is the only way in, which is unfortunate, because it is also how he takes your bombs. Watch the chains. When they swing, he has already decided.',
+      body: 'He is going to try to do that to you. Undefeated in eleven fights, nine of which were against livestock. He will not be removing the jacket. He has never removed the jacket. Two of those eleven went down without him creasing it, and one of those two was a bull.\n\nHis mouth is the only soft thing on him, so it is the only way in, which is a genuine fucking shame, because it is also how he reaches into your guts and helps himself. Watch the chains, you beautiful little bastard. When they swing, he has already decided.',
     },
   ],
 

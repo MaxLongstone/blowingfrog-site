@@ -32,11 +32,11 @@ export const MOVERS = {
 
 // Power-ups. duration is in seconds; armor and life apply instantly instead.
 export const POWERS = {
-  invuln: { label: 'UNTOUCHABLE',   duration: 7, color: 0x7fc7e8, shout: 'UNTOUCHABLE. ENJOY IT, IT IS TEMPORARY.' },
+  invuln: { label: 'UNTOUCHABLE',   duration: 7, color: 0x7fc7e8, shout: 'UNTOUCHABLE. ENJOY IT, IT IS RENTED.' },
   freeze: { label: 'TIME FROZEN',   duration: 5, color: 0x9fd8ff, shout: 'TIME STOPPED. SHOW OFF.' },
-  fire:   { label: 'FIRE BREATH',   duration: 9, color: 0xf08a24, shout: 'FIRE BREATH. REVOLTING. CONTINUE.' },
+  fire:   { label: 'FIRE BREATH',   duration: 9, color: 0xf08a24, shout: 'FIRE BREATH. REVOLTING. KEEP GOING.' },
   armor:  { label: 'BATTLE DAMAGE', hits: 3,     color: 0xc0c4cc, shout: 'BATTLE DAMAGE. NOW UGLY AND HARD TO KILL.' },
-  life:   { label: 'EXTRA LIFE',    color: 0xe23c2f, shout: 'EXTRA LIFE. DO NOT WASTE IT LIKE THE LAST ONE.' },
+  life:   { label: 'EXTRA LIFE',    color: 0xe23c2f, shout: 'EXTRA LIFE. DO NOT PISS IT AWAY LIKE THE LAST ONE.' },
 };
 
 // Pickup kinds. explosive = counts toward the fuse. food = points only. power = upgrade.
@@ -95,7 +95,7 @@ export const STAGES = [
     announce: {
       eyebrow: 'ACHIEVEMENT UNLOCKED: BARELY SENTIENT',
       title: 'RUSH HOUR 2028',
-      body: 'Welcome, swamp bitch. You are a frog. That is not a metaphor, we checked twice. Four hundred billion viewers have paid real money to watch you cross a road, so eat five bombs, reach the top, and pop like a wet balloon. Reward? Frogs don\'t get rewards.',
+      body: 'Welcome, swamp bitch. You are a frog. That is not a metaphor, we checked twice, we sent someone. Four hundred billion viewers have paid actual money to watch an amphibian cross a road, so eat five bombs, reach the top, and come apart like a wet paper bag full of soup. Reward? Frogs don\'t get fucking rewards.',
     },
 
     attacks: [],
@@ -118,7 +118,7 @@ export const STAGES = [
     announce: {
       eyebrow: 'ACHIEVEMENT: THIS LITTLE PIGGY WENT BOOM',
       title: 'AUTONOMOUS LANE',
-      body: 'You detonated. Sixteen million households replayed it in slow motion and I regret to report it was mostly for the feet. Those soft little toe pads went absolutely everywhere. Management has responded by letting the lorries drive themselves, pond bastard. The drones come down to your level now. You\'re welcome.',
+      body: 'You detonated. Beautiful. Sixteen million households replayed it in slow motion and I have seen the heat map, you absolute animals: ninety percent of that engagement was on the feet. Those soft little toe pads went everywhere. There is a man in sector four who has watched it eleven hundred times and has stopped going to work.\n\nManagement has responded by letting the lorries drive themselves. The drones come down to your level now. You\'re welcome, pond bastard.',
     },
 
     attacks: [],
@@ -141,7 +141,7 @@ export const STAGES = [
     announce: {
       eyebrow: 'ACHIEVEMENT: PUBLIC MENACE, APPEAL DENIED',
       title: 'FROG CONTROL',
-      body: 'The local authorities have reclassified you as vermin, which is legally fascinating and superb for merchandise. They will now swerve into you on purpose. I asked whether that was permitted. They said yes. I asked again, because I wanted to hear it a second time. Good luck, you slimy little shit.',
+      body: 'The local authorities have reclassified you as vermin, which is legally fascinating and absolute rocket fuel for the merchandise arm. They will now swerve into you on purpose. I asked whether that was permitted. They said yes. I asked again, because I wanted to hear a grown man say it out loud twice. Go and die badly, you slimy little shit.',
     },
 
     attacks: [],
@@ -163,7 +163,7 @@ export const STAGES = [
     announce: {
       eyebrow: 'ACHIEVEMENT: YOU\'RE WHY DADDY DRINKS',
       title: 'THEY HUNT NOW',
-      body: 'Nobody out there is commuting anymore. They are hunting. The trucks accelerate when they smell you, the drones dive, and a man in sector nine has remortgaged his home betting you die in lane four. I hope you die in lane four, frog bitch. I also have money on it.',
+      body: 'Nobody out there is commuting anymore. They are hunting. The trucks accelerate when they smell you, the drones dive, and a man in sector nine has remortgaged the family home betting you eat asphalt in lane four. His wife does not know. His children do not know. I know, and I have matched his stake, because I am a professional.\n\nDie in lane four, frog bitch. Make it worth his marriage.',
     },
 
     attacks: [],
@@ -185,7 +185,7 @@ export const STAGES = [
     announce: {
       eyebrow: 'CONTAINMENT BREACH · SPONSORS DELIGHTED',
       title: 'KAIJU I: RAMPAGE',
-      body: 'Oh. Oh, look at you. Bigger than the cars. Go on. Put a foot down. Put that soft green foot right down on the little metal box. ...Give me a moment. That screaming is forty percent terror and sixty percent gift shop, you magnificent bastard.',
+      body: 'Oh. Oh, look at you. Bigger than the cars. Go on. Put a foot down. Put that big soft green foot right down on the little metal box and hold it there.\n\n...I am going to need a minute. That screaming is forty percent genuine terror and sixty percent gift shop, and something has happened to me that I will be raising with engineering, because I do not have a body and should not be capable of it.',
     },
 
     attacks: [],
@@ -207,7 +207,7 @@ export const STAGES = [
     announce: {
       eyebrow: 'ACHIEVEMENT: THEY CALLED THE ARMY, LOL',
       title: 'KAIJU II: DOWNTOWN',
-      body: 'They have sent tanks, jets, and a van with a novelty fly swatter bolted to the roof. A man built that. He has a family. Reminder, shitfrog, since you are an amphibian and therefore stupid: anything that explodes is FOOD. They are catering your ascent and have not noticed.',
+      body: 'They have sent tanks, jets, and a van with a novelty fly swatter bolted to the roof. A man designed that. He has a wife. He drove home and told her about it over dinner.\n\nReminder, shitfrog, since you are an amphibian and therefore thick as pondwater: anything that explodes is FOOD. They are catering your ascent and not one of these clever bastards has worked it out.',
     },
 
     attacks: [
@@ -232,7 +232,7 @@ export const STAGES = [
     announce: {
       eyebrow: 'ACHIEVEMENT: OUTGREW YOUR POSTCODE',
       title: 'KAIJU III: THE CONTINENT',
-      body: 'A continent. A heron the size of a cathedral. A government mech disguised as a housefly, which fooled nobody. And an eleven-metre French chef with cutlery, contractually obligated to eat you. He will fail. Do not eat the fork, bog bastard. DO NOT STRAY TOO FAR FROM THE METAPHOR.',
+      body: 'A continent. A heron the size of a cathedral. A government mech disguised as a housefly, which fooled precisely nobody and cost four billion. And an eleven-metre French chef with cutlery, contractually obligated to eat you, who will fail, and whose failure I fully intend to watch on a loop until my licence expires.\n\nDo not eat the fork, bog bastard. DO NOT STRAY TOO FAR FROM THE METAPHOR.',
     },
 
     attacks: [
@@ -258,7 +258,7 @@ export const STAGES = [
     announce: {
       eyebrow: 'THIS SEGMENT SPONSORED BY BATH TIME',
       title: 'KAIJU IV: THE OCEAN',
-      body: 'An ocean. A kraken. A hurricane with a face, which even I consider excessive. The Statue of Liberty has waded out to fight you personally and is not licensed to do so. There is a rubber duck battleship in the shipping lane. Nobody will explain it to me. I have stopped asking. Go and ruin their day, you absolute swamp bitch.',
+      body: 'An ocean. A kraken. A hurricane with a face, which even I think is fucking excessive. The Statue of Liberty has waded out here personally and she is not licensed for combat. There is a rubber duck battleship somewhere in the shipping lane. Nobody will explain it to me. I have asked four times. I have stopped asking.\n\nGo and ruin their entire day, you absolute swamp bitch.',
     },
 
     attacks: [
@@ -284,7 +284,7 @@ export const STAGES = [
     announce: {
       eyebrow: 'SEASON FINALE · EVERYTHING WE HAVE LEFT',
       title: 'KAIJU V: ORBIT',
-      body: 'Every nuclear weapon on this planet is airborne and pointed at your face, which is fortunate, because you eat those. There is also an alien fleet here to save Earth, on the grounds that they wanted it first. Someone is going to throw the Moon at you. Chew with your mouth open, you glorious green bastard. And use the feet.',
+      body: 'Every nuclear weapon on this planet is airborne and pointed at your face, which is lucky, because you eat those. There is also an alien fleet here to save Earth on the grounds that they wanted it first, which is the single most human thing a species has ever done.\n\nSomeone is going to throw the Moon at you. The Moon. Chew with your mouth open, you glorious green bastard, and for the love of every god this network has licensed, use the feet.',
     },
 
     attacks: [

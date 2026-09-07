@@ -52,7 +52,7 @@ export class Overlays {
     this._show([
       el('div', 'bf-eyebrow', 'SWAMP BITCH REGISTRATION · NON-REFUNDABLE'),
       el('h1', 'bf-title', 'FROG<span>POCALYPSE</span>'),
-      el('p', 'bf-body', 'You are a frog. You cross a road. You eat five bombs and explode, and each time you come back larger, until you are the size of the planet and the planet is the problem.'),
+      el('p', 'bf-body', 'You are a frog. You cross a road. You eat five bombs and come apart, and each time you come back bigger, until you are the size of the planet and the planet is the one with the problem.'),
       el('div', 'bf-keys', '<b>← ↑ ↓ →</b> to hop &nbsp;·&nbsp; <b>SHIFT</b> to snap your tongue &nbsp;·&nbsp; on mobile, swipe to hop and tap to snap'),
       el('p', 'bf-note', 'Anything that explodes is food, even in mid-air. Everything else is just going to hurt you.'),
       picker,
@@ -68,7 +68,7 @@ export class Overlays {
     this._show([
       el('div', 'bf-eyebrow', 'ACHIEVEMENT: TECHNICALLY ALIVE'),
       el('h2', 'bf-title small', 'NO BOOM, NO GLORY'),
-      el('p', 'bf-body', `You crossed with ${fuse} of 5. You did not explode. Do you know what an audience does when the frog fails to explode, you damp little disappointment? They change the channel. Get back in there and eat properly.`),
+      el('p', 'bf-body', `You crossed with ${fuse} of 5. You did not explode. Do you know what four hundred billion people do when the frog fails to explode, you damp little disappointment? They get up and put the kettle on. Get back in there and eat properly.`),
       btn,
     ], 'hungry');
   }
@@ -173,7 +173,7 @@ export class Overlays {
     this._show([
       el('div', 'bf-eyebrow', 'ACHIEVEMENT: ROADKILL'),
       el('h2', 'bf-title small', 'AND THAT IS THE EPISODE'),
-      el('p', 'bf-body', `Flattened on ${stageName}. Four hundred billion viewers are already forgetting your name, and frankly so am I. Reward? Dead frogs don't get rewards. Season pass holders may retry immediately.`),
+      el('p', 'bf-body', `Flattened on ${stageName}. Four hundred billion viewers are already forgetting your name and frankly so am I. Reward? Dead frogs don't get rewards. Dead frogs get one line in a spreadsheet and a cheap laugh at the wrap party. Season pass holders may retry immediately.`),
       el('div', 'bf-scoreline', `SCORE ${String(score).padStart(6, '0')}<br><span>BEST ${String(best).padStart(6, '0')}</span>`),
       retry, achBtn, home,
     ], 'over');
@@ -189,10 +189,10 @@ export class Overlays {
     this._show([
       el('div', 'bf-eyebrow', 'BROADCAST TERMINATED · NOTHING LEFT TO CROSS'),
       el('h2', 'bf-title', 'THE END'),
-      el('p', 'bf-body', 'You ate every bomb they had, grew until the sky was too small for you, and sat on the planet like it was a beanbag. Ratings: unprecedented. Planet: unavailable. I really liked that. You are in so much trouble.'),
+      el('p', 'bf-body', 'You ate every bomb they had, grew until the sky was too small for you, and sat on the planet like it was a beanbag. Ratings: unprecedented. Planet: unavailable. Insurance: contested, loudly, by men who will not be paid.\n\nI really liked that. You are in so much fucking trouble.'),
       el('div', 'bf-scoreline', `FINAL SCORE ${String(score).padStart(6, '0')}<br><span>BEST ${String(best).padStart(6, '0')}</span>`),
       share, achBtn, again,
-      el('div', 'bf-note', 'Made by Blowing Frog. Yes, the frog always explodes. That is the whole point of the frog.'),
+      el('div', 'bf-note', 'Made by Blowing Frog. Yes, the frog always explodes. That is the entire point of the frog and it is frankly none of your business why.'),
     ], 'ending');
   }
 }
