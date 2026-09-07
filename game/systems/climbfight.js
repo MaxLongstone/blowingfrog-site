@@ -63,6 +63,9 @@ export class ClimbFight {
     this.hazards = [];
     this.pending = [];          // telegraphed drops waiting to fall
     this.throwT = 0;            // how far he leans into frame
+    this.throwKind = null;
+    this.plankPool = [];
+    this.hazPool = [];
     this.attackTimers = {};
     for (const [k, a] of Object.entries(this.boss.attacks)) this.attackTimers[k] = a.every * this.rng.range(0.5, 1.1);
     this.guessIndex = 0;
@@ -302,12 +305,12 @@ export class ClimbFight {
         this.attackTimers[k] -= dt;
         if (this.attackTimers[k] <= 0) {
           this.attackTimers[k] = a.every * this.rng.range(0.75, 1.3);
-          if (k === 'corte') { this.blind = a.blindFor; this.hud.say('HE CUT THE POWER', 1600); this.audio.warn(); }
+          if (k === 'corte') { this.blind = a.blindFor; this.hud.say('HE CUT THE POWER', 1600); this.audio.warn(); this.throwT = 0.55; this.throwKind = 'corte'; }
           else {
             // Warn first. A column lights up, then the thing comes down it.
             const col = a.aimed ? this.col : this.rng.int(0, COLS - 1);
             this.pending.push({ kind: k, col, t: a.tell });
-            this.throwT = 0.55;
+            this.throwT = 0.55; this.throwKind = k;
             this.audio.warn();
           }
         }
@@ -365,18 +368,20 @@ export class ClimbFight {
   render(dt) {
     // platforms
     const g = this.plat; g.clear();
+    let pi = 0;
     for (const [k, p] of this.platforms) {
       if (p.resp > 0) continue;
       const [c, r] = k.split(',').map(Number);
-      const x = c * CELL, y = r * CELL + CELL * 0.72;
       const rotting = p.life > 0;
-      const k2 = rotting ? p.life / this.boss.platformLife : 1;
-      g.roundRect(x + 3, y, CELL - 6, 13, 4)
-        .fill({ color: rotting ? 0xb4553f : 0x7d7488, alpha: rotting ? 0.55 + k2 * 0.45 : 0.95 });
-      if (rotting) for (let i = 0; i < 3; i++)
-        g.moveTo(x + 10 + i * 18, y).lineTo(x + 6 + i * 18, y + 13).stroke({ width: 2, color: 0x2a2430, alpha: 0.8 });
-      if (p.shored) g.roundRect(x + 3, y - 3, CELL - 6, 3, 2).fill({ color: 0xc0c4cc, alpha: 0.9 });
+      const kind = rotting ? 'climb_plank_rot' : 'climb_plank';
+      const sp = this.poolSprite(this.plankPool, pi++, kind, this.plat.parent === this.world ? this.layer : this.layer);
+      sp.scale.set(this.tex.scaleFor(kind) * 1.0);
+      sp.x = (c + 0.5) * CELL;
+      sp.y = r * CELL + CELL * 0.79;
+      sp.alpha = rotting ? 0.6 + (p.life / this.boss.platformLife) * 0.4 : 1;
+      if (p.shored) g.roundRect(c * CELL + 3, r * CELL + CELL * 0.69, CELL - 6, 3, 2).fill({ color: 0xc0c4cc, alpha: 0.9 });
     }
+    this.hidePool(this.plankPool, pi);
     // ground and ledge
     g.roundRect(0, GROUND * CELL + CELL * 0.72, W, 15, 4).fill(0x5a5168);
     g.roundRect(0, LEDGE * CELL + CELL * 0.72, W, 15, 4).fill(0x5a5168);
@@ -419,21 +424,16 @@ export class ClimbFight {
     }
 
     // falling things
+    let hi = 0;
     for (const h of this.hazards) {
-      const x = (h.col + 0.5) * CELL, y = (h.row + 0.5) * CELL;
-      const kind = h.kind;
-      if (kind === 'boiler') {
-        f.roundRect(x - 20, y - 26, 40, 52, 10).fill(0xd8d3c6); f.circle(x, y - 4, 9).fill(0xe23c2f);
-        f.rect(x - 6, y - 34, 12, 9).fill(0x8f95a0);
-      } else if (kind === 'radiator') {
-        f.roundRect(x - 26, y - 16, 52, 32, 4).fill(0x9aa0a8);
-        for (let i = 0; i < 5; i++) f.rect(x - 22 + i * 10, y - 14, 4, 28).fill(0x6e747c);
-      } else {
-        f.roundRect(x - 16, y - 20, 32, 40, 2).fill(0xf3efe2);
-        f.rect(x - 10, y - 12, 20, 3).fill(0x8a8578); f.rect(x - 10, y - 4, 14, 3).fill(0x8a8578);
-        f.rect(x - 10, y + 6, 18, 3).fill(0xe23c2f);
-      }
+      const kind = { boiler: 'boss_boiler', radiator: 'boss_radiator', notice: 'boss_notice' }[h.kind];
+      const sp = this.poolSprite(this.hazPool, hi++, kind, this.layer);
+      sp.scale.set(this.tex.scaleFor(kind) * 1.15);
+      sp.x = (h.col + 0.5) * CELL;
+      sp.y = (h.row + 0.5) * CELL;
+      sp.rotation = h.kind === 'notice' ? Math.sin(h.t * 4) * 0.5 : 0;
     }
+    this.hidePool(this.hazPool, hi);
     if (this.tongueT > 0) {
       const t = 1 - Math.abs(this.tongueT / TONGUE_TIME - 0.5) * 2;
       f.circle((this.col + 0.5) * CELL, (this.row + 0.2) * CELL - t * 40, 10 * t).fill(0xe86fa7);
@@ -454,10 +454,25 @@ export class ClimbFight {
   }
 
   attackTexture() {
-    if (this.over) return this.hearts <= 0 ? 'landlord_win' : 'landlord_end';
+    if (this.over) return this.hearts <= 0 ? 'landlord_sit' : 'landlord_end';
     if (this.collapse) return 'landlord_end';
-    return 'landlord_idle';
+    if (this.throwT > 0) return {
+      boiler: 'landlord_throw', radiator: 'landlord_heft',
+      notice: 'landlord_fling', corte: 'landlord_valve',
+    }[this.throwKind] || 'landlord_lift';
+    return this.pending.length ? 'landlord_lift' : 'landlord_idle';
   }
+
+  // Small sprite pools: reusing sprites keeps the painted art on screen without
+  // creating and destroying dozens of objects every frame.
+  poolSprite(pool, i, kind, parent) {
+    let sp = pool[i];
+    if (!sp) { sp = new PIXI.Sprite(); sp.anchor.set(0.5); parent.addChild(sp); pool[i] = sp; }
+    sp.texture = this.tex.get(kind);
+    sp.visible = true;
+    return sp;
+  }
+  hidePool(pool, from) { for (let i = from; i < pool.length; i++) pool[i].visible = false; }
 
   frogState() { return { sizeClass: 6, lives: this.lives, hearts: 3 }; }
   destroy() { this.world.destroy({ children: true }); }

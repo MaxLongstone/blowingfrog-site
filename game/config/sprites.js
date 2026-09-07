@@ -504,5 +504,60 @@ for (const [kind, opts] of Object.entries(CLIMB_POSES)) {
   SPRITES[kind] = { w: 1.7, h: 1.7, draw: (g, W, H) => frog(g, W, H, opts) };
 }
 
+
+// Poses and props from boss-two's sheets. ATARI draws them; the painted PNGs
+// override them one for one.
+Object.assign(SPRITES, {
+  landlord_lift:  { w: 3.2, h: 3.4, draw: (g, W, H) => landlord(g, W, H, { armY: 12 }) },
+  landlord_throw: { w: 3.2, h: 3.4, draw: (g, W, H) => landlord(g, W, H, { armY: -16 }) },
+  landlord_notes: { w: 3.2, h: 3.4, draw: (g, W, H) => landlord(g, W, H, { clipboard: true, armY: 4 }) },
+  landlord_fling: { w: 3.2, h: 3.4, draw: (g, W, H) => landlord(g, W, H, { armY: -10 }) },
+  landlord_heft:  { w: 3.2, h: 3.4, draw: (g, W, H) => landlord(g, W, H, { armY: -20, grim: true }) },
+  landlord_valve: { w: 3.2, h: 3.4, draw: (g, W, H) => landlord(g, W, H, { armY: 16, grim: true }) },
+  landlord_sit:   { w: 3.2, h: 2.8, draw: (g, W, H) => landlord(g, W, H, { clipboard: true, armY: 10 }) },
+
+  climb_plank: { w: 1, h: 0.32, draw: (g, W, H) => {
+    g.roundRect(-W / 2, -H / 2, W, H, 4).fill(0x7d7488); stroke(g, 2);
+    g.rect(-W / 2 + 4, -H / 2 + 2, 4, H - 4).fill({ color: 0x565061, alpha: .8 });
+    g.rect(W / 2 - 8, -H / 2 + 2, 4, H - 4).fill({ color: 0x565061, alpha: .8 });
+  } },
+  climb_plank_rot: { w: 1, h: 0.32, draw: (g, W, H) => {
+    g.roundRect(-W / 2, -H / 2, W, H, 4).fill(0xb4553f); stroke(g, 2);
+    for (let i = 0; i < 3; i++) g.moveTo(-W / 3 + i * W / 3, -H / 2).lineTo(-W / 3 - 4 + i * W / 3, H / 2).stroke({ width: 2, color: 0x2a2430 });
+  } },
+  boss_boiler: { w: 1, h: 1.3, draw: (g, W, H) => {
+    g.roundRect(-W * 0.38, -H * 0.4, W * 0.76, H * 0.8, 9).fill(0xd8d3c6); stroke(g);
+    g.circle(0, -H * 0.06, W * 0.16).fill(C.red);
+    g.rect(-W * 0.12, -H * 0.52, W * 0.24, H * 0.14).fill(C.steelDark);
+    shine(g, -W * 0.18, -H * 0.22, W * 0.1, H * 0.06);
+  } },
+  boss_radiator: { w: 1.4, h: 0.9, draw: (g, W, H) => {
+    g.roundRect(-W / 2, -H / 2, W, H, 4).fill(0xcfc8b6); stroke(g);
+    for (let i = 0; i < 5; i++) g.rect(-W * 0.42 + i * W * 0.2, -H * 0.44, W * 0.08, H * 0.88).fill(0x9a927f);
+    g.circle(-W * 0.4, H * 0.3, 4).fill(0xa06a3a);
+  } },
+  boss_notice: { w: 0.8, h: 1, draw: (g, W, H) => {
+    g.roundRect(-W / 2, -H / 2, W, H, 2).fill(0xf3efe2); stroke(g, 2);
+    for (let i = 0; i < 3; i++) g.rect(-W * 0.3, -H * 0.24 + i * H * 0.22, W * (0.5 - i * 0.1), 3).fill(0x8a8578);
+    g.circle(W * 0.24, H * 0.3, W * 0.16).fill({ color: C.red, alpha: .8 });
+  } },
+  climb_scaffold: { w: 2, h: 2, draw: (g, W, H) => {
+    for (const x of [-W * 0.35, W * 0.35]) g.rect(x - 4, -H / 2, 8, H).fill(0x6e6a5c);
+    for (const y of [-H * 0.3, H * 0.1]) g.rect(-W * 0.4, y, W * 0.8, 7).fill(0x6e6a5c);
+    g.moveTo(-W * 0.35, -H * 0.3).lineTo(W * 0.35, H * 0.1).stroke({ width: 5, color: 0x5a5750 });
+  } },
+  climb_dish: { w: 1.2, h: 1.2, draw: (g, W, H) => {
+    g.ellipse(0, 0, W * 0.4, H * 0.36).fill(0xd6d2c6); stroke(g, 2);
+    g.ellipse(0, 0, W * 0.26, H * 0.22).fill({ color: 0x9a9488, alpha: .7 });
+    g.rect(-3, 0, 6, H * 0.45).fill(0x6e6a5c);
+    g.circle(W * 0.16, -H * 0.06, 5).fill(0x6e6a5c);
+  } },
+  climb_ac: { w: 1.2, h: 0.9, draw: (g, W, H) => {
+    g.roundRect(-W * 0.4, -H * 0.4, W * 0.8, H * 0.8, 4).fill(0xc9c4b6); stroke(g);
+    for (let i = 0; i < 5; i++) g.rect(-W * 0.32, -H * 0.3 + i * H * 0.14, W * 0.64, 4).fill({ color: 0x8a8578, alpha: .8 });
+    g.circle(W * 0.3, H * 0.44, 4).fill({ color: 0x7fc7e8, alpha: .8 });
+  } },
+});
+
 export const SPRITE_KINDS = Object.keys(SPRITES);
 export { CELL, C as PALETTE };
