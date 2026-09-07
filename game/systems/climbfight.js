@@ -43,7 +43,7 @@ export class ClimbFight {
     this.landlordSprite.anchor.set(0.5, 1);
     this.boxSprite = new PIXI.Sprite(this.tex.get('boss_box'));
     this.boxSprite.anchor.set(0.5, 1);
-    this.frogSprite = new PIXI.Sprite(this.tex.get('boxfrog_guard'));
+    this.frogSprite = new PIXI.Sprite(this.tex.get('climbfrog_hold'));
     this.frogSprite.anchor.set(0.5, 1);
     this.layer.addChild(this.boxSprite, this.landlordSprite, this.frogSprite);
 
@@ -350,11 +350,16 @@ export class ClimbFight {
   }
 
   frogTexture() {
-    if (this.over) return this.hearts <= 0 ? 'boxfrog_down' : 'boxfrog_win';
-    if (this.punchT > 0) return 'boxfrog_right';
-    if (this.tongueT > 0) return 'boxfrog_tongue';
-    if (this.hopAnim) return 'boxfrog_duck';
-    return 'boxfrog_guard';
+    if (this.over) return this.hearts <= 0 ? 'climbfrog_fall' : 'climbfrog_top';
+    if (this.punchT > 0) return 'climbfrog_punch';
+    if (this.tongueT > 0) return 'climbfrog_catch';
+    if (this.hopAnim) {
+      const dc = this.col - this.hopAnim.fromC;
+      if (dc < 0) return 'climbfrog_left';
+      if (dc > 0) return 'climbfrog_right';
+      return this.row < this.hopAnim.fromR ? 'climbfrog_up' : 'climbfrog_fall';
+    }
+    return 'climbfrog_hold';
   }
 
   render(dt) {
@@ -390,7 +395,7 @@ export class ClimbFight {
     const fs = this.frogSprite;
     const ft = this.frogTexture();
     fs.texture = this.tex.get(ft);
-    fs.scale.set(this.tex.scaleFor(ft) * 1.15);
+    fs.scale.set(this.tex.scaleFor(ft) * 1.25);
     let fc = this.col, fr = this.row, arc = 0;
     if (this.hopAnim) {
       const t = Math.min(1, this.hopAnim.t / HOP_TIME), e = 1 - Math.pow(1 - t, 3);

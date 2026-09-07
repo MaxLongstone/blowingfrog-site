@@ -486,5 +486,23 @@ Object.assign(SPRITES, {
   } },
 });
 
+
+// ---- the climber: this fight happens after the first kaiju stage, so the frog
+// scaling this tower is the building-sized monster, not the boxer.
+const CLIMB_POSES = {
+  climbfrog_hold:  { angry: 2, spikes: true },
+  climbfrog_up:    { angry: 2.2, spikes: true },
+  climbfrog_left:  { angry: 2, spikes: true },
+  climbfrog_right: { angry: 2, spikes: true },
+  climbfrog_catch: { angry: 1.6, spikes: true },
+  climbfrog_punch: { angry: 2.6, spikes: true },
+  climbfrog_hurt:  { angry: 1.2, spikes: true, tint: 0xa9b23a },
+  climbfrog_fall:  { angry: 1, spikes: true, tint: 0xa9b23a },
+  climbfrog_top:   { angry: 3, spikes: true, fire: true },
+};
+for (const [kind, opts] of Object.entries(CLIMB_POSES)) {
+  SPRITES[kind] = { w: 1.7, h: 1.7, draw: (g, W, H) => frog(g, W, H, opts) };
+}
+
 export const SPRITE_KINDS = Object.keys(SPRITES);
 export { CELL, C as PALETTE };

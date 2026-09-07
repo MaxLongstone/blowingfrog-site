@@ -50,6 +50,9 @@ SHEETS = {
                  "landlord_fling", "landlord_heft", "landlord_valve", "landlord_sit", "landlord_end"]),
     "N": (3, 3, ["climb_plank", "climb_plank_rot", "boss_boiler", "boss_radiator",
                  "boss_notice", "boss_box", "climb_scaffold", "climb_dish", "climb_ac"]),
+    "O": (3, 3, ["climbfrog_hold", "climbfrog_up", "climbfrog_left", "climbfrog_right",
+                 "climbfrog_catch", "climbfrog_punch", "climbfrog_hurt", "climbfrog_fall",
+                 "climbfrog_top"]),
     "K": (3, 3, ["ring_canvas", "ring_fence", "ring_light", "ring_crowd", "boss_dynamite",
                  "boss_bag", "boss_belt", "ring_post", "boss_stars"]),
 }
