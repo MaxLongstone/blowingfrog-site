@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Great Filter, the Fermi Paradox, and Sam Altman</title>
+  <meta name="description" content="Fermi asked where everybody is. The Great Filter has a grim answer. And the people building AI signed a statement putting it next to nuclear war. Let's connect those three things.">
+  <meta name="keywords" content="great filter theory, Fermi paradox explained, Drake equation, dark forest theory, zoo hypothesis, AI existential risk, where is everybody Fermi">
+  <meta property="og:title" content="The Great Filter, the Fermi Paradox, and Sam Altman">
+  <meta property="og:description" content="Fermi asked where everybody is. The Great Filter has a grim answer. And the people building AI signed a statement putting it next to nuclear war.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="/assets/blogimages/fermi-paradox-trash-can.jpg">
+  <link rel="canonical" href="https://blowingfrog.com/blog/great-filter-fermi-paradox-ai-existential-risk">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the Fermi paradox?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The contradiction between the high estimated likelihood of extraterrestrial civilizations — given the age and size of the galaxy and the abundance of planets — and the total absence of any evidence for them. It's named for Enrico Fermi, who asked 'Where is everybody?' over lunch at Los Alamos in 1950, though he never published on it."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why did Fermi say 'Where is everybody?'",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "He and three colleagues had been joking on the walk to lunch about a New Yorker cartoon from May 1950 that blamed New York's missing trash cans on flying saucers. Mid-meal, Fermi returned to it unprompted, then worked through the odds of habitable planets, life, and intelligence out loud, concluding Earth should have been visited many times over."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the Drake equation and did it come from the Fermi paradox?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It's a seven-term equation estimating the number of communicating civilizations in the Milky Way. Frank Drake wrote it in 1961 — not as a response to Fermi, but as an agenda for the first SETI meeting at Green Bank. It's less a calculation than a way of organizing what we don't know."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the Great Filter theory?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Robin Hanson's proposal that somewhere in the chain of roughly nine steps from dead matter to a star-spanning civilization, there's a step almost nothing survives. The critical unknown is whether that filter is behind us or ahead of us. Counterintuitively, discovering alien life would be bad news — it would suggest the early steps are easy, meaning the hard part is still to come."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the dark forest theory?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Popularized by Liu Cixin's novel The Dark Forest: because you can't verify another civilization's intentions or growth rate across interstellar distances and timescales, the safest move on detecting anyone is to destroy them first. Under that logic, everyone stays silent, and the sky is quiet rather than empty."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the zoo hypothesis?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Proposed by John A. Ball in 1973: advanced civilizations know we're here and deliberately avoid contact, treating Earth as a protected preserve. Its weakness is that it requires universal, permanent compliance — a single defector would break it."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Did AI leaders really warn AI could cause extinction?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. In May 2023 the Center for AI Safety published a one-sentence statement: 'Mitigating the risk of extinction from AI should be a global priority alongside other societal-scale risks such as pandemics and nuclear war.' Signatories included the CEOs of OpenAI, Google DeepMind and Anthropic, along with Geoffrey Hinton and Yoshua Bengio."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="icon" type="image/png" href="../assets/images/logo_blowingfrog.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;700;800;900&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Playfair+Display:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared.css?v=6">
+  <style>
+    .post-hero{width:100%;height:70vh;min-height:480px;object-fit:cover;display:block;}
+    .post-wrap{max-width:740px;margin:0 auto;padding:64px 32px 120px;}
+    .post-tag{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent-lt);margin-bottom:20px;}
+    .post-title{font-family:var(--f-display);font-weight:900;font-size:clamp(36px,5vw,64px);text-transform:uppercase;line-height:0.95;letter-spacing:-0.02em;margin-bottom:24px;}
+    .post-meta{font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:48px;padding-bottom:32px;border-bottom:1px solid var(--border);}
+    .post-body{font-size:17px;line-height:1.8;color:var(--text);}
+    .post-body p{margin-bottom:1.5em;}
+    .post-body h2{font-family:var(--f-display);font-weight:800;font-size:clamp(24px,3vw,36px);text-transform:uppercase;letter-spacing:-0.01em;margin:2.5em 0 0.8em;color:var(--text);}
+    .post-body h3{font-weight:700;font-size:19px;margin:2em 0 0.5em;color:var(--text);}
+    .lamp-fact{border-left:3px solid var(--accent);padding:16px 24px;margin:2em 0;background:var(--bg-surface);font-size:15px;color:var(--text-muted);font-style:italic;}
+    .lamp-fact strong{color:var(--accent-lt);font-style:normal;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;display:block;margin-bottom:8px;}
+    .pull-quote{font-family:var(--f-display);font-size:clamp(28px,4vw,48px);font-weight:800;text-transform:uppercase;line-height:1;letter-spacing:-0.02em;color:var(--accent-lt);margin:2em 0;}
+    .stop-beat{font-family:var(--f-display);font-weight:900;font-size:clamp(28px,4vw,48px);text-transform:uppercase;letter-spacing:-0.01em;color:var(--accent);margin:2em 0 1em;}
+    .post-body a{color:var(--accent-lt);text-decoration:underline;text-underline-offset:3px;}
+    .post-body a:hover{color:var(--text);}
+    .faq-section{margin-top:3em;padding-top:2em;border-top:1px solid var(--border);}
+    .faq-section h2{margin-top:0;}
+    .faq-item{margin-bottom:2em;}
+    .faq-q{font-weight:600;margin-bottom:0.5em;}
+    .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:48px;padding-top:32px;border-top:1px solid var(--border);}
+    .tag{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;background:var(--bg-surface);border:1px solid var(--border);padding:5px 12px;color:var(--text-muted);}
+    .back-link{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;margin-bottom:40px;transition:color 0.2s;}
+    .back-link:hover{color:var(--text);}
+    figcaption{font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-top:10px;margin-bottom:2em;text-align:center;}
+    .drake-terms{margin:1.5em 0 1.5em 1.5em;list-style:none;padding:0;}
+    .drake-terms li{padding:6px 0;border-bottom:1px solid var(--border);font-size:16px;display:flex;gap:12px;}
+    .drake-terms li:last-child{border-bottom:none;}
+    .drake-var{font-family:var(--f-display);font-weight:800;font-size:18px;color:var(--accent-lt);min-width:28px;}
+  </style>
+</head>
+<body class="page-body">
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <nav class="nav scrolled" id="nav">
+    <a href="../index.html" class="nav-logo" aria-label="Home">
+      <img src="../assets/images/logo_blowingfrog.png" alt="Blowing Frog" class="logo-img" onerror="this.outerHTML='&lt;div class=logo-fallback&gt;BF&lt;/div&gt;'">
+      <span class="logo-wordmark">Blowing Frog</span>
+    </a>
+    <div class="nav-links">
+      <a href="../about.html"    class="nav-link">About Us</a>
+      <a href="../services.html" class="nav-link">Services</a>
+      <a href="../blog.html"     class="nav-link active">Blog</a>
+      <a href="../contact.html"  class="nav-link">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="nav-hamburger" id="navHamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <img src="../assets/blogimages/fermi-paradox-trash-can.jpg"
+       alt="A galvanized trash can on a suburban curb at night with a column of pale blue light rising out of it into a starless sky"
+       class="post-hero">
+
+  <div class="page-content">
+    <div class="post-wrap">
+      <a href="../blog.html" class="back-link">&larr; Back to Blog</a>
+      <div class="post-tag">AI / Musings / Space &nbsp;&middot;&nbsp; 11 min read</div>
+      <h1 class="post-title">Where Is Everybody? A Trash Can, a Funnel, and the Very Bad News Hiding in the Fact That the Guys Building AI Keep Telling Us It Might Kill Us</h1>
+      <div class="post-meta">September 7, 2026 &nbsp;&middot;&nbsp; Blowing Frog</div>
+
+      <div class="post-body">
+
+        <p>Let's start with a man saying a strange thing out loud and nobody stopping him.</p>
+
+        <p>Sam Altman, on the record: "I think AI will probably, most likely, sort of lead to the end of the world. But in the meantime, there'll be great companies created with serious machine learning."</p>
+
+        <p>Sit with the structure of that sentence. Not the content &mdash; the structure. Extinction event, comma, but the returns are going to be phenomenal.</p>
+
+        <p>Now hold onto it. Put it somewhere in your noggin where you won't lose it. Because we are about to take a hard left turn into flying saucers, and I promise you we come back around.</p>
+
+        <p class="stop-beat">STOP.</p>
+
+        <p>Actually, one correction first, because it matters and I'd rather you hear it from me than from the comments.</p>
+
+        <p><a href="https://www.tomsguide.com/ai/i-think-ai-will-probably-most-likely-lead-to-the-end-of-the-world-everyone-is-sharing-sam-altmans-doomsday-quote-but-almost-no-one-notices-the-date" target="_blank" rel="noopener">That quote is from 2015.</a> Altman said it when he was running Y Combinator, before OpenAI meant anything to anybody, seven years before ChatGPT. It has been circulating lately as though it's fresh, and it isn't.</p>
+
+        <p>I'm telling you this because I'm about to build an argument on top of it and I'd rather build on something that holds. Which it does &mdash; because there's a much better, much more current version of the same thing waiting for us at the end. Park it. Aliens now.</p>
+
+        <h2>Enrico Fermi Ruins Lunch, Summer 1950</h2>
+
+        <p>His name was Enrico Fermi. Not Enrique &mdash; I've been saying Enrique my whole life and I was wrong my whole life. He built the first nuclear reactor under a squash court at the University of Chicago, which is a sentence that should be more famous than it is.</p>
+
+        <p>Summer of 1950. Los Alamos. Fermi is walking to Fuller Lodge for lunch with Emil Konopinski, Edward Teller and Herbert York. Three men who all had, let's say, meaningful clearance.</p>
+
+        <p>On the walk they're laughing about a cartoon. Alan Dunn had run it in <em>The New Yorker</em> on May 20th of that year, and it took two unrelated news stories &mdash; a rash of stolen trash cans in New York City, and the ongoing national flying-saucer flap &mdash; and welded them together. The cartoon shows little green men unloading New York's missing garbage cans from a flying saucer.</p>
+
+        <p>That's it. That's the joke. Cosmic visitors crossed the void for our municipal waste receptacles.</p>
+
+        <p>They sit down. Conversation moves on to other things. And then, out of absolutely nowhere, in the middle of the meal, Fermi says it.</p>
+
+        <p>"Where is everybody?"</p>
+
+        <p><a href="https://www.physics.unlv.edu/~jeffery/astro/astronomer/enrico_fermi_question.txt" target="_blank" rel="noopener">York's recollection is that he said something like "Don't you ever wonder where everybody is?"</a> Konopinski remembered "but where is everybody?" and remembered that everyone laughed &mdash; because everyone at that table knew instantly that he meant aliens, with no setup, no bridge, no context. He'd been quietly running the numbers in his head through the soup course.</p>
+
+        <p>And then, being Fermi, he did the calculations out loud. Odds of Earth-like planets. Odds of life given a planet. Odds of intelligence given life. How long a technological civilization lasts. He worked it through and concluded that Earth should have been visited many times over.</p>
+
+        <p>So where is everybody?</p>
+
+        <div class="lamp-fact">
+          <strong>Filter Fact</strong>
+          Fermi never wrote a word about this. He didn't publish it, name it, or apparently think about it much afterward. The whole thing survives on the memories of three men who were at that lunch, written down decades later, and the term "Fermi paradox" got attached to it long after he was dead. The most famous question in the search for alien life is a piece of hearsay about a man's lunch.
+        </div>
+
+        <h2>Frank Drake Writes an Agenda, 1961</h2>
+
+        <p>Here's a thing I believed and had wrong, and you might have it wrong too.</p>
+
+        <p>The <a href="https://en.wikipedia.org/wiki/Drake_equation" target="_blank" rel="noopener">Drake equation</a> did not come from the Fermi paradox.</p>
+
+        <p>In 1961 Frank Drake was organizing the first scientific meeting on the search for extraterrestrial intelligence, at Green Bank in West Virginia. Ten people were coming, including a young Carl Sagan. And a few days out, Drake realized he had a problem that every one of us has had: he had a meeting and no agenda.</p>
+
+        <p>In his words: he "wrote down all the things you needed to know to predict how hard it's going to be to detect extraterrestrial life."</p>
+
+        <p>That list became the equation. It multiplies seven terms:</p>
+
+        <ul class="drake-terms">
+          <li><span class="drake-var">R&#42;</span> the rate of star formation in the galaxy</li>
+          <li><span class="drake-var">f<sub>p</sub></span> the fraction of those stars with planets</li>
+          <li><span class="drake-var">n<sub>e</sub></span> planets per star that could support life</li>
+          <li><span class="drake-var">f<sub>l</sub></span> fraction of those where life actually starts</li>
+          <li><span class="drake-var">f<sub>i</sub></span> fraction of those where life gets intelligent</li>
+          <li><span class="drake-var">f<sub>c</sub></span> fraction of those that broadcast detectable signals</li>
+          <li><span class="drake-var">L</span> how long they keep broadcasting</li>
+        </ul>
+
+        <p>Multiply it out and you get N: the number of civilizations in the Milky Way we could theoretically hear right now.</p>
+
+        <p>The equation is not a calculation. It's a filing cabinet &mdash; a way of organizing our ignorance into drawers so you can argue about one drawer at a time. Drake was making a meeting run properly. Ten guys who called themselves the Order of the Dolphin sat in West Virginia and argued about the drawers, and we've been arguing about them ever since.</p>
+
+        <p>Note what happens as you move left to right through those terms: the first ones have gotten much better since 1961. We know the star formation rate. And f<sub>p</sub> &mdash; the fraction of stars with planets &mdash; has collapsed from total mystery into "basically all of them." <a href="https://spectrum.ieee.org/exoplanets" target="_blank" rel="noopener">We've confirmed more than 6,000 exoplanets</a> and we're finding more constantly.</p>
+
+        <p>The left side of the equation keeps filling in and it keeps saying <em>more.</em> Which makes the silence on the right side louder every single year.</p>
+
+        <h2>Five Ways to Explain an Empty Sky</h2>
+
+        <p>So the galaxy is roughly 13 billion years old, contains a couple hundred billion stars, is demonstrably stuffed with planets, and a civilization moving at a fraction of light speed could cross the whole thing in a few million years &mdash; which, on a galactic clock, is a long weekend.</p>
+
+        <p>Nobody's here. Nobody's called. Here's the menu of explanations.</p>
+
+        <h3>1. The Dark Forest</h3>
+
+        <p>Popularized by Liu Cixin in his novel <em>The Dark Forest</em>, and it is the one that will keep you up.</p>
+
+        <p>The universe is a forest at night. Every civilization is a hunter moving through it, quietly. You cannot know whether the thing rustling in the brush is harmless or lethal, and you cannot know how fast it might grow between now and when you meet it. Communication takes years; intentions change faster than light does.</p>
+
+        <p>Under those conditions, the only rational move on detecting anybody else is to eliminate them immediately. Not out of malice. Out of arithmetic.</p>
+
+        <p>Which means the sky isn't empty. It's quiet. There's a difference, and the difference is that everyone who wasn't quiet is already gone.</p>
+
+        <h3>2. The Zoo Hypothesis</h3>
+
+        <p>John A. Ball proposed this one in 1973, and it's the friendliest option on the board.</p>
+
+        <p>They're here. They know about us. They're deliberately not making contact, because we're in a preserve &mdash; a protected area, being observed, deliberately left alone the way you don't hand a granola bar to a bear.</p>
+
+        <p>The appeal is obvious. The problem is that it requires every single civilization out there to agree and hold the line forever, with no defectors, no rogue expeditions, no teenagers with a spacecraft and a bad idea. One breach and the hypothesis dies.</p>
+
+        <h3>3. They Already Came</h3>
+
+        <p>The oldest answer and the least satisfying to argue about, because it doesn't hinge on physics &mdash; it hinges on evidence, and the evidence is where every one of these conversations goes to die at 2 a.m.</p>
+
+        <p>I'll say only this: it is a coherent answer to the paradox. It resolves it completely. It just requires a category of proof that, so far, hasn't shown up in a form that survives contact with people whose job is to check.</p>
+
+        <h3>4. They're Here and We Can't Perceive It</h3>
+
+        <p>This is the one I find most quietly plausible, and the least discussed.</p>
+
+        <p>We assume aliens want what we want. Resources. Territory. Communication. Someone to talk to. But every one of those wants comes from our specific evolutionary situation &mdash; a social primate that got clever on a planet with scarce resources and predators.</p>
+
+        <p>A sufficiently different intelligence might operate on timescales where our entire recorded history is a flicker. It might live somewhere we don't think of as a place. It might have looked at us and registered nothing worth registering, the way you don't stop to introduce yourself to lichen.</p>
+
+        <p>We keep scanning the radio spectrum because we invented radio. That's not a search. That's a man looking for his keys under the streetlight.</p>
+
+        <h3>5. There's a Filter</h3>
+
+        <p>And here's where we turn the car around.</p>
+
+        <h2>The Great Filter Theory: Why Finding Bacteria on Mars Would Ruin My Week</h2>
+
+        <p><a href="https://mason.gmu.edu/~rhanson/greatfilter.html" target="_blank" rel="noopener">Robin Hanson laid this out in an essay called <em>The Great Filter &mdash; Are We Almost Past It?</em></a></p>
+
+        <p>The argument is brutally simple. Getting from dead matter to a civilization that spreads across the stars requires a chain of steps. Hanson lists roughly nine of them: the right kind of star system with the right chemistry, self-replicating molecules, simple cells, complex cells, sexual reproduction, multicellular life, big-brained tool users, whatever stage we're currently at, and finally the explosive colonization of space.</p>
+
+        <p>We observe an empty sky. Which means that somewhere in that chain, there is a step that almost nothing gets through. A wall. A funnel with a very, very narrow spout.</p>
+
+        <p>That's the Great Filter. And there is exactly one question about it that matters:</p>
+
+        <div class="pull-quote">Is it behind us, or is it in front of us?</div>
+
+        <p>If it's behind &mdash; if the leap from simple cells to complex ones, say, was a freak accident that essentially never repeats &mdash; then we're through. We're the lottery winner. The sky is empty because it's empty, and the future is ours to fumble.</p>
+
+        <p>If it's in front of us, then the reason we don't see anyone is that everyone who got to this point stopped existing shortly after getting to this point.</p>
+
+        <p>And here's Hanson's genuinely horrible inversion, the part that reorganizes your whole intuition:</p>
+
+        <p><strong>Finding alien life would be terrible news.</strong></p>
+
+        <p>Because every discovery that an early step was easy &mdash; microbes on Mars, biosignatures in a Venusian cloud deck, something swimming under the ice on Enceladus &mdash; moves probability mass out of the past and into the future. If life starts everywhere, the filter isn't back there. It's ahead. And it's proportionally bigger than we thought.</p>
+
+        <p>We are all rooting, without knowing it, for the universe to be sterile.</p>
+
+        <div class="lamp-fact">
+          <strong>Filter Fact</strong>
+          Hanson's chain has us sitting at step eight of nine. Which is a deeply uncomfortable place to be standing when you're told there's a wall somewhere and nobody will say where.
+        </div>
+
+        <figure style="margin:2em 0">
+          <img src="../assets/blogimages/great-filter-funnel.jpg"
+               alt="A glass laboratory funnel packed with hundreds of points of light at its mouth and exactly one emerging from the spout"
+               style="width:100%;border-radius:4px;display:block;">
+          <figcaption>The funnel. Billions of stars. Abundant planets. One spout. The question is where the narrowing happens.</figcaption>
+        </figure>
+
+        <h2>Now Let's Go Get That Quote Back</h2>
+
+        <p>So. Take the filter seriously for a second. If it's ahead of us, it should be something a civilization reliably does to itself right around the point where it gets clever enough to leave.</p>
+
+        <p>What does our résumé look like?</p>
+
+        <p>We built weapons that can end us, and we built enough of them, and we still have them, and the number of people who need to make one bad call on one bad night is not comfortingly large.</p>
+
+        <p>We learned to engineer pathogens, and the ability to do it keeps getting cheaper and more distributed, which is the exact wrong direction for a capability like that to travel.</p>
+
+        <p>We are conducting a large uncontrolled experiment on the only atmosphere we have, and the honest summary of our response so far is <em>insufficient, and late.</em></p>
+
+        <p>And now we're building this.</p>
+
+        <p>Here's the current, load-bearing version of that Altman quote from the top &mdash; the one I told you to hold onto.</p>
+
+        <p>In May 2023, <a href="https://safe.ai/work/statement-on-ai-extinction-risk" target="_blank" rel="noopener">a statement was published by the Center for AI Safety.</a> One sentence:</p>
+
+        <p><em>"Mitigating the risk of extinction from AI should be a global priority alongside other societal-scale risks such as pandemics and nuclear war."</em></p>
+
+        <p>Signed by Sam Altman, CEO of OpenAI. Demis Hassabis, CEO of Google DeepMind. Dario Amodei, CEO of Anthropic. Plus Geoffrey Hinton and Yoshua Bengio, who between them are substantially responsible for the field existing at all.</p>
+
+        <p>Not critics. Not novelists. Not a guy with a podcast. The people building the thing, putting their names to a sentence that files <a href="ai-isnt-killing-cinema-we-did.html">their own product next to nuclear weapons</a>.</p>
+
+        <p>I don't know of another industry that has ever done this. Tobacco didn't. Oil didn't. Nobody at Union Carbide signed a joint declaration about societal-scale risk. This is a category of behavior with almost no precedent, and we absorbed it in about a week and moved on to arguing about whether the images have too many fingers.</p>
+
+        <p>So: nukes, engineered plagues, a destabilizing climate, and a technology whose own creators have signed their names to the word <em>extinction.</em></p>
+
+        <p>That's not one filter candidate. That's four, running concurrently, all inside a single century, on a species that has been technological for about 0.0001% of its planet's existence.</p>
+
+        <p>Where is everybody? Maybe they got here too. Maybe this is just what the wall looks like from the inside &mdash; not a meteor, not a supernova, but <a href="avengers-doomsday-budget-ai-hollywood.html">a run of extremely clever quarters where the returns really were phenomenal</a> right up until they weren't.</p>
+
+        <h2>Now Let Me Take My Own Doom Apart</h2>
+
+        <p>I'd be a hypocrite if I ran the Altman date correction at the top and then didn't do this. So:</p>
+
+        <p>Doom is a product. "This might end the world" is the single most effective fundraising, recruiting and regulatory-moat sentence ever devised. A company warning that its technology is dangerously powerful is also advertising that its technology is powerful. Both things are true at once and you should never let go of either.</p>
+
+        <p>Fermi's own answers were mundane. When he ran it through at that lunch, his proposed explanations weren't extinction &mdash; they were that interstellar travel is impossible, or impractical, or just not worth doing. The father of the question was not a doomer.</p>
+
+        <p>The Drake equation's last term does all the work. N depends overwhelmingly on L, how long a civilization stays detectable. And L might be short for boring reasons: maybe civilizations stop broadcasting because radio gets replaced by tight-beam and fiber, and they go dark without dying. We've already gotten quieter ourselves. A galaxy full of thriving, private civilizations looks identical from here to a galaxy full of graves.</p>
+
+        <p>And the filter might genuinely be behind us. The jump from simple cells to complex ones happened apparently once in four billion years on this planet. Once. That's a hell of a candidate for a wall, and it's safely in the rearview.</p>
+
+        <p>I don't have a conclusion, and I'd distrust anyone who handed you one.</p>
+
+        <p>What I have is a lunch in 1950, a question nobody's answered in seventy-six years, and a group of people who are actively building something while telling us, in writing, what it might do.</p>
+
+        <p>Fermi asked where everybody is.</p>
+
+        <p>Nobody's answered. And we keep building louder things to ask it with.</p>
+
+        <div class="faq-section">
+          <h2>Quick Questions From the Cheap Seats</h2>
+
+          <div class="faq-item">
+            <p class="faq-q">What is the Fermi paradox?</p>
+            <p>The contradiction between the high estimated likelihood of extraterrestrial civilizations &mdash; given the age and size of the galaxy and the abundance of planets &mdash; and the total absence of any evidence for them. It's named for <a href="https://www.physics.unlv.edu/~jeffery/astro/astronomer/enrico_fermi_question.txt" target="_blank" rel="noopener">Enrico Fermi, who asked "Where is everybody?" over lunch at Los Alamos in 1950</a>, though he never published on it.</p>
+          </div>
+
+          <div class="faq-item">
+            <p class="faq-q">Why did Fermi say "Where is everybody?"</p>
+            <p>He and three colleagues had been joking on the walk to lunch about a New Yorker cartoon from May 1950 that blamed New York's missing trash cans on flying saucers. Mid-meal, Fermi returned to it unprompted, then worked through the odds of habitable planets, life, and intelligence out loud, concluding Earth should have been visited many times over.</p>
+          </div>
+
+          <div class="faq-item">
+            <p class="faq-q">What is the Drake equation and did it come from the Fermi paradox?</p>
+            <p>It's a <a href="https://en.wikipedia.org/wiki/Drake_equation" target="_blank" rel="noopener">seven-term equation</a> estimating the number of communicating civilizations in the Milky Way. Frank Drake wrote it in 1961 &mdash; not as a response to Fermi, but as an agenda for the first SETI meeting at Green Bank. It's less a calculation than a way of organizing what we don't know.</p>
+          </div>
+
+          <div class="faq-item">
+            <p class="faq-q">What is the Great Filter theory?</p>
+            <p><a href="https://mason.gmu.edu/~rhanson/greatfilter.html" target="_blank" rel="noopener">Robin Hanson's proposal</a> that somewhere in the chain of roughly nine steps from dead matter to a star-spanning civilization, there's a step almost nothing survives. The critical unknown is whether that filter is behind us or ahead of us. Counterintuitively, discovering alien life would be bad news &mdash; it would suggest the early steps are easy, meaning the hard part is still to come.</p>
+          </div>
+
+          <div class="faq-item">
+            <p class="faq-q">What is the dark forest theory?</p>
+            <p>Popularized by Liu Cixin's novel <em>The Dark Forest</em>: because you can't verify another civilization's intentions or growth rate across interstellar distances and timescales, the safest move on detecting anyone is to destroy them first. Under that logic, everyone stays silent, and the sky is quiet rather than empty.</p>
+          </div>
+
+          <div class="faq-item">
+            <p class="faq-q">What is the zoo hypothesis?</p>
+            <p>Proposed by John A. Ball in 1973: advanced civilizations know we're here and deliberately avoid contact, treating Earth as a protected preserve. Its weakness is that it requires universal, permanent compliance &mdash; a single defector would break it.</p>
+          </div>
+
+          <div class="faq-item">
+            <p class="faq-q">Did AI leaders really warn AI could cause extinction?</p>
+            <p>Yes. In May 2023 the <a href="https://safe.ai/work/statement-on-ai-extinction-risk" target="_blank" rel="noopener">Center for AI Safety published a one-sentence statement</a>: "Mitigating the risk of extinction from AI should be a global priority alongside other societal-scale risks such as pandemics and nuclear war." Signatories included the CEOs of OpenAI, Google DeepMind and Anthropic, along with Geoffrey Hinton and Yoshua Bengio.</p>
+          </div>
+        </div>
+
+        <p>Rant over. Definitely not sorry.</p>
+
+        <p>Somewhere out there is a species that solved this, and I would very much like to know what they cut.</p>
+
+        <p>Check the trash cans.</p>
+
+        <div class="tags">
+          <span class="tag">fermiparadox</span>
+          <span class="tag">greatfilter</span>
+          <span class="tag">ai</span>
+          <span class="tag">existentialrisk</span>
+          <span class="tag">seti</span>
+          <span class="tag">drakeequation</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../app.js"></script>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    setTimeout(function(){
+      var igImg = document.querySelector('.ig-float img');
+      if(igImg) igImg.src = '../assets/files Icons/InstagramICON.png';
+    }, 0);
+  </script>
+</body>
+</html>

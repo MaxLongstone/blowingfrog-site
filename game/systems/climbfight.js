@@ -29,12 +29,17 @@ export class ClimbFight {
     this.listeners = {};
     this.time = 0; this.over = false;
 
+    // Stacking order, back to front: the stairs, then the box/landlord/frog,
+    // then whatever is raining down, so a falling boiler passes in FRONT of the
+    // frog while the platforms stay behind it.
     this.world = new PIXI.Container();
     this.app.stage.addChild(this.world);
     this.bg = new PIXI.Graphics();
-    this.plat = new PIXI.Graphics();
-    this.layer = new PIXI.Container();
-    this.world.addChild(this.bg, this.plat, this.layer);
+    this.plankLayer = new PIXI.Container();
+    this.plat = new PIXI.Graphics();       // the thin "shored" highlight on a plank
+    this.charLayer = new PIXI.Container();
+    this.hazardLayer = new PIXI.Container();
+    this.world.addChild(this.bg, this.plankLayer, this.plat, this.charLayer, this.hazardLayer);
     this.particles = new Particles(this.world);
     this.fx = new PIXI.Graphics();
     this.world.addChild(this.fx);
@@ -45,7 +50,7 @@ export class ClimbFight {
     this.boxSprite.anchor.set(0.5, 1);
     this.frogSprite = new PIXI.Sprite(this.tex.get('climbfrog_hold'));
     this.frogSprite.anchor.set(0.5, 1);
-    this.layer.addChild(this.boxSprite, this.landlordSprite, this.frogSprite);
+    this.charLayer.addChild(this.boxSprite, this.landlordSprite, this.frogSprite);
 
     this.lives = frogState?.lives ?? 5;
     this.hearts = 3;
@@ -267,6 +272,7 @@ export class ClimbFight {
         speed: kind === 'radiator' ? 5.4 : kind === 'notice' ? 1.9 : 3.1,
         drift: kind === 'notice' ? this.rng.range(-0.7, 0.7) : 0,
         explosive: !!a.explosive, damage: a.damage, t: 0,
+        stairsHit: 0, lastRowChecked: Math.floor(0.6),
       });
     }
   }
@@ -334,11 +340,24 @@ export class ClimbFight {
         h.alive = false;
         this.takeHit(h.damage);
       }
-      // a boiler smashes whatever it lands on
-      if (h.alive && h.explosive) {
-        const r = Math.round(h.row), c = Math.round(h.col);
-        const p = this.platforms.get(key(c, r));
-        if (p && p.resp <= 0 && p.life <= 0) { p.life = 0.01; }
+      // A stair it crosses cracks under it. Two of those and it has spent
+      // itself; it does not keep raining all the way to the ground.
+      if (h.alive) {
+        const rowNow = Math.floor(h.row);
+        if (rowNow !== h.lastRowChecked) {
+          h.lastRowChecked = rowNow;
+          const c = Math.round(h.col);
+          const p = this.platforms.get(key(c, rowNow)) || this.platforms.get(key(c, rowNow + 1));
+          if (p && p.resp <= 0) {
+            h.stairsHit += 1;
+            if (h.explosive) p.life = 0.01;
+            this.particles.spark((c + 0.5) * CELL, rowNow * CELL + CELL * 0.72, 0xc0c4cc, 6);
+            if (h.stairsHit >= 2) {
+              h.alive = false;
+              this.particles.debris((h.col + 0.5) * CELL, (h.row + 0.5) * CELL, 8, 0x6b6070);
+            }
+          }
+        }
       }
     }
     this.hazards = this.hazards.filter(h => h.alive);
@@ -374,7 +393,7 @@ export class ClimbFight {
       const [c, r] = k.split(',').map(Number);
       const rotting = p.life > 0;
       const kind = rotting ? 'climb_plank_rot' : 'climb_plank';
-      const sp = this.poolSprite(this.plankPool, pi++, kind, this.plat.parent === this.world ? this.layer : this.layer);
+      const sp = this.poolSprite(this.plankPool, pi++, kind, this.plankLayer);
       sp.scale.set(this.tex.scaleFor(kind) * 1.0);
       sp.x = (c + 0.5) * CELL;
       sp.y = r * CELL + CELL * 0.79;
@@ -427,8 +446,8 @@ export class ClimbFight {
     let hi = 0;
     for (const h of this.hazards) {
       const kind = { boiler: 'boss_boiler', radiator: 'boss_radiator', notice: 'boss_notice' }[h.kind];
-      const sp = this.poolSprite(this.hazPool, hi++, kind, this.layer);
-      sp.scale.set(this.tex.scaleFor(kind) * 1.15);
+      const sp = this.poolSprite(this.hazPool, hi++, kind, this.hazardLayer);
+      sp.scale.set(this.tex.scaleFor(kind) * 0.62);   // smaller: they read as debris, not scenery
       sp.x = (h.col + 0.5) * CELL;
       sp.y = (h.row + 0.5) * CELL;
       sp.rotation = h.kind === 'notice' ? Math.sin(h.t * 4) * 0.5 : 0;
