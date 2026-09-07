@@ -41,8 +41,10 @@ SHEETS = {
     # Boss one: Chaco the Narco Chupacabra
     "I": (3, 3, ["chaco_idle", "chaco_tell_jab", "chaco_jab", "chaco_tell_hay", "chaco_hay",
                  "chaco_chupada", "chaco_stunned", "chaco_polvo", "chaco_down"]),
-    "J": (3, 3, ["chaco_berserk", "chaco_dead", "chaco_belt", "boxfrog_guard", "boxfrog_left",
-                 "boxfrog_right", "boxfrog_duck", "boxfrog_tongue", "boxfrog_down"]),
+    "J": (3, 3, ["chaco_intro", "chaco_taunt", "chaco_hurt", "chaco_stagger", "chaco_belt",
+                 "chaco_berserk", "chaco_rage", "chaco_dead", "chaco_win"]),
+    "L": (3, 3, ["boxfrog_guard", "boxfrog_left", "boxfrog_right", "boxfrog_duck",
+                 "boxfrog_tongue", "boxfrog_eat", "boxfrog_hurt", "boxfrog_down", "boxfrog_win"]),
     "K": (3, 3, ["ring_canvas", "ring_fence", "ring_light", "ring_crowd", "boss_dynamite",
                  "boss_bag", "boss_belt", "ring_post", "boss_stars"]),
 }

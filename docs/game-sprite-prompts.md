@@ -1,6 +1,6 @@
 # Frogpocalypse sprite sheets
 
-Ninety-six sprites in **eleven generations**. Sheets A to H are the main game; I, J and K are boss one. Each prompt produces one square sheet of
+One hundred and five sprites in **twelve generations**. Sheets A to H are the main game; I, J, K and L are boss one. Each prompt produces one square sheet of
 evenly spaced cells; a script then cuts the sheet, knocks out the white, and files each sprite
 under the right name.
 
@@ -323,41 +323,27 @@ The nine poses, left to right, top row first:
    chest, cigar still smouldering beside him
 ```
 
-### Sheet J — Chaco's finale, and the frog boxer
+### Sheet J — Chaco: reactions and the finale
 
-3 × 3. Reading order: `chaco_berserk` `chaco_dead` `chaco_belt` / `boxfrog_guard` `boxfrog_left` `boxfrog_right` / `boxfrog_duck` `boxfrog_tongue` `boxfrog_down`
+3 × 3. Reading order: `chaco_intro` `chaco_taunt` `chaco_hurt` / `chaco_stagger` `chaco_belt` `chaco_berserk` / `chaco_rage` `chaco_dead` `chaco_win`
 
 ```
-A single square sprite sheet on a pure white background, arranged as a clean 3 by 3 grid of nine
-equal square cells with wide even white gutters. Each pose is centred in its own cell, fully
-separated from its neighbours, nothing touching or overlapping. No grid lines, no borders, no
-numbers, no text, no labels, no watermark.
+A single square sprite sheet on a pure white background, arranged as a clean 3 by 3 grid of nine equal square cells with wide even white gutters. Each pose is centred in its own cell at the same scale and the same distance from camera, fully separated from its neighbours, nothing touching or overlapping. No grid lines, no borders, no numbers, no text, no labels, no watermark.
 
-Art direction for every cell: a full-body character pose seen from the front in three-quarter
-view, soft 3D felt and clay render, matte fabric texture, thick dark charcoal outline, warm rim
-light from the upper left, chunky cartoon proportions, no cast shadow, no ground plane, no
-background scenery.
+Art direction for every cell: a full-body character pose seen from the front in three-quarter view, soft 3D felt and clay render, matte fabric texture, thick dark charcoal outline, warm rim light from the upper left, chunky cartoon proportions, muted palette with saturated gold accents, no cast shadow, no ground plane, no background scenery.
 
-Cells 1 to 3 are a gaunt leathery chupacabra in a ruined cream white linen suit over a bare
-grey-green chest, bony dorsal spines torn through the back of the jacket, red eyes, oversized
-fanged jaw with one gold fang, heavy gold chains and rings, red boxing tape on his hands.
-Cells 4 to 9 are a small round olive-green cartoon frog with huge white bulging eyes and a cream
-belly, wearing tiny red boxing gloves that are far too big for it.
+The same character in all nine cells: a gaunt leathery chupacabra in a cream white linen suit worn over a bare grey-green chest, bony dorsal spines pushing through the back of the jacket, red eyes behind gold aviator sunglasses, an oversized fanged jaw with one gold fang, heavy gold chains and rings, white loafers with no socks, hands wrapped in red boxing tape over the linen cuffs. He is a Miami cartel boss who has not changed clothes to fight. His suit is destroyed progressively across the nine poses, from immaculate in the first to ruined in the last.
 
 The nine poses, left to right, top row first:
-1. the chupacabra with a burst bag of white powder smashed against his own face, white dust
-   billowing, eyes bloodshot and bulging, veins standing out on his neck, feral snarl, the linen
-   suit now filthy with sweat and powder and his spines fully through the shredded jacket
-2. the chupacabra collapsed face-down and motionless, tongue lolling out, white powder still on
-   his snout, one arm folded under him, the ruined suit soaked through
-3. the chupacabra swinging a gaudy gold championship belt overhead like a flail, feral and wild,
-   the jacket hanging off him in tatters
-4. the frog standing in a boxing guard, gloves up, small and determined
-5. the frog leaning hard to its own left, dodging, gloves still raised
-6. the frog leaning hard to its own right, dodging, gloves still raised
-7. the frog crouched right down, ducking under a punch, eyes squeezed shut
-8. the frog snapping its long pink tongue straight forward in a counter attack
-9. the frog knocked flat on its back, dazed, gloves splayed out
+1. swaggering in with both arms spread wide, a gold championship belt slung over one shoulder, cigar in his fangs, suit immaculate, grinning
+2. taunting, beckoning the viewer in with one taped hand, head tilted back, jeering, suit still clean
+3. head snapped back and to one side from a hit, gold sunglasses knocked askew, spit flying, jacket rumpled
+4. badly hurt and stumbling backward, arms windmilling for balance, sunglasses gone, jacket sliding off one shoulder
+5. swinging a gaudy gold championship belt overhead like a flail, feral and wild, the jacket hanging off him in tatters
+6. a burst bag of white powder smashed against his own face, white dust billowing, eyes bloodshot and bulging, veins standing out on his neck, feral snarl, the linen filthy with sweat and powder and his spines fully through the shredded jacket
+7. mid-rage, throwing a wild blurred flurry of punches with both arms, mouth wide open roaring, powder still on his snout, suit destroyed
+8. collapsed face-down and motionless, tongue lolling out, white powder still on his snout, one arm folded under him, the ruined suit soaked through
+9. standing in triumph with both arms raised and one white loafer resting on something small and defeated, chest heaving, filthy suit, jubilant
 ```
 
 ### Sheet K — the ring and its props
@@ -385,6 +371,29 @@ The nine cells, left to right, top row first:
 7. a gaudy oversized gold championship belt with a huge ornate buckle and a red leather strap
 8. a boxing ring corner post wrapped in tape with three sagging ropes attached
 9. a burst of cartoon knockout stars, yellow and white, arranged in a ring
+```
+
+### Sheet L — the frog boxer
+
+3 × 3. Reading order: `boxfrog_guard` `boxfrog_left` `boxfrog_right` / `boxfrog_duck` `boxfrog_tongue` `boxfrog_eat` / `boxfrog_hurt` `boxfrog_down` `boxfrog_win`
+
+```
+A single square sprite sheet on a pure white background, arranged as a clean 3 by 3 grid of nine equal square cells with wide even white gutters. Each pose is centred in its own cell at the same scale and the same distance from camera, fully separated from its neighbours, nothing touching or overlapping. No grid lines, no borders, no numbers, no text, no labels, no watermark.
+
+Art direction for every cell: a full-body character pose seen from the front in three-quarter view, soft 3D felt and clay render, matte fabric texture, thick dark charcoal outline, warm rim light from the upper left, chunky friendly proportions, no cast shadow, no ground plane, no background scenery.
+
+The same character in all nine cells: a small round cartoon frog, olive-green felt skin with dark speckles, a pale cream belly, huge white bulging eyes with tiny black pupils, and tiny red boxing gloves that are comically too big for its arms. It is the underdog and it knows it.
+
+The nine poses, left to right, top row first:
+1. standing square in a boxing guard, both gloves raised by its face, small and determined
+2. leaning hard to its own left, dodging, gloves still up, eyes wide
+3. leaning hard to its own right, dodging, gloves still up, eyes wide
+4. crouched right down, ducking under a punch, eyes squeezed shut, gloves over its head
+5. snapping its long pink tongue straight forward in a counter attack, one glove cocked back
+6. catching a lit red stick of dynamite in its wide open mouth, fuse still sparking, cheeks bulging, delighted
+7. reeling from a hit, head snapped back, one glove flung wide, eyes crossed
+8. knocked flat on its back, dazed, gloves splayed out, little stars circling its head
+9. standing in triumph with both gloves thrown up in the air, mouth wide open cheering, chest puffed out
 ```
 
 ---
