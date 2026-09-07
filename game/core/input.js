@@ -3,9 +3,13 @@
 const KEYS = {
   ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right',
 };
-const TONGUE_KEYS = ['Shift', ' ', 'Spacebar', 'Enter'];
+// Two attacks. In a stage they do the same thing, but a boss fight needs to tell
+// a glove from a tongue, so they are separate intents everywhere.
+const PUNCH_KEYS = ['Shift'];
+const TONGUE_KEYS = [' ', 'Spacebar', 'Enter'];
 
 export function keyToIntent(key) {
+  if (PUNCH_KEYS.includes(key)) return { type: 'punch', dir: null };
   if (TONGUE_KEYS.includes(key)) return { type: 'tongue', dir: null };
   const dir = KEYS[key];
   return dir ? { type: 'hop', dir } : null;
@@ -18,11 +22,13 @@ export function swipeToIntent(dx, dy, threshold = 24) {
   return { type: 'hop', dir: dy > 0 ? 'down' : 'up' };
 }
 
+// A phone has one tap, so it sends `auto`: the boss fight reads that as "punch,
+// unless there is a stick of dynamite worth catching instead".
 export function tapToIntent(tapX, tapY, frogX, frogY) {
   const dx = tapX - frogX, dy = tapY - frogY;
-  if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return { type: 'tongue', dir: null };
+  if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return { type: 'punch', dir: null, auto: true };
   const dir = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up');
-  return { type: 'tongue', dir };
+  return { type: 'punch', dir, auto: true };
 }
 
 export class Input {

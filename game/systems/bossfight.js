@@ -18,6 +18,8 @@ const STEP_TIME = 0.16;      // how long a step takes
 // read the tell would wear off before the punch actually arrives.
 const DUCK_TIME = 1.05;
 const TONGUE_TIME = 0.3;
+const PUNCH_TIME = 0.24;
+const PUNCH_LUNGE = 34;      // how far the frog leans in when it swings
 const STRIKE = 0.26;
 const RECOVER = 0.36;
 const HP_PER_ROUND = 100;
@@ -70,6 +72,7 @@ export class BossFight {
     this.x = ZONE_X[MID];
     this.duckT = 0;
     this.tongueT = 0;
+    this.punchT = 0;
     this.hurtT = 0;
     this.invuln = 0;
 
@@ -86,7 +89,8 @@ export class BossFight {
     this.flash = null;
 
     this.drawRing();
-    this.hud.setStage('CHACO THE NARCO CHUPACABRA', 'Watch the chains.');
+    this.hud.setStage('CHACO THE NARCO CHUPACABRA', 'SHIFT punch · SPACE lick · ← → move · ↓ duck');
+    this.hud.say('SHIFT PUNCH · SPACE LICK · ←→ MOVE · ↓ DUCK', 4200);
     this.hud.setFuse(0);
     this.hud.setLives(this.hearts, true);
     this.hud.setScore(this.score);
@@ -135,25 +139,42 @@ export class BossFight {
       else if (i.dir === 'right' && this.zone < IN) { this.zone += 1; this.audio.hop(); }
       return;
     }
+    // A phone only has one tap, so `auto` picks whichever makes sense right now.
+    if (i.type === 'punch') {
+      if (i.auto && this.dynInReach()) this.tongue();
+      else this.punch();
+      return;
+    }
     this.tongue();
   }
 
+  dynInReach() {
+    return !!this.dyn && Math.abs(this.dyn.x - this.x) < 120 && this.dyn.y > FLOOR - 300;
+  }
+
+  // The glove. This is the only thing that hurts him.
+  punch() {
+    if (this.over || this.hurtT > 0) return;
+    this.punchT = PUNCH_TIME;
+    this.audio.hop();
+    if (this.zone === IN && this.chacoOpen()) this.land();
+    else if (this.chacoOpen()) this.hud.say('TOO FAR. STEP IN.', 900);
+    else if (this.zone === IN) this.hud.say('HE IS NOT OPEN YET', 800);
+  }
+
+  // The tongue. This catches what he throws, and nothing else.
   tongue() {
     if (this.over || this.hurtT > 0) return;
     this.tongueT = TONGUE_TIME;
     this.audio.tongue();
-    if (this.dyn && Math.abs(this.dyn.x - this.x) < 120 && this.dyn.y > FLOOR - 300) {
-      this.dyn = null; this.dynSprite.visible = false;
-      this.fuse = Math.min(FUSE_TARGET, this.fuse + 1);
-      this.hud.setFuse(this.fuse);
-      this.audio.eat(); this.addScore(150);
-      this.particles.burst(this.x, FLOOR - 90, 0xf08a24, 16);
-      this.ach?.bump('midairEats');
-      if (this.fuse >= FUSE_TARGET) this.superDetonate();
-      return;
-    }
-    if (this.zone === IN && this.chacoOpen()) this.land();
-    else if (this.chacoOpen()) this.hud.say('TOO FAR. STEP IN.', 900);
+    if (!this.dynInReach()) { this.hud.say('NOTHING TO CATCH', 700); return; }
+    this.dyn = null; this.dynSprite.visible = false;
+    this.fuse = Math.min(FUSE_TARGET, this.fuse + 1);
+    this.hud.setFuse(this.fuse);
+    this.audio.eat(); this.addScore(150);
+    this.particles.burst(this.x, FLOOR - 90, 0xf08a24, 16);
+    this.ach?.bump('midairEats');
+    if (this.fuse >= FUSE_TARGET) this.superDetonate();
   }
 
   chacoOpen() {
@@ -261,6 +282,7 @@ export class BossFight {
     this.stateT -= dt;
     if (this.duckT > 0) this.duckT -= dt;
     if (this.tongueT > 0) this.tongueT -= dt;
+    if (this.punchT > 0) this.punchT -= dt;
     if (this.hurtT > 0) this.hurtT -= dt;
     if (this.invuln > 0) this.invuln -= dt;
     if (this.blind > 0) this.blind -= dt;
@@ -350,6 +372,7 @@ export class BossFight {
   frogTexture() {
     if (this.over) return this.hearts <= 0 ? 'boxfrog_down' : 'boxfrog_win';
     if (this.hurtT > 0) return 'boxfrog_hurt';
+    if (this.punchT > 0) return 'boxfrog_right';
     if (this.tongueT > 0) return this.dyn ? 'boxfrog_eat' : 'boxfrog_tongue';
     if (this.ducking) return 'boxfrog_duck';
     if (this.zone === IN) return 'boxfrog_right';
@@ -370,7 +393,8 @@ export class BossFight {
     fs.texture = this.tex.get(ft);
     const fk = this.tex.scaleFor(ft) * 1.9;
     fs.scale.set(fk, fk);
-    fs.x = this.x;
+    const swing = this.punchT > 0 ? Math.sin((1 - this.punchT / PUNCH_TIME) * Math.PI) : 0;
+    fs.x = this.x + swing * PUNCH_LUNGE;
     fs.y = FLOOR + 6;
     fs.alpha = this.invuln > 0 ? (Math.sin(this.time * 30) > 0 ? 0.45 : 1) : 1;
 
@@ -383,6 +407,12 @@ export class BossFight {
 
     // the swing itself, so a punch is something you watch travel
     const b = this.behind; b.clear();
+    if (swing > 0) {
+      const y = FLOOR - 120;
+      b.moveTo(this.x + 40, y).lineTo(this.x + 40 + swing * 130, y)
+        .stroke({ width: 18 * swing, color: 0xe8564a, alpha: 0.55 * swing, cap: 'round' });
+      b.circle(this.x + 40 + swing * 130, y, 15 * swing).fill({ color: 0xffffff, alpha: 0.55 * swing });
+    }
     if (this.state === 'strike' && this.attack !== 'polvo') {
       const r = REACH[this.attack];
       const tipX = ZONE_X[r.reach] - 30;

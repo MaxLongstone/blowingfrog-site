@@ -31,7 +31,7 @@ export const CHACO = {
     },
     {
       heading: 'ANYWAY',
-      body: 'He is going to try to do that to you. Undefeated in eleven fights, nine of which were against livestock. He will not be removing the jacket. He has never removed the jacket. Two of those eleven went down without him creasing it, and one of those two was a bull.\n\nHis mouth is the only soft thing on him, so it is the only way in, which is a genuine fucking shame, because it is also how he reaches into your guts and helps himself. Watch the chains, you beautiful little bastard. When they swing, he has already decided.',
+      body: 'He is going to try to do that to you. Undefeated in eleven fights, nine of which were against livestock. He will not be removing the jacket. He has never removed the jacket. Two of those eleven went down without him creasing it, and one of those two was a bull.\n\nHis mouth is the only soft thing on him, so it is the only way in, which is a genuine fucking shame, because it is also how he reaches into your guts and helps himself. Watch the chains, you beautiful little bastard. When they swing, he has already decided.\n\nARROWS move you in and out, DOWN ducks, SHIFT throws the glove, SPACE is your tongue for whatever he throws at you.',
     },
   ],
 

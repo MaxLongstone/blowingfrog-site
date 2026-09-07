@@ -83,7 +83,7 @@ export class Play {
     if (this.over || this.frog.dead) return;
     if (i.type === 'hop') {
       if (this.frog.hop(i.dir, this.grid)) this.audio.hop();
-    } else {
+    } else {                                  // punch and tongue both mean "eat" here
       const t = this.frog.startTongue(i.dir);
       if (t) this.audio.tongue();
     }

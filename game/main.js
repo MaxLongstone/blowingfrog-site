@@ -60,7 +60,6 @@ class Game {
   async setMode(mode) {
     if (mode === this.mode || !MODES[mode]) return;
     this.mode = mode;
-    this.artCount = artCount;
     writeMode(mode);
     this.tex = await loadSprites(this.app, { usePng: usesPaintedArt(mode) });
     this.title();

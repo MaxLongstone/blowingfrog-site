@@ -34,7 +34,7 @@ export class Overlays {
     const screen = el('div', 'bf-screen');
     screen.append(
       el('p', 'bf-screen-line', 'You are a frog. You cross a road. You eat five bombs and come apart, and each time you come back bigger, until you are the size of the planet and the planet is the one with the problem.'),
-      el('div', 'bf-keys', '<b>← ↑ ↓ →</b> hop &nbsp;·&nbsp; <b>SHIFT</b> tongue &nbsp;·&nbsp; on mobile, swipe and tap'),
+      el('div', 'bf-keys', '<b>← ↑ ↓ →</b> move &nbsp;·&nbsp; <b>SPACE</b> tongue &nbsp;·&nbsp; <b>SHIFT</b> punch, in a fight &nbsp;·&nbsp; on mobile, swipe and tap'),
       el('p', 'bf-note', 'Anything that explodes is food, even in mid-air. Everything else is just going to hurt you.'),
     );
 
