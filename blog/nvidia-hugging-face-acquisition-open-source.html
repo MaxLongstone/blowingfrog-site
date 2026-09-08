@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nvidia Bought Hugging Face. My Friend Went Quiet.</title>
+  <meta name="description" content="Nvidia confirmed a $12.93B deal for Hugging Face. Jensen Huang promised hardware neutrality. He did not promise it stays free. A look at what happens next, with receipts.">
+  <meta name="keywords" content="Nvidia Hugging Face acquisition, open source AI models, Broadcom VMware free ESXi, CentOS Red Hat, OpenTofu Valkey fork, will Hugging Face stay free">
+  <meta property="og:title" content="Nvidia Bought Hugging Face. My Friend Went Quiet.">
+  <meta property="og:description" content="Nvidia confirmed a $12.93B deal for Hugging Face. Jensen Huang promised hardware neutrality. He did not promise it stays free.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="/assets/blogimages/huggingface-free-turnstile.jpg">
+  <link rel="canonical" href="https://blowingfrog.com/blog/nvidia-hugging-face-acquisition-open-source">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Did Nvidia buy Hugging Face?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Nvidia confirmed the acquisition on September 3, 2026, for $12.93 billion. Hugging Face hosts around three million models, one million applications and 500,000 datasets, used by more than 18 million developers. According to Hugging Face's CEO, the company approached Nvidia, citing a need for more compute and support at its scale."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Will Hugging Face stay free after the Nvidia acquisition?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Nvidia has not said. Jensen Huang's public commitments cover openness and hardware neutrality — specifically that 'NVIDIA compute will not be required to build on or deploy through Hugging Face' — but the announcement makes no statement about pricing or whether the Hub remains free."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does Nvidia now own the open-source models on Hugging Face?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. The models belong to whoever published them, under their existing licenses, which an acquisition doesn't retroactively change. Nvidia acquired the platform and distribution layer, not the model weights themselves."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happened when other companies acquired open projects?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Mixed, with a clear pattern of monetization arriving later rather than immediately. Broadcom ended VMware perpetual licenses and killed the free ESXi hypervisor within months of closing. Red Hat converted CentOS into CentOS Stream in 2020 and restricted RHEL source access in 2023. Oracle's MySQL prompted the MariaDB fork on day one."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do open-source forks actually work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Increasingly, yes. OpenTofu (from Terraform) is approaching 10 million downloads with Fidelity, Boeing and Capital One in production. Valkey (from Redis) reportedly has 83% of large enterprises testing or running it. OpenSearch (from Elasticsearch) has over 3,300 contributors. Both Elastic and Redis later added back permissive license options after their forks gained traction."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="icon" type="image/png" href="../assets/images/logo_blowingfrog.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;700;800;900&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Playfair+Display:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared.css?v=6">
+  <style>
+    .post-hero{width:100%;height:70vh;min-height:480px;object-fit:cover;display:block;}
+    .post-wrap{max-width:740px;margin:0 auto;padding:64px 32px 120px;}
+    .post-tag{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent-lt);margin-bottom:20px;}
+    .post-title{font-family:var(--f-display);font-weight:900;font-size:clamp(36px,5vw,64px);text-transform:uppercase;line-height:0.95;letter-spacing:-0.02em;margin-bottom:24px;}
+    .post-meta{font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:48px;padding-bottom:32px;border-bottom:1px solid var(--border);}
+    .post-body{font-size:17px;line-height:1.8;color:var(--text);}
+    .post-body p{margin-bottom:1.5em;}
+    .post-body h2{font-family:var(--f-display);font-weight:800;font-size:clamp(24px,3vw,36px);text-transform:uppercase;letter-spacing:-0.01em;margin:2.5em 0 0.8em;color:var(--text);}
+    .post-body h3{font-weight:700;font-size:19px;margin:2em 0 0.5em;color:var(--text);}
+    .lamp-fact{border-left:3px solid var(--accent);padding:16px 24px;margin:2em 0;background:var(--bg-surface);font-size:15px;color:var(--text-muted);font-style:italic;}
+    .lamp-fact strong{color:var(--accent-lt);font-style:normal;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;display:block;margin-bottom:8px;}
+    .pull-quote{font-family:var(--f-display);font-size:clamp(28px,4vw,48px);font-weight:800;text-transform:uppercase;line-height:1;letter-spacing:-0.02em;color:var(--accent-lt);margin:2em 0;}
+    .stop-beat{font-family:var(--f-display);font-weight:900;font-size:clamp(28px,4vw,48px);text-transform:uppercase;letter-spacing:-0.01em;color:var(--accent);margin:2em 0 1em;}
+    .post-body a{color:var(--accent-lt);text-decoration:underline;text-underline-offset:3px;}
+    .post-body a:hover{color:var(--text);}
+    .faq-section{margin-top:3em;padding-top:2em;border-top:1px solid var(--border);}
+    .faq-section h2{margin-top:0;}
+    .faq-item{margin-bottom:2em;}
+    .faq-q{font-weight:600;margin-bottom:0.5em;}
+    .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:48px;padding-top:32px;border-top:1px solid var(--border);}
+    .tag{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;background:var(--bg-surface);border:1px solid var(--border);padding:5px 12px;color:var(--text-muted);}
+    .back-link{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;margin-bottom:40px;transition:color 0.2s;}
+    .back-link:hover{color:var(--text);}
+    figcaption{font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-top:10px;margin-bottom:2em;text-align:center;}
+    .receipt-list{margin:1.5em 0;padding:0;list-style:none;}
+    .receipt-list li{padding:14px 0;border-bottom:1px solid var(--border);font-size:16px;line-height:1.6;}
+    .receipt-list li:last-child{border-bottom:none;}
+    .receipt-label{font-family:var(--f-display);font-weight:800;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent-lt);display:block;margin-bottom:4px;}
+    .bullet-list{margin:1.5em 0 1.5em 1.5em;}
+    .bullet-list li{margin-bottom:0.6em;font-size:16px;}
+  </style>
+</head>
+<body class="page-body">
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <nav class="nav scrolled" id="nav">
+    <a href="../index.html" class="nav-logo" aria-label="Home">
+      <img src="../assets/images/logo_blowingfrog.png" alt="Blowing Frog" class="logo-img" onerror="this.outerHTML='&lt;div class=logo-fallback&gt;BF&lt;/div&gt;'">
+      <span class="logo-wordmark">Blowing Frog</span>
+    </a>
+    <div class="nav-links">
+      <a href="../about.html"    class="nav-link">About Us</a>
+      <a href="../services.html" class="nav-link">Services</a>
+      <a href="../blog.html"     class="nav-link active">Blog</a>
+      <a href="../contact.html"  class="nav-link">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="nav-hamburger" id="navHamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <img src="../assets/blogimages/huggingface-free-turnstile.jpg"
+       alt="A small hand-painted lemonade stand marked FREE, with a chrome subway turnstile installed in front of it and an enormous blank data center wall behind"
+       class="post-hero">
+
+  <div class="page-content">
+    <div class="post-wrap">
+      <a href="../blog.html" class="back-link">&larr; Back to Blog</a>
+      <div class="post-tag">AI / Musings &nbsp;&middot;&nbsp; 9 min read</div>
+      <h1 class="post-title">My Friend Hasn't Paid for a Digital Asset Since the Bush Administration. Nvidia Just Bought His Church for $12.93 Billion.</h1>
+      <div class="post-meta">September 7, 2026 &nbsp;&middot;&nbsp; Blowing Frog</div>
+
+      <div class="post-body">
+
+        <p>Let me tell you about my friend.</p>
+
+        <p>He has not paid for a digital asset since roughly the point where people stopped burning CDs. He knew Napster when Napster was a verb. He knew torrents, and then he knew the good torrents, and then he knew the private trackers that you had to be invited to and never talk about. Movies, records, plugins, entire suites of professional software that cost more than his car. He knew the trick, and if he didn&rsquo;t know the trick, he knew somebody who did.</p>
+
+        <p>He&rsquo;s a graphic designer and a cinematographer, and he is very good, and he has built an entire cosmology on one do-or-die conviction: the good stuff eventually gets free.</p>
+
+        <p>These days that conviction has a home, and the home is Hugging Face.</p>
+
+        <p>You cannot have a conversation with him about a workflow without him telling you there&rsquo;s an open-source model that does it. And we have been having the same argument for about three years now, in various restaurants, at varying volumes.</p>
+
+        <p>My side: open source will always trail the commercial tools. Not out of some moral defect &mdash; out of physics. The gap is capital. You cannot equate an open pipeline stitched out of four models and a prayer with what Seedance 2.5 or Kling is putting out, because one of them had a hundred million dollars of compute and a full-time team and the other one had a very smart person with a 4090 and a weekend.</p>
+
+        <p>His side, always the same, always delivered with the calm of a man who has already won: <em>inevitably.</em> Give it eighteen months. Open always catches up. It caught the browsers, it caught the servers, it caught the databases, it&rsquo;ll catch this.</p>
+
+        <p class="stop-beat">STOP.</p>
+
+        <p><a href="https://blogs.nvidia.com/blog/nvidia-to-acquire-hugging-face/" target="_blank" rel="noopener">On September 3rd, Nvidia confirmed it is buying Hugging Face for $12.93 billion.</a></p>
+
+        <p>And Rodrigo went quiet. Which, if you know him, is the loudest thing he&rsquo;s ever done.</p>
+
+        <h2>What Was Actually Bought</h2>
+
+        <p>Some scale first, because the number is abstract and the platform isn&rsquo;t.</p>
+
+        <p>Hugging Face hosts roughly three million models, one million applications and half a million datasets, used by something north of 18 million developers. It&rsquo;s not a company so much as the place where the open-weight world keeps its stuff. If a lab releases a model into the wild, it lands there. If you&rsquo;re building anything without a corporate API key, that&rsquo;s where your day starts.</p>
+
+        <p>It was reportedly running about $150 million in annualized revenue. And here&rsquo;s a detail I enjoyed: the company had turned down a $500 million offer from Nvidia at some earlier point. Then, according to <a href="https://www.cnbc.com/2026/09/03/nvidia-agrees-to-buy-hugging-face-for-almost-13-billion-ai-expansion.html" target="_blank" rel="noopener">CEO Clem Delangue, Hugging Face approached Jensen Huang</a>, because the platform needed &ldquo;more compute, more support, more collaboration, and more visibility&rdquo; to operate at the scale it had reached.</p>
+
+        <p>That&rsquo;s worth sitting with. This wasn&rsquo;t a hostile capture. The commons walked over and asked to be bought, because running the commons at eighteen million users turns out to be extremely expensive.</p>
+
+        <div class="lamp-fact">
+          <strong>Repo Fact</strong>
+          Nvidia isn&rsquo;t buying the models. Almost everything on that hub belongs to whoever released it &mdash; Meta, Mistral, Alibaba, a thousand individual researchers &mdash; under licenses Nvidia can&rsquo;t retroactively alter. What Nvidia bought is the distribution layer. It bought the app store, not the apps. Keep that distinction; it&rsquo;s the whole game later.
+        </div>
+
+        <h2>Read the Promise Again. Slowly.</h2>
+
+        <p>Nvidia said the right things, and I want to quote them properly rather than paraphrase them into something more sinister.</p>
+
+        <p>Jensen Huang: &ldquo;Hugging Face will remain an open platform for the entire AI ecosystem.&rdquo;</p>
+
+        <p>And: &ldquo;NVIDIA compute will not be required to build on or deploy through Hugging Face.&rdquo;</p>
+
+        <p>And: developers &ldquo;will choose the models they want, the frameworks they want, the clouds and inference service providers they want and the computing platforms they want.&rdquo; Multi-cloud, multi-accelerator, continued support for open models from every builder.</p>
+
+        <p>Those are specific, checkable commitments and I&rsquo;m not going to sneer at them. Nvidia has genuinely put hundreds of models and datasets onto that platform. This is not a company with a history of strangling the ecosystem it feeds on.</p>
+
+        <p>Now go back and read it one more time, and notice what is not in there.</p>
+
+        <p>Nothing about price.</p>
+
+        <p>Nothing about the Hub remaining free.</p>
+
+        <div class="pull-quote">&ldquo;Open&rdquo; and &ldquo;free&rdquo; are two different words, and the announcement only used one of them.</div>
+
+        <p>Huang promised hardware neutrality. He promised you will never be forced onto Nvidia silicon to use the platform. That is a real promise and it is not the promise most people think they heard, which was <em>nothing changes.</em></p>
+
+        <h2>The Pattern, With Receipts</h2>
+
+        <p>His actual fear isn&rsquo;t that Nvidia lied. It&rsquo;s that Nvidia doesn&rsquo;t have to. The thing that gets you is never the acquisition. It&rsquo;s year three.</p>
+
+        <p>Here&rsquo;s the film we&rsquo;ve all seen.</p>
+
+        <ul class="receipt-list">
+          <li>
+            <span class="receipt-label">Oracle &amp; MySQL — 2010</span>
+            Oracle picked it up with Sun. Nobody killed it. It just started developing an interesting personality &mdash; features that lived in the enterprise edition, a development pace that made you check the calendar. MySQL&rsquo;s own creator forked it into MariaDB before the ink was dry, which tells you what the people closest to it expected.
+          </li>
+          <li>
+            <span class="receipt-label">Red Hat &amp; CentOS — 2014 / 2020</span>
+            <a href="https://www.theregister.com/software/2024/02/13/broadcom-terminates-vmwares-free-esxi-hypervisor/391092" target="_blank" rel="noopener">CentOS was the free downstream rebuild that half the internet ran on.</a> Red Hat brought the project in-house and everyone said fine. In December 2020, CentOS 8 was converted into CentOS Stream &mdash; an upstream preview rather than a stable rebuild &mdash; with end-of-life pulled in years early. In 2023, RHEL source access got restricted. Rocky Linux and AlmaLinux exist because of those two decisions.
+          </li>
+          <li>
+            <span class="receipt-label">Broadcom &amp; VMware — 2024</span>
+            The most brutal recent example and the one everyone in IT has a scar from. Broadcom closed the deal and, in January 2024, ended perpetual licensing across the product line. In February 2024, it terminated the free ESXi hypervisor &mdash; the thing an entire generation of sysadmins learned virtualization on. Prices went up in ways that made large organizations start writing migration plans in anger.
+          </li>
+          <li>
+            <span class="receipt-label">Docker Hub — the rate-limit lesson</span>
+            Not an acquisition, but the same physics: the free tier that everybody&rsquo;s build pipeline silently depended on got rate limits, and a very large number of teams discovered they had built critical infrastructure on somebody else&rsquo;s generosity.
+          </li>
+        </ul>
+
+        <p>And then the relicensing wave, which isn&rsquo;t acquisitions at all but is the same reflex &mdash; a company looking at a free thing it pays for and doing arithmetic:</p>
+
+        <ul class="bullet-list">
+          <li>Elastic, January 2021, off Apache 2.0.</li>
+          <li>HashiCorp / Terraform, August 2023, from MPL to the Business Source License.</li>
+          <li>Redis, March 2024, off BSD.</li>
+        </ul>
+
+        <p>Three of the most-used pieces of infrastructure in the world, all deciding within three years that free had gotten too expensive.</p>
+
+        <p>So no, Rodrigo isn&rsquo;t being paranoid. He&rsquo;s being empirical.</p>
+
+        <h2>But Here&rsquo;s the Part He Forgot</h2>
+
+        <p>He went quiet too early. Because if you follow every one of those stories to the end, the ending is not the one he&rsquo;s bracing for.</p>
+
+        <p>Every single one of them got forked. And <strong>the forks won.</strong></p>
+
+        <figure style="margin:2em 0">
+          <img src="../assets/blogimages/open-source-fork-regrows.jpg"
+               alt="A green sapling growing out of the center of a large felled tree stump on a cleared logging site."
+               style="width:100%;border-radius:4px;display:block;">
+          <figcaption>Every tree that gets cut spawns a fork. The question is how much the sapling needs the stump&rsquo;s root system.</figcaption>
+        </figure>
+
+        <ul class="receipt-list">
+          <li>
+            <span class="receipt-label">OpenTofu — from Terraform, 2023</span>
+            <a href="https://www.flowverify.co/blog/open-source-relicensing-2026-what-happened" target="_blank" rel="noopener">Launched in September 2023, weeks after the license change</a>, backed by Gruntwork, Spacelift, Harness, Env0 and Scalr. It&rsquo;s approaching ten million downloads. Fidelity migrated four million resources onto it. Boeing, Capital One and AMD run it in production.
+          </li>
+          <li>
+            <span class="receipt-label">Valkey — from Redis, 2024</span>
+            Forked in April 2024 with AWS, Google Cloud, Oracle, Alibaba and Ericsson behind it. Reporting suggests 83% of large enterprises are now testing or running it. It&rsquo;s pulling roughly 80 merged pull requests a month against Redis&rsquo;s 42. One documented migration moved 15,000 servers.
+          </li>
+          <li>
+            <span class="receipt-label">OpenSearch — from Elasticsearch, 2021</span>
+            Forked in April 2021, moved under Linux Foundation governance in 2024, over 3,300 contributors and a hundred million downloads in its first year alone.
+          </li>
+          <li>
+            <span class="receipt-label">MariaDB — from MySQL, 2009</span>
+            Still here, sixteen years later, running under an enormous share of the web.
+          </li>
+        </ul>
+
+        <p>And then the part that actually matters:</p>
+
+        <p><strong>Elastic added an AGPL option back in September 2024. Redis added one in May 2025.</strong> Both companies partially reversed the exact decision that triggered the fork.</p>
+
+        <p>They didn&rsquo;t do that out of remorse. They did it because the fork was eating them.</p>
+
+        <p>Even Broadcom blinked &mdash; after the backlash, VMware quietly put a free hypervisor back on the table.</p>
+
+        <p>That&rsquo;s the actual lesson, and it&rsquo;s not &ldquo;open source always wins&rdquo; and it&rsquo;s not &ldquo;corporations always ruin it.&rdquo; It&rsquo;s narrower and more useful than either:</p>
+
+        <div class="lamp-fact">
+          <strong>The Mechanism</strong>
+          The community&rsquo;s power was never ownership. It was <em>exit.</em> The right to take the code and leave is what disciplines the owner. Every one of those reversals happened because leaving was credible.
+        </div>
+
+        <h2>What&rsquo;s Genuinely Different This Time</h2>
+
+        <p>And this is where I have to be honest instead of comforting, because the fork story has a hole in it and the hole is shaped like a GPU.</p>
+
+        <p>You can fork a database. The code is the thing. Clone it, stand up a foundation, and you have the whole product.</p>
+
+        <p>Can you fork a model hub?</p>
+
+        <p>The files are portable &mdash; most of those weights are under licenses that let you mirror them anywhere, and mirrors already exist. That part is genuinely fine. What you can&rsquo;t clone by copying a repository is the rest of it: the bandwidth to serve three million models to eighteen million developers, the discovery layer, the default-ness of it, the fact that every tutorial on earth has a <code>huggingface.co</code> URL in it.</p>
+
+        <p>And underneath all of that, the thing that makes this different from every case above:</p>
+
+        <p>In every previous story, the fork could get compute anywhere. AWS backed Valkey and OpenSearch because AWS wanted to sell the compute. There was a rival with a checkbook and a grudge.</p>
+
+        <p>Here, the acquirer <em>is</em> the compute. Nvidia isn&rsquo;t a company that competes in the GPU market; for training frontier models it is substantially the market. A fork of Hugging Face still has to train and serve on hardware that, one way or another, comes from the company you just forked away from.</p>
+
+        <p>That&rsquo;s not a conspiracy. It&rsquo;s just a different shape of dependency than the industry has dealt with before, and it&rsquo;s the reason &ldquo;the forks always win&rdquo; might not transfer cleanly.</p>
+
+        <h2>Where I Was Wrong, and Where He Was</h2>
+
+        <p>I&rsquo;ve spent three years telling Rodrigo that open source structurally cannot catch the frontier because it can&rsquo;t buy the compute.</p>
+
+        <p>The last eighteen months made that argument look worse than it did when I started making it. Open-weight models kept landing closer to the commercial tools than I predicted, faster than I predicted, and I don&rsquo;t get to pretend otherwise.</p>
+
+        <p>But his version needs an amendment, and I think the acquisition is the amendment.</p>
+
+        <p>&ldquo;Open source always catches up&rdquo; was never a law of nature. It was a description of a system with a very particular property: it was cheap enough that nobody could afford to own it. Linux won because you could run it on whatever was under your desk.</p>
+
+        <p>Frontier AI does not have that property. It costs a fortune to make and a fortune to serve, and Hugging Face just proved it by walking up to the largest chip company on earth and asking for help with the bill.</p>
+
+        <p>So the honest answer is that neither of us was right, and the thing to actually watch isn&rsquo;t the announcement.</p>
+
+        <p>It&rsquo;s the pricing page, eighteen months from now.</p>
+
+        <div class="pull-quote">&ldquo;Open&rdquo; is a promise about doors. &ldquo;Free&rdquo; is a promise about tolls. Nvidia made the first one.</div>
+
+        <p>It has not yet made the second one.</p>
+
+        <div class="faq-section">
+          <h2>Quick Questions From the Cheap Seats</h2>
+
+          <div class="faq-item">
+            <p class="faq-q">Did Nvidia buy Hugging Face?</p>
+            <p>Yes. <a href="https://blogs.nvidia.com/blog/nvidia-to-acquire-hugging-face/" target="_blank" rel="noopener">Nvidia confirmed the acquisition</a> on September 3, 2026, for $12.93 billion. Hugging Face hosts around three million models, one million applications and 500,000 datasets, used by more than 18 million developers. According to Hugging Face&rsquo;s CEO, the company approached Nvidia, citing a need for more compute and support at its scale.</p>
+          </div>
+
+          <div class="faq-item">
+            <p class="faq-q">Will Hugging Face stay free after the Nvidia acquisition?</p>
+            <p>Nvidia has not said. Jensen Huang&rsquo;s public commitments cover openness and hardware neutrality &mdash; specifically that &ldquo;NVIDIA compute will not be required to build on or deploy through Hugging Face&rdquo; &mdash; but the announcement makes no statement about pricing or whether the Hub remains free. <a href="https://techcrunch.com/2026/09/03/nvidia-confirms-it-will-buy-hugging-face-for-12-9-billion/" target="_blank" rel="noopener">TechCrunch has a full rundown of what was and wasn&rsquo;t committed to.</a></p>
+          </div>
+
+          <div class="faq-item">
+            <p class="faq-q">Does Nvidia now own the open-source models on Hugging Face?</p>
+            <p>No. The models belong to whoever published them, under their existing licenses, which an acquisition doesn&rsquo;t retroactively change. Nvidia acquired the platform and distribution layer, not the model weights themselves.</p>
+          </div>
+
+          <div class="faq-item">
+            <p class="faq-q">What happened when other companies acquired open projects?</p>
+            <p>Mixed, with a clear pattern of monetization arriving later rather than immediately. Broadcom ended VMware perpetual licenses and killed the free ESXi hypervisor within months of closing. Red Hat converted CentOS into CentOS Stream in 2020 and restricted RHEL source access in 2023. Oracle&rsquo;s MySQL prompted the MariaDB fork on day one.</p>
+          </div>
+
+          <div class="faq-item">
+            <p class="faq-q">Do open-source forks actually work?</p>
+            <p>Increasingly, yes. OpenTofu (from Terraform) is approaching 10 million downloads with Fidelity, Boeing and Capital One in production. Valkey (from Redis) reportedly has 83% of large enterprises testing or running it. OpenSearch (from Elasticsearch) has over 3,300 contributors. <a href="https://www.flowverify.co/blog/open-source-relicensing-2026-what-happened" target="_blank" rel="noopener">Both Elastic and Redis later added back permissive license options</a> after their forks gained traction.</p>
+          </div>
+        </div>
+
+        <p>Rant over. Not remotely sorry.</p>
+
+        <p>Buddy, if you&rsquo;re reading this: you were more right than I gave you credit for, and I&rsquo;m about to be more right than either of us wants.</p>
+
+        <p>Mirror your weights.</p>
+
+        <div class="tags">
+          <span class="tag">ai</span>
+          <span class="tag">opensource</span>
+          <span class="tag">nvidia</span>
+          <span class="tag">huggingface</span>
+          <span class="tag">acquisitions</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../app.js"></script>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    setTimeout(function(){
+      var igImg = document.querySelector('.ig-float img');
+      if(igImg) igImg.src = '../assets/files Icons/InstagramICON.png';
+    }, 0);
+  </script>
+</body>
+</html>
