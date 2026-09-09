@@ -559,5 +559,99 @@ Object.assign(SPRITES, {
   } },
 });
 
+
+// ---- boss four: the Neco Frog, the hero frog in this fight, and the rift ---
+function necoFrog(g, W, H, o = {}) {
+  const s = Math.min(W, H) / 100;
+  const px = (x, y) => [x * s, y * s];
+  const tier = o.tier || 0;
+  const grow = 1 + tier * 0.14;
+  const hide = o.dead ? 0x2a2028 : 0x18141c;
+  const glow = 0xc23fe0;
+  if (o.glowing) glowDisc(g, 0, 0, 48 * s * grow, glow, 0.4);
+  for (const d of [-1, 1]) g.ellipse(...px(d * 15 * grow, 30 * grow), 10 * s * grow, 7 * s * grow).fill(hide), stroke(g, 2.5);
+  g.ellipse(...px(0, 6 * grow), 30 * s * grow, 26 * s * grow).fill(hide); stroke(g);
+  for (let i = -3; i <= 3; i++) g.moveTo(...px(i * 8 * grow, -14 * grow)).lineTo(...px(i * 8 * grow + 3, -18 * grow)).lineTo(...px(i * 8 * grow - 3, -18 * grow)).fill(glow);
+  const armPose = o.arm || 'idle';
+  if (armPose === 'idle') { g.circle(...px(6 * grow, -22 * grow), 3 * s).fill(hide); stroke(g, 1.5); }
+  else if (armPose === 'claw') { g.roundRect(...px(10, -30), 30 * s, 10 * s, 4 * s).fill(hide); stroke(g, 2.5); for (let i = 0; i < 3; i++) g.circle(...px(38 + i * 4, -26 + i * 3), 2.5 * s).fill(0xe8d8f0); }
+  else if (armPose === 'charge') { glowDisc(g, ...px(0, 4), 14 * s, 0xffffff, 0.9); g.circle(...px(0, 4), 8 * s).fill(0xffffff); }
+  for (const d of [-1, 1]) {
+    g.circle(...px(d * 11, -20), 8 * s * grow).fill(glow); stroke(g, 2);
+    g.circle(...px(d * 11, -20), 3 * s * grow).fill(0xffffff);
+  }
+  if (o.mouth === 'open') { g.ellipse(...px(0, -6), 10 * s, 8 * s).fill(0x3a0f30); }
+  else g.moveTo(...px(-8, -8)).quadraticCurveTo(...px(0, o.smug ? -3 : -5), ...px(8, -8)).stroke({ width: 3 * s, color: glow, alpha: 0.8 });
+  if (o.tooth) g.poly([...px(2, -8), ...px(5, -8), ...px(3, -3)]).fill(0xf0e8f4);
+  if (o.beam) { g.moveTo(...px(9, -6)).lineTo(...px(45, -2)).stroke({ width: 8 * s, color: glow, alpha: 0.85 }); }
+  if (o.cracked) for (let i = 0; i < 6; i++) g.moveTo(...px((i % 3 - 1) * 12, -10 + i * 6)).lineTo(...px((i % 3 - 1) * 12 + 4, -4 + i * 6)).stroke({ width: 1.5 * s, color: glow, alpha: 0.7 });
+  if (o.shards) for (let i = 0; i < 5; i++) g.poly([...px(-40 + i * 20, -40 - (i % 2) * 8), ...px(-36 + i * 20, -32 - (i % 2) * 8), ...px(-44 + i * 20, -32 - (i % 2) * 8)]).fill({ color: glow, alpha: 0.7 });
+}
+
+function heroFightFrog(g, W, H, o = {}) {
+  const s = Math.min(W, H) / 100;
+  const px = (x, y) => [x * s, y * s];
+  const glow = 0xf2c53d;
+  if (o.glowing) glowDisc(g, 0, 0, 46 * s, glow, 0.35);
+  for (const d of [-1, 1]) g.ellipse(...px(d * 15, 30), 10 * s, 7 * s).fill(C.frog), stroke(g, 2.5);
+  g.ellipse(...px(0, 6), 30 * s, 26 * s).fill(C.frog); stroke(g);
+  g.ellipse(...px(0, 16), 20 * s, 15 * s).fill(C.belly);
+  for (let i = -2; i <= 2; i++) g.poly([...px(i * 9, -14), ...px(i * 9 + 3, -19), ...px(i * 9 - 3, -19)]).fill(C.frogDark);
+  const armPose = o.arm || 'idle';
+  if (armPose === 'claw') { g.roundRect(...px(10, -30), 30 * s, 10 * s, 4 * s).fill(C.frog); stroke(g, 2.5); }
+  else if (armPose === 'charge') { glowDisc(g, ...px(0, 4), 14 * s, glow, 0.9); g.circle(...px(0, 4), 8 * s).fill(0xffffff); }
+  for (const d of [-1, 1]) {
+    g.circle(...px(d * 11, -20), 8 * s).fill(C.frog); stroke(g, 2);
+    g.circle(...px(d * 11, -20), 5 * s).fill(C.eye);
+    g.circle(...px(d * 11 + d, -20), 2.5 * s).fill(C.pupil);
+  }
+  if (o.mouth === 'open') g.ellipse(...px(0, -6), 10 * s, 8 * s).fill(0x7d2130);
+  else g.moveTo(...px(-8, -8)).quadraticCurveTo(...px(0, o.hurt ? -10 : -4), ...px(8, -8)).stroke({ width: 3 * s, color: OUT, alpha: 0.8 });
+  if (o.tongue) g.roundRect(...px(9, -6), 40 * s, 5 * s, 2.5 * s).fill(C.pink);
+  if (o.beam) g.moveTo(...px(9, -6)).lineTo(...px(45, -2)).stroke({ width: 8 * s, color: glow, alpha: 0.85 });
+  if (o.hurt) for (let i = 0; i < 4; i++) g.moveTo(...px((i - 1.5) * 10, -6)).lineTo(...px((i - 1.5) * 10 + 3, 0)).stroke({ width: 1.5 * s, color: 0xe23c2f, alpha: 0.6 });
+}
+
+Object.assign(SPRITES, {
+  neco_idle:    { w: 1.7, h: 1.7, draw: (g, W, H) => necoFrog(g, W, H, {}) },
+  neco_claw:    { w: 1.9, h: 1.7, draw: (g, W, H) => necoFrog(g, W, H, { arm: 'claw' }) },
+  neco_lash:    { w: 2.2, h: 1.7, draw: (g, W, H) => necoFrog(g, W, H, { mouth: 'open', beam: true }) },
+  neco_throw:   { w: 1.9, h: 1.7, draw: (g, W, H) => necoFrog(g, W, H, { arm: 'claw', shards: true }) },
+  neco_catch:   { w: 1.7, h: 1.9, draw: (g, W, H) => necoFrog(g, W, H, { mouth: 'open' }) },
+  neco_hurt:    { w: 1.7, h: 1.7, draw: (g, W, H) => necoFrog(g, W, H, { cracked: true }) },
+  neco_charge:  { w: 1.7, h: 1.7, draw: (g, W, H) => necoFrog(g, W, H, { arm: 'charge', glowing: true }) },
+  neco_stagger: { w: 1.7, h: 1.7, draw: (g, W, H) => necoFrog(g, W, H, { cracked: true, tooth: true }) },
+  neco_roar:    { w: 1.9, h: 1.9, draw: (g, W, H) => necoFrog(g, W, H, { mouth: 'open', glowing: true, shards: true }) },
+  neco_r1:      { w: 1.7, h: 1.7, draw: (g, W, H) => necoFrog(g, W, H, { tier: 0 }) },
+  neco_r2:      { w: 1.9, h: 1.9, draw: (g, W, H) => necoFrog(g, W, H, { tier: 1, shards: true }) },
+  neco_r3:      { w: 2.1, h: 2.1, draw: (g, W, H) => necoFrog(g, W, H, { tier: 2, shards: true, cracked: true }) },
+  neco_burst:   { w: 2.4, h: 2.4, draw: (g, W, H) => necoFrog(g, W, H, { tier: 2, mouth: 'open', glowing: true, shards: true, cracked: true }) },
+  neco_taunt:   { w: 1.9, h: 1.7, draw: (g, W, H) => necoFrog(g, W, H, { tier: 1, tooth: true }) },
+  neco_greedy:  { w: 1.9, h: 1.7, draw: (g, W, H) => necoFrog(g, W, H, { tier: 2, arm: 'claw', mouth: 'open' }) },
+  neco_overload:{ w: 2.4, h: 2.4, draw: (g, W, H) => necoFrog(g, W, H, { tier: 2, mouth: 'open', glowing: true, shards: true, cracked: true }) },
+  neco_dead:    { w: 2.2, h: 1.6, draw: (g, W, H) => necoFrog(g, W, H, { dead: true, tier: 1 }) },
+  neco_shard:   { w: 0.8, h: 1.2, draw: (g, W, H) => { g.poly([0, -H / 2, W * 0.32, -H * 0.1, 0, H / 2, -W * 0.32, -H * 0.1]).fill({ color: 0x18141c, alpha: 0.9 }); stroke(g, 2); g.poly([0, -H * 0.3, W * 0.12, -H * 0.05, 0, H * 0.2, -W * 0.12, -H * 0.05]).fill({ color: 0xc23fe0, alpha: 0.6 }); } },
+
+  hero_idle:    { w: 1.6, h: 1.6, draw: (g, W, H) => heroFightFrog(g, W, H, {}) },
+  hero_claw:    { w: 1.8, h: 1.6, draw: (g, W, H) => heroFightFrog(g, W, H, { arm: 'claw' }) },
+  hero_lash:    { w: 2.1, h: 1.6, draw: (g, W, H) => heroFightFrog(g, W, H, { mouth: 'open', tongue: true }) },
+  hero_throw:   { w: 1.8, h: 1.6, draw: (g, W, H) => heroFightFrog(g, W, H, { arm: 'claw' }) },
+  hero_catch:   { w: 1.6, h: 1.8, draw: (g, W, H) => heroFightFrog(g, W, H, { mouth: 'open' }) },
+  hero_hurt:    { w: 1.6, h: 1.6, draw: (g, W, H) => heroFightFrog(g, W, H, { hurt: true }) },
+  hero_charge:  { w: 1.6, h: 1.6, draw: (g, W, H) => heroFightFrog(g, W, H, { arm: 'charge', glowing: true }) },
+  hero_stagger: { w: 1.6, h: 1.6, draw: (g, W, H) => heroFightFrog(g, W, H, { hurt: true }) },
+  hero_roar:    { w: 1.8, h: 1.8, draw: (g, W, H) => heroFightFrog(g, W, H, { mouth: 'open', glowing: true }) },
+
+  rift_shard_big:   { w: 1, h: 1.3, draw: (g, W, H) => { g.poly([0, -H / 2, W * 0.4, -H * 0.1, 0, H / 2, -W * 0.4, -H * 0.1]).fill(0x1c1822); stroke(g, 2.5); } },
+  rift_shard_small: { w: 0.7, h: 0.7, draw: (g, W, H) => { for (let i = 0; i < 3; i++) g.poly([i * 8 - 8, -H / 2 + i * 4, i * 8 + 6, i * 3, i * 8 - 8, H / 2]).fill(0x1c1822); } },
+  rift_bomb:        { w: 0.9, h: 1.1, draw: (g, W, H) => { g.roundRect(-W * 0.3, -H * 0.4, W * 0.6, H * 0.8, W * 0.3).fill(0x14111a); stroke(g, 2.5); glowDisc(g, 0, -H * 0.42, 6, 0xc23fe0, 0.9); g.circle(0, -H * 0.42, 3).fill(0xc23fe0); } },
+  rift_tear:        { w: 1, h: 1, draw: (g, W, H) => { g.moveTo(-W * 0.4, -H * 0.3).quadraticCurveTo(0, H * 0.4, W * 0.35, -H * 0.1).quadraticCurveTo(0, -H * 0.5, -W * 0.4, -H * 0.3).fill(0x0a080d); stroke(g, 2, 0xc23fe0); } },
+  rift_debris:      { w: 1, h: 0.8, draw: (g, W, H) => { for (let i = 0; i < 4; i++) g.roundRect(-W * 0.4 + i * W * 0.22, -H * 0.2 + (i % 2) * H * 0.2, W * 0.24, H * 0.3, 3).fill(0x2a2530); } },
+  rift_orb:         { w: 0.8, h: 0.8, draw: (g, W, H) => { glowDisc(g, 0, 0, W * 0.4, 0xc23fe0, 0.6); g.circle(0, 0, W * 0.3).fill(0x180f1c); stroke(g, 2); } },
+  rift_floor:       { w: 1, h: 1, draw: (g, W, H) => { g.rect(-W / 2, -H / 2, W, H).fill(0x1c1822); for (let i = 0; i < 3; i++) g.moveTo(-W / 2 + i * W / 3, -H / 2).lineTo(-W / 2 + i * W / 3 + 6, H / 2).stroke({ width: 2, color: 0xc23fe0, alpha: 0.5 }); } },
+  rift_warn:        { w: 1, h: 1, draw: (g, W, H) => { for (let i = 0; i < 5; i++) { const a = i * 1.26; g.poly([Math.cos(a) * 4, Math.sin(a) * 4, Math.cos(a) * W * 0.4, Math.sin(a) * H * 0.35, Math.cos(a + 0.3) * W * 0.25, Math.sin(a + 0.3) * H * 0.25]).fill({ color: 0xc23fe0, alpha: 0.55 }); } } },
+  rift_dust:        { w: 1, h: 1, draw: (g, W, H) => { for (let i = 0; i < 16; i++) g.circle((i * 13 % W) - W / 2, (i * 19 % H) - H / 2, 2 + (i % 3)).fill({ color: 0xc23fe0, alpha: 0.35 }); } },
+});
+
 export const SPRITE_KINDS = Object.keys(SPRITES);
 export { CELL, C as PALETTE };

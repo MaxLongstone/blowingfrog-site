@@ -55,6 +55,15 @@ SHEETS = {
                  "climbfrog_top"]),
     "K": (3, 3, ["ring_canvas", "ring_fence", "ring_light", "ring_crowd", "boss_dynamite",
                  "boss_bag", "boss_belt", "ring_post", "boss_stars"]),
+    # Boss four: The Neco Frog (mirror-dimension duel)
+    "P": (3, 3, ["neco_idle", "neco_claw", "neco_lash", "neco_throw", "neco_catch",
+                 "neco_hurt", "neco_charge", "neco_stagger", "neco_roar"]),
+    "Q": (3, 3, ["neco_r1", "neco_r2", "neco_r3", "neco_burst", "neco_taunt",
+                 "neco_greedy", "neco_overload", "neco_dead", "neco_shard"]),
+    "R": (3, 3, ["rift_shard_big", "rift_shard_small", "rift_bomb", "rift_tear",
+                 "rift_debris", "rift_orb", "rift_floor", "rift_warn", "rift_dust"]),
+    "S": (3, 3, ["hero_idle", "hero_claw", "hero_lash", "hero_throw", "hero_catch",
+                 "hero_hurt", "hero_charge", "hero_stagger", "hero_roar"]),
 }
 
 WHITE_CUTOFF = 234   # a pixel this bright in every channel counts as background

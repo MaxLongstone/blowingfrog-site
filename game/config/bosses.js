@@ -201,6 +201,68 @@ I find that more impressive than you probably do.`,
   },
 };
 
-export const BOSSES = [CHACO, LANDLORD, NARRATOR];
+
+// Boss four: THE NECO FROG. A doppelganger from a dark mirror dimension, built
+// entirely out of the frog's own rules run backwards. Same fuse, same count to
+// five, same detonation -- the fight is a race for shared explosives, not a
+// duel. Whoever grabs the fifth one first grows; three races won ends it, and
+// the third is framed as the Neco Frog's own greed catching up with it.
+export const NECO_FROG = {
+  id: 'neco',
+  after: 'K2',
+  kind: 'mirror',
+  name: 'THE NECO FROG',
+  eyebrow: 'BOSS \u00b7 EVIDENCE OF A GOATEE',
+
+  intro: [
+    {
+      heading: "A SECOND OF YOU",
+      body: "Somewhere behind this world there is a tear, and the tear grew exactly one thing. Not a new species. A copy. Same body, same rule about eating five and coming apart, same everything, run backwards through a cracked mirror.",
+    },
+    {
+      heading: "THE ONLY DIFFERENCE",
+      body: "It has a goatee. That is the entire tell, and I want you to sit with how stupid that is for a moment. It is an amphibian. It does not grow facial hair. It grew one anyway, out of pure narrative obligation, because that is how you are supposed to know the evil version of somebody, and it read the memo.",
+    },
+    {
+      heading: "HE PLAYS BY YOUR RULES",
+      body: "This is the part that should worry you. It eats explosives too. Same fuse, same count to five, same detonation. Every bomb in that rift is a race, and whoever gets there first is the one who grows.",
+    },
+    {
+      heading: "WATCH THE GOATEE",
+      body: "It strokes it before every move, like a cartoon villain who has never once been embarrassed about being a cartoon villain. That is your tell, the only one you get. Everything else about this fight is new: shared bombs, three rounds, and it gets bigger every time it beats you to one.",
+    },
+    {
+      heading: "WHAT IT ACTUALLY IS",
+      body: "It is not stronger than you. It is not smarter than you. It is simply worse at knowing when to stop, and it is going to prove that by trying to out-eat you on the last one. Watch what happens to a thing that has never once, in its short backwards life, decided five was enough.",
+      menace: true,
+    },
+    {
+      heading: "GO ON THEN",
+      body: "ARROWS move you between the bombs, SPACE eats them, SHIFT swings at it when it is close enough to hit. Win the race three times. It will not go quietly, but it will go on its own terms, which is worse for it than anything you could do on purpose.",
+    },
+  ],
+
+  roundsToWin: 3,
+  hearts: 3,
+  fuseTarget: 5,
+
+  // Its three attacks. Same telegraph grammar as Chaco: a readable wind-up,
+  // then a strike with one correct answer.
+  attacks: {
+    claw:  { name: 'THE CLAW',   tell: 0.5,  damage: 1, reach: 'in'  },
+    lash:  { name: 'THE LASH',   tell: 0.62, damage: 1, reach: 'mid' },
+    throw: { name: 'THE SHARD',  tell: 0.55, damage: 2, reach: 'out' },
+  },
+
+  // Multipliers per growth tier (0, 1, 2), applied to its race speed and
+  // attack pace after it wins a race instead of the player.
+  growth: { raceSpeed: [1, 1.28, 1.6], attackEvery: [1, 0.82, 0.68] },
+
+  finale: {
+    card: "It has one bomb left to grab and it is not going to get there first, and it knows it, and it goes for it anyway. That is the whole species, in both dimensions.",
+  },
+};
+
+export const BOSSES = [CHACO, LANDLORD, NARRATOR, NECO_FROG];
 export const getBoss = (id) => BOSSES.find(b => b.id === id) || null;
 export const bossAfter = (stageId) => BOSSES.find(b => b.after === String(stageId)) || null;

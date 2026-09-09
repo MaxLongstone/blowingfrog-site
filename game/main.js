@@ -13,6 +13,7 @@ import { buildShareCard, shareCardNatively, downloadCard } from './ui/sharecard.
 import { BossFight } from './systems/bossfight.js';
 import { ClimbFight } from './systems/climbfight.js';
 import { TrialFight } from './systems/trialfight.js';
+import { MirrorFight } from './systems/mirrorfight.js';
 import { Telemetry } from './systems/telemetry.js';
 import { bossAfter, getBoss, BOSSES } from './config/bosses.js';
 
@@ -134,7 +135,10 @@ class Game {
     this.paused = false;
     this.hud.show(true);
     document.body.classList.add('playing');
-    const Fight = boss.kind === 'climb' ? ClimbFight : boss.kind === 'trial' ? TrialFight : BossFight;
+    const Fight = boss.kind === 'climb' ? ClimbFight
+      : boss.kind === 'trial' ? TrialFight
+      : boss.kind === 'mirror' ? MirrorFight
+      : BossFight;
     this.play = new Fight({
       app: this.app, textures: this.tex, audio: this.audio, hud: this.hud,
       frogState: { ...carry, best: this.best }, score, ach: this.ach,
