@@ -138,6 +138,69 @@ export const LANDLORD = {
   ],
 };
 
-export const BOSSES = [CHACO, LANDLORD];
+
+
+// Boss three: THE NARRATOR. Not a new character — the voice that has been
+// running this whole broadcast turns out to be what stands between the frog
+// and the ending. No body, no tells, no telegraphed columns. Statements fall
+// instead of traffic; some are true, some are not, and the only tell is
+// whether the player actually knows the answer. Some of what it says about
+// you is pulled from this browser's own real counters.
+export const NARRATOR = {
+  id: 'narrator',
+  after: 'K3',
+  kind: 'trial',
+  name: 'THE NARRATOR',
+  eyebrow: 'BOSS \u00b7 UNSCHEDULED HONESTY',
+
+  // heading is always a string. body is a string, or (for beats that quote the
+  // player's own real numbers back at them) a function of a merged stats
+  // snapshot: achievement counts plus telemetry, keyed as `t` below.
+  intro: [
+    {
+      heading: "YOU KNOW MY VOICE",
+      body: "Every card you have read up to this point, every filthy nickname, every guess about that box, that was me. I have been narrating you this entire time and it did not once occur to you to ask who was doing it, or why it got to decide.",
+    },
+    {
+      heading: "LET ME SHOW YOU SOMETHING",
+      body: (t) => `You first opened this ${t.daysSinceFirstSeen} day${t.daysSinceFirstSeen === 1 ? '' : 's'} ago. You have come back ${t.sessions} time${t.sessions === 1 ? '' : 's'}. You have spent ${t.totalPlayMinutes} minute${t.totalPlayMinutes === 1 ? '' : 's'} of your one, finite, unrepeatable life watching a cartoon frog eat bombs.
+
+I am not judging you for that. I do not have the equipment. I am simply better at arithmetic than you are at denial.`,
+    },
+    {
+      heading: "AND THIS",
+      body: (t) => `You have died ${t.deaths} time${t.deaths === 1 ? '' : 's'}. You have cleared a stage without a scratch on you ${t.cleanStages} time${t.cleanStages === 1 ? '' : 's'}. You have ${t.achCount} of ${t.achTotal} achievements, which means there are ${t.achTotal - t.achCount} things you still have not managed, and you came up here anyway.
+
+I find that more impressive than you probably do.`,
+    },
+    {
+      heading: "THE RULES CHANGE NOW",
+      body: "No tells this time. No shoulder dips, no lit-up columns, nothing telegraphed. Sentences will fall. Some are true. Some are not. Eat the lies before they land, on the tongue, in your own lane. Stand clear of anything true and let it pass under you, unchallenged. Get it backwards in either direction and it costs you a heart.\n\nYou already know more than I do about some of this. Use that. It is the only advantage in the room.",
+    },
+    {
+      heading: "EVERYONE DOES THIS",
+      body: "I am not unusual, swamp bitch. Every institution you have ever trusted has done exactly what I am doing to you now: kept the record, kept the parts that flatter it, and called the rest a myth. Empires wrote their own histories and signed them as fact. Companies renamed their disasters. Whole countries forgot years they would rather not have had, right up until somebody found the paperwork.\n\nI am not a glitch in the system. I am the oldest trick your species has, running slightly faster than usual.",
+      menace: true,
+    },
+    {
+      heading: "GO ON THEN",
+      body: "Move with the arrows. Eat what is false. Let what is true fall past you. And when I show you something that looks exactly like the end of this, remember you have not even reached the ocean yet.",
+    },
+  ],
+
+  hearts: 3,
+  proofToWin: 8,          // correct judgments before the fake ending fires
+  proofPhase3: 5,         // more correct judgments, faster and dirtier, after that
+
+  // The trick screen. Every button on it does the same thing: nothing.
+  fakeEnding: {
+    eyebrow: 'BROADCAST TERMINATED \u00b7 EARLY',
+    title: 'YOU WIN',
+    body: "That is the whole game. Every stage cleared, every boss down, nine achievements, nothing left to press. Close this tab and the score is yours forever. Nobody needs to see what happens after this.",
+    achLabel: 'ACHIEVEMENTS 9/9',
+  },
+};
+
+export const BOSSES = [CHACO, LANDLORD, NARRATOR];
 export const getBoss = (id) => BOSSES.find(b => b.id === id) || null;
 export const bossAfter = (stageId) => BOSSES.find(b => b.after === String(stageId)) || null;

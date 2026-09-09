@@ -12,6 +12,8 @@ import { MODES, readMode, writeMode, usesPaintedArt } from './core/mode.js';
 import { buildShareCard, shareCardNatively, downloadCard } from './ui/sharecard.js';
 import { BossFight } from './systems/bossfight.js';
 import { ClimbFight } from './systems/climbfight.js';
+import { TrialFight } from './systems/trialfight.js';
+import { Telemetry } from './systems/telemetry.js';
 import { bossAfter, getBoss, BOSSES } from './config/bosses.js';
 
 const CELL = 64, ROWS = 15;
@@ -41,6 +43,7 @@ class Game {
       this.hud.say(`ACHIEVEMENT: ${a.title}`, 2600);
       this.audio.win();
     });
+    this.telem = new Telemetry();
     this.play = null;
     this.paused = false;
 
@@ -49,7 +52,7 @@ class Game {
 
     app.ticker.add((ticker) => {
       const dt = Math.min(0.05, ticker.deltaMS / 1000);
-      if (this.play && !this.paused) this.play.update(dt);
+      if (this.play && !this.paused) { this.play.update(dt); this.telem.tickPlay(dt); }
     });
 
     preloadFrames().then(f => { this.frames = f; });
@@ -69,6 +72,7 @@ class Game {
   title() {
     this.clearPlay();
     this.hud.show(false);
+    this.telem.markTitleShown();
     this.overlays.title({
       onStart: () => { this.audio.unlock(); this.overlays.hide(); this.start(this.startStage || '1'); },
       best: this.best,
@@ -98,14 +102,30 @@ class Game {
     this.play.on('dead', ({ score }) => this.onDead(stage, score));
   }
 
-  bossIntro(boss, carry, score, index = 0) {
+  bossIntro(boss, carry, score, index = 0, stats = null) {
     this.paused = true;
     this.hud.show(false);
+    // Computed once per intro sequence, so a boss like The Narrator can quote
+    // real numbers back at the player without them drifting beat to beat.
+    if (stats === null) stats = this.buildNarratorStats(carry);
     const start = () => { this.overlays.hide(); this.startBoss(boss, carry, score); };
     if (index >= boss.intro.length) { start(); return; }
     this.overlays.bossIntro(boss, index,
-      () => (index === boss.intro.length - 1 ? start() : this.bossIntro(boss, carry, score, index + 1)),
-      start);
+      () => (index === boss.intro.length - 1 ? start() : this.bossIntro(boss, carry, score, index + 1, stats)),
+      start, stats);
+  }
+
+  // Real, local numbers only: achievement counts merged with telemetry. Used
+  // by The Narrator's intro beats and by the fight itself.
+  buildNarratorStats(carry) {
+    const t = this.telem.snapshot();
+    return {
+      ...t,
+      deaths: this.ach.counts.deaths, cleanStages: this.ach.counts.cleanStages,
+      midairEats: this.ach.counts.midairEats, squashes: this.ach.counts.squashes,
+      achCount: this.ach.count, achTotal: this.ach.total,
+      best: this.best,
+    };
   }
 
   startBoss(boss, carry, score) {
@@ -114,10 +134,11 @@ class Game {
     this.paused = false;
     this.hud.show(true);
     document.body.classList.add('playing');
-    const Fight = boss.kind === 'climb' ? ClimbFight : BossFight;
+    const Fight = boss.kind === 'climb' ? ClimbFight : boss.kind === 'trial' ? TrialFight : BossFight;
     this.play = new Fight({
       app: this.app, textures: this.tex, audio: this.audio, hud: this.hud,
-      frogState: carry, score, ach: this.ach,
+      frogState: { ...carry, best: this.best }, score, ach: this.ach,
+      overlays: this.overlays, telem: this.telem,
     });
     this.play.on('won', ({ score }) => {
       (this.beaten ||= new Set()).add(boss.id);

@@ -148,9 +148,13 @@ export class Overlays {
     ], 'achievements');
   }
 
-  // Chaco's monologue, one beat at a time. The last beat starts the bout.
-  bossIntro(boss, index, onNext, onSkip) {
+  // The pre-fight monologue, one beat at a time. The last beat starts the bout.
+  // `stats` is an optional snapshot (achievement counts merged with telemetry);
+  // a beat whose body is a function gets called with it, so bosses like The
+  // Narrator can quote the player's own real numbers back at them.
+  bossIntro(boss, index, onNext, onSkip, stats = null) {
     const beat = boss.intro[index];
+    const body = typeof beat.body === 'function' ? beat.body(stats || {}) : beat.body;
     const last = index === boss.intro.length - 1;
     const go = el('button', 'bf-btn', last ? 'RING THE BELL' : 'GO ON');
     go.onclick = onNext;
@@ -162,10 +166,25 @@ export class Overlays {
       el('div', 'bf-eyebrow', index === 0 ? boss.eyebrow : boss.name),
       el('h2', `bf-title small${beat.menace ? ' menace' : ''}`, beat.heading),
     ];
-    for (const para of beat.body.split('\n\n')) kids.push(el('p', 'bf-body', para));
+    for (const para of body.split('\n\n')) kids.push(el('p', 'bf-body', para));
     kids.push(dots, go);
     if (!last) kids.push(skip);
     this._show(kids, 'boss' + (beat.menace ? ' menace' : ''));
+  }
+
+  // The Narrator's trick screen. It is styled exactly like a real ending card
+  // on purpose. Every button calls the same handler: there is no correct one.
+  fakeWin(cfg, score, onAny) {
+    const mk = (label) => { const b = el('button', 'bf-btn', label); b.onclick = onAny; return b; };
+    const mkGhost = (label) => { const b = el('button', 'bf-btn ghost', label); b.onclick = onAny; return b; };
+    this._show([
+      el('div', 'bf-eyebrow', cfg.eyebrow),
+      el('h2', 'bf-title', cfg.title),
+      el('p', 'bf-body', cfg.body),
+      el('div', 'bf-scoreline', `FINAL SCORE ${String(score).padStart(6, '0')}`),
+      mk('SHARE'), mkGhost(cfg.achLabel), mkGhost('PLAY AGAIN'),
+      el('div', 'bf-note', 'Made by Blowing Frog. Close the tab now.'),
+    ], 'ending');
   }
 
   stageCard(stage, size, onGo) {
