@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { CHACO, LANDLORD, NARRATOR, NECO_FROG, BOSSES, bossAfter, getBoss } from '../config/bosses.js';
+import { CHACO, LANDLORD, NARRATOR, NECO_FROG, SACK_MAN, BOSSES, bossAfter, getBoss } from '../config/bosses.js';
 
 function checkIntro(boss) {
   assert.ok(Array.isArray(boss.intro) && boss.intro.length >= 4, boss.id);
@@ -22,7 +22,21 @@ test('bossAfter resolves each slot to the right boss', () => {
   assert.equal(bossAfter('K1'), LANDLORD);
   assert.equal(bossAfter('K2'), NECO_FROG);
   assert.equal(bossAfter('K3'), NARRATOR);
+  assert.equal(bossAfter('K4'), SACK_MAN);
   assert.equal(bossAfter('4'), null);
+});
+test('SACK_MAN is a dark fight after K4 with three surges and three attacks', () => {
+  assert.equal(SACK_MAN.kind, 'dark');
+  assert.equal(SACK_MAN.after, 'K4');
+  assert.equal(SACK_MAN.surgesToWin, 3);
+  assert.equal(Object.keys(SACK_MAN.attacks).length, 3);
+  assert.equal(SACK_MAN.light.max.length, 3);
+  assert.equal(SACK_MAN.light.decay.length, 3);
+  // it should get harder each time through, not easier
+  for (let i = 1; i < 3; i++) {
+    assert.ok(SACK_MAN.light.max[i] <= SACK_MAN.light.max[i - 1], `max radius rises at surge ${i}`);
+    assert.ok(SACK_MAN.light.decay[i] >= SACK_MAN.light.decay[i - 1], `decay slows at surge ${i}`);
+  }
 });
 test('NECO_FROG is a mirror fight after K2 with three attacks and three rounds', () => {
   assert.equal(NECO_FROG.kind, 'mirror');

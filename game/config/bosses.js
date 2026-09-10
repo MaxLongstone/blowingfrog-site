@@ -263,6 +263,71 @@ export const NECO_FROG = {
   },
 };
 
-export const BOSSES = [CHACO, LANDLORD, NARRATOR, NECO_FROG];
+
+// Boss five: THE SACK MAN. No design, almost no character art on purpose --
+// he is a flicker at the edge of a shrinking light, never a body. Vision is
+// the resource here, not health: a light radius decays on its own, and
+// eating an explosive refills it exactly as it feeds the fuse, so the one
+// rule every boss in this game obeys (the thing that grows you is the only
+// thing keeping you alive) holds here too. Three surges of dark, survived,
+// and the final flood leaves nothing in the water to find.
+export const SACK_MAN = {
+  id: 'sackman',
+  after: 'K4',
+  kind: 'dark',
+  name: 'THE SACK MAN',
+  eyebrow: 'BOSS \u00b7 NOTHING ELSE ON FILE',
+
+  intro: [
+    {
+      heading: "THERE ISN'T MORE TO SAY",
+      body: "I have a folder on every boss you've fought. Thirty pages on the chupacabra alone, most of it about his shoulders. I have four sentences on this one, and two of them are about the sack.",
+    },
+    {
+      heading: "IT DOES NOT WANT ANYTHING",
+      body: "Every other thing in your way wanted something. A rematch. A repair it was never going to make. To out-eat you. To be believed. This one doesn't negotiate and doesn't monologue, because it isn't a person who became a monster, it's what's left over after enough children said something is in my room across enough centuries that the saying compiled into a shape.",
+    },
+    {
+      heading: "THE ONLY RULE THAT MATTERS HERE",
+      body: "Your light runs out on its own. Eating feeds it back, the same way it feeds the fuse, because it was always going to be the same rule. Everything else in this water is trying to reach you while you cannot see it coming.",
+    },
+    {
+      heading: "WATCH THE EDGE, NOT THE MIDDLE",
+      body: "It shows up half a second before it moves, and never in the middle of your light where you're already looking. The edge. That is the whole tell, and it is the only one you get.",
+    },
+    {
+      heading: "IT WILL GO DARK ENTIRELY",
+      body: "When that happens, do not move. I mean that plainly, with no joke attached to it. Standing still is the correct answer to total dark. I do not enjoy this part of the job either.",
+      menace: true,
+    },
+    {
+      heading: "GO ON THEN",
+      body: "ARROWS move you through the water, SPACE feeds the light and the fuse both, SHIFT swats a hand away if it gets close enough. Three times through the dark and you flood it for good.",
+    },
+  ],
+
+  surgesToWin: 3,
+  hearts: 3,
+  fuseTarget: 5,
+
+  light: {
+    max: [230, 200, 170],       // per surge: it gets darker each time through
+    min: 40,
+    decay: [9, 13, 17],         // px/sec the radius shrinks at rest
+    boost: 95,                  // px restored per explosive eaten
+  },
+
+  attacks: {
+    grasp:    { name: 'THE GRASP',   tell: 0.42, damage: 1 },
+    drag:     { name: 'THE SACK',    tell: 0.5,  damage: 1 },
+    blackout: { name: 'FULL DARK',   tell: 0.6,  damage: 1, freeze: true },
+  },
+
+  finale: {
+    card: 'The light does not come back down this time. It just keeps going, out past where the water should have swallowed it, and there is nothing standing in it. There was never anything standing in it.',
+  },
+};
+
+export const BOSSES = [CHACO, LANDLORD, NARRATOR, NECO_FROG, SACK_MAN];
 export const getBoss = (id) => BOSSES.find(b => b.id === id) || null;
 export const bossAfter = (stageId) => BOSSES.find(b => b.after === String(stageId)) || null;
