@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Could a Mad Scientist Actually Build a Healing Factor?</title>
+  <meta name="description" content="A train nearly killed me, so I asked a serious question — is a regenerative healing factor scientifically buildable? Biology says almost. Thermodynamics says absolutely not.">
+  <meta name="keywords" content="Wolverine healing factor science, is regeneration possible in humans, axolotl limb regeneration, Great Filter of biology, human fingertip regeneration, elephant cancer resistance TP53">
+  <meta property="og:title" content="Could a Mad Scientist Actually Build a Healing Factor?">
+  <meta property="og:description" content="A train nearly killed me, so I asked a serious question — is a regenerative healing factor scientifically buildable? Biology says almost. Thermodynamics says absolutely not.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="/assets/blogimages/wolverine-axolotl-specimen-jar.png">
+  <link rel="canonical" href="https://blowingfrog.com/blog/wolverine-healing-factor-science-possible">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is Wolverine's healing factor scientifically possible?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Partially. The cellular biology has real precedents — axolotls, planarians, deer antlers, human fingertip regeneration — but the comic-book speed is blocked by physics, not biology. Regrowing two kilograms of tissue in an hour would require dissipating roughly 17 kilowatts of waste heat against a resting human output of about 100 watts."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why can't humans regrow limbs?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Mammals traded regeneration for two things: rapid wound sealing, which matters enormously for warm-blooded animals vulnerable to infection, and tumour suppression. The genes that block regeneration overlap heavily with the genes that prevent cancer. Mammalian cells also lose the positional memory that tells a regenerating cell where in the body it is."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What animals can regrow body parts?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Axolotls regrow limbs, spinal cord, jaw, heart and portions of brain. Planarians regenerate an entire animal from a fragment. Deer regrow antlers — the only fully regenerating mammalian appendage — at around 2cm a day. MRL mice close ear wounds with cartilage rather than scar."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can humans regrow fingertips?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, in limited cases. Amputations distal to the nail bed can regenerate with bone, nail and sensation, most reliably in children, and the outcome is better when the wound is left open rather than surgically closed with a flap."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why are elephants resistant to cancer?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Elephants carry around twenty copies of the TP53 tumour-suppressor gene compared to our one, plus a reactivated pseudogene called LIF6 that TP53 switches on to trigger cell death in damaged cells. Naked mole rats use a separate mechanism involving high-molecular-mass hyaluronan."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What's the biggest obstacle to human regeneration?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Energy and materials, not genetics. Tissue synthesis costs roughly 5–7 kcal per gram all-in, meaning rapid large-scale regeneration produces more waste heat than a body can shed. Iron is the second hard limit: replacing two litres of blood requires about 1g of iron against a total body pool of ~4g and an absorption ceiling of 1–2mg per day."
+        }
+      }
+    ]
+  }
+  </script>
+  <link rel="icon" type="image/png" href="../assets/images/logo_blowingfrog.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;700;800;900&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Playfair+Display:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared.css?v=6">
+  <style>
+    .post-hero{width:100%;height:70vh;min-height:480px;object-fit:cover;display:block;}
+    .post-wrap{max-width:740px;margin:0 auto;padding:64px 32px 120px;}
+    .post-tag{font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent-lt);margin-bottom:20px;}
+    .post-title{font-family:var(--f-display);font-weight:900;font-size:clamp(36px,5vw,64px);text-transform:uppercase;line-height:0.95;letter-spacing:-0.02em;margin-bottom:24px;}
+    .post-meta{font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:48px;padding-bottom:32px;border-bottom:1px solid var(--border);}
+    .post-body{font-size:17px;line-height:1.8;color:var(--text);}
+    .post-body p{margin-bottom:1.5em;}
+    .post-body h2{font-family:var(--f-display);font-weight:800;font-size:clamp(24px,3vw,36px);text-transform:uppercase;letter-spacing:-0.01em;margin:2.5em 0 0.8em;color:var(--text);}
+    .lamp-fact{border-left:3px solid var(--accent);padding:16px 24px;margin:2em 0;background:var(--bg-surface);font-size:15px;color:var(--text-muted);font-style:italic;}
+    .lamp-fact strong{color:var(--accent-lt);font-style:normal;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;display:block;margin-bottom:8px;}
+    .pull-quote{font-family:var(--f-display);font-size:clamp(28px,4vw,48px);font-weight:800;text-transform:uppercase;line-height:1;letter-spacing:-0.02em;color:var(--accent-lt);margin:2em 0;}
+    .stop-beat{font-family:var(--f-display);font-weight:900;font-size:clamp(28px,4vw,48px);text-transform:uppercase;letter-spacing:-0.01em;color:var(--accent);margin:2em 0 1em;}
+    .post-body a{color:var(--accent-lt);text-decoration:underline;text-underline-offset:3px;}
+    .post-body a:hover{color:var(--text);}
+    .faq-section{margin-top:3em;padding-top:2em;border-top:1px solid var(--border);}
+    .faq-section h2{margin-top:0;}
+    .faq-item{margin-bottom:2em;}
+    .faq-q{font-weight:600;margin-bottom:0.5em;}
+    .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:48px;padding-top:32px;border-top:1px solid var(--border);}
+    .tag{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;background:var(--bg-surface);border:1px solid var(--border);padding:5px 12px;color:var(--text-muted);}
+    .back-link{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;margin-bottom:40px;transition:color 0.2s;}
+    .back-link:hover{color:var(--text);}
+    figcaption{font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-top:10px;margin-bottom:2em;text-align:center;}
+  </style>
+</head>
+<body class="page-body">
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
+
+  <nav class="nav scrolled" id="nav">
+    <a href="../index.html" class="nav-logo" aria-label="Home">
+      <img src="../assets/images/logo_blowingfrog.png" alt="Blowing Frog" class="logo-img" onerror="this.outerHTML='&lt;div class=logo-fallback&gt;BF&lt;/div&gt;'">
+      <span class="logo-wordmark">Blowing Frog</span>
+    </a>
+    <div class="nav-links">
+      <a href="../about.html"    class="nav-link">About Us</a>
+      <a href="../services.html" class="nav-link">Services</a>
+      <a href="../blog.html"     class="nav-link active">Blog</a>
+      <a href="../contact.html"  class="nav-link">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="nav-hamburger" id="navHamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <img src="../assets/blogimages/wolverine-axolotl-specimen-jar.png"
+       alt="A live axolotl floating in an antique glass specimen jar resting on a wooden railway sleeper, with a steel rail running off into darkness."
+       class="post-hero">
+
+  <div class="page-content">
+    <div class="post-wrap">
+      <a href="../blog.html" class="back-link">&larr; Back to Blog</a>
+      <div class="post-tag">Science / Musings &nbsp;&middot;&nbsp; 12 min read</div>
+      <h1 class="post-title">Children of Death: A Train Missed Me By Five Steps, So I Spent the Night Asking Whether Anyone Could Actually Build a Healing Factor</h1>
+      <div class="post-meta">September 11, 2026 &nbsp;&middot;&nbsp; Blowing Frog</div>
+
+      <div class="post-body">
+
+        <p>Here&rsquo;s how close.</p>
+
+        <p>I&rsquo;m running. Earphones in. I come up on the train tracks and the signal isn&rsquo;t working &mdash; no lights, no bell, nothing. Dead crossing. And I am not paying attention, because I am utterly gone into an audiobook.</p>
+
+        <p>Then: a blare.</p>
+
+        <p>I look left, and there is a train roughly twenty meters out, coming, and it is not slowing down because it has no reason to think it should.</p>
+
+        <p>Instinct takes over and does something my conscious brain gets no credit for. I kick it up a gear like I&rsquo;m twenty-two again and I clear the last five steps by the skin of my teeth. Chase scene. Actual, literal chase scene, except one of the participants weighs several hundred tons and doesn&rsquo;t know I exist.</p>
+
+        <p>And then it&rsquo;s over, and I&rsquo;m standing on the other side, and my legs stop working properly, and the whole reel plays. The full flashbang. Everything.</p>
+
+        <p>Now here&rsquo;s the part that gets me.</p>
+
+        <p>I was listening to Daniel Kraus&rsquo;s <em>Angel Down.</em> The one that won the 2026 <a href="https://www.pulitzer.org/winners/daniel-kraus" target="_blank" rel="noopener">Pulitzer Prize for Fiction</a> &mdash; five American soldiers in the Meuse-Argonne find an angel tangled in the wire and desert to protect her. And the thing is written as one single unbroken sentence. It starts mid-sentence, in the middle of a battle, and it ends on a comma. No full stop. The book refuses to finish.</p>
+
+        <p>So I nearly got erased while inside a book about men meeting something celestial on a killing field, narrated in a sentence that never ends.</p>
+
+        <p>(A whole post on that book is coming. It deserves one.)</p>
+
+        <p>I got home. Sat down. And my addled, adrenaline-poisoned brain produced exactly one thought, with total sincerity:</p>
+
+        <p><em>Why can&rsquo;t I be Wolverine?</em></p>
+
+        <p>Not the claws. The healing factor. The whole nine yards. Why are we &mdash; as my mother has said my entire life, in the tone of someone reporting the weather &mdash; children of death?</p>
+
+        <p class="stop-beat">STOP.</p>
+
+        <p>And then I did something about it, which is the actual subject of this post. I asked the question properly. Not as a fan. As a f@$king engineering problem.</p>
+
+        <p>Is it remotely possible to fabricate a healing factor? What&rsquo;s missing? What would a mad scientist actually have to do?</p>
+
+        <p>The answer is not the one you&rsquo;d guess. Biology is the easy half. The parts that are impossible are impossible for boring reasons &mdash; thermodynamics and information theory. Physics is what kills it, and physics kills it long before stem cells even get consulted.</p>
+
+        <p>Let me show you.</p>
+
+        <h2>The Parts That Already Exist</h2>
+
+        <p>Nothing about regeneration is magic. Mammals just quit doing it.</p>
+
+        <p>Axolotls regrow limbs, spinal cord, jaw, heart, and chunks of brain. The mechanism is known in outline: wound epidermis forms, an apical cap sets up, nerve-dependent signalling kicks in, and cells at the stump dedifferentiate &mdash; they walk backward down their own developmental path &mdash; into a blastema, which then rebuilds the structure.</p>
+
+        <p>Planarians regrow an entire animal from a fragment, running on a reserve of pluripotent cells called neoblasts that make up something like a quarter of the animal. Functionally ageless.</p>
+
+        <p>Deer antlers are the one mammalian appendage that fully regenerates, at roughly two centimetres a day. That matters more than it sounds: it&rsquo;s proof the mammalian genome hasn&rsquo;t lost the capacity. It lost the license.</p>
+
+        <p>MRL mice close ear punches with cartilage instead of scar tissue. Human children regrow fingertips &mdash; genuinely, with bone, nail and sensation &mdash; if the amputation is distal to the nail bed and, critically, if a surgeon doesn&rsquo;t suture the flap shut over it. It&rsquo;s a <a href="https://www.nature.com/articles/s41536-025-00441-y" target="_blank" rel="noopener">documented clinical phenomenon</a>, not folklore.</p>
+
+        <p>And human fetuses heal without scars until adaptive immunity comes online.</p>
+
+        <p>So the ingredients are on the shelf. The question is why we stopped cooking.</p>
+
+        <p>The answer is that mammals made a trade, and it was a good trade. We&rsquo;re warm, wet, bacterially interesting. A fibrotic scar in six hours beats a perfect anatomical rebuild in nine weeks when the alternative is sepsis. And the second half of the trade is uglier: the genes that block regeneration are largely the same genes that stop tumours. The ARF/INK4a locus. Silencing telomerase in somatic cells. Clamping down on cell plasticity.</p>
+
+        <p>We didn&rsquo;t lose the healing factor. We installed a safety on it, and the safety is the reason you&rsquo;re alive at fifty.</p>
+
+        <div class="lamp-fact">
+          <strong>Healing Fact</strong>
+          The single most underrated thing in this entire field is that the axolotl&rsquo;s cells remember where they are. A <a href="https://www.nature.com/articles/nature08152" target="_blank" rel="noopener">2009 <em>Nature</em> paper</a> showed blastema cells retain a memory of their tissue of origin &mdash; they know they&rsquo;re forearm, not shoulder. That address book is what makes the difference between regrowing a hand and growing a lump.
+        </div>
+
+        <h2>Wall One: Positional Memory</h2>
+
+        <p>Which brings us to the first wall, and it&rsquo;s the one nobody talks about because it&rsquo;s not dramatic.</p>
+
+        <p>To regrow a hand, a cell has to know: I am distal. I am radial. I am palmar. It needs a coordinate system. Axolotl blastema cells carry that address. Mammalian cells forget it once development finishes &mdash; they file it away and lose the key.</p>
+
+        <p>Without the coordinate system you do not get a hand. You get a lump. Or &mdash; and this is the part that will follow you around &mdash; you get something with hair and teeth in it, because undirected pluripotent tissue has opinions and none of them are architectural.</p>
+
+        <p>Retinoic acid gradients and HOX gene re-expression are the levers everyone reaches for. Nobody has reinstalled a complete limb coordinate system in a mammal. Not close.</p>
+
+        <h2>Wall Two: Cancer Is Not a Side Effect, It&rsquo;s the Same Phenotype</h2>
+
+        <p>This is the central contradiction, and once you see it you can&rsquo;t unsee it.</p>
+
+        <p>A healing factor and a tumour are the same set of behaviours under different supervision. Unlimited proliferation. Dedifferentiation. Telomerase switched on everywhere. That&rsquo;s regeneration. That&rsquo;s also, word for word, cancer. The only difference is whether something is telling it when to stop.</p>
+
+        <p>So your mad scientist has a delightful problem. He has to bolt elephant-grade tumour suppression onto a body running axolotl-grade plasticity.</p>
+
+        <p>Elephants, for reference, carry around twenty copies of the TP53 tumour-suppressor gene where we have one, plus a <a href="https://www.cell.com/cell-reports/fulltext/S2211-1247(18)31145-8" target="_blank" rel="noopener">resurrected pseudogene called LIF6</a> &mdash; a &ldquo;zombie gene,&rdquo; in the literature&rsquo;s own words &mdash; that TP53 wakes up to trigger apoptosis in damaged cells. Naked mole rats run a different defence: they secrete an unusually <a href="https://pubmed.ncbi.nlm.nih.gov/23783513/" target="_blank" rel="noopener">high-molecular-mass hyaluronan</a> that appears to shut down cell overcrowding before it becomes a tumour.</p>
+
+        <p>So: elephant oncology, mole rat chemistry, salamander plasticity, all in one body, fighting each other every second of every day.</p>
+
+        <p>Get the balance one percent wrong in either direction and you have a corpse or a teratoma.</p>
+
+        <h2>Wall Three: Thermodynamics, Which Does Not Negotiate</h2>
+
+        <figure style="margin:2em 0">
+          <img src="../assets/blogimages/wolverine-steak-scale-thermodynamics.png"
+               alt="A raw steak steaming on an institutional steel kitchen scale whose needle is bent past the end of its travel."
+               style="width:100%;border-radius:4px;display:block;">
+          <figcaption>The needle is past the end of its travel. That&rsquo;s not a metaphor.</figcaption>
+        </figure>
+
+        <p>And here is the actual kill shot. It requires no biological unknowns whatsoever. You could hand the mad scientist a perfect solution to walls one and two and he&rsquo;d still lose here.</p>
+
+        <p>Building tissue costs energy, and biosynthesis is maybe 40&ndash;50% efficient &mdash; most of the rest leaves as heat. Stack up the synthesis cost, the inefficiency and the metabolic overhead and depositing lean tissue runs somewhere in the region of five to seven kilocalories per gram. (I&rsquo;m flagging that this is the load-bearing assumption in the whole calculation &mdash; tissue&rsquo;s stored energy is only about 1&ndash;2 kcal/g; the cost of <em>building</em> it is several times that, which is exactly why bulking is expensive and starvation is efficient.)</p>
+
+        <p>So regrowing two kilograms of tissue is on the order of 10,000 to 15,000 kilocalories of construction work.</p>
+
+        <p>Now do it in an hour, like the comic.</p>
+
+        <p>15,000 kcal is about 63 megajoules. Over 3,600 seconds that&rsquo;s roughly 17 kilowatts of power dissipation. A resting human body puts out about 100 watts. You are asking a man to run as a space heater rated for a small house.</p>
+
+        <p>He doesn&rsquo;t heal. He cooks. From the inside. In well under a minute.</p>
+
+        <p>Fine &mdash; spread it over a full day instead. Twenty-four hours. That&rsquo;s still about 730 watts, sustained, continuously, with no break. That&rsquo;s the metabolic output of someone working genuinely hard &mdash; except forever, with no stopping, no sleeping, no cooling off.</p>
+
+        <p>And that&rsquo;s only the energy. The atoms are a separate invoice. Roughly 400 grams of protein nitrogen. Calcium for bone. And then the one that ends the argument:</p>
+
+        <p>Iron.</p>
+
+        <p>Two litres of replaced blood needs about one gram of iron. Total body iron pool: around four grams. Net absorption ceiling: one to two milligrams a day.</p>
+
+        <p>So a man who bleeds out weekly is running a permanent, catastrophic, unrecoverable anemia no matter how magnificent his stem cells are. He would need to absorb a year&rsquo;s worth of iron every Tuesday.</p>
+
+        <p>Realistic intake for a functioning healing factor: 20,000 to 40,000 kcal a day, heavily red meat, indefinitely, forever.</p>
+
+        <div class="pull-quote">Wolverine&rsquo;s real superpower is a f@$king grocery budget.</div>
+
+        <h2>Wall Four: The Brain, Which Doesn&rsquo;t Come Back As You</h2>
+
+        <p>Peripheral nerve regrows at about a millimetre a day. Slow, but it happens.</p>
+
+        <p>The central nervous system essentially doesn&rsquo;t. It&rsquo;s not passive failure either &mdash; it&rsquo;s actively blocked. Glial scar. NogoA and MAG. Chondroitin sulfate proteoglycans. Your spinal cord contains molecules whose job is to stop it from regrowing, presumably because miswired neurons are worse than absent ones.</p>
+
+        <p>But here&rsquo;s the part that turns this from an engineering problem into a philosophical one. Suppose you solve all of it. Suppose the tissue comes back perfectly.</p>
+
+        <p>You don&rsquo;t.</p>
+
+        <p>Memory and personality don&rsquo;t live in the tissue type. They live in synaptic weights and connectivity &mdash; in the specific, accumulated pattern of which cell talks to which cell and how loudly. Regrowing brain doesn&rsquo;t restore a person. It grows generic replacement neurons, correctly formatted, containing nobody.</p>
+
+        <p>Which means the single most scientifically accurate detail in the entire comic is that the man has chronic amnesia.</p>
+
+        <p>Somebody got that right by accident, fifty years ago, and it&rsquo;s the only part of the whole package that survives contact with a neurologist.</p>
+
+        <h2>The Actual Build Order</h2>
+
+        <p>If you wanted to try, here&rsquo;s the honest split &mdash; and forgive me, this is how I frame every project, I can&rsquo;t turn it off.</p>
+
+        <p><strong>The blunt path</strong> (real medicine, decades not centuries, largely funded and moving right now): anti-fibrotic wound reprogramming. Retune the macrophages that arrive at a wound, suppress the TGF-&beta;1 signal that converts fibroblasts into scar-laying myofibroblasts, and do it without wrecking antimicrobial function. What you get is scarless healing and maybe regeneration of small structures. Bolt on senolytics and cyclic partial reprogramming &mdash; brief OSKM pulses, the bet Altos Labs and friends are making &mdash; for the aging side.</p>
+
+        <p><strong>The full build</strong> (germline-level, requires breakthroughs that do not exist): engineer a distributed neoblast-analog stem reserve. Reinstall a positional coordinate system across the whole body. Restore nerve-dependent blastema induction in a mammal. Layer elephant and mole rat oncoprotection over all of it. Then attach an external nutrient and cooling rig, because the body physically cannot self-supply the throughput.</p>
+
+        <p>Note what that last clause means. The finished product isn&rsquo;t a man. It&rsquo;s a man plus a plant.</p>
+
+        <h2>What You&rsquo;d Actually Get</h2>
+
+        <p>Not someone who shrugs off a shotgun.</p>
+
+        <p>You&rsquo;d get a person who regrows a hand over four to six months, eating fifteen thousand calories a day the entire time, febrile and anemic throughout, on immunosuppressants he probably can&rsquo;t afford, carrying a lifetime cancer risk somewhere north of certainty, with an oncologist on retainer and a chest freezer full of liver.</p>
+
+        <p>Survivable trauma goes way up. Scars go to zero. Speed stays slow &mdash; because speed is precisely where physics stops taking meetings.</p>
+
+        <p>And the beautiful inversion, the thing I keep turning over: the comic book version fails on heat, iron and calories long before it fails on stem cell biology. The part that sounds like science fiction is nearly tractable. The part that kills it is a heat-dissipation problem you could work out on a napkin.</p>
+
+        <h2>Children of Death</h2>
+
+        <p>So, mum. Turns out you were right and it&rsquo;s worse than you think.</p>
+
+        <p>We&rsquo;re not children of death because nobody&rsquo;s solved the biology. The biology is solvable, in <a href="great-filter-fermi-paradox-ai-existential-risk.html">the same way fusion is solvable</a> &mdash; hard, funded, decades out, but not a violation of anything. We&rsquo;re children of death because we are thermodynamically committed to it. Because a body is a structure that has to dissipate the heat of its own maintenance, and there&rsquo;s a hard ceiling on how much repair you can buy before the repair itself is what kills you.</p>
+
+        <p>Every living thing is running the same trade we are. Fast and fragile, or slow and durable, and nobody gets both, and the universe has never once made an exception.</p>
+
+        <p>Which brings me back to the crossing.</p>
+
+        <p>I didn&rsquo;t survive that because of anything I&rsquo;ve got. I survived it because a signal I couldn&rsquo;t hear reached my ear a half-second before it stopped mattering, and something older than me took the wheel and moved my legs. That&rsquo;s it. That&rsquo;s the whole mechanism. No healing factor, no margin, no second copy.</p>
+
+        <p>I got up the next morning with a sore hamstring and an intact body and I went and wrote this instead of doing my actual work, and I think that was the correct allocation of the day.</p>
+
+        <p><em>Angel Down</em> ends on a comma.</p>
+
+        <p>I nearly ended on one too, and I want to be extremely clear that I did not enjoy the symmetry.</p>
+
+        <div class="faq-section">
+          <h2>Quick Questions From the Cheap Seats</h2>
+
+          <div class="faq-item">
+            <p class="faq-q">Is Wolverine&rsquo;s healing factor scientifically possible?</p>
+            <p>Partially. The cellular biology has real precedents &mdash; axolotls, planarians, deer antlers, <a href="https://www.nature.com/articles/s41536-025-00441-y" target="_blank" rel="noopener">human fingertip regeneration</a> &mdash; but the comic-book speed is blocked by physics, not biology. Regrowing two kilograms of tissue in an hour would require dissipating roughly 17 kilowatts of waste heat against a resting human output of about 100 watts.</p>
+          </div>
+
+          <div class="faq-item">
+            <p class="faq-q">Why can&rsquo;t humans regrow limbs?</p>
+            <p>Mammals traded regeneration for two things: rapid wound sealing, which matters enormously for warm-blooded animals vulnerable to infection, and tumour suppression. The genes that block regeneration overlap heavily with the genes that prevent cancer. Mammalian cells also lose the &ldquo;positional memory&rdquo; that tells a regenerating cell where in the body it is.</p>
+          </div>
+
+          <div class="faq-item">
+            <p class="faq-q">What animals can regrow body parts?</p>
+            <p>Axolotls regrow limbs, spinal cord, jaw, heart and portions of brain. Planarians regenerate an entire animal from a fragment. Deer regrow antlers &mdash; the only fully regenerating mammalian appendage &mdash; at around 2cm a day. MRL mice close ear wounds with cartilage rather than scar. And <a href="https://royalsocietypublishing.org/doi/10.1098/rsob.200194" target="_blank" rel="noopener">human children regrow fingertips</a> under the right conditions.</p>
+          </div>
+
+          <div class="faq-item">
+            <p class="faq-q">Can humans regrow fingertips?</p>
+            <p>Yes, in limited cases. Amputations distal to the nail bed can regenerate with bone, nail and sensation, most reliably in children, and the outcome is better when the wound is left open rather than surgically closed with a flap.</p>
+          </div>
+
+          <div class="faq-item">
+            <p class="faq-q">Why are elephants resistant to cancer?</p>
+            <p>Elephants carry around twenty copies of the TP53 tumour-suppressor gene compared to our one, plus a <a href="https://www.cell.com/cell-reports/fulltext/S2211-1247(18)31145-8" target="_blank" rel="noopener">reactivated pseudogene called LIF6</a> that TP53 switches on to trigger cell death in damaged cells. Naked mole rats use a separate mechanism involving <a href="https://pubmed.ncbi.nlm.nih.gov/23783513/" target="_blank" rel="noopener">high-molecular-mass hyaluronan</a>.</p>
+          </div>
+
+          <div class="faq-item">
+            <p class="faq-q">What&rsquo;s the biggest obstacle to human regeneration?</p>
+            <p>Energy and materials, not genetics. Tissue synthesis costs roughly 5&ndash;7 kcal per gram all-in, meaning rapid large-scale regeneration produces more waste heat than a body can shed. Iron is the second hard limit: replacing two litres of blood requires about 1g of iron against a total body pool of ~4g and an absorption ceiling of 1&ndash;2mg per day.</p>
+          </div>
+        </div>
+
+        <p>Rant over. Very much not sorry.</p>
+
+        <p>Go look at your local crossing. Mine wasn&rsquo;t working, and it still isn&rsquo;t, and I&rsquo;ve reported it, and I&rsquo;d like everyone to please take their earphones out at the tracks.</p>
+
+        <div class="tags">
+          <span class="tag">science</span>
+          <span class="tag">regeneration</span>
+          <span class="tag">biology</span>
+          <span class="tag">mortality</span>
+          <span class="tag">comics</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../app.js"></script>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</body>
+</html>
