@@ -328,6 +328,68 @@ export const SACK_MAN = {
   },
 };
 
-export const BOSSES = [CHACO, LANDLORD, NARRATOR, NECO_FROG, SACK_MAN];
+// Boss six: UMMA. A mother in a doorway with an endless supply of Crocs and
+// zero interest in your fists -- there is no punch button in this fight.
+// She throws, she barks orders, and she is only ever pleased, never damaged,
+// by the frog eating what she puts in front of it. She falls the same way
+// she has always threatened to: over her own pile of shoes.
+export const UMMA = {
+  id: 'umma',
+  after: 'K5',
+  kind: 'umma',
+  name: 'UMMA',
+  eyebrow: 'BOSS \u00b7 THE LAST DOOR, PROBABLY NOT THE LAST WORD',
+
+  intro: [
+    {
+      heading: 'THE LAST DOOR ON THE LEFT',
+      body: "You have eaten a hurricane, a cop, most of a coastline, and a man who was doing cocaine off his own belt. None of that prepared you for a doorway with the porch light on and someone standing in it who has been up the whole time. She has a Croc in her hand already. She has had a Croc in her hand since before you were born.",
+    },
+    {
+      heading: 'THE SUPPLY NEVER RUNS OUT',
+      body: "There is no bottom to the shoe pile. I have looked. Every mismatched pair that has ever gone missing in every house on this planet is in that front hall, and she is not out of ammunition until physics says otherwise, and physics has learned to stay quiet in this house.",
+    },
+    {
+      heading: 'A NOTE ON THE WORD I JUST USED',
+      body: "Umma. Korean for mom, and I am aware that putting a perm, an apron, and a thrown shoe on a woman and calling it universal is exactly the kind of shorthand that flattens an entire culture into a punchline. I am doing it anyway, the same way I did the chupacabra, because the joke was never that she is Korean. The joke is that this specific fear -- the flying shoe, the doorway, the parent who does not sleep until you are home -- is so widely and lovingly recognized across so many households that half of you just flinched reading this. That part I did not invent. That part is just true.",
+    },
+    {
+      heading: 'SHE IS NOT TRYING TO HURT YOU, WHICH IS WORSE',
+      body: "Everything she throws is a side dish. Banchan, still in the little dishes, thrown with the same arm and the same accuracy as the Croc. Eat it and the fuse fills exactly like it always has, except this time filling it does not make her angrier. It is the only boss in this entire game where doing the thing correctly makes her happy instead of hurt, and somehow that is scarier.",
+    },
+    {
+      heading: 'WHEN SHE TALKS, YOU LISTEN',
+      body: "She will bark an order between throws. Move. Sit still. Eat. There is exactly one correct response and a very short window to give it, and getting it wrong lands a hit no amount of good zone positioning will save you from. This is not a metaphor I am choosing for you. This is just what happens.",
+      menace: true,
+    },
+    {
+      heading: 'THERE IS NO PUNCH IN THIS FIGHT',
+      body: "SHIFT does nothing here and I am not fixing that, because you do not hit your mother, not in this house, not in any house, not even the fake one made of triangles I drew for you. ARROWS move you between the three zones, SPACE is your tongue for whatever lands on a plate. Survive the orders, eat what she gives you, and let her own front hall finish this.",
+    },
+  ],
+
+  outburstsToWin: 3,
+  hearts: 3,
+  fuseTarget: 5,
+
+  attacks: {
+    crocOut:    { name: 'THE LEFT ONE',  tell: 0.5,  damage: 1, reach: 'zone', zone: 0 },
+    crocIn:     { name: 'THE RIGHT ONE', tell: 0.5,  damage: 1, reach: 'zone', zone: 2 },
+    doubleCroc: { name: 'BOTH AT ONCE',  tell: 0.65, damage: 1, reach: 'double' },
+    soupBomb:   { name: 'HOT SOUP',      tell: 0.55, damage: 1, reach: 'locked' },
+  },
+
+  commands: {
+    shoes:  { name: 'TAKE OFF YOUR SHOES', line: 'TAKE OFF YOUR SHOES!',        window: 1.0, need: 'zoneOut' },
+    freeze: { name: 'SIT STILL',           line: 'SIT STILL AND EAT YOUR FOOD', window: 1.1, need: 'freeze' },
+    eat:    { name: 'EAT YOUR BANCHAN',    line: 'EAT!',                        window: 1.2, need: 'eat' },
+  },
+
+  finale: {
+    card: "She is so busy being proud of you that she stops watching her own feet, and the front hall has been a minefield of thrown Crocs since before this fight started. She goes down the way she always said someone in this house was going to.",
+  },
+};
+
+export const BOSSES = [CHACO, LANDLORD, NARRATOR, NECO_FROG, SACK_MAN, UMMA];
 export const getBoss = (id) => BOSSES.find(b => b.id === id) || null;
 export const bossAfter = (stageId) => BOSSES.find(b => b.after === String(stageId)) || null;

@@ -368,11 +368,12 @@ function boxfrog(g, W, H, o = {}) {
   g.ellipse(...px(lean * 8, 8 + squat * 10), 30 * s, (28 - squat * 6) * s).fill(C.frog); stroke(g);
   g.ellipse(...px(lean * 8, 16 + squat * 8), 20 * s, 15 * s).fill(C.belly);
   for (const [x, y] of [[-14, -4], [12, -8], [2, -14]]) g.circle(...px(x + lean * 8, y), 2.2 * s).fill({ color: C.frogDark, alpha: .7 });
-  // gloves
+  // gloves, or bare hands for a fight that has no punch button at all
   const gy = o.gloveY ?? 0;
   for (const d of [-1, 1]) {
     const gx = o.punch && d === 1 ? 40 : d * 30;
-    g.circle(...px(gx + lean * 6, -4 + gy + (o.up ? -26 : 0)), 11 * s).fill(C.red); stroke(g, 2.5);
+    const handR = (o.bare ? 8 : 11) * s;
+    g.circle(...px(gx + lean * 6, -4 + gy + (o.up ? -26 : 0)), handR).fill(o.bare ? C.frog : C.red); stroke(g, 2.5);
   }
   // head
   const hy = -20 + squat * 8;
@@ -421,6 +422,16 @@ Object.assign(SPRITES, {
   boxfrog_hurt:  { w: 1.6, h: 1.6, draw: (g, W, H) => boxfrog(g, W, H, { dazed: true, lean: -0.6, open: true }) },
   boxfrog_down:  { w: 1.8, h: 1.4, draw: (g, W, H) => boxfrog(g, W, H, { dazed: true, stars: true, squat: 1 }) },
   boxfrog_win:   { w: 1.6, h: 1.6, draw: (g, W, H) => boxfrog(g, W, H, { up: true, open: true, happy: true }) },
+
+  // Bare-handed variant for UMMA -- same body, no gloves, because this fight
+  // never lets the frog throw a punch.
+  ummafrog_guard: { w: 1.6, h: 1.6, draw: (g, W, H) => boxfrog(g, W, H, { bare: true }) },
+  ummafrog_left:  { w: 1.6, h: 1.6, draw: (g, W, H) => boxfrog(g, W, H, { bare: true, lean: -1 }) },
+  ummafrog_right: { w: 1.6, h: 1.6, draw: (g, W, H) => boxfrog(g, W, H, { bare: true, lean: 1 }) },
+  ummafrog_eat:   { w: 1.6, h: 1.6, draw: (g, W, H) => boxfrog(g, W, H, { bare: true, open: true }) },
+  ummafrog_hurt:  { w: 1.6, h: 1.6, draw: (g, W, H) => boxfrog(g, W, H, { bare: true, dazed: true, lean: -0.6, open: true }) },
+  ummafrog_down:  { w: 1.8, h: 1.4, draw: (g, W, H) => boxfrog(g, W, H, { bare: true, dazed: true, stars: true, squat: 1 }) },
+  ummafrog_win:   { w: 1.6, h: 1.6, draw: (g, W, H) => boxfrog(g, W, H, { bare: true, up: true, open: true, happy: true }) },
 
   ring_canvas: { w: 1, h: 1, draw: (g, W, H) => { g.rect(-W / 2, -H / 2, W, H).fill(0x8a7f6a);
     for (let i = 0; i < 14; i++) g.circle((i * 37 % W) - W / 2, (i * 53 % H) - H / 2, 3 + (i % 3)).fill({ color: 0x6d6353, alpha: .5 }); } },
@@ -651,6 +662,49 @@ Object.assign(SPRITES, {
   rift_floor:       { w: 1, h: 1, draw: (g, W, H) => { g.rect(-W / 2, -H / 2, W, H).fill(0x1c1822); for (let i = 0; i < 3; i++) g.moveTo(-W / 2 + i * W / 3, -H / 2).lineTo(-W / 2 + i * W / 3 + 6, H / 2).stroke({ width: 2, color: 0xc23fe0, alpha: 0.5 }); } },
   rift_warn:        { w: 1, h: 1, draw: (g, W, H) => { for (let i = 0; i < 5; i++) { const a = i * 1.26; g.poly([Math.cos(a) * 4, Math.sin(a) * 4, Math.cos(a) * W * 0.4, Math.sin(a) * H * 0.35, Math.cos(a + 0.3) * W * 0.25, Math.sin(a + 0.3) * H * 0.25]).fill({ color: 0xc23fe0, alpha: 0.55 }); } } },
   rift_dust:        { w: 1, h: 1, draw: (g, W, H) => { for (let i = 0; i < 16; i++) g.circle((i * 13 % W) - W / 2, (i * 19 % H) - H / 2, 2 + (i % 3)).fill({ color: 0xc23fe0, alpha: 0.35 }); } },
+});
+
+
+// ---- boss six: UMMA. A mother in a doorway with an endless supply of Crocs.
+// No punch pose exists for her on purpose -- the frog never touches her.
+function umma(g, W, H, o = {}) {
+  const s = Math.min(W, H) / 100;
+  const px = (x, y) => [x * s, y * s];
+  const dress = 0xd6497a, dressTrim = 0xf4f0e6, skin = 0xe0ac82, hair = 0x2b2320;
+  for (const d of [-1, 1]) {
+    g.roundRect(...px(d * 12 - 7, 28), 14 * s, 18 * s, 4 * s).fill(skin); stroke(g, 2);
+    g.roundRect(...px(d * 12 - 10, 42), 20 * s, 7 * s, 3 * s).fill(0xffb703); stroke(g, 2); // her own Crocs
+  }
+  g.roundRect(...px(-26, -14), 52 * s, 42 * s, 10 * s).fill(dress); stroke(g);
+  for (const [x, y] of [[-14, -2], [10, 6], [-4, 14], [16, -6], [-18, 10]]) g.circle(...px(x, y), 3 * s).fill({ color: 0xa8355e, alpha: 0.55 });
+  g.roundRect(...px(-20, -18), 40 * s, 10 * s, 4 * s).fill(dressTrim); stroke(g, 2);
+  const ay = o.armY ?? 0;
+  g.roundRect(...px(-40, -12 + ay), 20 * s, 10 * s, 5 * s).fill(skin); stroke(g, 2.5);
+  g.roundRect(...px(22, -12 - ay * 0.4), 18 * s, 10 * s, 5 * s).fill(skin); stroke(g, 2.5);
+  if (o.croc) g.ellipse(...px(-46 + (ay < 0 ? -10 : 6), -18 + ay), 12 * s, 7 * s).fill(0xffb703), stroke(g, 2);
+  g.ellipse(...px(0, -32), 18 * s, 17 * s).fill(skin); stroke(g);
+  g.ellipse(...px(0, -46), 22 * s, 14 * s).fill(hair);
+  for (let i = -2; i <= 2; i++) g.circle(...px(i * 8, -50 + Math.abs(i) * 2), 5 * s).fill(hair);
+  g.roundRect(...px(-15, -36), 30 * s, 8 * s, 3 * s).fill({ color: 0x2a2a2e, alpha: 0.85 }); stroke(g, 1.5);
+  for (const d of [-1, 1]) g.circle(...px(d * 8, -32), 2.4 * s).fill(OUT);
+  if (o.mouth === 'open') g.ellipse(...px(0, -24), 8 * s, 6 * s).fill(0x7d2130);
+  else g.moveTo(...px(-7, -24)).quadraticCurveTo(...px(0, o.pride ? -19 : -26), ...px(7, -24)).stroke({ width: 2.5 * s, color: OUT, alpha: 0.8 });
+  if (o.trip) for (let i = 0; i < 10; i++) g.circle(...px(-30 + (i * 11) % 60, 40 + (i * 7) % 10), (3 + i % 3) * s).fill({ color: 0xffb703, alpha: 0.6 });
+}
+
+Object.assign(SPRITES, {
+  umma_idle:  { w: 3.0, h: 3.2, draw: (g, W, H) => umma(g, W, H, {}) },
+  umma_tell:  { w: 3.0, h: 3.2, draw: (g, W, H) => umma(g, W, H, { armY: -18 }) },
+  umma_throw: { w: 3.2, h: 3.2, draw: (g, W, H) => umma(g, W, H, { armY: -22, croc: true, mouth: 'open' }) },
+  umma_scold: { w: 3.0, h: 3.2, draw: (g, W, H) => umma(g, W, H, { armY: -10, mouth: 'open' }) },
+  umma_pride: { w: 3.0, h: 3.2, draw: (g, W, H) => umma(g, W, H, { armY: 8, pride: true }) },
+  umma_trip:  { w: 3.2, h: 3.0, draw: (g, W, H) => umma(g, W, H, { armY: 14, mouth: 'open', trip: true }) },
+  croc_shoe: { w: 1.0, h: 0.7, draw: (g, W, H) => {
+    g.ellipse(0, 0, W * 0.42, H * 0.4).fill(0xffb703); stroke(g, 2.5);
+    g.ellipse(0, -H * 0.05, W * 0.28, H * 0.22).fill({ color: 0xcc8f00, alpha: 0.5 });
+    for (let i = 0; i < 3; i++) g.circle(-W * 0.2 + i * W * 0.2, H * 0.28, 2.5).fill(0xcc8f00);
+    g.roundRect(-W * 0.3, H * 0.18, W * 0.6, H * 0.14, 4).fill(0xffb703); stroke(g, 2);
+  } },
 });
 
 export const SPRITE_KINDS = Object.keys(SPRITES);

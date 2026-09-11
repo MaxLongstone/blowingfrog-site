@@ -15,6 +15,7 @@ import { ClimbFight } from './systems/climbfight.js';
 import { TrialFight } from './systems/trialfight.js';
 import { MirrorFight } from './systems/mirrorfight.js';
 import { DarkFight } from './systems/darkfight.js';
+import { UmmaFight } from './systems/ummafight.js';
 import { Telemetry } from './systems/telemetry.js';
 import { bossAfter, getBoss, BOSSES } from './config/bosses.js';
 
@@ -140,6 +141,7 @@ class Game {
       : boss.kind === 'trial' ? TrialFight
       : boss.kind === 'mirror' ? MirrorFight
       : boss.kind === 'dark' ? DarkFight
+      : boss.kind === 'umma' ? UmmaFight
       : BossFight;
     this.play = new Fight({
       app: this.app, textures: this.tex, audio: this.audio, hud: this.hud,
@@ -152,7 +154,10 @@ class Game {
       const next = getStage(boss.after) && nextStage(boss.after);
       this.saveBest(score);
       this.hud.show(false);
-      if (!next) { this.title(); return; }
+      // A boss placed after the very last ladder stage IS the final boss --
+      // beating it should roll into the planet-sitting ending, not bounce
+      // back to the title screen.
+      if (!next) { this.finish(score); return; }
       const st = { sizeClass: next.sizeClass, lives: 5, hearts: 3 };
       this.overlays.stageCard(next, next.sizeClass, () => { this.overlays.hide(); this.start(next.id, st, score); });
     });

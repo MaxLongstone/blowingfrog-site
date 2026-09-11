@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { CHACO, LANDLORD, NARRATOR, NECO_FROG, SACK_MAN, BOSSES, bossAfter, getBoss } from '../config/bosses.js';
+import { CHACO, LANDLORD, NARRATOR, NECO_FROG, SACK_MAN, UMMA, BOSSES, bossAfter, getBoss } from '../config/bosses.js';
 
 function checkIntro(boss) {
   assert.ok(Array.isArray(boss.intro) && boss.intro.length >= 4, boss.id);
@@ -23,6 +23,7 @@ test('bossAfter resolves each slot to the right boss', () => {
   assert.equal(bossAfter('K2'), NECO_FROG);
   assert.equal(bossAfter('K3'), NARRATOR);
   assert.equal(bossAfter('K4'), SACK_MAN);
+  assert.equal(bossAfter('K5'), UMMA);
   assert.equal(bossAfter('4'), null);
 });
 test('SACK_MAN is a dark fight after K4 with three surges and three attacks', () => {
@@ -52,6 +53,27 @@ test('NECO_FROG is a mirror fight after K2 with three attacks and three rounds',
 });
 test('every intro beat has a heading and a string-or-function body', () => {
   for (const b of BOSSES) checkIntro(b);
+});
+test('UMMA is the final boss after K5, with no punch reliance and three outbursts to win', () => {
+  assert.equal(UMMA.kind, 'umma');
+  assert.equal(UMMA.after, 'K5');
+  assert.equal(UMMA.outburstsToWin, 3);
+  assert.equal(UMMA.fuseTarget, 5);
+  const attackKeys = Object.keys(UMMA.attacks);
+  assert.ok(attackKeys.length >= 3, 'needs a few distinct attacks');
+  for (const a of Object.values(UMMA.attacks)) {
+    assert.ok(['zone', 'double', 'locked'].includes(a.reach), a.name);
+    assert.ok(a.tell > 0 && a.damage >= 0, a.name);
+    if (a.reach === 'zone') assert.ok([0, 1, 2].includes(a.zone), a.name);
+  }
+  const commandKeys = Object.keys(UMMA.commands);
+  assert.ok(commandKeys.length >= 3, 'needs a few distinct commands');
+  for (const c of Object.values(UMMA.commands)) {
+    assert.ok(c.window > 0, c.name);
+    assert.ok(c.line && c.line.length > 0, c.name);
+    assert.ok(['zoneOut', 'freeze', 'eat'].includes(c.need), c.name);
+  }
+  assert.ok(UMMA.finale.card && UMMA.finale.card.length > 10);
 });
 test("The Narrator's dynamic beats resolve to non-empty text for any stats shape", () => {
   const stats = { daysSinceFirstSeen: 0, sessions: 1, totalPlayMinutes: 0,
