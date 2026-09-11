@@ -64,6 +64,11 @@ SHEETS = {
                  "rift_debris", "rift_orb", "rift_floor", "rift_warn", "rift_dust"]),
     "S": (3, 3, ["hero_idle", "hero_claw", "hero_lash", "hero_throw", "hero_catch",
                  "hero_hurt", "hero_charge", "hero_stagger", "hero_roar"]),
+    # Boss six: UMMA, and the bare-handed frog built for a fight with no punch button
+    "T": (3, 3, ["umma_idle", "umma_tell", "umma_throw", "umma_scold", "umma_pride",
+                 "umma_trip", "croc_shoe", None, None]),
+    "U": (3, 3, ["ummafrog_guard", "ummafrog_left", "ummafrog_right", "ummafrog_eat",
+                 "ummafrog_hurt", "ummafrog_down", "ummafrog_win", None, None]),
 }
 
 WHITE_CUTOFF = 234   # a pixel this bright in every channel counts as background

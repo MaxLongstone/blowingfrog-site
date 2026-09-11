@@ -398,6 +398,49 @@ The nine poses, left to right, top row first:
 
 ---
 
+### Sheet T — UMMA, and the Croc she throws
+
+3 × 3. Reading order: `umma_idle` `umma_tell` `umma_throw` / `umma_scold` `umma_pride` `umma_trip` / `croc_shoe` — the last two cells are blank and ignored.
+
+```
+A single square sprite sheet on a pure white background, arranged as a clean 3 by 3 grid of nine equal square cells with wide even white gutters. Each subject is centred in its own cell at the same scale and the same distance from camera, fully separated from its neighbours, nothing touching or overlapping. No grid lines, no borders, no numbers, no text, no labels, no watermark. The final two cells, bottom row, are empty white space.
+
+Art direction for every character cell: a full-body pose seen from the front in three-quarter view, soft 3D felt and clay render, matte fabric texture, thick dark charcoal outline, warm rim light from the upper left, chunky cartoon proportions, no cast shadow, no ground plane, no background scenery.
+
+The same character in the first six cells: a warm, sturdy Korean mother in her fifties, a tight rounded perm of dark hair, thin wire-frame glasses, a bright pink floral house dress with a white apron trim, and a pair of bright yellow Crocs on her own feet. She is not a villain, she is a mother who has been up the whole time, and her expression should read as loving and exasperated at once, never cruel.
+
+The six poses, left to right, top row first:
+1. standing at ease in a doorway, arms relaxed at her sides, watching, patient
+2. winding up to throw, one arm cocked back high with a yellow Croc in her raised hand, eyebrows drawn together
+3. mid-throw, arm snapped fully forward, the Croc just leaving her hand, dress swinging with the motion
+4. scolding, one hand on her hip, the other pointing straight at the viewer, mouth open mid-sentence
+5. beaming with pride, both hands clasped together at her chest, eyes crinkled shut with a wide happy smile
+6. stumbling backward off balance, arms pinwheeling, one Croc-clad foot slipping out from under her, startled expression
+
+Cell 7, bottom left, is a single object, not a character: one bright yellow rubber clog-style shoe (a Croc), seen from the side in mid-air as if thrown, a few small ventilation holes visible, the heel strap flared out behind it, tumbling.
+```
+
+### Sheet U — the bare-handed frog
+
+3 × 3. Reading order: `ummafrog_guard` `ummafrog_left` `ummafrog_right` / `ummafrog_eat` `ummafrog_hurt` `ummafrog_down` / `ummafrog_win` — the last two cells are blank and ignored.
+
+```
+A single square sprite sheet on a pure white background, arranged as a clean 3 by 3 grid of nine equal square cells with wide even white gutters. Each pose is centred in its own cell at the same scale and the same distance from camera, fully separated from its neighbours, nothing touching or overlapping. No grid lines, no borders, no numbers, no text, no labels, no watermark. The final two cells, bottom row, are empty white space.
+
+Art direction for every cell: a full-body character pose seen from the front in three-quarter view, soft 3D felt and clay render, matte fabric texture, thick dark charcoal outline, warm rim light from the upper left, chunky friendly proportions, no cast shadow, no ground plane, no background scenery.
+
+The same character in all seven cells: the same small round cartoon frog used throughout this game, olive-green felt skin with dark speckles, a pale cream belly, huge white bulging eyes with tiny black pupils. Bare frog hands and feet only, no gloves, no props, no weapons of any kind -- this frog never throws a punch.
+
+The seven poses, left to right, top row first:
+1. standing square and alert, both bare hands raised loosely by its chest, watching and ready
+2. leaning hard to its own left, dodging, bare hands still up, eyes wide
+3. leaning hard to its own right, dodging, bare hands still up, eyes wide
+4. mouth wide open catching something, tongue not visible yet, delighted anticipation
+5. reeling from a hit, head snapped back, both hands flung wide, eyes crossed
+6. knocked flat on its back, dazed, arms splayed out, little stars circling its head
+7. standing in triumph with both bare hands thrown up in the air, mouth wide open cheering, chest puffed out
+```
+
 ## If a sprite comes out too big or too small
 
 The slicer trims each sprite to its own edges, and the game scales it to the footprint the code
