@@ -914,3 +914,10 @@ img, video { display: block; }
 @media (max-width: 860px) {
   .ig-float { bottom: 18px; right: 18px; }
 }
+
+/* ── Language toggle ─────────────────────────────── */
+.lang-toggle{display:inline-flex;align-items:center;gap:6px;margin-bottom:32px;}
+.lang-opt{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-muted);text-decoration:none;transition:color 0.2s;}
+.lang-opt:hover{color:var(--text);}
+.lang-opt.active{color:var(--accent-lt);font-weight:600;pointer-events:none;}
+.lang-sep{font-size:10px;color:var(--border);}
