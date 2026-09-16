@@ -1,4 +1,4 @@
-// Nine achievements, in the voice of the broadcast AI. Each is unlocked by a
+// Eleven achievements, in the voice of the broadcast AI. Each is unlocked by a
 // cumulative counter that survives across sessions.
 export const ACHIEVEMENTS = [
   { id: 'sentient',    emoji: '🐸', title: 'BARELY SENTIENT',
@@ -28,11 +28,18 @@ export const ACHIEVEMENTS = [
   { id: 'unavailable', emoji: '🌍', title: 'PLANET UNAVAILABLE',
     blurb: 'Sat on the Earth. Ratings unprecedented. You are in so much trouble.',
     hint: 'Finish the game.',                test: c => c.finishes >= 1 },
+  { id: 'probed',      emoji: '🛸', title: 'PROBED',
+    blurb: "You got probed. And you liked it. That's bound to make you question everything. So, to quote a great writer: \"you can't unlink an asshole once it's licked.\"",
+    hint: 'Beat PROBE ONE.',                 test: c => c.probeOneCleared >= 1 },
+  { id: 'gallery',     emoji: '🎯', title: 'SHOOTING GALLERY',
+    blurb: 'Fifty alien ships down. NASA already knows. NASA is furious.',
+    hint: 'Shoot down 50 alien ships.',      test: c => c.probeKills >= 50 },
 ];
 
 export const COUNTER_KEYS = [
   'stagesCleared', 'detonations', 'midairEats', 'kaijuReached',
   'squashes', 'burns', 'cleanStages', 'deaths', 'finishes',
+  'probeOneCleared', 'probeKills',
 ];
 
 export function getAchievement(id) {

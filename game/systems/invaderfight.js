@@ -168,6 +168,7 @@ export class InvaderFight {
     setTimeout(() => {
       this.over = true;
       this.ach?.bump('stagesCleared');
+      this.ach?.bump('probeOneCleared');
       setTimeout(() => this.emit('won', { score: this.score }), 600);
     }, 1700);
   }
@@ -221,6 +222,7 @@ export class InvaderFight {
         this.audio.squash();
         this.particles.spark(laneX(closest.col) + this.formX, ay, 0xaab42a, 10);
         this.addScore(80);
+        this.ach?.bump('probeKills');
         if (closest.loaded) this.bombs.push({ lane: closest.col, y: ay, vy: this.boss.fire.dropSpeed, alive: true });
       }
     }
