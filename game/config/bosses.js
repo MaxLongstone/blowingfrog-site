@@ -390,6 +390,72 @@ export const UMMA = {
   },
 };
 
-export const BOSSES = [CHACO, LANDLORD, NARRATOR, NECO_FROG, SACK_MAN, UMMA];
+// Boss seven: PROBE ONE. Placed early, after stage 4 -- a full alien recon
+// grid sent for a frog that is nowhere near kaiju-sized yet. Space Invaders
+// grammar: a shimmying, descending formation up top, the frog fixed on a
+// rail at the bottom. Fire breath is the new weapon; the universal fuse rule
+// survives by riding along on it -- burn a loaded ship and it drops what it
+// was carrying, and catching that is still how the fuse fills everywhere
+// else in this game. It dies of its own overkill: built to fight something
+// city-sized, it never learns to throttle down for something this small.
+export const PROBE_ONE = {
+  id: 'probe',
+  after: '4',
+  kind: 'invader',
+  name: 'PROBE ONE',
+  eyebrow: 'BOSS \u00b7 SENT FOR A THREAT THAT DOES NOT EXIST YET',
+
+  intro: [
+    {
+      heading: 'THIS IS EARLY',
+      body: "You are not kaiju yet, swamp bitch. You are barely bigger than the cars you've been eating. Something up there took one look at that and decided you were worth a full grid of hardware anyway. Nobody told them to wait for the sequel.",
+    },
+    {
+      heading: 'THE HARDWARE IS REAL',
+      body: "Seven columns, three ranks, moving together like they trained for it, because they did. This is not a bit and it is not a metaphor. Something up there is actually armed, actually early, and about to open fire on an amphibian that has, to date, eaten eleven food trucks and a police car.",
+    },
+    {
+      heading: 'WHY YOU CAN BREATHE FIRE NOW',
+      body: "Do not ask me to justify it. You eat explosives for a living and grow a size class every time you swallow enough of them. Somewhere in that math, fire breath was always going to fall out the other end. I did not write the math. I am not defending the math. Point up.",
+    },
+    {
+      heading: 'THE ONLY RULE THAT MATTERS HERE',
+      body: "Fire breath kills whatever it hits. A few of them are carrying something, and killing those drops it, and you already know what you do when something falls toward you with a fuse on it. Catch five and the whole formation goes up. That's the fight. Everything else up there is just them trying to stop you doing it.",
+    },
+    {
+      heading: 'THIS IS THE REHEARSAL',
+      body: "Remember this grid when you get to Orbit and there's an entire fleet waiting instead of seven columns. This is what embarrassment looks like before it's had time to escalate. What comes back later will have had time.",
+      menace: true,
+    },
+    {
+      heading: 'GO ON THEN',
+      body: "ARROWS run you along the rail, SHIFT breathes fire straight up, SPACE catches whatever they drop. Three waves. Clear them and go be a bigger problem somewhere else.",
+    },
+  ],
+
+  hearts: 3,
+  fuseTarget: 5,
+  wavesToWin: 3,
+  loadedPerWave: 8,
+
+  formation: {
+    cols: 7,
+    rows: 3,
+    speed: [90, 125, 165],       // px/sec sideways, per wave
+    fireEvery: [2.6, 2.0, 1.5],  // seconds between alien pot-shots, per wave
+  },
+
+  fire: {
+    cooldown: 0.32,
+    boltSpeed: 620,
+    dropSpeed: 150,
+  },
+
+  finale: {
+    card: "It was built to end something the size of a city, and it just spent three waves trying to throttle that down to fit one frog. Whatever regulates that was never rated for small, and small is what finally cooks it.",
+  },
+};
+
+export const BOSSES = [CHACO, LANDLORD, NARRATOR, NECO_FROG, SACK_MAN, UMMA, PROBE_ONE];
 export const getBoss = (id) => BOSSES.find(b => b.id === id) || null;
 export const bossAfter = (stageId) => BOSSES.find(b => b.after === String(stageId)) || null;

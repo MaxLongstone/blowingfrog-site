@@ -707,5 +707,43 @@ Object.assign(SPRITES, {
   } },
 });
 
+
+// ---- boss seven: PROBE ONE. A premature alien recon grid, classic Space
+// Invaders formation, sent for a frog that is not remotely kaiju-sized yet.
+function probe(g, W, H, o = {}) {
+  const s = Math.min(W, H) / 100;
+  const px = (x, y) => [x * s, y * s];
+  const hull = o.loaded ? 0x9a6a2a : 0x5a6a72;
+  const dome = o.loaded ? 0xf2c53d : 0x7fc7e8;
+  g.ellipse(...px(0, 8), 44 * s, 16 * s).fill(hull); stroke(g, 2.5);
+  g.ellipse(...px(0, -2), 26 * s, 20 * s).fill(dome); stroke(g, 2.5);
+  glowDisc(g, ...px(0, -2), 14 * s, dome, 0.35);
+  for (let i = -2; i <= 2; i++) g.circle(...px(i * 14, 12), 3 * s).fill({ color: 0xffffff, alpha: 0.55 });
+  if (o.loaded) { g.circle(...px(0, 24), 8 * s).fill(0xe23c2f); stroke(g, 2); }
+  if (o.flagship) {
+    g.ellipse(...px(0, 8), 70 * s, 22 * s).fill(0x3a4750); stroke(g, 3);
+    g.ellipse(...px(0, -6), 40 * s, 28 * s).fill(0xaab42a);
+    glowDisc(g, ...px(0, -6), 22 * s, 0xaab42a, 0.4);
+    for (let i = -3; i <= 3; i++) g.circle(...px(i * 18, 14), 4 * s).fill({ color: 0xffffff, alpha: 0.6 });
+  }
+}
+
+const FIRE_FROG_POSES = {
+  invfrog_idle: { angry: 0 },
+  invfrog_fire: { angry: 2, fire: true },
+  invfrog_hurt: { angry: 1, tint: 0xa9b23a },
+};
+
+Object.assign(SPRITES, {
+  probe_grunt:    { w: 1.4, h: 0.8, draw: (g, W, H) => probe(g, W, H, {}) },
+  probe_loaded:   { w: 1.4, h: 0.8, draw: (g, W, H) => probe(g, W, H, { loaded: true }) },
+  probe_flagship: { w: 2.6, h: 1.3, draw: (g, W, H) => probe(g, W, H, { flagship: true }) },
+  fire_bolt: { w: 0.5, h: 1.0, draw: (g, W, H) => {
+    g.moveTo(0, -H / 2).quadraticCurveTo(W * 0.4, 0, 0, H / 2).quadraticCurveTo(-W * 0.4, 0, 0, -H / 2).fill(0xf08a24);
+    glowDisc(g, 0, 0, W * 0.5, 0xf2c53d, 0.5);
+  } },
+  ...Object.fromEntries(Object.entries(FIRE_FROG_POSES).map(([kind, opts]) => [kind, { w: 1.7, h: 1.7, draw: (g, W, H) => frog(g, W, H, opts) }])),
+});
+
 export const SPRITE_KINDS = Object.keys(SPRITES);
 export { CELL, C as PALETTE };

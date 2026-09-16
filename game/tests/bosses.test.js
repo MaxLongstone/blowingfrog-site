@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { CHACO, LANDLORD, NARRATOR, NECO_FROG, SACK_MAN, UMMA, BOSSES, bossAfter, getBoss } from '../config/bosses.js';
+import { CHACO, LANDLORD, NARRATOR, NECO_FROG, SACK_MAN, UMMA, PROBE_ONE, BOSSES, bossAfter, getBoss } from '../config/bosses.js';
 
 function checkIntro(boss) {
   assert.ok(Array.isArray(boss.intro) && boss.intro.length >= 4, boss.id);
@@ -24,7 +24,7 @@ test('bossAfter resolves each slot to the right boss', () => {
   assert.equal(bossAfter('K3'), NARRATOR);
   assert.equal(bossAfter('K4'), SACK_MAN);
   assert.equal(bossAfter('K5'), UMMA);
-  assert.equal(bossAfter('4'), null);
+  assert.equal(bossAfter('4'), PROBE_ONE);
 });
 test('SACK_MAN is a dark fight after K4 with three surges and three attacks', () => {
   assert.equal(SACK_MAN.kind, 'dark');
@@ -74,6 +74,21 @@ test('UMMA is the final boss after K5, with no punch reliance and three outburst
     assert.ok(['zoneOut', 'freeze', 'eat'].includes(c.need), c.name);
   }
   assert.ok(UMMA.finale.card && UMMA.finale.card.length > 10);
+});
+test('PROBE_ONE is an invader fight after stage 4 with a full formation and no punch reliance', () => {
+  assert.equal(PROBE_ONE.kind, 'invader');
+  assert.equal(PROBE_ONE.after, '4');
+  assert.equal(PROBE_ONE.wavesToWin, 3);
+  assert.equal(PROBE_ONE.fuseTarget, 5);
+  assert.equal(PROBE_ONE.formation.cols * PROBE_ONE.formation.rows >= PROBE_ONE.loadedPerWave, true);
+  assert.equal(PROBE_ONE.formation.speed.length, 3);
+  assert.equal(PROBE_ONE.formation.fireEvery.length, 3);
+  // it should get harder each wave, not easier
+  for (let i = 1; i < 3; i++) {
+    assert.ok(PROBE_ONE.formation.speed[i] >= PROBE_ONE.formation.speed[i - 1], `formation speeds up at wave ${i}`);
+    assert.ok(PROBE_ONE.formation.fireEvery[i] <= PROBE_ONE.formation.fireEvery[i - 1], `alien fire rate rises at wave ${i}`);
+  }
+  assert.ok(PROBE_ONE.finale.card && PROBE_ONE.finale.card.length > 10);
 });
 test("The Narrator's dynamic beats resolve to non-empty text for any stats shape", () => {
   const stats = { daysSinceFirstSeen: 0, sessions: 1, totalPlayMinutes: 0,

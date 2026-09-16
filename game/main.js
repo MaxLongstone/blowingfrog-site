@@ -16,6 +16,7 @@ import { TrialFight } from './systems/trialfight.js';
 import { MirrorFight } from './systems/mirrorfight.js';
 import { DarkFight } from './systems/darkfight.js';
 import { UmmaFight } from './systems/ummafight.js';
+import { InvaderFight } from './systems/invaderfight.js';
 import { Telemetry } from './systems/telemetry.js';
 import { bossAfter, getBoss, BOSSES } from './config/bosses.js';
 
@@ -142,6 +143,7 @@ class Game {
       : boss.kind === 'mirror' ? MirrorFight
       : boss.kind === 'dark' ? DarkFight
       : boss.kind === 'umma' ? UmmaFight
+      : boss.kind === 'invader' ? InvaderFight
       : BossFight;
     this.play = new Fight({
       app: this.app, textures: this.tex, audio: this.audio, hud: this.hud,
