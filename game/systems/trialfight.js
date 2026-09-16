@@ -183,7 +183,7 @@ export class TrialFight {
 
   finish(won) {
     this.over = true;
-    if (won) { this.audio.win(); this.ach?.bump('stagesCleared'); }
+    if (won) { this.audio.win(); this.ach?.bump('stagesCleared'); this.ach?.bump('narratorCleared'); }
     else this.audio.lose();
     setTimeout(() => this.emit(won ? 'won' : 'lost', { score: this.score }), 1600);
   }

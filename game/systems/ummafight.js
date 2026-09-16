@@ -141,7 +141,7 @@ export class UmmaFight {
     this.hud.say(this.boss.finale.card, 3400);
     setTimeout(() => {
       this.over = true;
-      this.ach?.bump('stagesCleared');
+      this.ach?.bump('stagesCleared'); this.ach?.bump('ummaCleared');
       setTimeout(() => this.emit('won', { score: this.score }), 600);
     }, 1700);
   }

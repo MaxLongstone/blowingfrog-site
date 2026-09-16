@@ -5,9 +5,9 @@ import { ACHIEVEMENTS, COUNTER_KEYS, getAchievement } from '../config/achievemen
 // Node has no localStorage; the tracker must degrade to memory only.
 const { Achievements } = await import('../systems/achievements.js');
 
-test('eleven achievements, all with unique ids and a test', () => {
-  assert.equal(ACHIEVEMENTS.length, 11);
-  assert.equal(new Set(ACHIEVEMENTS.map(a => a.id)).size, 11);
+test('twenty-one achievements, all with unique ids and a test', () => {
+  assert.equal(ACHIEVEMENTS.length, 21);
+  assert.equal(new Set(ACHIEVEMENTS.map(a => a.id)).size, 21);
   for (const a of ACHIEVEMENTS) {
     assert.equal(typeof a.test, 'function', a.id);
     assert.ok(a.title && a.blurb && a.hint && a.emoji, a.id);
@@ -16,7 +16,7 @@ test('eleven achievements, all with unique ids and a test', () => {
 test('starts empty and works without storage', () => {
   const t = new Achievements();
   assert.equal(t.count, 0);
-  assert.equal(t.total, 11);
+  assert.equal(t.total, 21);
   for (const k of COUNTER_KEYS) assert.equal(t.counts[k], 0);
 });
 test('a counter unlocks its achievement exactly once and notifies', () => {
@@ -46,7 +46,7 @@ test('shareText lists unlocked achievements and the best score', () => {
   t.bump('detonations');
   t.bump('midairEats');
   const text = t.shareText(12400);
-  assert.match(text, /2\/11 achievements/);
+  assert.match(text, /2\/21 achievements/);
   assert.match(text, /THIS LITTLE PIGGY WENT BOOM/);
   assert.match(text, /SNACK ON THE WING/);
   assert.match(text, /012400/);

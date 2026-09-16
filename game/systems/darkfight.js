@@ -168,7 +168,7 @@ export class DarkFight {
       if (t < 1.4) requestAnimationFrame(step);
       else {
         this.over = true;
-        this.audio.win(); this.ach?.bump('stagesCleared');
+        this.audio.win(); this.ach?.bump('stagesCleared'); this.ach?.bump('sackmanCleared');
         setTimeout(() => this.emit('won', { score: this.score }), 1400);
       }
     };

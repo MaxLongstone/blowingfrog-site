@@ -43,6 +43,7 @@ class Game {
     this.frames = [];
     this.best = readBest();
     this.ach = new Achievements();
+    this.ach.bump('boots');
     this.ach.onUnlock((a) => {
       this.hud.say(`ACHIEVEMENT: ${a.title}`, 2600);
       this.audio.win();

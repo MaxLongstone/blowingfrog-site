@@ -197,7 +197,7 @@ I find that more impressive than you probably do.`,
     eyebrow: 'BROADCAST TERMINATED \u00b7 EARLY',
     title: 'YOU WIN',
     body: "That is the whole game. Every stage cleared, every boss down, nine achievements, nothing left to press. Close this tab and the score is yours forever. Nobody needs to see what happens after this.",
-    achLabel: 'ACHIEVEMENTS 11/11',
+    achLabel: 'ACHIEVEMENTS 21/21',
   },
 };
 

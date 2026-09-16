@@ -186,7 +186,7 @@ export class MirrorFight {
     }, 1000);
     setTimeout(() => {
       this.setState('dead', 99);
-      this.audio.win(); this.ach?.bump('stagesCleared');
+      this.audio.win(); this.ach?.bump('stagesCleared'); this.ach?.bump('necoCleared');
     }, 2200);
     setTimeout(() => this.emit('won', { score: this.score }), 3800);
   }

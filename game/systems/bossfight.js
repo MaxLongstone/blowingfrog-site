@@ -231,7 +231,7 @@ export class BossFight {
   finish(won) {
     this.over = true;
     this.setState(won ? 'dead' : 'win', 99);
-    if (won) { this.audio.win(); this.ach?.bump('stagesCleared'); }
+    if (won) { this.audio.win(); this.ach?.bump('stagesCleared'); this.ach?.bump('chacoCleared'); }
     else { this.audio.lose(); this.hurtT = 99; }
     setTimeout(() => this.emit(won ? 'won' : 'lost', { score: this.score }), 1700);
   }

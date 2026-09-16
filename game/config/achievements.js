@@ -1,5 +1,5 @@
-// Eleven achievements, in the voice of the broadcast AI. Each is unlocked by a
-// cumulative counter that survives across sessions.
+// Twenty-one achievements, in the voice of the broadcast AI. Each is unlocked
+// by a cumulative counter that survives across sessions.
 export const ACHIEVEMENTS = [
   { id: 'sentient',    emoji: '🐸', title: 'BARELY SENTIENT',
     blurb: 'Crossed a road. The bar was on the floor and you cleared it.',
@@ -34,12 +34,50 @@ export const ACHIEVEMENTS = [
   { id: 'gallery',     emoji: '🎯', title: 'SHOOTING GALLERY',
     blurb: 'Fifty alien ships down. NASA already knows. NASA is furious.',
     hint: 'Shoot down 50 alien ships.',      test: c => c.probeKills >= 50 },
+
+  // Boss-specific clears. Each boss falls to its own trait, never your
+  // fists, and now each one leaves its own punchline behind too.
+  { id: 'chacoDown',    emoji: '🐐', title: 'THE GOATED ONE',
+    blurb: 'Beat the narco chupacabra. He was, etymologically, always going to be a goat joke. You’re welcome.',
+    hint: 'Beat Chaco.',                     test: c => c.chacoCleared >= 1 },
+  { id: 'landlordDown', emoji: '🔑', title: 'EVICTION NOTICE SERVED',
+    blurb: 'Thirty-one years of not fixing the boiler, undone in one climb. Rent’s due, motherfucker.',
+    hint: 'Beat The Landlord.',              test: c => c.landlordCleared >= 1 },
+  { id: 'necoDown',     emoji: '🪞', title: 'MIRROR, MIRROR, OFF THE WALL',
+    blurb: 'Beat your evil twin with the goatee. Somewhere, a cracked mirror feels a little better about itself.',
+    hint: 'Beat The Neco Frog.',             test: c => c.necoCleared >= 1 },
+  { id: 'narratorDown', emoji: '🎙️', title: 'NARRATIVE COLLAPSE',
+    blurb: 'You beat the thing narrating you. I would be more upset about this if I were not also the one handing you the achievement for it.',
+    hint: 'Beat The Narrator.',              test: c => c.narratorCleared >= 1 },
+  { id: 'sackmanDown',  emoji: '⚫', title: 'SACKED',
+    blurb: 'Beat the thing with no folder, no face, and apparently no legs anymore either.',
+    hint: 'Beat The Sack Man.',              test: c => c.sackmanCleared >= 1 },
+  { id: 'ummaDown',     emoji: '👟', title: 'MOM WAS RIGHT AGAIN',
+    blurb: 'Beat Umma without ever throwing a punch, because you do not hit your mother, not in this house, not in any house.',
+    hint: 'Beat UMMA.',                      test: c => c.ummaCleared >= 1 },
+
+  // Whole-game, no new boss required. Some of these are just puns wearing
+  // a counter as a trenchcoat.
+  { id: 'glutton',      emoji: '😋', title: 'GLUTTON FOR PUNISHMENT',
+    blurb: 'Caught twenty-five explosives out of the air with your tongue. A doctor would like a word.',
+    hint: 'Tongue 25 explosives out of the air.', test: c => c.midairEats >= 25 },
+  { id: 'ninelives',    emoji: '🐈', title: "NOT EVEN A CAT'S NINE LIVES",
+    blurb: 'Died twenty times. You are, mathematically, worse at this than a cat, and a cat cannot even eat a food truck.',
+    hint: 'Die 20 times.',                   test: c => c.deaths >= 20 },
+  { id: 'roadkill',     emoji: '🛣️', title: 'ROADKILL RÉSUMÉ',
+    blurb: 'One hundred vehicles flattened. HR called. They want to talk about your "work history."',
+    hint: 'Squash 100 vehicles.',            test: c => c.squashes >= 100 },
+  { id: 'participation', emoji: '🏆', title: 'PARTICIPATION TROPHY',
+    blurb: 'You opened the game. That is the entire achievement. We are as confused about this one as you are.',
+    hint: 'Open the game. Yes, really.',     test: c => c.boots >= 1 },
 ];
 
 export const COUNTER_KEYS = [
   'stagesCleared', 'detonations', 'midairEats', 'kaijuReached',
   'squashes', 'burns', 'cleanStages', 'deaths', 'finishes',
   'probeOneCleared', 'probeKills',
+  'chacoCleared', 'landlordCleared', 'necoCleared', 'narratorCleared',
+  'sackmanCleared', 'ummaCleared', 'boots',
 ];
 
 export function getAchievement(id) {
