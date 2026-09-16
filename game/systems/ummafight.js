@@ -4,7 +4,7 @@
 // what lands on a plate, which fills the fuse and calms her instead of
 // hurting her. She never takes a hit. She trips on her own shoe pile once
 // she's too busy being proud of you to watch her feet.
-import { Shake } from '../core/grid.js';
+import { Shake, fitWorld } from '../core/grid.js';
 import { Particles } from './particles.js';
 import { UMMA } from '../config/bosses.js';
 import { makeRng } from '../core/rng.js';
@@ -28,6 +28,9 @@ export class UmmaFight {
 
     this.world = new PIXI.Container();
     this.app.stage.addChild(this.world);
+    const fit = fitWorld(this.app, W, H);
+    this.world.scale.set(fit.scale);
+    this.baseX = fit.x; this.baseY = fit.y;
     this.bg = new PIXI.Graphics();
     this.layer = new PIXI.Container();
     this.crocLayer = new PIXI.Container();
@@ -330,7 +333,7 @@ export class UmmaFight {
 
     this.particles.update(dt);
     const s = this.shake.update(dt);
-    this.world.x = s.x; this.world.y = s.y;
+    this.world.x = this.baseX + s.x; this.world.y = this.baseY + s.y;
   }
 
   frogState() { return { sizeClass: 9, lives: this.lives, hearts: 3 }; }

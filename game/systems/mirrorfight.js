@@ -4,7 +4,7 @@
 // damages nothing directly -- it just wins the round. The Neco Frog's own
 // wins make it bigger and meaner. It also throws three telegraphed attacks,
 // each with one correct zone to dodge to, same grammar as Chaco.
-import { Shake } from '../core/grid.js';
+import { Shake, fitWorld } from '../core/grid.js';
 import { Particles } from './particles.js';
 import { NECO_FROG } from '../config/bosses.js';
 import { makeRng } from '../core/rng.js';
@@ -40,6 +40,9 @@ export class MirrorFight {
 
     this.world = new PIXI.Container();
     this.app.stage.addChild(this.world);
+    const fit = fitWorld(this.app, W, H);
+    this.world.scale.set(fit.scale);
+    this.baseX = fit.x; this.baseY = fit.y;
     this.bg = new PIXI.Graphics();
     this.behind = new PIXI.Graphics();
     this.layer = new PIXI.Container();
@@ -327,7 +330,7 @@ export class MirrorFight {
 
     this.particles.update(dt);
     const s = this.shake.update(dt);
-    this.world.x = s.x; this.world.y = s.y;
+    this.world.x = this.baseX + s.x; this.world.y = this.baseY + s.y;
   }
 
   frogState() { return { sizeClass: 6, lives: this.lives, hearts: 3 }; }

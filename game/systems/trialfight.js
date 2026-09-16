@@ -5,7 +5,7 @@
 // Get either one backwards and it costs a heart. No sprite stands in for the
 // Narrator — it never had a body, it only ever had a mouth, so where a boss
 // portrait would sit there is a rectangle of pure static instead.
-import { Shake } from '../core/grid.js';
+import { Shake, fitWorld } from '../core/grid.js';
 import { Particles } from './particles.js';
 import { NARRATOR } from '../config/bosses.js';
 import { WORLD_STATEMENTS, GAME_STATEMENTS, buildYouStatements } from '../config/narrator-statements.js';
@@ -37,6 +37,9 @@ export class TrialFight {
 
     this.world = new PIXI.Container();
     this.app.stage.addChild(this.world);
+    const fit = fitWorld(this.app, W, H);
+    this.world.scale.set(fit.scale);
+    this.baseX = fit.x; this.baseY = fit.y;
     this.bg = new PIXI.Graphics();
     this.staticBox = new PIXI.Graphics();   // the Narrator's "portrait": pure noise
     this.tileLayer = new PIXI.Container();
@@ -365,7 +368,7 @@ export class TrialFight {
 
     this.particles.update(dt);
     const sh = this.shake.update(dt);
-    this.world.x = sh.x; this.world.y = sh.y;
+    this.world.x = this.baseX + sh.x; this.world.y = this.baseY + sh.y;
   }
 
   frogState() { return { sizeClass: 7, lives: this.lives, hearts: 3 }; }

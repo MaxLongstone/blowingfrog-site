@@ -22,6 +22,22 @@ export class Grid {
   }
 }
 
+// Boss fights are hand-composed at one fixed design resolution (W x H) so
+// every hardcoded position lines up, but the renderer's actual screen is
+// only that wide on desktop -- narrower viewports get a smaller COLS and a
+// narrower renderer, which clipped every boss off the right edge. This
+// letterboxes the fight's world container to fit and centers it, the same
+// way the page's own canvas-fit already scales the whole game to the
+// available space.
+export function fitWorld(app, W, H) {
+  const scale = Math.min(app.screen.width / W, app.screen.height / H);
+  return {
+    scale,
+    x: (app.screen.width - W * scale) / 2,
+    y: (app.screen.height - H * scale) / 2,
+  };
+}
+
 // Trauma-based screen shake. add() raises trauma, update() decays it and returns an offset.
 export class Shake {
   constructor(rng = Math.random) { this.trauma = 0; this.rng = rng; this.max = 16; }

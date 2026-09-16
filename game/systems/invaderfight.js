@@ -5,7 +5,7 @@
 // SPACE is still the same fuse rule every other boss in this game runs on.
 // Aliens fire straight down at random; dodge by changing lanes before it
 // arrives, same lesson learned from every other locked-aim hazard here.
-import { Shake } from '../core/grid.js';
+import { Shake, fitWorld } from '../core/grid.js';
 import { Particles } from './particles.js';
 import { PROBE_ONE } from '../config/bosses.js';
 import { makeRng } from '../core/rng.js';
@@ -35,6 +35,9 @@ export class InvaderFight {
 
     this.world = new PIXI.Container();
     this.app.stage.addChild(this.world);
+    const fit = fitWorld(this.app, W, H);
+    this.world.scale.set(fit.scale);
+    this.baseX = fit.x; this.baseY = fit.y;
     this.bg = new PIXI.Graphics();
     this.layer = new PIXI.Container();
     this.world.addChild(this.bg, this.layer);
@@ -332,7 +335,7 @@ export class InvaderFight {
 
     this.particles.update(dt);
     const s = this.shake.update(dt);
-    this.world.x = s.x; this.world.y = s.y;
+    this.world.x = this.baseX + s.x; this.world.y = this.baseY + s.y;
   }
 
   frogState() { return { sizeClass: 4, lives: this.lives, hearts: 3 }; }

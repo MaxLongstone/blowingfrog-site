@@ -1,7 +1,7 @@
 // Boss two: a vertical climb. You hop between platforms on the face of a tower
 // that is falling apart, while he drops things down it. He never speaks. The
 // announcer fills the silence by guessing what is in the box.
-import { Shake } from '../core/grid.js';
+import { Shake, fitWorld } from '../core/grid.js';
 import { Particles } from './particles.js';
 import { LANDLORD } from '../config/bosses.js';
 import { FUSE_TARGET } from '../config/stages.js';
@@ -34,6 +34,9 @@ export class ClimbFight {
     // frog while the platforms stay behind it.
     this.world = new PIXI.Container();
     this.app.stage.addChild(this.world);
+    const fit = fitWorld(this.app, W, H);
+    this.world.scale.set(fit.scale);
+    this.baseX = fit.x; this.baseY = fit.y;
     this.bg = new PIXI.Graphics();
     this.plankLayer = new PIXI.Container();
     this.plat = new PIXI.Graphics();       // the thin "shored" highlight on a plank
@@ -469,7 +472,7 @@ export class ClimbFight {
 
     this.particles.update(dt);
     const s = this.shake.update(dt);
-    this.world.x = s.x; this.world.y = s.y;
+    this.world.x = this.baseX + s.x; this.world.y = this.baseY + s.y;
   }
 
   attackTexture() {

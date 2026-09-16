@@ -5,7 +5,7 @@
 // tell is a half-second flicker right at that edge before it moves. There is
 // almost no character art on purpose -- he is never drawn as a body, only
 // glimpsed as a silhouette, a reaching shape, or a dragged sack.
-import { Shake } from '../core/grid.js';
+import { Shake, fitWorld } from '../core/grid.js';
 import { Particles } from './particles.js';
 import { SACK_MAN } from '../config/bosses.js';
 import { makeRng } from '../core/rng.js';
@@ -31,6 +31,9 @@ export class DarkFight {
 
     this.world = new PIXI.Container();
     this.app.stage.addChild(this.world);
+    const fit = fitWorld(this.app, W, H);
+    this.world.scale.set(fit.scale);
+    this.baseX = fit.x; this.baseY = fit.y;
     this.bg = new PIXI.Graphics();
     this.glow = new PIXI.Graphics();       // the soft "you are lit here" halo
     this.layer = new PIXI.Container();     // explosives, hazards, frog
@@ -352,7 +355,7 @@ export class DarkFight {
 
     this.particles.update(dt);
     const s = this.shake.update(dt);
-    this.world.x = s.x; this.world.y = s.y;
+    this.world.x = this.baseX + s.x; this.world.y = this.baseY + s.y;
   }
 
   frogState() { return { sizeClass: 8, lives: this.lives, hearts: 3 }; }

@@ -1,7 +1,7 @@
 // Boss one, side on. The frog stands left, Chaco right, and they face each other.
 // Distance is the whole fight: you must step INTO his range to counter, and that
 // is exactly where most of his attacks land. Every attack has one correct answer.
-import { Shake } from '../core/grid.js';
+import { Shake, fitWorld } from '../core/grid.js';
 import { Particles } from './particles.js';
 import { CHACO } from '../config/bosses.js';
 import { FUSE_TARGET } from '../config/stages.js';
@@ -47,6 +47,9 @@ export class BossFight {
 
     this.world = new PIXI.Container();
     this.app.stage.addChild(this.world);
+    const fit = fitWorld(this.app, W, H);
+    this.world.scale.set(fit.scale);
+    this.baseX = fit.x; this.baseY = fit.y;
     this.bg = new PIXI.Graphics();
     this.behind = new PIXI.Graphics();          // swing arcs, drawn under the sprites
     this.layer = new PIXI.Container();
@@ -458,7 +461,7 @@ export class BossFight {
 
     this.particles.update(dt);
     const s = this.shake.update(dt);
-    this.world.x = s.x; this.world.y = s.y;
+    this.world.x = this.baseX + s.x; this.world.y = this.baseY + s.y;
   }
 
   frogState() { return { sizeClass: 3, lives: this.lives, hearts: 3 }; }
