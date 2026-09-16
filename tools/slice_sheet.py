@@ -69,6 +69,9 @@ SHEETS = {
                  "umma_trip", "croc_shoe", None, None]),
     "U": (3, 3, ["ummafrog_guard", "ummafrog_left", "ummafrog_right", "ummafrog_eat",
                  "ummafrog_hurt", "ummafrog_down", "ummafrog_win", None, None]),
+    # Boss seven: PROBE ONE, the fire-breathing frog pose set, and the bolt prop
+    "V": (3, 3, ["probe_grunt", "probe_loaded", "probe_flagship", "invfrog_idle",
+                 "invfrog_fire", "invfrog_hurt", "fire_bolt", None, None]),
 }
 
 WHITE_CUTOFF = 234   # a pixel this bright in every channel counts as background

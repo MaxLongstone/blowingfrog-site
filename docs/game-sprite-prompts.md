@@ -441,6 +441,30 @@ The seven poses, left to right, top row first:
 7. standing in triumph with both bare hands thrown up in the air, mouth wide open cheering, chest puffed out
 ```
 
+### Sheet V -- PROBE ONE, the fire-breathing frog, and the fire bolt
+
+3 x 3. Reading order: `probe_grunt` `probe_loaded` `probe_flagship` / `invfrog_idle` `invfrog_fire` `invfrog_hurt` / `fire_bolt` -- the last two cells are blank and ignored.
+
+```
+A single square sprite sheet on a pure white background, arranged as a clean 3 by 3 grid of nine equal square cells with wide even white gutters. Each subject is centred in its own cell at the same scale and the same distance from camera, fully separated from its neighbours, nothing touching or overlapping. No grid lines, no borders, no numbers, no text, no labels, no watermark. The final two cells, bottom row, are empty white space.
+
+Art direction for the first three cells: a small retro-futuristic flying saucer, seen three-quarter from the front, soft 3D felt and clay render, matte metal and glass surfaces, thick dark charcoal outline, warm rim light from the upper left, chunky toy-like proportions, a soft coloured glow under the dome, no cast shadow, no ground plane, no background scenery.
+
+The three ship cells, left to right:
+1. a plain grey-blue recon saucer, pale blue glowing dome, small white running lights around the rim, unarmed-looking, almost cute
+2. the same saucer body but bronze-orange with a warm yellow-gold glowing dome, and a single round red bomb slung underneath in a small cradle, visibly "loaded"
+3. a much larger command saucer, twice the width, dark gunmetal hull, a wide olive-green glowing dome, a ring of lights around its rim, clearly the one giving orders
+
+Art direction for the next three cells: a full-body pose of the game's frog character seen from the front in three-quarter view, soft 3D felt and clay render, matte skin texture, thick dark charcoal outline, warm rim light from the upper left, chunky friendly proportions, olive-green skin with dark speckles, pale cream belly, huge white bulging eyes, no cast shadow, no ground plane, no background scenery.
+
+The three frog cells, left to right:
+4. standing alert on a narrow ledge, mouth closed, watching upward, calm and ready
+5. rearing back with mouth wide open, a bright orange-yellow gout of cartoon fire blasting straight up out of its mouth, cheeks puffed, eyes narrowed with effort
+6. recoiling from a hit, head snapped to one side, eyes crossed, a little dazed, skin tinted slightly paler green
+
+Cell 7, bottom left, is a single object, not a character: one small comet-shaped bolt of orange fire with a soft yellow glowing core, angled as if shooting straight upward, a trailing wisp of flame behind it.
+```
+
 ## If a sprite comes out too big or too small
 
 The slicer trims each sprite to its own edges, and the game scales it to the footprint the code
