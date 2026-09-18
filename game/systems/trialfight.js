@@ -196,6 +196,7 @@ export class TrialFight {
     this.frozen = true;
     this.hud.show(false);
     this.overlays.fakeWin(this.boss.fakeEnding, this.score, () => this.collapseFakeEnding());
+    this.emit('finale', { text: null });   // the trick screen already shows its own words
   }
 
   collapseFakeEnding() {

@@ -181,7 +181,7 @@ export class MirrorFight {
     this.over = true;
     this.setState('greedy', 1.0);
     this.audio.warn();
-    this.hud.say(this.boss.finale.card, 3200);
+    this.emit('finale', { text: this.boss.finale.card });
     setTimeout(() => {
       this.setState('overload', 1.1);
       this.audio.boom(); this.shake.add(22);

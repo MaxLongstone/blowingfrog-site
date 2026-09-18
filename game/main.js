@@ -4,7 +4,15 @@ import { Input } from './core/input.js';
 import { Audio } from './core/audio.js';
 import { Hud } from './ui/hud.js';
 import { Overlays } from './ui/overlays.js';
-import { preloadFrames, playDetonation, playEnding } from './ui/cutscene.js';
+import { preloadFrames, playDetonation, playEnding, playBossDefeat, playOpening, prefetchCutscene } from './ui/cutscene.js';
+import {
+  url, SFX_NAMES, ATARI_USES_REAL_SFX, MUSIC_TITLE, MUSIC_ENDING, CUTSCENE_TITLE,
+  voiceStage, voiceBossBeat, voiceBossFinale, voiceAchievement, voiceInfluencer,
+  musicForStage, musicForBoss, cutsceneDetonation,
+} from './config/media.js';
+import { INFLUENCER } from './config/influencer.js';
+import { InfluencerSchedule } from './systems/influencer.js';
+import { showAd } from './ui/adcard.js';
 import { Play } from './systems/play.js';
 import { STAGES, getStage, nextStage, validateStage } from './config/stages.js';
 import { Achievements } from './systems/achievements.js';
@@ -37,39 +45,103 @@ class Game {
     this.mode = mode;
     this.artCount = artCount;
     this.audio = new Audio();
+    this.audio.useRealSfx(usesPaintedArt(mode) || ATARI_USES_REAL_SFX);
+    this.audio.loadSfx(SFX_NAMES, (n) => url.sfx(n));
     this.hud = new Hud(overlayRoot);
     this.overlays = new Overlays(overlayRoot);
     this.overlayRoot = overlayRoot;
     this.frames = [];
     this.best = readBest();
     this.ach = new Achievements();
-    this.ach.bump('boots');
     this.ach.onUnlock((a) => {
       this.hud.say(`ACHIEVEMENT: ${a.title}`, 2600);
       this.audio.win();
+      // Let the sting land first, then read it out -- waiting its turn behind any story line.
+      setTimeout(() => this.speak(voiceAchievement(a.id), { caption: `${a.title} — ${a.blurb}`, policy: 'queue' }), 900);
     });
+    // After the handler exists, so opening the game announces itself the first time.
+    this.ach.bump('boots');
     this.telem = new Telemetry();
     this.play = null;
     this.paused = false;
+    this.inBoss = false;
+    this.openingSeen = false;
+    this.influencer = new InfluencerSchedule();
+    this.ad = null;
 
     this.input = new Input(window, app.canvas);
     this.input.onIntent((i) => { this.audio.unlock(); this.play?.intent(i); });
 
     app.ticker.add((ticker) => {
       const dt = Math.min(0.05, ticker.deltaMS / 1000);
-      if (this.play && !this.paused) { this.play.update(dt); this.telem.tickPlay(dt); }
+      if (this.play && !this.paused) {
+        this.play.update(dt); this.telem.tickPlay(dt);
+        if (!this.inBoss) this.tickInfluencer(dt);
+      }
     });
 
     preloadFrames().then(f => { this.frames = f; });
   }
 
-  clearPlay() { this.play?.destroy(); this.play = null; document.body.classList.remove('playing'); }
+  clearPlay() {
+    this.play?.destroy(); this.play = null;
+    this.influencer.cancel(); this.dismissAd();
+    document.body.classList.remove('playing');
+  }
+
+  // Say a recorded line. `caption` shows it as a subtitle for as long as it plays
+  // (for lines whose words aren't already on screen).
+  speak(id, { caption = null, policy = 'interrupt' } = {}) {
+    if (policy === 'interrupt') this.hud.clearCaption();
+    if (caption && !this.audio.ctx) {           // no sound available at all: still show the words
+      this.hud.caption(caption);
+      setTimeout(() => this.hud.clearCaption(), 6000);
+      return;
+    }
+    this.audio.playVoice(url.voice(id), {
+      policy,
+      onstart: () => { if (caption) this.hud.caption(caption); },
+      onend: () => { if (caption) this.hud.clearCaption(); },
+    });
+  }
+  stopSpeaking() { this.audio.stopVoice(); this.hud.clearCaption(); }
+
+  showStageCard(stage, size, onGo) {
+    this.overlays.stageCard(stage, size, () => { this.stopSpeaking(); onGo(); });
+    this.speak(voiceStage(stage.id));
+  }
+
+  // ---- the Influencer: a rare ad break in ordinary stages ------------------
+  tickInfluencer(dt) {
+    if (this.ad && !this.ad.closed) return;
+    const canFire = !this.audio.voiceBusy && this.overlays.node.style.display === 'none';
+    const pick = this.influencer.tick(dt, canFire);
+    if (pick) this.showInfluencer(pick);
+  }
+  showInfluencer({ tier, index }) {
+    const cfg = INFLUENCER.tiers[tier - 1];
+    const ad = showAd({ root: this.overlayRoot, tier, cfg, text: cfg.lines[index], onSkip: () => this.audio.stopVoice() });
+    this.ad = ad;
+    let started = false;
+    this.audio.playVoice(url.voice(voiceInfluencer(tier, index + 1)), {
+      onstart: (seconds) => { started = true; ad.start(seconds); },
+      onend: () => {
+        if (started) { ad.close(1.0); return; }
+        ad.start(6); ad.close(6.5);             // the recording never loaded: show her words anyway
+      },
+    });
+  }
+  dismissAd() {
+    if (this.ad && !this.ad.closed) { this.ad.close(); this.audio.stopVoice(); }
+    this.ad = null;
+  }
 
   // Swapping mode rebuilds every texture, so it only happens from the title screen.
   async setMode(mode) {
     if (mode === this.mode || !MODES[mode]) return;
     this.mode = mode;
     writeMode(mode);
+    this.audio.useRealSfx(usesPaintedArt(mode) || ATARI_USES_REAL_SFX);
     this.tex = await loadSprites(this.app, { usePng: usesPaintedArt(mode) });
     this.title();
   }
@@ -78,8 +150,10 @@ class Game {
     this.clearPlay();
     this.hud.show(false);
     this.telem.markTitleShown();
+    this.audio.playMusic(url.music(MUSIC_TITLE));
+    if (usesPaintedArt(this.mode)) prefetchCutscene(CUTSCENE_TITLE);
     this.overlays.title({
-      onStart: () => { this.audio.unlock(); this.overlays.hide(); this.start(this.startStage || '1'); },
+      onStart: () => this.beginRun(),
       best: this.best,
       ach: this.ach,
       onAchievements: () => this.showAchievements(() => this.title()),
@@ -89,9 +163,30 @@ class Game {
     });
   }
 
+  // Pressing play: the opening (first time this visit, painted mode), then the
+  // announcer's card for stage one, then the road.
+  async beginRun() {
+    this.audio.unlock();
+    this.overlays.hide();
+    const painted = usesPaintedArt(this.mode);
+    if (painted && !this.openingSeen) {
+      this.openingSeen = true;
+      await playOpening({ host: this.mount, audio: this.audio, painted });
+    }
+    const first = getStage(this.startStage || '1') || STAGES[0];
+    this.showStageCard(first, first.sizeClass, () => { this.overlays.hide(); this.start(first.id); });
+  }
+
   start(stageId, carry = null, score = 0) {
     this.clearPlay();
     const stage = getStage(stageId) || STAGES[0];
+    this.inBoss = false;
+    this.audio.playMusic(url.music(musicForStage(stage.id)));
+    if (usesPaintedArt(this.mode)) {
+      prefetchCutscene(cutsceneDetonation(stage.id));           // ready before the frog pops
+      const boss = bossAfter(stage.id);
+      if (boss) new Image().src = url.splash(boss.id);
+    }
     this.hud.show(true);
     this.play = new Play({
       app: this.app, stage, textures: this.tex, audio: this.audio, hud: this.hud,
@@ -105,6 +200,7 @@ class Game {
     this.play.on('goal', ({ score }) => this.onGoal(stage, score));
     this.play.on('stillHungry', ({ fuse, score }) => this.onStillHungry(stage, fuse, score));
     this.play.on('dead', ({ score }) => this.onDead(stage, score));
+    this.influencer.arm(stage.id);
   }
 
   bossIntro(boss, carry, score, index = 0, stats = null) {
@@ -113,11 +209,32 @@ class Game {
     // Computed once per intro sequence, so a boss like The Narrator can quote
     // real numbers back at the player without them drifting beat to beat.
     if (stats === null) stats = this.buildNarratorStats(carry);
-    const start = () => { this.overlays.hide(); this.startBoss(boss, carry, score); };
-    if (index >= boss.intro.length) { start(); return; }
+    const begin = async () => {
+      this.stopSpeaking();
+      this.overlays.hide();
+      await this.showSplash(boss);
+      this.startBoss(boss, carry, score);
+    };
+    if (index >= boss.intro.length) { begin(); return; }
     this.overlays.bossIntro(boss, index,
-      () => (index === boss.intro.length - 1 ? start() : this.bossIntro(boss, carry, score, index + 1, stats)),
-      start, stats);
+      () => {
+        this.stopSpeaking();
+        if (index === boss.intro.length - 1) begin();
+        else this.bossIntro(boss, carry, score, index + 1, stats);
+      },
+      begin, stats);
+    this.speak(voiceBossBeat(boss, index));
+    if (index + 1 < boss.intro.length) this.audio.prefetch(url.voice(voiceBossBeat(boss, index + 1)));
+    if (index === 0 && usesPaintedArt(this.mode)) new Image().src = url.splash(boss.id);
+  }
+
+  // The movie poster on the brick wall, with the boss's own theme kicking in.
+  // ATARI mode has no painted art, so it goes straight to the fight.
+  async showSplash(boss) {
+    this.audio.playMusic(url.music(musicForBoss(boss.id)), { fade: 0.8 });
+    if (!usesPaintedArt(this.mode)) return;
+    await new Promise((resolve) => this.overlays.splash(boss, url.splash(boss.id), resolve));
+    this.overlays.hide();
   }
 
   // Real, local numbers only: achievement counts merged with telemetry. Used
@@ -136,6 +253,8 @@ class Game {
   startBoss(boss, carry, score) {
     this.overlays.hide();
     this.clearPlay();
+    this.inBoss = true;
+    this.audio.playMusic(url.music(musicForBoss(boss.id)));
     this.paused = false;
     this.hud.show(true);
     document.body.classList.add('playing');
@@ -151,24 +270,32 @@ class Game {
       frogState: { ...carry, best: this.best }, score, ach: this.ach,
       overlays: this.overlays, telem: this.telem,
     });
-    this.play.on('won', ({ score }) => {
+    // The line about how this one ended, said at the moment it's true: as Chaco's
+    // rage begins, as the Landlord's tower starts to go, as the Narrator's trick
+    // screen appears, or as the others are finished off.
+    this.play.on('finale', ({ text }) => this.speak(voiceBossFinale(boss.id), { caption: text }));
+    this.play.on('won', async ({ score }) => {
       (this.beaten ||= new Set()).add(boss.id);
       this.clearPlay();
       const next = getStage(boss.after) && nextStage(boss.after);
       this.saveBest(score);
       this.hud.show(false);
+      await playBossDefeat({ host: this.mount, audio: this.audio, bossId: boss.id, painted: usesPaintedArt(this.mode) });
+      this.hud.clearCaption();
       // A boss placed after the very last ladder stage IS the final boss --
       // beating it should roll into the planet-sitting ending, not bounce
       // back to the title screen.
       if (!next) { this.finish(score); return; }
       const st = { sizeClass: next.sizeClass, lives: 5, hearts: 3 };
-      this.overlays.stageCard(next, next.sizeClass, () => { this.overlays.hide(); this.start(next.id, st, score); });
+      this.showStageCard(next, next.sizeClass, () => { this.overlays.hide(); this.start(next.id, st, score); });
     });
     this.play.on('lost', ({ score }) => {
       this.saveBest(score);
       this.ach.bump('deaths');
       this.clearPlay();
       this.hud.show(false);
+      this.stopSpeaking();
+      this.audio.stopMusic({ fade: 0.8 });
       this.overlays.gameOver(score, this.best, boss.name,
         () => { this.overlays.hide(); this.startBoss(boss, carry, 0); },
         () => { this.overlays.hide(); this.title(); },
@@ -181,8 +308,12 @@ class Game {
     const state = this.play.frogState();
     this.paused = true;
     this.hud.show(false);
+    this.dismissAd();
     this.ach.bump('detonations');
-    await playDetonation({ frames: this.frames, host: this.mount, audio: this.audio });
+    await playDetonation({
+      frames: this.frames, host: this.mount, audio: this.audio,
+      stageId: stage.id, painted: usesPaintedArt(this.mode),
+    });
     this.clearPlay();
     this.paused = false;
     score += 1000;
@@ -195,7 +326,7 @@ class Game {
     if (!next) { await this.finish(score); return; }
     state.sizeClass = next.sizeClass;
     state.lives = Math.max(1, state.lives);
-    this.overlays.stageCard(next, next.sizeClass, () => {
+    this.showStageCard(next, next.sizeClass, () => {
       this.overlays.hide();
       this.audio.roar();
       this.start(next.id, state, score);
@@ -221,6 +352,8 @@ class Game {
     this.ach.bump('deaths');
     this.paused = true;
     this.hud.show(false);
+    this.dismissAd();
+    this.audio.stopMusic({ fade: 0.8 });
     this.overlays.gameOver(score, this.best, stage.name,
       () => { this.overlays.hide(); this.paused = false; this.start(stage.id, null, 0); },
       () => { this.overlays.hide(); this.paused = false; this.title(); },
@@ -230,8 +363,10 @@ class Game {
   async finish(score) {
     this.hud.show(false);
     this.ach.bump('finishes');
-    await playEnding({ host: this.mount, audio: this.audio });
+    this.stopSpeaking();
+    await playEnding({ host: this.mount, audio: this.audio, painted: usesPaintedArt(this.mode) });
     this.saveBest(score);
+    this.audio.playMusic(url.music(MUSIC_ENDING), { fade: 1.5 });
     this.overlays.ending(score, this.best,
       () => this.share(score),
       () => { this.overlays.hide(); this.start('1', null, 0); },

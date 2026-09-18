@@ -699,6 +699,16 @@ Object.assign(SPRITES, {
   umma_scold: { w: 3.0, h: 3.2, draw: (g, W, H) => umma(g, W, H, { armY: -10, mouth: 'open' }) },
   umma_pride: { w: 3.0, h: 3.2, draw: (g, W, H) => umma(g, W, H, { armY: 8, pride: true }) },
   umma_trip:  { w: 3.2, h: 3.0, draw: (g, W, H) => umma(g, W, H, { armY: 14, mouth: 'open', trip: true }) },
+  // The plates she keeps pushing at you: a small white bowl of kimchi. (This used
+  // to borrow the Landlord's satellite dish, which reads as anything but dinner.)
+  banchan: { w: 1.0, h: 0.8, draw: (g, W, H) => {
+    g.ellipse(0, H * 0.14, W * 0.44, H * 0.32).fill(0xf4f0e6); stroke(g, 2.5);
+    g.ellipse(0, H * 0.04, W * 0.36, H * 0.22).fill(0xc9412f);
+    for (const [x, y, r] of [[-0.16, 0.0, 0.1], [0.06, -0.04, 0.12], [0.18, 0.06, 0.09], [-0.04, 0.1, 0.08]])
+      g.ellipse(x * W, y * H, r * W, r * H * 0.8).fill(0xe8664a);
+    for (const [x, y] of [[-0.1, -0.06], [0.14, -0.02], [0.02, 0.08]]) g.rect(x * W - 1.5, y * H - 4, 3, 8).fill(0x6fae3f);
+    shine(g, -W * 0.18, H * 0.02, W * 0.08, H * 0.05);
+  } },
   croc_shoe: { w: 1.0, h: 0.7, draw: (g, W, H) => {
     g.ellipse(0, 0, W * 0.42, H * 0.4).fill(0xffb703); stroke(g, 2.5);
     g.ellipse(0, -H * 0.05, W * 0.28, H * 0.22).fill({ color: 0xcc8f00, alpha: 0.5 });

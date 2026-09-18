@@ -235,6 +235,7 @@ export class ClimbFight {
     if (this.ascent === this.boss.ascentsToWin - 1) {
       this.collapse = { row: ROWS + 1, t: 0 };
       this.hud.say('THE BUILDING IS GOING. CLIMB.', 3000);
+      this.emit('finale', { text: this.boss.collapse.card });
       this.audio.roar();
     }
   }

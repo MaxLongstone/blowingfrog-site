@@ -148,6 +148,45 @@ export class Overlays {
     ], 'achievements');
   }
 
+  // The poster that hangs on the wall right before a boss fight. It holds for a
+  // few seconds, or a tap/keypress (after a beat, so a stray double-tap can't eat
+  // it) moves on. A poster that fails to load is skipped, never waited for.
+  splash(boss, src, onGo) {
+    const img = document.createElement('img');
+    img.className = 'bf-splash-img';
+    img.alt = `${boss.name} poster`;
+    img.draggable = false;
+    const label = el('div', 'bf-splash-label');
+    label.append(el('div', 'bf-splash-eyebrow', boss.eyebrow), el('div', 'bf-splash-go', 'TAP TO FIGHT'));
+
+    this.node.innerHTML = '';
+    this.node.className = 'bf-overlay splash';
+    this.node.append(img, el('div', 'bf-splash-vignette'), label);
+    this.node.style.display = 'block';
+    this.node.style.animation = 'none'; void this.node.offsetWidth; this.node.style.animation = '';
+    this.node.classList.add('in');
+
+    let done = false;
+    const timers = [];
+    const go = () => {
+      if (done) return;
+      done = true;
+      timers.forEach(clearTimeout);
+      this.node.onclick = null;
+      window.removeEventListener('keydown', go);
+      onGo();
+    };
+    const start = () => {
+      timers.push(setTimeout(() => { this.node.onclick = go; window.addEventListener('keydown', go); }, 700));
+      timers.push(setTimeout(go, 4200));
+    };
+    const loadGuard = setTimeout(go, 3500);       // never wait on a poster that isn't loading
+    timers.push(loadGuard);
+    img.onerror = go;
+    img.onload = () => { clearTimeout(loadGuard); start(); };
+    img.src = src;
+  }
+
   // The pre-fight monologue, one beat at a time. The last beat starts the bout.
   // `stats` is an optional snapshot (achievement counts merged with telemetry);
   // a beat whose body is a function gets called with it, so bosses like The

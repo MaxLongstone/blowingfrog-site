@@ -141,7 +141,7 @@ export class UmmaFight {
     this.frozen = true;
     this.audio.win();
     this.setState('trip', 99);
-    this.hud.say(this.boss.finale.card, 3400);
+    this.emit('finale', { text: this.boss.finale.card });
     setTimeout(() => {
       this.over = true;
       this.ach?.bump('stagesCleared'); this.ach?.bump('ummaCleared');
@@ -308,14 +308,14 @@ export class UmmaFight {
 
     if (this.banchan) {
       if (!this.banchanSprite) {
-        this.banchanSprite = new PIXI.Sprite(this.tex.get('climb_dish'));
+        this.banchanSprite = new PIXI.Sprite(this.tex.get('banchan'));
         this.banchanSprite.anchor.set(0.5);
         this.layer.addChild(this.banchanSprite);
       }
       this.banchanSprite.visible = true;
       this.banchanSprite.x = ZONE_X[this.banchan.zone];
       this.banchanSprite.y = this.banchan.y;
-      this.banchanSprite.scale.set(this.tex.scaleFor('climb_dish') * 1.1);
+      this.banchanSprite.scale.set(this.tex.scaleFor('banchan') * 1.1);
     } else if (this.banchanSprite) this.banchanSprite.visible = false;
 
     const g = this.fx; g.clear();

@@ -334,12 +334,111 @@
     }
     .bf-cutscene.out { opacity: 0; }
 
+    /* Video cutscenes are 16:9 in a portrait frame: shown whole, letterboxed. */
+    .bf-cutscene-video { display: flex; align-items: center; justify-content: center; }
+    .bf-cutscene-video video { width: 100%; height: 100%; object-fit: contain; background: #000; }
+
+    /* Subtitles for anything said out loud that isn't already written on screen. */
+    .bf-caption {
+      position: absolute; left: 50%; bottom: 6%; transform: translateX(-50%);
+      width: min(88%, 560px); text-align: center; z-index: 40;
+      font-family: var(--f-body); font-size: 14px; line-height: 1.5; color: #fff;
+      background: rgba(0,0,0,0.68); padding: 10px 14px; border-radius: 10px;
+      opacity: 0; transition: opacity .25s ease;
+    }
+    .bf-caption.show { opacity: 1; }
+    #overlay-root > .bf-caption { pointer-events: none; }
+
+    /* The poster before a boss fight. The wall is 16:9 with the poster dead
+       centre, so a centred crop keeps the whole poster on any portrait screen. */
+    .bf-overlay.splash {
+      display: block; padding: 0; background: #000; backdrop-filter: none;
+      overflow: hidden; cursor: pointer; animation-duration: .7s;
+    }
+    .bf-splash-img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; object-position: 49.6% 50%; transform-origin: 49.6% 52%;
+      user-select: none; -webkit-user-drag: none;
+      animation: bf-splash-push 6s ease-out both, bf-splash-flicker 3.3s steps(1) infinite;
+    }
+    @keyframes bf-splash-push { from { transform: scale(1); } to { transform: scale(1.1); } }
+    @keyframes bf-splash-flicker {
+      0%, 46%, 52%, 100% { filter: brightness(1); }
+      47% { filter: brightness(.8); } 48% { filter: brightness(1.06); } 50% { filter: brightness(.88); }
+    }
+    .bf-splash-vignette {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse at 50% 48%, transparent 42%, rgba(0,0,0,.72) 100%),
+        linear-gradient(to bottom, rgba(0,0,0,.4), transparent 20%, transparent 68%, rgba(0,0,0,.8));
+    }
+    .bf-splash-label {
+      position: absolute; left: 0; right: 0; bottom: 5%; text-align: center; padding: 0 14px;
+      font-family: var(--f-display); text-shadow: 0 2px 12px #000;
+      opacity: 0; animation: bf-splash-label-in .6s ease 1.1s forwards;
+    }
+    .bf-splash-eyebrow { font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: var(--accent-lt); }
+    .bf-splash-go { margin-top: 9px; font-size: 13px; font-weight: 800; letter-spacing: .3em; color: #fff; animation: bf-tick 1s infinite; }
+    @keyframes bf-splash-label-in { to { opacity: 1; } }
+
+    /* The Influencer. Sits over the top of the field but never blocks it: only
+       the skip button takes clicks. Each tier is a little further gone. */
+    .bf-ad {
+      position: absolute; left: 50%; top: 66px; z-index: 35;
+      width: min(92%, 520px); transform: translateX(-50%) rotate(-1.2deg);
+      font-family: var(--f-body); color: #2b1233; overflow: hidden; border-radius: 16px;
+      background: linear-gradient(135deg, #ffd0f0 0%, #ffe9a6 100%);
+      box-shadow: 0 12px 40px rgba(0,0,0,.55), inset 0 0 0 3px rgba(255,255,255,.75);
+      animation: bf-ad-in .38s cubic-bezier(.2,1.5,.4,1) both;
+      transition: opacity .25s ease;
+    }
+    .bf-ad.out { opacity: 0; }
+    #overlay-root > .bf-ad { pointer-events: none; }   /* must beat '#overlay-root > *' so it never blocks the field */
+    @keyframes bf-ad-in { from { opacity: 0; transform: translateX(-50%) rotate(-1.2deg) translateY(-24px) scale(.94); } }
+    .bf-ad-top { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px 0; }
+    .bf-ad-tag { font-family: var(--f-display); font-size: 10px; font-weight: 800; letter-spacing: .2em; color: #b3126e; }
+    .bf-ad-x {
+      pointer-events: auto; cursor: pointer; border: 0; border-radius: 999px; padding: 4px 10px;
+      font-family: var(--f-display); font-size: 10px; font-weight: 800; letter-spacing: .14em;
+      color: #fff; background: rgba(43,18,51,.78);
+    }
+    .bf-ad-body { display: flex; gap: 12px; padding: 8px 14px 10px; align-items: flex-start; }
+    .bf-ad-avatar {
+      flex: 0 0 auto; width: 54px; height: 54px; border-radius: 50%; position: relative; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; font-size: 28px;
+      background: #fff; box-shadow: 0 0 0 3px #ff5fb8, 0 0 0 5px #fff;
+    }
+    .bf-ad-avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .bf-ad-avatar.art span { visibility: hidden; }
+    .bf-ad-handle { font-family: var(--f-display); font-size: 13px; font-weight: 800; letter-spacing: .04em; margin-bottom: 3px; }
+    .bf-ad-handle .live { margin-left: 8px; font-size: 9px; letter-spacing: .16em; color: #fff; background: #e23c2f; padding: 2px 6px; border-radius: 4px; animation: bf-tick 1.1s infinite; }
+    .bf-ad-copy { margin: 0; font-size: 13px; line-height: 1.45; min-height: 3.6em; }
+    .bf-ad-bar { height: 4px; background: rgba(43,18,51,.16); }
+    .bf-ad-bar i { display: block; height: 100%; width: 0; background: #b3126e; }
+    @keyframes bf-ad-run { to { width: 100%; } }
+    .bf-ad.t2 { filter: saturate(.85); }
+    .bf-ad.t3 { transform: translateX(-50%) rotate(2.4deg); background: linear-gradient(135deg, #e6c1dd, #d8b5c0); }
+    .bf-ad.t3 .bf-ad-copy { text-shadow: 0 0 1px rgba(43,18,51,.35); }
+    .bf-ad.t4 {
+      transform: translateX(-50%) rotate(-2.8deg); color: #efe3ee; background: linear-gradient(135deg, #2c2233, #1d1822);
+      animation: bf-ad-in .38s cubic-bezier(.2,1.5,.4,1) both, bf-ad-flicker 2.4s steps(1) infinite .5s;
+    }
+    .bf-ad.t4 .bf-ad-tag { color: #ff8a8a; }
+    .bf-ad.t4 .bf-ad-handle { text-decoration: line-through; opacity: .8; }
+    .bf-ad.t4 .bf-ad-bar { background: rgba(255,255,255,.12); }
+    .bf-ad.t4 .bf-ad-bar i { background: #ff8a8a; }
+    @keyframes bf-ad-flicker { 0%, 88%, 100% { opacity: 1; } 90% { opacity: .55; } 93% { opacity: 1; } 96% { opacity: .7; } }
+    @media (prefers-reduced-motion: reduce) { .bf-ad, .bf-ad.t4 { animation: none; } .bf-splash-img { animation: none; } }
+
     @media (max-width: 640px) {
       .bf-hud { padding: 10px 12px; }
       .bf-stage-name { font-size: 13px; }
       .bf-stage-sub { display: none; }
       .bf-score { font-size: 16px; }
       .bf-toast { font-size: 16px; }
+      .bf-ad { top: 54px; }
+      .bf-ad-copy { font-size: 12px; }
+      .bf-caption { font-size: 13px; }
     }
   </style>
 </head>
@@ -379,6 +478,6 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/pixi.js@8.20.1/dist/pixi.min.js"></script>
-  <script type="module" src="game/main.js?v=50"></script>
+  <script type="module" src="game/main.js?v=51"></script>
 </body>
 </html>

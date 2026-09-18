@@ -344,6 +344,7 @@ export class BossFight {
         this.rage = { t: 0, dur: this.boss.ultimaRaya.duration };
         this.round = 3;
         this.hud.say('SURVIVE IT. STAY BACK.', 2600);
+        this.emit('finale', { text: this.boss.ultimaRaya.card });
         this.audio.roar();
         this.setState('idle', 0.5);
         break;

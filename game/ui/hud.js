@@ -34,7 +34,16 @@ export class Hud {
     this.toast = el('div', 'bf-toast');
     root.append(this.toast);
     this._toastTimer = null;
+    // Subtitles for voiced lines, so nothing said out loud is lost with the sound off.
+    this.captionEl = el('div', 'bf-caption');
+    root.append(this.captionEl);
   }
+  caption(text) {
+    if (!text) { this.clearCaption(); return; }
+    this.captionEl.textContent = text;
+    this.captionEl.classList.add('show');
+  }
+  clearCaption() { this.captionEl.classList.remove('show'); }
   setStage(name, sub) { this.stage.textContent = name; this.sub.textContent = sub || ''; }
   setFuse(n) {
     this.fusePips.forEach((p, i) => p.classList.toggle('on', i < n));
@@ -61,5 +70,5 @@ export class Hud {
     this._toastTimer = setTimeout(() => this.toast.classList.remove('show'), ms);
   }
   show(v) { this.node.style.opacity = v ? '1' : '0'; }
-  destroy() { this.node.remove(); this.toast.remove(); }
+  destroy() { this.node.remove(); this.toast.remove(); this.captionEl.remove(); }
 }

@@ -65,6 +65,7 @@
     "climbfrog_right",
     "climbfrog_top",
     "climbfrog_up",
+    "croc_shoe",
     "cruise",
     "drone",
     "duck",
@@ -175,6 +176,19 @@
     "tanker",
     "torpedo",
     "tubeman",
+    "umma_idle",
+    "umma_pride",
+    "umma_scold",
+    "umma_tell",
+    "umma_throw",
+    "umma_trip",
+    "ummafrog_down",
+    "ummafrog_eat",
+    "ummafrog_guard",
+    "ummafrog_hurt",
+    "ummafrog_left",
+    "ummafrog_right",
+    "ummafrog_win",
     "volcano"
   ]
 }

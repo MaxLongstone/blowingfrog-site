@@ -1,0 +1,74 @@
+{
+  "cutscene_boss_chaco_defeat": {
+    "duration": 6.08,
+    "peak": 2.2
+  },
+  "cutscene_boss_landlord_defeat": {
+    "duration": 6.08,
+    "peak": 1.9
+  },
+  "cutscene_boss_narrator_defeat": {
+    "duration": 6.08,
+    "peak": 5.1
+  },
+  "cutscene_boss_neco_defeat": {
+    "duration": 6.08,
+    "peak": 2.9
+  },
+  "cutscene_boss_probe_defeat": {
+    "duration": 6.08,
+    "peak": 3.3
+  },
+  "cutscene_boss_sackman_defeat": {
+    "duration": 6.08,
+    "peak": 0.3
+  },
+  "cutscene_boss_umma_defeat": {
+    "duration": 5.09,
+    "peak": 4.5
+  },
+  "cutscene_detonation_1": {
+    "duration": 4.1,
+    "peak": 2.0
+  },
+  "cutscene_detonation_2": {
+    "duration": 6.08,
+    "peak": 4.8
+  },
+  "cutscene_detonation_3": {
+    "duration": 6.08,
+    "peak": 5.1
+  },
+  "cutscene_detonation_4": {
+    "duration": 6.08,
+    "peak": 3.0
+  },
+  "cutscene_detonation_k1": {
+    "duration": 6.08,
+    "peak": 4.4
+  },
+  "cutscene_detonation_k2": {
+    "duration": 6.08,
+    "peak": 4.3
+  },
+  "cutscene_detonation_k3": {
+    "duration": 6.08,
+    "peak": 4.3
+  },
+  "cutscene_detonation_k4": {
+    "duration": 6.08,
+    "peak": 2.8
+  },
+  "cutscene_detonation_k5": {
+    "duration": 6.08,
+    "peak": 4.3
+  },
+  "cutscene_ending": {
+    "duration": 6.08,
+    "peak": 4.4
+  },
+  "cutscene_title": {
+    "duration": 6.08,
+    "peak": 1.3
+  }
+}

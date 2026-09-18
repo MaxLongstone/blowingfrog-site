@@ -1,5 +1,9 @@
-// Plays the existing 283-frame explosion sequence as a full-screen interstitial.
-// Falls back to a procedural flash when the frames are not loaded.
+// Full-screen cutscenes. In the painted 2026 mode each one is a generated video
+// clip (with its own audio); if a clip is missing, slow to load, or the mode is
+// ATARI, the original versions below take over: the 283-frame explosion
+// sequence (falling back to a procedural flash) and a canvas-drawn ending.
+import { url, cutsceneDetonation, cutsceneBossDefeat, CUTSCENE_ENDING, CUTSCENE_TITLE, DEFEAT_SFX, LEVELS } from '../config/media.js';
+
 const FRAME_DIR = 'assets/contact-hero-frames/';
 const FRAME_COUNT = 283;
 const STEP = 3;                       // use every 3rd frame -> ~94 frames
@@ -19,7 +23,7 @@ export function preloadFrames(onProgress) {
 }
 
 // Draws frames to a 2D canvas sized to the game viewport.
-export function playDetonation({ frames, host, audio, onFirstFrame }) {
+function playDetonationFrames({ frames, host, audio, onFirstFrame }) {
   return new Promise((resolve) => {
     const canvas = document.createElement('canvas');
     canvas.className = 'bf-cutscene';
@@ -72,7 +76,7 @@ export function playDetonation({ frames, host, audio, onFirstFrame }) {
 }
 
 // The final "sit on the Earth" beat. Pure canvas, no frames needed.
-export function playEnding({ host, audio }) {
+function playEndingCanvas({ host, audio }) {
   return new Promise((resolve) => {
     const canvas = document.createElement('canvas');
     canvas.className = 'bf-cutscene';
@@ -161,4 +165,121 @@ export function playEnding({ host, audio }) {
     };
     requestAnimationFrame(tick);
   });
+}
+
+
+// ---------------------------------------------------------------------------
+// Video cutscenes
+// ---------------------------------------------------------------------------
+
+let manifestPromise = null;
+// Per-clip facts measured at import time (duration, when its own audio peaks).
+const clipManifest = () => (manifestPromise ||= fetch(url.cutsceneManifest())
+  .then((r) => (r.ok ? r.json() : {})).catch(() => ({})));
+
+// Warm the browser cache so a clip starts instantly when its moment arrives.
+export function prefetchCutscene(id) { fetch(url.cutscene(id)).catch(() => {}); }
+
+// Plays one clip full-frame and resolves 'ended', 'skipped' or 'failed'. On
+// 'failed' nothing was shown, so the caller can fall back to the old version.
+// The clip is shown whole (letterboxed): the game area is portrait and the
+// clips are 16:9, so filling the frame would throw away most of the picture.
+export function playVideo({ host, id, audio, sfx = null, readyTimeout = 3500 }) {
+  return new Promise(async (resolve) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'bf-cutscene bf-cutscene-video';
+    const video = document.createElement('video');
+    video.playsInline = true;
+    video.setAttribute('playsinline', '');
+    video.preload = 'auto';
+    video.volume = LEVELS.cutscene;
+    video.muted = !!audio?.muted;
+    video.src = url.cutscene(id);
+    wrap.append(video);
+    host.append(wrap);
+
+    const timers = [];
+    let done = false;
+    const finish = (how) => {
+      if (done) return;
+      done = true;
+      timers.forEach(clearTimeout);
+      window.removeEventListener('pointerdown', onSkip);
+      window.removeEventListener('keydown', onSkip);
+      video.pause();
+      if (how === 'failed') { wrap.remove(); resolve(how); return; }
+      wrap.classList.add('out');
+      setTimeout(() => { wrap.remove(); resolve(how); }, 300);
+    };
+    const onSkip = () => finish('skipped');
+
+    const ready = await new Promise((res) => {
+      // iOS won't buffer until play() is called, so metadata alone counts as ready.
+      video.addEventListener('loadedmetadata', () => res(true), { once: true });
+      video.addEventListener('canplay', () => res(true), { once: true });
+      video.addEventListener('error', () => res(false), { once: true });
+      timers.push(setTimeout(() => res(false), readyTimeout));
+    });
+    if (done) return;
+    if (!ready) { finish('failed'); return; }
+
+    try { await video.play(); }
+    catch {
+      // Unmuted playback can be refused; the picture is still worth showing.
+      video.muted = true;
+      try { await video.play(); } catch { finish('failed'); return; }
+    }
+
+    if (sfx) {
+      const manifest = await clipManifest();
+      const at = sfx.at === 'peak' ? Math.max(0, (manifest[id]?.peak ?? 0) - 0.05) : sfx.at;
+      timers.push(setTimeout(() => audio?.playSfx(sfx.name, { gain: 0.6 }), at * 1000));
+    }
+    video.addEventListener('ended', () => finish('ended'), { once: true });
+    // A moment before skip is honoured, so a stray double-tap can't eat the scene.
+    timers.push(setTimeout(() => {
+      window.addEventListener('pointerdown', onSkip);
+      window.addEventListener('keydown', onSkip);
+    }, 700));
+    timers.push(setTimeout(() => finish('ended'), ((video.duration || 8) + 2) * 1000));
+  });
+}
+
+// After every regular stage. `painted` is false in ATARI mode.
+export async function playDetonation(opts) {
+  const { host, audio, stageId, painted } = opts;
+  if (painted && stageId != null) {
+    audio?.stopMusic({ fade: 0.4 });
+    const how = await playVideo({ host, id: cutsceneDetonation(stageId), audio });
+    if (how !== 'failed') return;
+  }
+  return playDetonationFrames(opts);
+}
+
+// The true ending, once ever per run.
+export async function playEnding(opts) {
+  const { host, audio, painted } = opts;
+  if (painted) {
+    audio?.stopMusic({ fade: 0.6 });
+    const how = await playVideo({ host, id: CUTSCENE_ENDING, audio });
+    if (how !== 'failed') return;
+  }
+  return playEndingCanvas(opts);
+}
+
+// A boss going down. Resolves false when there was no clip to show, so the
+// caller knows nothing played (ATARI mode, or the file is missing).
+export async function playBossDefeat({ host, audio, bossId, painted }) {
+  if (!painted) return false;
+  audio?.stopMusic({ fade: 0.5 });
+  const how = await playVideo({ host, id: cutsceneBossDefeat(bossId), audio, sfx: DEFEAT_SFX[bossId] || null });
+  return how !== 'failed';
+}
+
+// The opening: the frog growing through every form, once per visit.
+export async function playOpening({ host, audio, painted }) {
+  if (!painted) return false;
+  audio?.stopMusic({ fade: 0.5 });
+  const how = await playVideo({ host, id: CUTSCENE_TITLE, audio });
+  return how !== 'failed';
 }

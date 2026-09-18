@@ -167,7 +167,7 @@ export class InvaderFight {
   finishSequence() {
     this.frozen = true;
     this.audio.win();
-    this.hud.say(this.boss.finale.card, 3400);
+    this.emit('finale', { text: this.boss.finale.card });
     setTimeout(() => {
       this.over = true;
       this.ach?.bump('stagesCleared');

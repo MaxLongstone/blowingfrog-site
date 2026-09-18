@@ -163,7 +163,7 @@ export class DarkFight {
   finishSequence() {
     this.frozen = true;
     this.audio.roar();
-    this.hud.say(this.boss.finale.card, 3400);
+    this.emit('finale', { text: this.boss.finale.card });
     let t = 0;
     const step = () => {
       t += 1 / 30;
