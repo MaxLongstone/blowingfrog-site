@@ -146,6 +146,15 @@
       .blog-grid { grid-template-columns: 1fr; }
       .blog-card { padding: 32px 24px; }
     }
+  
+    #blogWord {
+      display: inline-block;
+      transition: color 0.12s ease, transform 0.12s ease;
+    }
+    #blogWord.is-frog {
+      color: var(--accent);
+      transform: scale(1.04) skewX(-2deg);
+    }
   </style>
 </head>
 <body class="page-body">
@@ -184,7 +193,7 @@
       <div class="blog-vid-overlay"></div>
       <div class="blog-vid-label">
         <div class="blog-vid-eyebrow">From The Swamp</div>
-        <h1 class="blog-vid-title">The<br>Blog</h1>
+        <h1 class="blog-vid-title">The<br><span id="blogWord">Blog</span></h1>
       </div>
       <div class="blog-vid-hint">Move cursor to explore</div>
     </div>
@@ -421,6 +430,32 @@
         }
         requestAnimationFrame(loop);
       })();
+    })();
+  </script>
+
+  <script>
+    (function () {
+      var word = document.getElementById('blogWord');
+      if (!word) return;
+      var isFrog = false;
+      var THRESHOLD = 180; // px from centre of the word
+
+      document.addEventListener('mousemove', function (e) {
+        var r = word.getBoundingClientRect();
+        var cx = r.left + r.width  / 2;
+        var cy = r.top  + r.height / 2;
+        var dist = Math.hypot(e.clientX - cx, e.clientY - cy);
+
+        if (dist < THRESHOLD && !isFrog) {
+          isFrog = true;
+          word.textContent = 'Frog';
+          word.classList.add('is-frog');
+        } else if (dist >= THRESHOLD && isFrog) {
+          isFrog = false;
+          word.textContent = 'Blog';
+          word.classList.remove('is-frog');
+        }
+      });
     })();
   </script>
 </body>
