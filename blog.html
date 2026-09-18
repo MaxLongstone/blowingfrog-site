@@ -437,19 +437,18 @@
       var word = document.getElementById('blogWord');
       if (!word) return;
       var isFrog = false;
-      var THRESHOLD = 180; // px from centre of the word
+      var H_THRESHOLD = 100; // px horizontally — matches where the frog's gaze lands
 
       document.addEventListener('mousemove', function (e) {
         var r = word.getBoundingClientRect();
-        var cx = r.left + r.width  / 2;
-        var cy = r.top  + r.height / 2;
-        var dist = Math.hypot(e.clientX - cx, e.clientY - cy);
+        var cx = r.left + r.width / 2;
+        var hdist = Math.abs(e.clientX - cx);
 
-        if (dist < THRESHOLD && !isFrog) {
+        if (hdist < H_THRESHOLD && !isFrog) {
           isFrog = true;
           word.textContent = 'Frog';
           word.classList.add('is-frog');
-        } else if (dist >= THRESHOLD && isFrog) {
+        } else if (hdist >= H_THRESHOLD && isFrog) {
           isFrog = false;
           word.textContent = 'Blog';
           word.classList.remove('is-frog');
