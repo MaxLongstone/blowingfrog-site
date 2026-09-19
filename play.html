@@ -331,6 +331,7 @@
     .bf-cutscene {
       position: absolute; inset: 0; z-index: 20; background: #000;
       opacity: 1; transition: opacity .3s ease;
+      visibility: visible; /* the mount is hidden between stages, which is when these play */
     }
     .bf-cutscene.out { opacity: 0; }
 
@@ -478,6 +479,6 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/pixi.js@8.20.1/dist/pixi.min.js"></script>
-  <script type="module" src="game/main.js?v=51"></script>
+  <script type="module" src="game/main.js?v=52"></script>
 </body>
 </html>
