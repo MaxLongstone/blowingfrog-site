@@ -82,6 +82,31 @@ export const KINDS = {
       'I am so fucking invested and I hate that I am invested',
     ],
   },
+  censor: {
+    weight: 8,
+    handles: ['@#$%_this_game', 'bleep_bloop_bob', 'no_swearing_ma', 'what_the_bleep', 'clean_mouth_carl', 'sh!t_happens_sam', 'filter_evader_fred'],
+    lines: [
+      'what the @#$% was that',
+      'this game is a load of $#!& and I love it',
+      '@#$% you frog. no wait come back I love you',
+      'holy $#!&balls he made it',
+      'I swear to @#$%ing god if he dies again',
+      'are you @#$%ing kidding me right now',
+      'this game is @#$%ing garbage. 10/10.',
+      'the road is $#!&ing rigged, you cannot tell me otherwise',
+      'oh you son of a @#$%',
+      'I am so @#$%ing invested it is embarrassing',
+      'my mom walked in and asked what the @#$% was happening. same, mom.',
+      'sit the @#$% down',
+      'unbelievable. absolutely #$%&ing unbelievable.',
+      'who the @#$% designed that lane',
+      'Punch-Out my @#$%. that is a chupacabra in a suit.',
+      'the frog is a legend and everybody else can @#$% off',
+      'my @#$% is on the line and I do not even own this frog',
+      'they keep bleeping me. I said "duck". I said DUCK.',
+      'that is some @#$%ed up $#!& right there',
+    ],
+  },
   skeptic: {
     weight: 8,
     handles: ['originality_police', 'actually_frogger_did_it', 'ripoff_detector', 'dev_stole_my_idea', 'itch_io_veteran', 'nintendo_lawyer_1', 'bootleg_bill'],
@@ -311,13 +336,13 @@ export const FIGHTS = [
 // What the chat says back when something happens in the game.
 export const EVENTS = {
   death: [
-    'RIP 🐸', 'F', 'oh no. anyway.', 'lmaooooo he is DEAD', 'killed by a HAMBURGER', 'CLIP THAT', 'that is the funniest thing I have seen all week',
+    'RIP 🐸', 'F', 'oh @#$% he is dead', 'well that is some $#!&',  'oh no. anyway.', 'lmaooooo he is DEAD', 'killed by a HAMBURGER', 'CLIP THAT', 'that is the funniest thing I have seen all week',
     'the frog has been sent to a farm upstate', 'I have never been happier', 'skill issue frog', 'rebirth. rebirth. rebirth.',
     'we are so back (we were never gone)', 'he never stood a chance and I love that for him', 'too soon.', 'I felt that in my SOUL',
     'THE FROG. HE HAS FALLEN. ⚰️', 'run it back',
   ],
   clear: [
-    'FROG DID IT', 'holy shit he actually did it', 'LUCKY', 'the bots carried him', 'clap clap clap 👏', 'ok that was clean',
+    'FROG DID IT', 'holy shit he actually did it', 'holy $#!& he did it', 'no @#$%ing way', 'LUCKY', 'the bots carried him', 'clap clap clap 👏', 'ok that was clean',
     'did not expect that from a frog', 'W frog', 'my king', 'more bombs eaten than my last three relationships',
     'ratio to the road', 'first try (it was not first try)', 'I cried a little. don\'t tell anyone.',
   ],
