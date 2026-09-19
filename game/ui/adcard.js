@@ -20,6 +20,16 @@ export function showAd({ root, tier, cfg, text, onSkip }) {
     avatar.append(art);
   }
 
+  // Her painted portrait pops out of the corner of the card; the emoji circle is the fallback.
+  if (cfg.art) {
+    const portrait = document.createElement('img');
+    portrait.className = 'bf-ad-portrait'; portrait.alt = ''; portrait.src = cfg.art;
+    portrait.onload = () => card.classList.add('has-portrait');
+    portrait.onerror = () => portrait.remove();
+    card.append(portrait);
+  }
+  (cfg.products || []).forEach((p) => { new Image().src = p.img; });     // ready before she holds it up
+
   const handle = el('div', 'bf-ad-handle');
   handle.append(document.createTextNode(cfg.handle));
   if (cfg.badge) handle.append(el('b', 'live', cfg.badge));
@@ -27,16 +37,34 @@ export function showAd({ root, tier, cfg, text, onSkip }) {
   const bar = el('div', 'bf-ad-bar'); const fill = el('i'); bar.append(fill);
   const main = el('div', 'bf-ad-main'); main.append(handle, copy);
   const body = el('div', 'bf-ad-body'); body.append(avatar, main);
-  card.append(top, body, bar);
+  card.prepend(top, body, bar);
   root.append(card);
 
   let done = false;
   let ticker = null;
+  const timers = [];
+  // She holds up one product at a time, in a shuffled order, with its (satirical) price.
+  const products = (cfg.products || []).slice().sort(() => Math.random() - 0.5);
+  let nextProduct = 0;
+  const showProduct = () => {
+    if (done || !products.length) return;
+    const item = products[nextProduct++ % products.length];
+    const sticker = el('div', 'bf-ad-prod');
+    const img = document.createElement('img');
+    img.alt = ''; img.src = item.img; img.onerror = () => sticker.remove();
+    const label = el('span'); label.textContent = item.label;
+    sticker.style.setProperty('--tilt', `${(Math.random() * 16 - 8).toFixed(1)}deg`);
+    sticker.append(img, label);
+    card.append(sticker);
+    timers.push(setTimeout(() => sticker.classList.add('out'), 2700), setTimeout(() => sticker.remove(), 3000));
+    timers.push(setTimeout(showProduct, 4000));
+  };
   const words = text.split(/\s+/);
   const close = (delay = 0) => {
     if (done) return;
     done = true;
     clearInterval(ticker);
+    timers.forEach(clearTimeout);
     window.removeEventListener('keydown', onKey);
     setTimeout(() => { card.classList.add('out'); setTimeout(() => card.remove(), 260); }, delay * 1000);
   };
@@ -49,6 +77,7 @@ export function showAd({ root, tier, cfg, text, onSkip }) {
     if (done) return;
     const t0 = performance.now();
     fill.style.animation = `bf-ad-run ${seconds}s linear forwards`;
+    timers.push(setTimeout(showProduct, 900));
     copy.textContent = '';
     ticker = setInterval(() => {
       const k = Math.min(1, (performance.now() - t0) / 1000 / (seconds * 0.92));

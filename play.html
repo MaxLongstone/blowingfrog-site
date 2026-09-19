@@ -387,7 +387,7 @@
     .bf-ad {
       position: absolute; left: 50%; top: 66px; z-index: 35;
       width: min(92%, 520px); transform: translateX(-50%) rotate(-1.2deg);
-      font-family: var(--f-body); color: #2b1233; overflow: hidden; border-radius: 16px;
+      font-family: var(--f-body); color: #2b1233; border-radius: 16px;
       background: linear-gradient(135deg, #ffd0f0 0%, #ffe9a6 100%);
       box-shadow: 0 12px 40px rgba(0,0,0,.55), inset 0 0 0 3px rgba(255,255,255,.75);
       animation: bf-ad-in .38s cubic-bezier(.2,1.5,.4,1) both;
@@ -414,9 +414,38 @@
     .bf-ad-handle { font-family: var(--f-display); font-size: 13px; font-weight: 800; letter-spacing: .04em; margin-bottom: 3px; }
     .bf-ad-handle .live { margin-left: 8px; font-size: 9px; letter-spacing: .16em; color: #fff; background: #e23c2f; padding: 2px 6px; border-radius: 4px; animation: bf-tick 1.1s infinite; }
     .bf-ad-copy { margin: 0; font-size: 13px; line-height: 1.45; min-height: 3.6em; }
-    .bf-ad-bar { height: 4px; background: rgba(43,18,51,.16); }
+    .bf-ad-bar { height: 4px; background: rgba(43,18,51,.16); border-radius: 0 0 16px 16px; overflow: hidden; }
     .bf-ad-bar i { display: block; height: 100%; width: 0; background: #b3126e; }
     @keyframes bf-ad-run { to { width: 100%; } }
+    /* Her portrait pops out of the corner of the card, and the products she holds up
+       pop in beneath it. Nothing here takes a click. */
+    .bf-ad-portrait {
+      position: absolute; left: -22px; bottom: -6px; width: 128px; height: auto; pointer-events: none;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,.45));
+      transform-origin: 50% 100%;
+      animation: bf-ad-pop .5s cubic-bezier(.2,1.7,.4,1) both, bf-ad-bob 2.6s ease-in-out .5s infinite;
+    }
+    .bf-ad.has-portrait .bf-ad-avatar { display: none; }
+    .bf-ad.has-portrait .bf-ad-body { padding-left: 116px; min-height: 96px; }
+    .bf-ad-prod {
+      position: absolute; right: 8px; top: calc(100% + 6px); width: 118px; text-align: center; pointer-events: none;
+      display: flex; flex-direction: column; align-items: center; gap: 3px; z-index: 2;
+      transform: rotate(var(--tilt, 0deg));
+      animation: bf-ad-prod-in .42s cubic-bezier(.2,1.8,.4,1) both;
+      transition: opacity .3s ease, transform .3s ease;
+    }
+    .bf-ad-prod.out { opacity: 0; transform: rotate(var(--tilt, 0deg)) translateY(-8px) scale(.9); }
+    .bf-ad-prod img { width: 92px; height: 92px; object-fit: contain; filter: drop-shadow(0 5px 8px rgba(0,0,0,.5)); }
+    .bf-ad-prod span {
+      font-family: var(--f-display); font-size: 10px; font-weight: 800; letter-spacing: .08em; line-height: 1.15;
+      color: #2b1233; background: #fff; border-radius: 6px; padding: 3px 7px; box-shadow: 0 2px 8px rgba(0,0,0,.4);
+    }
+    @keyframes bf-ad-pop { from { transform: scale(0) rotate(-14deg); opacity: 0; } }
+    @keyframes bf-ad-bob { 0%, 100% { transform: translateY(0) rotate(-1.5deg); } 50% { transform: translateY(-4px) rotate(1.5deg); } }
+    @keyframes bf-ad-prod-in { from { opacity: 0; transform: rotate(var(--tilt, 0deg)) scale(0.3) translateY(-14px); } }
+    .bf-ad.t3 .bf-ad-portrait { animation: bf-ad-pop .5s cubic-bezier(.2,1.7,.4,1) both, bf-ad-sway 1.7s ease-in-out .5s infinite; }
+    @keyframes bf-ad-sway { 0%, 100% { transform: rotate(-5deg) translateX(-2px); } 50% { transform: rotate(5deg) translateX(2px); } }
+    .bf-ad.t4 .bf-ad-portrait { animation: bf-ad-pop .5s cubic-bezier(.2,1.7,.4,1) both, bf-ad-bob 4.5s ease-in-out .5s infinite; }
     .bf-ad.t2 { filter: saturate(.85); }
     .bf-ad.t3 { transform: translateX(-50%) rotate(2.4deg); background: linear-gradient(135deg, #e6c1dd, #d8b5c0); }
     .bf-ad.t3 .bf-ad-copy { text-shadow: 0 0 1px rgba(43,18,51,.35); }
@@ -429,7 +458,7 @@
     .bf-ad.t4 .bf-ad-bar { background: rgba(255,255,255,.12); }
     .bf-ad.t4 .bf-ad-bar i { background: #ff8a8a; }
     @keyframes bf-ad-flicker { 0%, 88%, 100% { opacity: 1; } 90% { opacity: .55; } 93% { opacity: 1; } 96% { opacity: .7; } }
-    @media (prefers-reduced-motion: reduce) { .bf-ad, .bf-ad.t4 { animation: none; } .bf-splash-img { animation: none; } }
+    @media (prefers-reduced-motion: reduce) { .bf-ad, .bf-ad.t4, .bf-ad-portrait, .bf-ad-prod { animation: none; } .bf-splash-img { animation: none; } }
 
     @media (max-width: 640px) {
       .bf-hud { padding: 10px 12px; }
@@ -438,6 +467,9 @@
       .bf-score { font-size: 16px; }
       .bf-toast { font-size: 16px; }
       .bf-ad { top: 54px; }
+      .bf-ad-portrait { width: 100px; left: -8px; }
+      .bf-ad.has-portrait .bf-ad-body { padding-left: 92px; min-height: 78px; }
+      .bf-ad-prod { width: 92px; } .bf-ad-prod img { width: 70px; height: 70px; }
       .bf-ad-copy { font-size: 12px; }
       .bf-caption { font-size: 13px; }
     }
@@ -479,6 +511,6 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/pixi.js@8.20.1/dist/pixi.min.js"></script>
-  <script type="module" src="game/main.js?v=55"></script>
+  <script type="module" src="game/main.js?v=56"></script>
 </body>
 </html>

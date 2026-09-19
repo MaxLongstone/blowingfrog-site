@@ -58,3 +58,19 @@ test('she cycles through every line before repeating, and never repeats back to 
     prev = index;
   }
 });
+
+// Her portrait and every product she holds up must exist on disk, or the card would silently lose them.
+import { existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+test('every portrait and product image the Influencer uses exists', () => {
+  INFLUENCER.tiers.forEach((t, i) => {
+    assert.ok(t.art && existsSync(join(root, t.art)), `tier ${i + 1} portrait`);
+    assert.ok(t.products.length >= 4, `tier ${i + 1} has things to sell`);
+    for (const p of t.products) {
+      assert.ok(existsSync(join(root, p.img)), p.img);
+      assert.ok(p.label && p.label.length <= 34, `label fits the sticker: ${p.label}`);
+    }
+  });
+});

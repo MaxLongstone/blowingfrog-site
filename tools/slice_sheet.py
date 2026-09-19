@@ -82,6 +82,11 @@ SHEETS = {
     "Y": (3, 3, ["frogback_guard", "frogback_jab_left", "frogback_jab_right", "frogback_dodge_left",
                  "frogback_dodge_right", "frogback_block", "frogback_uppercut", "frogback_hurt",
                  "frogback_down"]),
+    # The Influencer's products: what she pitches early on, then what is left of her
+    "Z": (3, 3, ["prod_collagen", "prod_electrolyte", "prod_course", "prod_suppressant", "prod_tea",
+                 "prod_ringlight", "prod_crystal", "prod_guasha", "prod_matcha"]),
+    "AA": (3, 3, ["prod_wine", "prod_wineglass", "prod_deck", "prod_flashlight", "prod_oldring",
+                  "prod_discount", "prod_prbox", "prod_phone", "prod_frogmerch"]),
 }
 
 WHITE_CUTOFF = 234   # a pixel this bright in every channel counts as background
