@@ -20,10 +20,36 @@
 
     #game-root {
       position: fixed; inset: var(--nav-h) 0 0 0;
-      display: flex; align-items: center; justify-content: center;
+      display: flex; flex-direction: column; gap: 8px; align-items: center; justify-content: center;
       background: var(--bg);
       overflow: hidden;
     }
+    /* The live comment section under the game. The game shrinks to make room. */
+    #live-chat {
+      display: none; position: relative; z-index: 2; height: var(--chat-h, 150px); flex: 0 0 auto;
+      flex-direction: column; overflow: hidden; border-radius: 12px;
+      background: rgba(12,12,16,.94); box-shadow: 0 10px 30px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.08);
+      font-family: var(--f-body); font-size: 12.5px; line-height: 1.35; color: #e9e6ee;
+    }
+    body.chat-on #live-chat { display: flex; }
+    #live-chat.collapsed { height: 30px; }
+    #live-chat.collapsed .lc-list { display: none; }
+    .lc-head { display: flex; align-items: center; gap: 8px; padding: 6px 10px; flex: 0 0 auto;
+      border-bottom: 1px solid rgba(255,255,255,.07); font-family: var(--f-display); letter-spacing: .12em; font-size: 10px; }
+    #live-chat.collapsed .lc-head { border-bottom: 0; }
+    .lc-live { background: #e23c2f; color: #fff; padding: 2px 6px; border-radius: 4px; animation: bf-tick 1.4s infinite; }
+    .lc-count { color: rgba(255,255,255,.62); }
+    .lc-title { margin-left: auto; color: rgba(255,255,255,.4); }
+    .lc-toggle { pointer-events: auto; cursor: pointer; border: 0; border-radius: 999px; padding: 2px 9px;
+      font: inherit; color: #fff; background: rgba(255,255,255,.12); }
+    .lc-list { flex: 1 1 auto; overflow: hidden; padding: 6px 10px 8px; display: flex; flex-direction: column; justify-content: flex-end; gap: 3px; }
+    .lc-row { animation: lc-in .22s ease-out both; word-break: break-word; }
+    .lc-row b { font-weight: 800; margin-right: 2px; }
+    .lc-row b::after { content: ':'; color: rgba(255,255,255,.5); font-weight: 400; }
+    .lc-sys { color: rgba(255,255,255,.48); font-style: italic; }
+    .lc-badge { font-style: normal; font-size: 9px; font-weight: 800; letter-spacing: .08em; padding: 1px 5px; margin-right: 5px; border-radius: 4px; color: #fff; background: #4f8f3a; }
+    .lc-badge.prince { background: #b8860b; }
+    @keyframes lc-in { from { opacity: 0; transform: translateY(6px); } }
     /* The cabinet art. Its painted screen is the black rectangle at 50% / 68%,
        so the playfield is offset down to sit on it rather than dead centre. */
     /* The art is 1376x768 and its painted screen is a known rectangle inside it,
@@ -472,6 +498,7 @@
       .bf-ad-prod { width: 92px; } .bf-ad-prod img { width: 70px; height: 70px; }
       .bf-ad-copy { font-size: 12px; }
       .bf-caption { font-size: 13px; }
+      #live-chat { --chat-h: 118px; font-size: 11.5px; }
     }
   </style>
 </head>
@@ -508,9 +535,10 @@
       </div>
       <div id="overlay-root"></div>
     </div>
+    <aside id="live-chat" aria-hidden="true"></aside>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/pixi.js@8.20.1/dist/pixi.min.js"></script>
-  <script type="module" src="game/main.js?v=56"></script>
+  <script type="module" src="game/main.js?v=57"></script>
 </body>
 </html>

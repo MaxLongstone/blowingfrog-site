@@ -26,6 +26,7 @@ import { DarkFight } from './systems/darkfight.js';
 import { UmmaFight } from './systems/ummafight.js';
 import { InvaderFight } from './systems/invaderfight.js';
 import { Telemetry } from './systems/telemetry.js';
+import { LiveChat } from './ui/livechat.js';
 import { bossAfter, getBoss, BOSSES } from './config/bosses.js';
 
 const CELL = 64, ROWS = 15;
@@ -54,6 +55,7 @@ class Game {
     this.best = readBest();
     this.ach = new Achievements();
     this.ach.onUnlock((a) => {
+      this.chat?.react('achievement');
       this.hud.say(`ACHIEVEMENT: ${a.title}`, 2600);
       this.audio.win();
       // Let the sting land first, then read it out -- waiting its turn behind any story line.
@@ -68,6 +70,9 @@ class Game {
     this.openingSeen = false;
     this.influencer = new InfluencerSchedule();
     this.ad = null;
+    // The comment section under the game; it starts when the first boss goes down.
+    const chatEl = document.getElementById('live-chat');
+    this.chat = chatEl ? new LiveChat({ el: chatEl }) : null;
 
     this.input = new Input(window, app.canvas);
     // Z is the star punch and only means something in the Chaco bout.
@@ -125,6 +130,7 @@ class Game {
   }
   showInfluencer({ tier, index }) {
     const cfg = INFLUENCER.tiers[tier - 1];
+    this.chat?.react('ad', tier);
     const ad = showAd({ root: this.overlayRoot, tier, cfg, text: cfg.lines[index], onSkip: () => this.audio.stopVoice() });
     this.ad = ad;
     let started = false;
@@ -153,6 +159,7 @@ class Game {
 
   title() {
     this.clearPlay();
+    this.chat?.disable();
     this.hud.show(false);
     this.telem.markTitleShown();
     this.audio.playMusic(url.music(MUSIC_TITLE));
@@ -259,6 +266,7 @@ class Game {
     this.overlays.hide();
     this.clearPlay();
     this.inBoss = true;
+    this.chat?.react('bossStart', boss.id);
     this.audio.playMusic(url.music(musicForBoss(boss.id)));
     this.paused = false;
     this.hud.show(true);
@@ -287,6 +295,8 @@ class Game {
       this.hud.show(false);
       await playBossDefeat({ host: this.mount, audio: this.audio, bossId: boss.id, painted: usesPaintedArt(this.mode) });
       this.hud.clearCaption();
+      if (boss.id === 'chaco') this.chat?.enable();     // the first boss down is when the comments begin
+      this.chat?.react('bossWin', boss.id);
       // A boss placed after the very last ladder stage IS the final boss --
       // beating it should roll into the planet-sitting ending, not bounce
       // back to the title screen.
@@ -295,6 +305,7 @@ class Game {
       this.showStageCard(next, next.sizeClass, () => { this.overlays.hide(); this.start(next.id, st, score); });
     });
     this.play.on('lost', ({ score }) => {
+      this.chat?.react('bossLose');
       this.saveBest(score);
       this.ach.bump('deaths');
       this.clearPlay();
@@ -309,6 +320,7 @@ class Game {
   }
 
   async onGoal(stage, score) {
+    this.chat?.react('clear');
     document.body.classList.remove('playing');
     const state = this.play.frogState();
     this.paused = true;
@@ -352,6 +364,7 @@ class Game {
   }
 
   onDead(stage, score) {
+    this.chat?.react('death');
     document.body.classList.remove('playing');
     this.saveBest(score);
     this.ach.bump('deaths');
@@ -428,8 +441,10 @@ class Game {
 
 function fit(app, mount) {
   const navH = 76, pad = 24;
+  const chat = document.getElementById('live-chat');
+  const chatH = chat && document.body.classList.contains('chat-on') ? chat.offsetHeight + 8 : 0;
   const availW = Math.min(window.innerWidth - pad, 980);
-  const availH = window.innerHeight - navH - pad;
+  const availH = window.innerHeight - navH - pad - chatH;
   const scale = Math.min(availW / LOGICAL_W, availH / LOGICAL_H);
   const w = Math.round(LOGICAL_W * scale), h = Math.round(LOGICAL_H * scale);
   app.renderer.resize(LOGICAL_W, LOGICAL_H);
@@ -437,6 +452,7 @@ function fit(app, mount) {
   app.canvas.style.height = h + 'px';
   mount.style.width = w + 'px';
   mount.style.height = h + 'px';
+  if (chat) chat.style.width = w + 'px';
 }
 
 async function boot() {
