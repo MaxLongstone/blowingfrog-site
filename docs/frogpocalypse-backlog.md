@@ -3,6 +3,45 @@
 Things agreed but not started. Each one lists what was asked for (in the owner's words where it
 matters), what it would take, and the questions to settle before building.
 
+## Build plan
+
+Confirmed: the hidden level is the Super Mario Bros. style side-scroller. Order below is meant to keep
+you generating art and voices while I build systems.
+
+**Phase 0: decisions (10 minutes)**
+- [ ] Confirm the three characters as proposed (names, scandal, the rules for when they appear).
+- [ ] Confirm the tier-by-appearance rule.
+
+**Phase 1: the interrupter system (me, no art needed)**
+- [ ] Turn the Influencer into data-driven interrupters (character config, unlock by boss, tier by
+      appearance, one or two per stage, the "newest character shows up once" rule).
+- [ ] Generalise the ad card and its product stickers; give each character their own colours.
+- [ ] Track how each interruption ended (finished or skipped) for the achievements.
+- [ ] Tests for the schedule, unlocks and tiers.
+
+**Phase 2: the Preacher, end to end**
+- [ ] Me: the 12 lines, the ElevenLabs voice-design prompt and the script with cues.
+- [ ] You: generate the voice, and the hero portrait plus three edits, and the prop sheets.
+- [ ] Me: wire it in and check it in the game.
+
+**Phase 3: the Podcaster, then the Boss's Boss** (the same four steps each, run in parallel with
+the art for the next while the previous is wired)
+
+**Phase 4: the new interrupter achievements** (14 that count; see below) and the chat ones.
+
+**Phase 5: NECO as a Centipede knock-off**
+- [ ] Settle "10 faster", then the pitch, the engine, the art prompts, tests.
+
+**Phase 6: UMMA as Donkey Kong**
+- [ ] Settle how it differs from the Landlord climb, then the engine, the art, tests.
+
+**Phase 7: the hidden level** (the largest job; it needs everything above)
+- [ ] The engine, art (tileset, mini-bosses, powers), audio, the title-screen unlock, its achievement.
+
+**Art and voice to generate, in total:** for each of the three characters, four portraits and two
+prop sheets, and one voice with about 12 lines. For the hidden level, one tileset, a background, the
+frog in four states, seven mini-bosses, a beaker and a detonator.
+
 ## Rebuilds
 
 ### 1. NECO becomes a Centipede knock-off
@@ -32,43 +71,64 @@ they do flips."
 - **Note:** she is currently the final boss and the true ending follows her.
 
 ## New interrupters
-The Influencer is the model (`config/influencer.js`, `systems/influencer.js`, `ui/adcard.js`): a
-character who breaks in during ordinary stages, in four tiers of getting worse, with a portrait per
-tier, a voice, and products. The new ones are meant to be part of the gameplay, so **they should make
-it harder**, not just talk (covering part of the field, fake close buttons, noise), unlike the
-Influencer, who never blocks input.
 
-When the first of these is built, generalise the Influencer into an interrupter system so each
-character is data: who, when they unlock, tiers, portraits, props, lines, voice prefix.
+Decided: **the same kind of interruption as the Influencer**, a card in a corner of the screen that
+talks and never blocks input, with a skip button. Difficulty comes from the distraction, not from
+covering the road.
 
-### 3. The Preacher (unlocks after Sack Man is beaten)
-Asked for: a preacher, telemarketers, a full scam, inspired by "Jesus He Knows Me" by Genesis. He
-"gets worse and worse and tries to justify his indiscretions as the game progresses."
-- **Careful:** take the idea (a televangelist who has been caught out), not the song's words.
-- **Needs:** portraits across four tiers, props (donation tickers, hotline number stickers, prayer
-  cloths sold at a markup), a voice character and script, config, and the interrupter system.
-- **Timing:** Sack Man sits after K4, so he could only appear from K5 and the UMMA fight onward. That
-  is a short window unless the run gets longer.
+The Influencer is the model (`config/influencer.js`, `systems/influencer.js`, `ui/adcard.js`): four
+tiers of getting worse, a portrait per tier, a voice, props she holds up. The first job is to turn
+that into a small interrupter system so each character is data: who, when they unlock, tiers,
+portraits, props, lines, voice prefix, achievements.
 
-### 4. The Podcaster (unlocks after UMMA)
-Asked for: "a political, full-on right-wing, conspiracy-theory, non-vaccination, the worst of the
-worst podcaster."
-- **Satire of a type, not of anyone real:** an invented grifter with an invented supplement and an
-  invented network. No real names, parties, or real events.
-- **Timing problem:** UMMA is the final boss and the ending follows her, so nothing comes after her
-  today. Options: add stages after UMMA, add a post-game loop, or reorder the bosses.
-- **Needs:** portraits, props (a fake mic, a bunker sign, a supplements tub), a voice and script,
-  config.
+### When each one arrives
+| Character | Unlocks after | First appears | Stages they can appear in |
+|---|---|---|---|
+| Influencer | (from the start) | stage 1 | all |
+| The Preacher | The Landlord | KAIJU II | K2, K3, K4, K5 |
+| The Podcaster | The Neco Frog | KAIJU III | K3, K4, K5 |
+| The Boss's Boss | The Narrator | KAIJU IV | K4, K5 |
 
-### 5. The Boss's Boss (unlocks after Neco)
-Asked for: the player's boss, from his real office, "asking what he's doing", full of productivity
-keywords and business nonsense, getting "more and more unhinged as it goes on to the point that
-his speech makes no sense."
-- **Shape:** appears from K3 on (Neco is after K2). Tier one is fluent corporate, tier four is word
-  salad.
-- **Needs:** a corner office backdrop and portraits across four tiers, props (sticky notes, a KPI
-  chart, a calendar invite), a voice and script, and a buzzword generator so the late tiers can
-  degrade on purpose.
+**Rules proposed (to confirm):**
+- A newly unlocked character always shows up at least once in their first stage, so you meet them.
+- From K2 a stage can carry up to two interruptions, at least 20 seconds apart, never inside a boss fight.
+- A character's tier is **how many times you have seen them** (first appearance is tier one, up to
+  four), not the stage number. That is what lets the Boss's Boss, who only has two stages, still get
+  from fluent corporate to word salad.
+
+### 3. The Preacher (Holy Equity Ministries)
+Brief: a caught-out televangelist selling real estate and asking for donations while trying to
+justify a scandal, and it gets worse as the game goes on.
+- **Proposed:** Pastor Dale Hollis. He sells "Eternal Acres", plots in Paradise Estates, nothing
+  down. The scandal is a building fund that turned into a private jet and a "prayer retreat" with a
+  hot tub. Tier one is the soft sell with a passing "rumours". Two admits the jet ("a flying
+  pulpit"). Three explains a photo ("a spiritual cousin"). Four blames the devil for having his
+  login and sells the last plot, underwater.
+- **Props:** a donation thermometer, a hotline number, prayer cloths at a markup, a deed to a
+  cloud, a tiny jet, a hot tub.
+- **Note:** it is inspired by the idea of the song, not its words. Invented names and ministry.
+
+### 4. The Podcaster (THE UNFILTERED HOUR)
+Brief: an invented grifter, no real names, parties or events, obsessed with conspiracy theories and
+believing every dark one.
+- **Proposed:** Buck Mallory. Every conspiracy is invented and absurd: the frog is a government
+  drone, the hamburgers are surveillance, the moon is a hologram, time zones are a scheme, the road
+  is rigged, "they" want you calm. Tier one is a confident opening. Two names enemies. Three sells
+  the supplement that fixes it. Four is alone in a bunker, sure the frog is listening.
+- **Props:** a microphone, a tinfoil hat, a bunker sign, a tub of Frog Bile Vitality, a corkboard of
+  red string, a "they are watching" eye.
+- **Note:** the target is grifters and misinformation as a type. The theories are fictional so no
+  real group, event or person is being mocked.
+
+### 5. The Boss's Boss (Strategic Alignment)
+Brief: the player's boss, from his office, asking what he's doing, full of productivity keywords
+and business nonsense, with speech that stops making sense.
+- **Proposed:** Gregory Pemberton, VP of Synergy. Tier one is fluent corporate ("circle back",
+  "low-hanging fruit"). Two is an aggressive check-in. Three's sentences start collapsing. Four is
+  pure word salad delivered with total confidence.
+- **Props:** a calendar invite, a KPI chart going the wrong way, a sticky-note wall, a coffee mug,
+  a pivot table, a "quick sync".
+- **Voice:** a buzzword generator can seed the late lines.
 
 ## The hidden level
 
@@ -136,8 +196,8 @@ interruption ended (finished or skipped) and per-character counters; the achieve
 takes counters, so that part is small.
 
 ## Order of arrival
-Influencer (from the start) -> Boss's Boss (after Neco) -> Preacher (after Sack Man) -> Podcaster
-(after UMMA). The last two depend on the run getting longer.
+Influencer (from the start), then the Preacher (K2), the Podcaster (K3), and the Boss's Boss (K4).
+This replaces the earlier plan, so the extra run length is not needed.
 
 ## The bosses today, in the order you meet them
 1. Chaco, after stage 2 (Autonomous Lane): Punch-Out
@@ -148,6 +208,3 @@ Influencer (from the start) -> Boss's Boss (after Neco) -> Preacher (after Sack 
 6. The Sack Man, after KAIJU IV (The Ocean): a fight in the dark
 7. UMMA, after KAIJU V (Orbit): the final boss, then the ending
 
-## Shared open question
-How intrusive should the harder interrupters be? A pop-up that only covers a corner is easy to
-play through. One that blocks part of the road, or needs a click to dismiss, changes the difficulty.
