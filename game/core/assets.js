@@ -103,6 +103,8 @@ export async function loadSprites(app, { usePng = true } = {}) {
       }
       return t;
     },
+    // True when the picture on screen is painted art rather than the built-in drawing.
+    painted: (kind) => loaded.has(kind),
     has: (kind) => map.has(kind),
     size: map.size,
   };

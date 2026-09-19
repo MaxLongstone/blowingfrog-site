@@ -25,6 +25,12 @@ const COUNT_STEP = 0.42;         // seconds per number when Chaco is on the canv
 const FROG_COUNT_STEP = 0.7;
 const MAX_STARS = CHACO.starPunch.maxStars;
 
+// Every pose on a painted sheet was drawn at the same scale, so one factor sizes
+// them all (sizing each to a box would make wide poses shrink). The built-in
+// drawings are a different size, hence the second number.
+const SCALE = { chaco: { painted: 1.32, drawn: 2.1 }, frog: { painted: 1.5, drawn: 2.3 } };
+const scaleOf = (tex, who, kind) => (tex.painted?.(kind) ? SCALE[who].painted : SCALE[who].drawn);
+
 // How Chaco's state looks to the punch rules.
 const PHASE = { idle: 'idle', guard: 'guard', tell: 'tell', strike: 'strike', chain: 'idle', open: 'open',
   dazed: 'dazed', feint: 'idle', recover: 'idle', intro: 'watch', down: 'down', getup: 'getup',
@@ -516,7 +522,7 @@ export class BossFight {
     const cs = this.chacoSprite, fs = this.frogSprite;
     const ct = this.chacoTexture();
     cs.texture = this.tex.get(ct);
-    let ck = this.tex.scaleFor(ct) * 1.8;
+    let ck = scaleOf(this.tex, 'chaco', ct);
     const bob = (this.state === 'idle' || this.state === 'guard' || this.state === 'intro') ? Math.sin(this.time * 6) * 5 : 0;
     if (this.state === 'strike') {                   // the blow comes at you, so he grows
       const def = this.boss.attacks[this.attack];
@@ -530,7 +536,7 @@ export class BossFight {
 
     const ft = this.frogTexture();
     fs.texture = this.tex.get(ft);
-    const fk = this.tex.scaleFor(ft) * 1.9;
+    const fk = scaleOf(this.tex, 'frog', ft);
     fs.scale.set(fk);
     fs.x = CX + this.leanX;
     fs.y = FROG_FEET + (this.frogDown ? 0 : Math.sin(this.time * 5) * 3);
