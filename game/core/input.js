@@ -7,10 +7,13 @@ const KEYS = {
 // a glove from a tongue, so they are separate intents everywhere.
 const PUNCH_KEYS = ['Shift'];
 const TONGUE_KEYS = [' ', 'Spacebar', 'Enter'];
+// The star punch in the Chaco bout; nothing else uses it.
+const STAR_KEYS = ['z', 'Z'];
 
 export function keyToIntent(key) {
   if (PUNCH_KEYS.includes(key)) return { type: 'punch', dir: null };
   if (TONGUE_KEYS.includes(key)) return { type: 'tongue', dir: null };
+  if (STAR_KEYS.includes(key)) return { type: 'star' };
   const dir = KEYS[key];
   return dir ? { type: 'hop', dir } : null;
 }
@@ -26,9 +29,11 @@ export function swipeToIntent(dx, dy, threshold = 24) {
 // unless there is a stick of dynamite worth catching instead".
 export function tapToIntent(tapX, tapY, frogX, frogY) {
   const dx = tapX - frogX, dy = tapY - frogY;
-  if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return { type: 'punch', dir: null, auto: true };
+  // `at` is the raw tap position, for fights (like Chaco's) that care where on the screen it landed.
+  const at = { x: tapX, y: tapY };
+  if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return { type: 'punch', dir: null, auto: true, at };
   const dir = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up');
-  return { type: 'punch', dir, auto: true };
+  return { type: 'punch', dir, auto: true, at };
 }
 
 export class Input {
@@ -53,7 +58,7 @@ export class Input {
       if (!this.enabled || !this._start) return;
       const dx = e.clientX - this._start.x, dy = e.clientY - this._start.y;
       const swipe = swipeToIntent(dx, dy);
-      if (swipe) this.emit(swipe);
+      if (swipe) this.emit({ ...swipe, touch: true });
       else this.emit(tapToIntent(e.clientX, e.clientY, this.frogScreen.x, this.frogScreen.y));
       this._start = null;
     };

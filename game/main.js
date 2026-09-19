@@ -70,7 +70,12 @@ class Game {
     this.ad = null;
 
     this.input = new Input(window, app.canvas);
-    this.input.onIntent((i) => { this.audio.unlock(); this.play?.intent(i); });
+    // Z is the star punch and only means something in the Chaco bout.
+    this.input.onIntent((i) => {
+      this.audio.unlock();
+      if (i.type === 'star' && !this.play?.acceptsStar) return;
+      this.play?.intent(i);
+    });
 
     app.ticker.add((ticker) => {
       const dt = Math.min(0.05, ticker.deltaMS / 1000);

@@ -465,6 +465,89 @@ The three frog cells, left to right:
 Cell 7, bottom left, is a single object, not a character: one small comet-shaped bolt of orange fire with a soft yellow glowing core, angled as if shooting straight upward, a trailing wisp of flame behind it.
 ```
 
+## Boss one, rebuilt: Chaco as a behind-the-back Punch-Out bout
+
+The bout is now seen from behind the frog with Chaco facing you. Three sheets and one background.
+Attach `assets/game/chaco_idle.png` (Chaco) and `assets/game/boxfrog_guard.png` (the frog) to every
+generation as references. Until the sheets are sliced in, the game uses the old side-on Chaco and
+frog sprites copied under the new names, so slicing a sheet simply replaces them.
+
+Shared grid paragraph (first paragraph of every sheet):
+
+```
+A single square sprite sheet on a pure white background, arranged as a clean 3 by 3 grid of nine equal square cells with wide even white gutters. Each pose is centred in its own cell at the same scale, fully separated from its neighbours, nothing touching or overlapping. No grid lines, no borders, no numbers, no text, no labels, no watermark.
+```
+
+Shared Chaco art direction (second paragraph of sheets W and X):
+
+```
+Art direction for every cell: a full-body character seen straight from the front, facing the viewer directly and symmetrically, camera at chest height, like the opponent in a classic arcade boxing game seen from behind the player. Soft 3D felt and clay render, matte fabric texture, thick dark charcoal outline, warm rim light from the upper left, chunky cartoon proportions, muted palette with saturated gold accents, no cast shadow, no ground plane, no background scenery. Punches thrown at the viewer are strongly foreshortened, with the fist enormous in the foreground.
+
+The same character in all nine cells (match the reference image exactly): a gaunt leathery chupacabra in a cream white linen suit worn over a bare grey-green chest, bony dorsal spines pushing through the jacket, red eyes behind gold aviator sunglasses, an oversized fanged jaw with one gold fang, heavy gold chains and rings, white loafers, hands wrapped in red boxing tape.
+```
+
+### Sheet W — Chaco, the attacks
+
+3 x 3. Reading order: `chaco_po_idle` `chaco_po_tell_left` `chaco_po_hook_left` / `chaco_po_tell_right` `chaco_po_hook_right` `chaco_po_tell_chupada` / `chaco_po_chupada` `chaco_po_block` `chaco_po_taunt`
+
+Poses (suit immaculate in every cell):
+1. guard stance, both taped fists raised in front of his chin, elbows tucked, bouncing on his toes, a cigar clamped in his fangs, calm menace
+2. winding up a LEFT hook, his left arm cocked far out to the viewer's left with the elbow high, right shoulder dropped, head lowered, red eyes glowing bright through the sunglasses, obviously telegraphing
+3. throwing the LEFT hook, the left fist swinging in from the viewer's left, huge and foreshortened toward the camera, body twisted, cigar ash flying
+4. winding up a RIGHT hook, mirror image of pose 2
+5. throwing the RIGHT hook, mirror image of pose 3
+6. crouched low with chest heaving, jaw beginning to unhinge, the gold fang glinting, a long tongue starting to slide out, arms hanging low and loose
+7. lunging straight at the camera with his jaw open impossibly wide, fangs huge and foreshortened, long tongue reaching toward the viewer, arms spread
+8. blocking, both taped fists pressed against his face with forearms crossed, only the red eyes visible over the top of the gloves, sunglasses pushed up, hunched
+9. taunting, guard dropped, both arms spread wide, chin stuck out, tongue lolling, inviting a hit, smug
+
+### Sheet X — Chaco, the reactions
+
+3 x 3. Reading order: `chaco_po_hit_face` `chaco_po_hit_body` `chaco_po_dazed` / `chaco_po_stagger` `chaco_po_down` `chaco_po_getup` / `chaco_po_rage_bag` `chaco_po_rage_swing` `chaco_po_ko`
+
+His suit gets more ruined in each cell, from a little rumpled in the first to shredded in the last. Poses:
+1. head snapped back and to one side from a punch to the face, sunglasses knocked askew, spit flying
+2. doubled over from a punch to the gut, jaw hanging open, eyes bulging, one hand clutching his stomach
+3. dazed and wide open, both arms hanging limp, head lolling, eyes crossed and spiralling, tongue out, swaying, sunglasses gone
+4. knocked off balance, falling backward with arms flailing, jacket flying open, one loafer off the ground
+5. flat on his back on the canvas seen from the foot of his body, soles of his loafers nearest the camera, arms splayed, sunglasses beside him
+6. getting back up: one knee on the canvas, one taped fist gripping a rope, head hanging, chest heaving, sweat-soaked
+7. smashing a burst bag of white powder into his own face, dust billowing, eyes bulging and bloodshot, veins standing out on his neck, feral
+8. mid-rage, throwing a wild blurred windmill of punches with both arms, mouth wide open roaring, powder on his snout, suit shredded, spines through the jacket
+9. out cold, slumped against the ropes, head hanging, tongue lolling, white powder on his snout, suit destroyed, one arm dangling
+
+### Sheet Y — the frog, seen from behind
+
+3 x 3. Reading order: `frogback_guard` `frogback_jab_left` `frogback_jab_right` / `frogback_dodge_left` `frogback_dodge_right` `frogback_block` / `frogback_uppercut` `frogback_hurt` `frogback_down`
+
+```
+[shared grid paragraph]
+
+Art direction for every cell: a full-body character seen from directly behind and slightly above, so the viewer sees the back of its head and its back, as in a classic arcade boxing game where the camera sits behind the player. Soft 3D felt and clay render, matte fabric texture, thick dark charcoal outline, warm rim light from the upper left, chunky friendly proportions, no cast shadow, no ground plane, no background scenery.
+
+The same character in all nine cells (match the reference image): a small round cartoon frog, olive-green felt skin with dark speckles on its back, huge bulging eyes visible at the sides of its head, powerful folded hind legs, and tiny red boxing gloves that are comically too big for its arms. Its face is never visible. It is the underdog and it knows it.
+
+The nine poses, left to right, top row first:
+1. guard stance, both gloves raised in front of it, elbows bent, small and determined
+2. throwing a LEFT jab, the left arm extended straight away from the camera so the glove looks smaller in the distance, right glove guarding
+3. throwing a RIGHT jab, mirror image of pose 2
+4. dodging to its own left, body and head leaning hard left, gloves up
+5. dodging to its own right, mirror image of pose 4
+6. blocking, crouched low, both gloves pulled up over its head, hunched
+7. a big rising uppercut, one glove driving upward and away from the camera, body stretched tall, surrounded by a glowing yellow aura
+8. hit and reeling, head thrown to one side, one glove flung wide, knees buckling
+9. knocked flat on its back, dazed, gloves splayed, little stars circling its head
+```
+
+### The ring background
+
+A single 4:5 portrait image, saved as `assets/game/po_ring.png` and added to `assets/game/manifest.json`
+(no slicing). The game covers the screen with it and falls back to a drawn ring if it is missing.
+
+```
+A portrait illustration of an underground boxing ring seen from behind the challenger's corner: the camera sits behind and slightly above where the player's fighter stands, looking across the ring. Three sagging ropes converge in perspective toward the far side, a worn blood-flecked canvas fills the lower half, and beyond the ropes are chain-link fencing and packed black crowd silhouettes with no faces, lit by one harsh overhead floodlight that throws a cone of dusty light on the middle of the ring. The far corner post has a cracked gold championship belt hung on it. Grimy Hialeah warehouse mood, cigarette smoke haze. Soft 3D felt and clay render, matte surfaces, muted palette with saturated gold accents. The centre of the ring and the upper middle of the picture stay clear and uncluttered because characters will be placed there. No fighters, no people inside the ropes, no text, no watermark.
+```
+
 ## If a sprite comes out too big or too small
 
 The slicer trims each sprite to its own edges, and the game scales it to the footprint the code

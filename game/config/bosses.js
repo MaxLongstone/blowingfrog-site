@@ -1,5 +1,5 @@
-// Boss definitions. Boss one is Chaco: a Punch-Out-style bout where the frog
-// dodges, ducks and counters with its tongue, and the fuse rule still decides it.
+// Boss definitions. Boss one is Chaco: a straight Punch-Out bout, seen from behind
+// the frog. No explosives and no fuse; knockdowns alone decide it.
 export const CHACO = {
   id: 'chaco',
   after: '2',                       // slots in after stage 2
@@ -31,36 +31,55 @@ export const CHACO = {
     },
     {
       heading: 'ANYWAY',
-      body: 'He is going to try to do that to you. Undefeated in eleven fights, nine of which were against livestock. He will not be removing the jacket. He has never removed the jacket. Two of those eleven went down without him creasing it, and one of those two was a bull.\n\nHis mouth is the only soft thing on him, so it is the only way in, which is a genuine fucking shame, because it is also how he reaches into your guts and helps himself. Watch the chains, you beautiful little bastard. When they swing, he has already decided.\n\nARROWS move you in and out, DOWN ducks, SHIFT throws the glove, SPACE is your tongue for whatever he throws at you.',
+      body: 'He is going to try to do that to you. Undefeated in eleven fights, nine of which were against livestock. He will not be removing the jacket. He has never removed the jacket. Two of those eleven went down without him creasing it, and one of those two was a bull.\n\nHis mouth is the only soft thing on him, so it is the only way in, which is a genuine fucking shame, because it is also how he reaches into your guts and helps himself. Watch the chains, you beautiful little bastard. When they swing, he has already decided.\n\nLEFT and RIGHT dodge, DOWN blocks, SHIFT throws the left glove, SPACE throws the right, and Z is the star punch.',
     },
   ],
 
+  // Punch-Out rules. Chaco winds up (the tell), then strikes. Dodge away from a
+  // hook, punch him while he winds up for a counter, punch him while he is open,
+  // and bank stars for the uppercut. Three knockdowns and he is done.
   rounds: 3,
   knockdownsToWin: 3,
 
-  // Every attack telegraphs first. tell is how long the wind-up reads for.
+  frog: { hearts: 5, downsToLose: 3, getUpPresses: [6, 8, 10] },
+
+  // Every attack has a tell, then lands. `from` is the side it comes from
+  // (-1 screen left, 1 screen right, 0 straight down the middle).
   attacks: {
-    saludo:  { name: 'EL SALUDO',   tell: 0.42, damage: 1, opening: 0,    round: 1 },
-    cobrador:{ name: 'EL COBRADOR', tell: 0.75, damage: 2, opening: 1.1,  round: 1 },
-    chupada: { name: 'LA CHUPADA',  tell: 0.60, damage: 1, opening: 0.9,  round: 2, stealsFuse: true },
-    polvo:   { name: 'EL POLVO',    tell: 0.50, damage: 0, blindFor: 4.0, round: 2 },
-    belt:    { name: 'EL CINTURON', tell: 0.38, damage: 2, opening: 0.7,  round: 3 },
+    hookL:   { name: 'LEFT HOOK',  tell: 0.66, strike: 0.24, damage: 1, from: -1, hint: 'LEAN RIGHT  →' },
+    hookR:   { name: 'RIGHT HOOK', tell: 0.66, strike: 0.24, damage: 1, from: 1,  hint: '←  LEAN LEFT' },
+    chupada: { name: 'LA CHUPADA', tell: 0.78, strike: 0.32, damage: 2, from: 0,  hint: 'DODGE EITHER WAY' },
   },
 
-  // Round three feints: a tell that never becomes an attack. Punishes reacting
-  // instead of reading. Fraction of tells that are lies.
-  feintChance: 0.28,
+  // What he throws in each round. Later rounds add to earlier ones.
+  patterns: {
+    1: [['hookL'], ['hookR'], ['hookL'], ['hookR']],
+    2: [['chupada'], ['hookL', 'hookR'], ['hookR', 'hookL'], ['hookL', 'hookL']],
+  },
+  tellScale: { 1: 1, 2: 0.82, 3: 0.7 },   // wind-ups get shorter as he wakes up
+  chainGap: 0.28,                           // between the hits of a combination
+  idleGap: [0.9, 1.6],                      // breathing space between patterns
+  guardChance: 0.45,                        // how often that breather is spent with his guard up
+  openWindow: { 1: 1.1, 2: 0.9, 3: 0.8 },   // how long he stays open after missing
+  dazedTime: 1.2,                           // how long a counter leaves him reeling
+  feintChance: { 1: 0, 2: 0.22, 3: 0.3 },   // a tell that never becomes a strike
+
+  // Percent of his bar. A blocked punch does nothing.
+  damage: { chip: 2, open: 8, counter: 16 },
+  starPunch: { base: 22, perStar: 12, maxStars: 3 },
+  getUpHealth: [0.7, 0.55],                 // how much bar he gets back after each knockdown
 
   // The finish. After the second knockdown he takes the bag to the face and
-  // burns himself out; surviving the timer wins it. Countering fills the bar
-  // faster but he is at his most dangerous.
+  // burns himself out; surviving the timer wins it. Nothing you throw lands, but
+  // every strike you dodge shortens it.
   ultimaRaya: {
     name: 'LA ULTIMA RAYA',
     card: 'He has stopped boxing. He has gone into his own trunks and come back out with a bag of Peruvian best and put the whole thing into his face at once. There is no defending this and no countering it. There is only outliving it. His heart is doing something a heart should not do. Stay off the canvas and let the decade finish him.',
-    duration: 14,          // seconds of rage before he drops on his own
-    speedUp: 1.8,
-    tellScale: 0.35,       // tells shrink to a third
-    counterFillsBar: 0.14, // each landed counter shortens it
+    duration: 16,          // seconds of rage before he drops on his own
+    tell: 0.42,            // his wind-ups in the rage
+    gap: 0.34,
+    dodgeShortensBy: 0.9,  // each dodged strike takes this many seconds off
+    blockShortensBy: 0.4,
   },
 };
 

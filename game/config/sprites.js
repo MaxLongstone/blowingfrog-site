@@ -63,6 +63,30 @@ function missileBody(g, W, H, color = C.steel, tip = C.red, radioactive = false)
   if (radioactive) { g.circle(0, H * 0.1, W * 0.32).fill(C.yellow); g.circle(0, H * 0.1, W * 0.1).fill(C.black); }
 }
 
+// The frog from behind, for the Punch-Out bout. Placeholder until the painted sheet lands.
+function frogback(g, W, H, o = {}) {
+  const s = Math.min(W, H) / 100;
+  const px = (x, y) => [x * s, y * s];
+  const lean = o.lean || 0, squat = o.squat || 0;
+  for (const d of [-1, 1]) g.ellipse(...px(d * 24, 36), 12 * s, 7 * s).fill(C.frog), stroke(g, 2);
+  g.ellipse(...px(lean * 8, 12 + squat * 8), 32 * s, (30 - squat * 8) * s).fill(C.frog); stroke(g);
+  for (const [x, y] of [[-14, 6], [12, 2], [0, 18], [-6, -6]]) g.circle(...px(x + lean * 8, y), 2.4 * s).fill({ color: C.frogDark, alpha: .75 });
+  const hy = -14 + squat * 10;
+  g.ellipse(...px(lean * 10, hy), 22 * s, 16 * s).fill(C.frog); stroke(g);
+  for (const d of [-1, 1]) { g.circle(...px(d * 17 + lean * 10, hy - 6), 8 * s).fill(C.frog); stroke(g, 2.5); }
+  const reach = o.punch;          // 'l' | 'r' | 'up' | undefined
+  for (const d of [-1, 1]) {
+    const throwing = (reach === 'l' && d === -1) || (reach === 'r' && d === 1);
+    const up = reach === 'up' && d === 1;
+    const gx = throwing ? d * 10 : d * (o.block ? 12 : 26);
+    const gy = throwing ? -34 : up ? -40 : o.block ? -22 : -6;
+    const r = (throwing ? 7 : 11) * s;
+    g.circle(...px(gx + lean * 8, gy), r).fill(C.red); stroke(g, 2.5);
+  }
+  if (o.stars) for (let i = 0; i < 5; i++) { const a = i * 1.26; g.circle(...px(Math.cos(a) * 26, hy - 20 + Math.sin(a) * 8), 3 * s).fill(C.yellow); }
+  if (o.aura) glowDisc(g, 0, px(0, 0)[1], 46 * s, C.yellow, 0.3);
+}
+
 export const SPRITES = {
   // ---- frog forms -------------------------------------------------------
   frog_s1: { w: 1, h: 1, draw: (g, W, H) => frog(g, W, H) },
@@ -422,6 +446,39 @@ Object.assign(SPRITES, {
   boxfrog_hurt:  { w: 1.6, h: 1.6, draw: (g, W, H) => boxfrog(g, W, H, { dazed: true, lean: -0.6, open: true }) },
   boxfrog_down:  { w: 1.8, h: 1.4, draw: (g, W, H) => boxfrog(g, W, H, { dazed: true, stars: true, squat: 1 }) },
   boxfrog_win:   { w: 1.6, h: 1.6, draw: (g, W, H) => boxfrog(g, W, H, { up: true, open: true, happy: true }) },
+
+  // Chaco rebuilt as a behind-the-back Punch-Out bout (sheets W, X, Y). The drawings
+  // below stand in until the painted art is sliced in.
+  chaco_po_idle:        { w: 3.4, h: 4, draw: (g, W, H) => chaco(g, W, H, { shades: true, cigar: true }) },
+  chaco_po_tell_left:   { w: 3.4, h: 4, draw: (g, W, H) => chaco(g, W, H, { shades: true, lean: -0.8, arm: -1, armY: -10 }) },
+  chaco_po_hook_left:   { w: 3.4, h: 4, draw: (g, W, H) => chaco(g, W, H, { shades: true, arm: 1.2, lean: 0.6 }) },
+  chaco_po_tell_right:  { w: 3.4, h: 4, draw: (g, W, H) => chaco(g, W, H, { shades: true, lean: 0.8, arm: 1, armY: 10 }) },
+  chaco_po_hook_right:  { w: 3.4, h: 4, draw: (g, W, H) => chaco(g, W, H, { shades: true, arm: 1.2, lean: -0.6 }) },
+  chaco_po_tell_chupada:{ w: 3.4, h: 4, draw: (g, W, H) => chaco(g, W, H, { shades: true, mouth: 'wide', armY: 14 }) },
+  chaco_po_chupada:     { w: 3.4, h: 4, draw: (g, W, H) => chaco(g, W, H, { mouth: 'wide', arm: 0.6, lean: 0.4 }) },
+  chaco_po_block:       { w: 3.4, h: 4, draw: (g, W, H) => chaco(g, W, H, { shades: true, arm: -0.6, armY: -22 }) },
+  chaco_po_taunt:       { w: 3.4, h: 4, draw: (g, W, H) => chaco(g, W, H, { shades: true, cigar: true, arm: 0.9, armY: 4 }) },
+  chaco_po_hit_face:    { w: 3.4, h: 4, draw: (g, W, H) => chaco(g, W, H, { lean: -0.8, armY: 8 }) },
+  chaco_po_hit_body:    { w: 3.4, h: 4, draw: (g, W, H) => chaco(g, W, H, { shades: true, lean: 0.4, armY: 16, mouth: 'wide' }) },
+  chaco_po_dazed:       { w: 3.4, h: 4, draw: (g, W, H) => chaco(g, W, H, { dazed: true, armY: 14, wrecked: true }) },
+  chaco_po_stagger:     { w: 3.4, h: 4, draw: (g, W, H) => chaco(g, W, H, { dazed: true, lean: -1, armY: -12, wrecked: true }) },
+  chaco_po_down:        { w: 3.8, h: 2.4, draw: (g, W, H) => chaco(g, W, H, { dazed: true, wrecked: true, armY: 20 }) },
+  chaco_po_getup:       { w: 3.4, h: 3.2, draw: (g, W, H) => chaco(g, W, H, { dazed: true, wrecked: true, armY: 18, lean: 0.4 }) },
+  chaco_po_rage_bag:    { w: 3.4, h: 4, draw: (g, W, H) => chaco(g, W, H, { wrecked: true, powder: true, dust: true, glow: true }) },
+  chaco_po_rage_swing:  { w: 3.6, h: 4, draw: (g, W, H) => chaco(g, W, H, { wrecked: true, glow: true, arm: 1.2, mouth: 'wide' }) },
+  chaco_po_ko:          { w: 3.8, h: 2.6, draw: (g, W, H) => chaco(g, W, H, { wrecked: true, dazed: true, armY: 22 }) },
+
+  frogback_guard:       { w: 2.6, h: 2.6, draw: (g, W, H) => frogback(g, W, H, {}) },
+  frogback_jab_left:    { w: 2.6, h: 2.6, draw: (g, W, H) => frogback(g, W, H, { punch: 'l' }) },
+  frogback_jab_right:   { w: 2.6, h: 2.6, draw: (g, W, H) => frogback(g, W, H, { punch: 'r' }) },
+  frogback_dodge_left:  { w: 2.6, h: 2.6, draw: (g, W, H) => frogback(g, W, H, { lean: -1 }) },
+  frogback_dodge_right: { w: 2.6, h: 2.6, draw: (g, W, H) => frogback(g, W, H, { lean: 1 }) },
+  frogback_block:       { w: 2.6, h: 2.6, draw: (g, W, H) => frogback(g, W, H, { squat: 1, block: true }) },
+  frogback_uppercut:    { w: 2.6, h: 2.6, draw: (g, W, H) => frogback(g, W, H, { punch: 'up', aura: true }) },
+  frogback_hurt:        { w: 2.6, h: 2.6, draw: (g, W, H) => frogback(g, W, H, { lean: -0.6, stars: true }) },
+  frogback_down:        { w: 2.8, h: 1.8, draw: (g, W, H) => frogback(g, W, H, { squat: 1, stars: true }) },
+  // The painted ring plate (a single 4:5 image); this is only the dark stand-in.
+  po_ring:              { w: 1, h: 1, draw: (g, W, H) => { g.rect(-W / 2, -H / 2, W, H).fill(0x111015); } },
 
   // Bare-handed variant for UMMA -- same body, no gloves, because this fight
   // never lets the frog throw a punch.

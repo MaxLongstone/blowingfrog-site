@@ -30,3 +30,8 @@ test('tap still reports which way it was aimed', () => {
   assert.equal(tapToIntent(100, 50, 50, 50).dir, 'right');
   assert.equal(tapToIntent(50, 0, 50, 50).dir, 'up');
 });
+test('z is the star punch, and a tap carries where it landed', () => {
+  assert.deepEqual(keyToIntent('z'), { type: 'star' });
+  assert.deepEqual(keyToIntent('Z'), { type: 'star' });
+  assert.deepEqual(tapToIntent(10, 20, 50, 50).at, { x: 10, y: 20 });
+});

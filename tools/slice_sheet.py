@@ -72,6 +72,16 @@ SHEETS = {
     # Boss seven: PROBE ONE, the fire-breathing frog pose set, and the bolt prop
     "V": (3, 3, ["probe_grunt", "probe_loaded", "probe_flagship", "invfrog_idle",
                  "invfrog_fire", "invfrog_hurt", "fire_bolt", None, None]),
+    # Chaco rebuilt as a behind-the-back Punch-Out bout: his attacks, his reactions, the frog from behind
+    "W": (3, 3, ["chaco_po_idle", "chaco_po_tell_left", "chaco_po_hook_left", "chaco_po_tell_right",
+                 "chaco_po_hook_right", "chaco_po_tell_chupada", "chaco_po_chupada", "chaco_po_block",
+                 "chaco_po_taunt"]),
+    "X": (3, 3, ["chaco_po_hit_face", "chaco_po_hit_body", "chaco_po_dazed", "chaco_po_stagger",
+                 "chaco_po_down", "chaco_po_getup", "chaco_po_rage_bag", "chaco_po_rage_swing",
+                 "chaco_po_ko"]),
+    "Y": (3, 3, ["frogback_guard", "frogback_jab_left", "frogback_jab_right", "frogback_dodge_left",
+                 "frogback_dodge_right", "frogback_block", "frogback_uppercut", "frogback_hurt",
+                 "frogback_down"]),
 }
 
 WHITE_CUTOFF = 234   # a pixel this bright in every channel counts as background
