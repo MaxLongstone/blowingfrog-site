@@ -6,7 +6,7 @@
 
 // Bump when any generated file is replaced, so browsers refetch instead of
 // serving the old copy from cache.
-export const MEDIA_VERSION = 1;
+export const MEDIA_VERSION = 2;
 const v = (path) => `${path}?v=${MEDIA_VERSION}`;
 
 export const url = {

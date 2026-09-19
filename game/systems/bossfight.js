@@ -24,6 +24,7 @@ const BUFFER = 0.2;              // a press slightly too early is remembered, no
 const COUNT_STEP = 0.42;         // seconds per number when Chaco is on the canvas
 const FROG_COUNT_STEP = 0.7;
 const MAX_STARS = CHACO.starPunch.maxStars;
+const ROPE_SCALE = 0.72;         // how big the near ropes are, as a share of the screen height
 
 // Every pose on a painted sheet was drawn at the same scale, so one factor sizes
 // them all (sizing each to a box would make wide poses shrink). The built-in
@@ -57,7 +58,8 @@ export class BossFight {
     this.plate = new PIXI.Sprite();
     this.plate.visible = false;
     this.layer = new PIXI.Container();
-    this.world.addChild(this.bg, this.plate, this.layer);
+    this.ropes = new PIXI.Container();            // the ropes nearest the camera, behind the fighters
+    this.world.addChild(this.bg, this.plate, this.ropes, this.layer);
     this.particles = new Particles(this.world);
     this.fx = new PIXI.Graphics();
     this.world.addChild(this.fx);
@@ -129,6 +131,8 @@ export class BossFight {
       this.plate.scale.set(k);
       this.plate.x = (W - t.width * k) / 2; this.plate.y = (H - t.height * k) / 2;
       this.plate.visible = true;
+      const r = this.tex.get('po_ropes');
+      if (r && r.width > 600) this.placeRopes(r);
       return;
     }
     const g = this.bg; g.clear();
@@ -152,6 +156,22 @@ export class BossFight {
     g.ellipse(CX, CHACO_FEET, 300, 44).fill({ color: 0x000000, alpha: 0.22 });
     g.poly([CX - 40, 0, CX + 40, 0, CX + 380, CHACO_FEET, CX - 380, CHACO_FEET]).fill({ color: 0xfff2c0, alpha: 0.055 });
     g.circle(CX, 8, 20).fill(0xfff2c0);
+  }
+
+  // The rope art has its posts and ropes on the two sides and nothing in the middle.
+  // Each half is pinned to its own edge of the screen so the ring reads as a frame
+  // around the fighters instead of something they are standing behind.
+  placeRopes(tex) {
+    const k = ROPE_SCALE * (H / tex.height);
+    const half = tex.width / 2;
+    [0, 1].forEach((i) => {
+      const t = new PIXI.Texture({ source: tex.source, frame: new PIXI.Rectangle(i * half, 0, half, tex.height) });
+      const sp = new PIXI.Sprite(t);
+      sp.scale.set(k);
+      sp.x = i === 0 ? 0 : W - half * k;
+      sp.y = H - tex.height * k;
+      this.ropes.addChild(sp);
+    });
   }
 
   // ---- input ------------------------------------------------------------

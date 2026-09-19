@@ -479,6 +479,8 @@ Object.assign(SPRITES, {
   frogback_down:        { w: 2.8, h: 1.8, draw: (g, W, H) => frogback(g, W, H, { squat: 1, stars: true }) },
   // The painted ring plate (a single 4:5 image); this is only the dark stand-in.
   po_ring:              { w: 1, h: 1, draw: (g, W, H) => { g.rect(-W / 2, -H / 2, W, H).fill(0x111015); } },
+  // The near-side ropes, a transparent overlay drawn over the fighters. Nothing without the art.
+  po_ropes:             { w: 1, h: 1, draw: () => {} },
 
   // Bare-handed variant for UMMA -- same body, no gloves, because this fight
   // never lets the frog throw a punch.
