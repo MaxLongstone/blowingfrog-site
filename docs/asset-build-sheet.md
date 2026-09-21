@@ -20,10 +20,10 @@ is.** Names in `code` are the file names to save as. Sheets go through `python3 
 
 ## Order to make things (biggest payoff first)
 1. The three interrupters: portraits, then props (Part A). They are the most visible new thing and unblock the most wiring.
-2. Voices for them, the bosses and the AI (Part E). Recordings can arrive any time; captions cover the gap.
+2. Voices, sound effects and music (the ElevenLabs master sheet). Recordings can arrive any time; captions cover the gap.
 3. Neco and UMMA art (Parts B and C).
 4. The hidden level (Part D), the biggest set.
-5. Audio (Part F), then the Google Play art (Part G).
+5. The Google Play art (Part F).
 
 
 # Part A. The interrupters
@@ -371,188 +371,11 @@ Reading order: `hm_probe_1` `hm_probe_2` `hm_probe_flat` `hi_beaker` `hi_nuke` `
 A wide 2 to 1 landscape illustration, seamless so that its left and right edges join, of a sunny cartoon skyline of a ruined but cheerful city at golden hour: soft distant hills, toppled billboards, leaning towers, puffy clouds, and warm haze. Soft 3D felt and clay look, matte surfaces, bright cheerful palette. The lower quarter is quiet and low-contrast because tiles are drawn over it. No characters, no text, no watermark.
 ```
 
-# Part E. Voices to record
+# Part E. Voices, sound effects and music
 
-Everything is in `docs/voice-cast.md`, generated from the game's own files so the words match. In brief:
+All of it is in the separate **ElevenLabs master sheet** (`docs/elevenlabs-master.md`): every voice line with its accent and delivery cues, every sound effect and every piece of music, each as a complete prompt.
 
-| Who | Voice | What | Files |
-|---|---|---|---|
-| The seven bosses | Spaniard, Tarantula, Murray, The Crocodile Reaper, System, Ghost Daddy, Olivia 2 | Five lines each | `voice_boss_<id>_01` to `05` (35) |
-| Pastor Dale | Preacher | 12 lines | `voice_pastor_tier<T>_<NN>` |
-| Buck Mallory | Nixon | 12 lines | `voice_podcaster_tier<T>_<NN>` |
-| Gregory Pemberton | Protagonist | 12 lines | `voice_bossboss_tier<T>_<NN>` |
-| The Influencer | Influencer | 22 outbursts for when you try to skip her | listed in the doc |
-| The System | System | SACK LICKED and 15 new achievements, three hidden-level lines | `voice_ach_<id>`, `voice_hidden_*` |
-
-# Part F. Audio (ElevenLabs music and sound effects)
-
-**Music.** Each loops. Save as `music_<name>.mp3`.
-
-`music_boss_neco`
-
-```
-An eerie arcade chase in a mirror dimension: pulsing analogue synth bass, reversed reverb swells, insect-skitter percussion, warped melody that repeats and detunes, tension building, 130 bpm, seamless loop, no vocals.
-```
-
-`music_boss_umma`
-
-```
-A clanky, cheerful arcade construction-site march with kitchen percussion: pots and pans, a cleaver on a wooden block, a rice-cooker steam whistle, bouncy chiptune bass, 120 bpm, playful but relentless, seamless loop, no vocals.
-```
-
-`music_hidden`
-
-```
-A bright, bouncy platformer theme in fat 8-bit chiptune with a slightly unhinged orchestral sparkle: jumpy bass, cheeky lead melody, marimba fills, 140 bpm, sunny and mischievous, seamless loop, no vocals.
-```
-
-`music_star`
-
-```
-A frantic invincibility theme in urgent 8-bit style: racing arpeggios, siren-like leads, hammering kick, 170 bpm, thirty seconds, seamless loop, no vocals.
-```
-
-`sting_pastor`
-
-```
-A four second church-organ sting: a big pompous major chord with a cheesy tremolo and a tiny cash-register ding at the end.
-```
-
-`sting_podcaster`
-
-```
-A four second radio sting: a burst of static, a stretched airhorn, a paranoid low synth drone, and a sharp click.
-```
-
-`sting_bossboss`
-
-```
-A three second corporate notification sting: a bright inoffensive marimba chime followed by a slightly sinister second chime.
-```
-
-**Sound effects.** Short, dry, no music. Save as `<name>.mp3`.
-
-`sfx_plane_flyby`
-
-```
-A small propeller plane flying past low overhead, a Doppler whoosh from left to right, three seconds.
-```
-
-`sfx_package_whistle`
-
-```
-A falling bomb whistle, a pitch dropping from high to low, one second and a half.
-```
-
-`sfx_powder_burst`
-
-```
-A big soft burst of white powder: a deep thump followed by a long airy hiss and a cough, two seconds.
-```
-
-`sfx_skip_scream`
-
-```
-A comedic short scream of panic, cut off, then a strangled sob, cartoonish and dry, one second.
-```
-
-`sfx_hl_jump`
-
-```
-A cartoon frog hop: a springy boing with a wet slap, half a second.
-```
-
-`sfx_hl_stomp`
-
-```
-A squishy stomp on a small enemy: a wet crunch and a rubbery squeak, half a second.
-```
-
-`sfx_hl_powerup`
-
-```
-A rising cartoon power-up: bubbling whoosh and a fat happy chime, one second.
-```
-
-`sfx_hl_fire`
-
-```
-A short fire breath: a whoosh of flame with a crackle, one second.
-```
-
-`sfx_hl_nuke`
-
-```
-A radioactive pickup: a dramatic rising siren swell and a glassy shimmer, one and a half seconds.
-```
-
-`sfx_hl_shrink`
-
-```
-A sad deflating shrink: a downward squeal and a soft pop, one second.
-```
-
-`sfx_hl_win`
-
-```
-A triumphant cartoon victory fanfare with a big detonator plunger click and an explosion, three seconds.
-```
-
-`sfx_croc_bounce`
-
-```
-A plastic clog shoe bouncing on a metal girder: a hollow clonk with a rubbery squeak, half a second.
-```
-
-`sfx_jar_smash`
-
-```
-A ceramic jar smashing with a hiss of hot steam and a bubbling splash, one second.
-```
-
-`sfx_cent_skitter`
-
-```
-A many-legged insect skittering rapidly over glass, tiny fast ticks, one second.
-```
-
-`sfx_cent_overload`
-
-```
-A creature swelling and popping: a rising squeal, a glassy crack, a wet burst and sparkling fragments, two seconds.
-```
-
-`sfx_beam_hum`
-
-```
-A sci-fi tractor beam: a rising warbling hum with a gentle lifting whoosh, two seconds.
-```
-
-`sfx_stamp`
-
-```
-A heavy rubber stamp slamming onto paper, a single dull thud and a paper slap, half a second.
-```
-
-`sfx_mirror_flip`
-
-```
-A mirror flipping: a glassy swish with a soft reversed chime, one second.
-```
-
-`sfx_blackout`
-
-```
-A power cut: a descending electrical whine into a heavy click and silence, one second.
-```
-
-`sfx_card_pop`
-
-```
-A cheap notification pop: a bubbly blip with a tiny sparkle, a third of a second.
-```
-
-# Part G. Google Play art
+# Part F. Google Play art
 
 **App icon** (`play_icon.png`, square, 512 px at least)
 
