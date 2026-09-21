@@ -294,6 +294,15 @@
     }
 
     .bf-overlay.achievements .bf-card { max-width: 640px; }
+    .bf-overlay.trophies .bf-card { max-width: 560px; max-height: 88%; overflow: auto; }
+    .bf-tr-list { display: flex; flex-direction: column; gap: 12px; margin: 14px 0 6px; text-align: left; }
+    .bf-tr-row { display: flex; gap: 14px; align-items: flex-start; padding: 10px 12px; border-radius: 12px;
+      background: rgba(255,255,255,.06); animation: bf-tr-in .5s cubic-bezier(.2,1.5,.4,1) both; }
+    .bf-tr-row:nth-child(2) { animation-delay: .25s; } .bf-tr-row:nth-child(3) { animation-delay: .5s; }
+    .bf-tr-emoji { font-size: 34px; line-height: 1; }
+    .bf-tr-title { font-family: var(--f-display); font-weight: 800; letter-spacing: .06em; font-size: 15px; color: var(--accent-lt); }
+    .bf-tr-blurb { font-size: 13px; line-height: 1.45; color: rgba(255,255,255,.82); margin-top: 3px; }
+    @keyframes bf-tr-in { from { opacity: 0; transform: scale(.85) translateY(10px); } }
     .bf-ach-grid {
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
       width: 100%; margin: 4px 0 2px;
@@ -472,6 +481,14 @@
     .bf-ad.t3 .bf-ad-portrait { animation: bf-ad-pop .5s cubic-bezier(.2,1.7,.4,1) both, bf-ad-sway 1.7s ease-in-out .5s infinite; }
     @keyframes bf-ad-sway { 0%, 100% { transform: rotate(-5deg) translateX(-2px); } 50% { transform: rotate(5deg) translateX(2px); } }
     .bf-ad.t4 .bf-ad-portrait { animation: bf-ad-pop .5s cubic-bezier(.2,1.7,.4,1) both, bf-ad-bob 4.5s ease-in-out .5s infinite; }
+    .bf-ad.freak { animation: bf-ad-freak .5s steps(2) 6 !important; box-shadow: 0 0 0 4px #ff2d2d, 0 12px 40px rgba(0,0,0,.55); }
+    .bf-ad.freak .bf-ad-copy { color: #b3001b; font-weight: 700; }
+    .bf-ad.t4.freak .bf-ad-copy { color: #ff8a8a; }
+    @keyframes bf-ad-freak {
+      0% { transform: translateX(-50%) rotate(-3deg) translate(-6px, 2px); }
+      50% { transform: translateX(-50%) rotate(3.4deg) translate(7px, -3px); }
+      100% { transform: translateX(-50%) rotate(-2deg) translate(-3px, 3px); }
+    }
     .bf-ad.t2 { filter: saturate(.85); }
     .bf-ad.t3 { transform: translateX(-50%) rotate(2.4deg); background: linear-gradient(135deg, #e6c1dd, #d8b5c0); }
     .bf-ad.t3 .bf-ad-copy { text-shadow: 0 0 1px rgba(43,18,51,.35); }
@@ -539,6 +556,6 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/pixi.js@8.20.1/dist/pixi.min.js"></script>
-  <script type="module" src="game/main.js?v=57"></script>
+  <script type="module" src="game/main.js?v=58"></script>
 </body>
 </html>

@@ -226,6 +226,28 @@ export class Overlays {
     ], 'ending');
   }
 
+  // The trophies earned in the level that just ended.
+  trophies(list, onDone) {
+    const btn = el('button', 'bf-btn', 'CONTINUE');
+    btn.disabled = true; btn.style.opacity = '.4';
+    setTimeout(() => { btn.disabled = false; btn.style.opacity = ''; }, 700);      // a stray tap cannot skip it
+    btn.onclick = onDone;
+    const rows = el('div', 'bf-tr-list');
+    list.forEach((a) => {
+      const row = el('div', 'bf-tr-row');
+      const badge = el('div', 'bf-tr-emoji'); badge.textContent = a.emoji;
+      const text = el('div', 'bf-tr-text');
+      const title = el('div', 'bf-tr-title'); title.textContent = a.title;
+      const blurb = el('div', 'bf-tr-blurb'); blurb.textContent = a.blurb;
+      text.append(title, blurb); row.append(badge, text); rows.append(row);
+    });
+    this._show([
+      el('div', 'bf-eyebrow', list.length > 1 ? `${list.length} TROPHIES THIS LEVEL` : 'A TROPHY THIS LEVEL'),
+      rows,
+      btn,
+    ], 'trophies');
+  }
+
   stageCard(stage, size, onGo) {
     const btn = el('button', 'bf-btn', 'CONTINUE');
     btn.onclick = onGo;

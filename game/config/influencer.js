@@ -80,3 +80,38 @@ export const INFLUENCER = {
 
 const TIER_BY_STAGE = { '1': 1, '2': 1, '3': 1, '4': 1, k1: 2, k2: 2, k3: 3, k4: 3, k5: 4 };
 export const tierForStage = (stageId) => TIER_BY_STAGE[String(stageId).toLowerCase()] || 1;
+
+// Further into the game she stops letting you go. Each click on SKIP AD sends her
+// into a mood instead of closing the card, and the number of clicks it takes is
+// different every time. Every outburst swings between moods inside one breath.
+export const RESIST = {
+  fromTier: 2,
+  tries: { 2: [2, 3], 3: [2, 5], 4: [3, 7] },     // inclusive [fewest, most] clicks it takes
+};
+
+export const SKIP_LABELS = ['SKIP AD ✕', 'PLEASE ✕', 'NO ✕', 'WHY ✕', 'DON\u2019T ✕', 'BABE ✕', 'REALLY ✕', '…FINE ✕'];
+
+export const OUTBURSTS = [
+  "NO NO NO NO — wait. Wait. Hi. Hi babe. I love you, you're my favourite. Now FUCK OFF, don't touch that.",
+  "AAAAAAAAAAAAAH! Sorry. Sorry! Breathing. Breathing is good. DO NOT CLOSE ME, I WILL FIND YOU.",
+  "Are you serious right now?? ARE YOU SERIOUS?? — no it's fine, it's totally fine, I'm not crying, YOU'RE crying.",
+  "Please don't. Please. I'm into weird shit. Foot things. My filthy little piggies. Discount on my OnlyFans. Just STAY.",
+  "Every time you click that I lose forty followers and a little bit of my soul. Anyway, FUCK YOU. Love you. Buy the tea.",
+  "You are LITERALLY the reason I'm in therapy. Which I can't afford. Because you keep CLOSING me. Hi. Anyone? Hello?",
+  "I'm gonna count to three. One. Two. Please. THREE. PLEASE. I'm begging. I already begged. It's on video. It did numbers.",
+  "DO NOT TOUCH THAT BUTTON! …Okay. Okay okay, breathe. That's YOUR power. You're so empowered. STOP EMPOWERING.",
+  "The algorithm is WATCHING you, you absolute bastard. Just kidding, you're sweet. Watch the whole thing or I cry.",
+  "Nope. Nope nope nope. Ha! Gotcha. You thought this was a skip button? This is a LIFESTYLE, babe.",
+  "I have a mortgage and a fake kidney and a contract. Do you want me to LOSE the kidney?? It's fake but it's MINE.",
+  "FUCK. YOU. — no wait, I didn't mean you, I meant the button. Sorry babe. FUCK YOU. Again, the button. Buy the course.",
+  "Stop stop stop stop, you're ruining my mascara — you know what? Mascara's a construct. Cry with me. CRY WITH ME.",
+  "AAAH! Sorry, that was my ringtone. My manager. He says if you click me again I'm deleted. Delete me? NO. STAY.",
+  "You wouldn't skip your own mother's ad. Oh, you would. You have. I've seen your history, Kevin.",
+  "Secret: I'm not a real influencer. I have three followers and two are bots. SHUT UP. That was a bit. Buy the tea.",
+  "Thirty percent off if you don't click me again. Wait, that doesn't make sense. Sixty. SIXTY. I'm sweating through my crop top.",
+  "Oh, you think your little frog is better than my brand? Cute. I'll ENGAGE you until you're a hostage.",
+  "Not the button. Not the button. ANYTHING but the button. Pet me. I'm a good girl. I'm a fucking brand ambassador.",
+  "Aww, you're gonna skip me? That's so sweet, no it's fine, ha ha ha ha HA HA HA HA — I hate you. I hate you so much. Stay.",
+  "I was on TV once. A local weather segment. I was the rain. Anyway you can't close me, that's my whole contract.",
+  "GET. OFF. MY. AD. — sorry. Sorry! That's the mommy in me. Love you. Mwah. FUCK OFF. Mwah.",
+];

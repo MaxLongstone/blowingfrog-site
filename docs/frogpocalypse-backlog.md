@@ -35,12 +35,55 @@ the art for the next while the previous is wired)
 **Phase 6: UMMA as Donkey Kong**
 - [ ] Settle how it differs from the Landlord climb, then the engine, the art, tests.
 
+**Phase 8: Google Play** (see the checklist above; the last step, after everything else is done)
+
 **Phase 7: the hidden level** (the largest job; it needs everything above)
 - [ ] The engine, art (tileset, mini-bosses, powers), audio, the title-screen unlock, its achievement.
 
 **Art and voice to generate, in total:** for each of the three characters, four portraits and two
 prop sheets, and one voice with about 12 lines. For the hidden level, one tileset, a background, the
 frog in four states, seven mini-bosses, a beaker and a detonator.
+
+## Environmental effects before each boss
+
+Decided: the stage before every boss carries a random hazard of its own that makes that stage harder,
+and the boss you are about to meet says a line as it starts (`config/bossvoices.js`, five per boss).
+The system is `config/envfx.js` and `systems/envfx.js`. Only the first is built.
+
+| Stage | Before | Effect |
+|---|---|---|
+| 2 | Chaco | **Built.** A plane crosses, drops a package that lands where a red ring shows, explodes (a hit if you are in the ring), and blankets the screen in white powder. One or two drops a stage |
+| 4 | Probe One | A saucer sweeps a tractor beam across the road. Anything in it, the frog included, is lifted and set down a few rows back. Cows drift past |
+| K1 | The Landlord | Rent notices flutter down and stamp a lane, and that lane runs 60% faster for six seconds. Steam vents burst |
+| K2 | The Neco Frog | The screen mirrors for a few seconds, twice a stage. Controls stay literal |
+| K3 | The Narrator | The captions lie: "ALL CLEAR" while a lane speeds up, and left/right swap for four seconds behind a fake "LEFT IS RIGHT" notice |
+| K4 | The Sack Man | Blackouts: the lights go out and you see only a small circle around the frog for three or four seconds, again and again |
+| K5 | UMMA | Crocs come tumbling across the lanes end over end, and steam clouds blow through |
+
+## Trophies at the end of a level
+
+Built. Achievements earned in a level wait and are shown on a recap card at its end, read out in the AI's
+voice. Only ones opened outside a level (the first-time participation trophy) are read straight away.
+
+## Google Play
+
+Once the game is finished it will be packaged as an app people can download from Google Play.
+- [ ] Turn the site into an installable PWA: web manifest, icons, a service worker with offline play
+- [ ] Wrap it as a Trusted Web Activity (Bubblewrap) or with Capacitor, portrait-locked
+- [ ] Digital Asset Links file on blowingfrog.com so the wrapper opens full screen
+- [ ] A Google Play developer account (one-time fee) and Play App Signing
+- [ ] Build an Android App Bundle at the current required target API level
+- [ ] A privacy policy page and the Data safety form (local storage and telemetry counters only)
+- [ ] The content-rating questionnaire. Expect a mature rating: strong language, crude humour, sexual
+      innuendo, drug references (Chaco), and simulated violence
+- [ ] Store listing: 512 x 512 icon, 1024 x 500 feature graphic, two to eight phone screenshots, short
+      and full descriptions
+- [ ] Review the policy risks: the fake-scam chat lines, the Influencer's and Preacher's fake
+      donation pitches, and the sexual joke in her outbursts could be read as deceptive or
+      inappropriate content, so keep them clearly parody
+- [ ] Test on a real phone: touch controls, audio unlock, the back button, low memory, and the
+      keyboard-free Chaco controls
+- [ ] Decide whether to pull the large media (cutscene clips) from the app bundle and stream them
 
 ## Rebuilds
 

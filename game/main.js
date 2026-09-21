@@ -7,10 +7,11 @@ import { Overlays } from './ui/overlays.js';
 import { preloadFrames, playDetonation, playEnding, playBossDefeat, playOpening, prefetchCutscene } from './ui/cutscene.js';
 import {
   url, SFX_NAMES, ATARI_USES_REAL_SFX, MUSIC_TITLE, MUSIC_ENDING, CUTSCENE_TITLE,
-  voiceStage, voiceBossBeat, voiceBossFinale, voiceAchievement, voiceInfluencer,
+  voiceStage, voiceBossBeat, voiceBossFinale, voiceAchievement, voiceInfluencer, voiceBossLine,
   musicForStage, musicForBoss, cutsceneDetonation,
 } from './config/media.js';
-import { INFLUENCER } from './config/influencer.js';
+import { INFLUENCER, OUTBURSTS, SKIP_LABELS, RESIST } from './config/influencer.js';
+import { triesFor, pickOutburst } from './systems/skipresist.js';
 import { InfluencerSchedule } from './systems/influencer.js';
 import { showAd } from './ui/adcard.js';
 import { Play } from './systems/play.js';
@@ -27,6 +28,8 @@ import { UmmaFight } from './systems/ummafight.js';
 import { InvaderFight } from './systems/invaderfight.js';
 import { Telemetry } from './systems/telemetry.js';
 import { LiveChat } from './ui/livechat.js';
+import { BOSS_LINES, stripCues } from './config/bossvoices.js';
+import { getAchievement } from './config/achievements.js';
 import { bossAfter, getBoss, BOSSES } from './config/bosses.js';
 
 const CELL = 64, ROWS = 15;
@@ -58,7 +61,9 @@ class Game {
       this.chat?.react('achievement');
       this.hud.say(`ACHIEVEMENT: ${a.title}`, 2600);
       this.audio.win();
-      // Let the sting land first, then read it out -- waiting its turn behind any story line.
+      // In a level, the trophy waits and is read out at the end of it. Outside one
+      // (opening the game for the first time) it is read out straight away.
+      if (this.play) { (this.levelTrophies ||= []).push(a.id); return; }
       setTimeout(() => this.speak(voiceAchievement(a.id), { caption: `${a.title} — ${a.blurb}`, policy: 'queue' }), 900);
     });
     // After the handler exists, so opening the game announces itself the first time.
@@ -116,6 +121,47 @@ class Game {
   }
   stopSpeaking() { this.audio.stopVoice(); this.hud.clearCaption(); }
 
+  // A line with a caption that still shows when the recording is not there (yet).
+  sayLine(id, caption) {
+    if (!this.audio.ctx) { this.hud.caption(caption); setTimeout(() => this.hud.clearCaption(), 6500); return; }
+    let started = false;
+    this.audio.playVoice(url.voice(id), {
+      policy: 'queue',
+      onstart: () => { started = true; this.hud.caption(caption); },
+      onend: () => {
+        if (started) { this.hud.clearCaption(); return; }
+        this.hud.caption(caption); setTimeout(() => this.hud.clearCaption(), 6500);
+      },
+    });
+  }
+
+  // The boss you are about to meet, heard from the stage before them.
+  bossHeadsUp(bossId) {
+    const lines = BOSS_LINES[bossId];
+    if (!lines) return;
+    let i = Math.floor(Math.random() * lines.length);
+    if (i === this.lastHeadsUp) i = (i + 1) % lines.length;
+    this.lastHeadsUp = i;
+    this.sayLine(voiceBossLine(bossId, i + 1), stripCues(lines[i]));
+  }
+
+  // At the end of a level: the trophies earned in it, read out by the AI.
+  async showTrophyRecap() {
+    const list = (this.levelTrophies || []).splice(0).map(getAchievement).filter(Boolean);
+    if (!list.length) return;
+    await new Promise((resolve) => {
+      let done = false;
+      const finish = () => {
+        if (done) return;
+        done = true; clearTimeout(auto);
+        this.stopSpeaking(); this.overlays.hide(); resolve();
+      };
+      const auto = setTimeout(finish, Math.min(24000, 4500 + list.length * 5000));
+      this.overlays.trophies(list, finish);
+      list.forEach((a) => this.audio.playVoice(url.voice(voiceAchievement(a.id)), { policy: 'queue' }));
+    });
+  }
+
   showStageCard(stage, size, onGo) {
     this.overlays.stageCard(stage, size, () => { this.stopSpeaking(); onGo(); });
     this.speak(voiceStage(stage.id));
@@ -131,7 +177,13 @@ class Game {
   showInfluencer({ tier, index }) {
     const cfg = INFLUENCER.tiers[tier - 1];
     this.chat?.react('ad', tier);
-    const ad = showAd({ root: this.overlayRoot, tier, cfg, text: cfg.lines[index], onSkip: () => this.audio.stopVoice() });
+    const tries = triesFor(tier, Math.random, this.lastTries);
+    this.lastTries = tries;
+    const resist = tries ? {
+      tries, outbursts: OUTBURSTS, labels: SKIP_LABELS, pick: (last) => pickOutburst(OUTBURSTS, Math.random, last),
+      onBlocked: () => this.audio.warn(),
+    } : null;
+    const ad = showAd({ root: this.overlayRoot, tier, cfg, text: cfg.lines[index], onSkip: () => this.audio.stopVoice(), resist });
     this.ad = ad;
     let started = false;
     this.audio.playVoice(url.voice(voiceInfluencer(tier, index + 1)), {
@@ -209,6 +261,7 @@ class Game {
       painted: usesPaintedArt(this.mode),
     });
     document.body.classList.add('playing');
+    this.play.on('envCue', ({ boss }) => this.bossHeadsUp(boss));
     this.play.on('goal', ({ score }) => this.onGoal(stage, score));
     this.play.on('stillHungry', ({ fuse, score }) => this.onStillHungry(stage, fuse, score));
     this.play.on('dead', ({ score }) => this.onDead(stage, score));
@@ -297,6 +350,7 @@ class Game {
       this.hud.clearCaption();
       if (boss.id === 'chaco') this.chat?.enable();     // the first boss down is when the comments begin
       this.chat?.react('bossWin', boss.id);
+      await this.showTrophyRecap();
       // A boss placed after the very last ladder stage IS the final boss --
       // beating it should roll into the planet-sitting ending, not bounce
       // back to the title screen.
@@ -335,6 +389,7 @@ class Game {
     this.paused = false;
     score += 1000;
     this.saveBest(score);
+    await this.showTrophyRecap();
 
     const boss = bossAfter(stage.id);
     if (boss && !this.beaten?.has(boss.id)) { this.bossIntro(boss, state, score); return; }

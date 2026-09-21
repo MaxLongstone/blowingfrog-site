@@ -40,6 +40,7 @@ export function voiceBossBeat(boss, index) {
 }
 export const voiceBossFinale = (bossId) => `voice_boss_${bossId}_finale`;
 export const voiceAchievement = (achId) => `voice_ach_${achId}`;
+export const voiceBossLine = (bossId, n) => `voice_boss_${bossId}_${pad(n)}`;
 export const voiceInfluencer = (tier, line) => `voice_influencer_tier${tier}_${pad(line)}`;
 
 // ---- music --------------------------------------------------------------

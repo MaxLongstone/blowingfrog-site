@@ -3,7 +3,7 @@
 // recording plays, and closes itself when she runs out of breath.
 const el = (tag, cls, html) => { const n = document.createElement(tag); if (cls) n.className = cls; if (html != null) n.innerHTML = html; return n; };
 
-export function showAd({ root, tier, cfg, text, onSkip }) {
+export function showAd({ root, tier, cfg, text, onSkip, resist = null }) {
   const card = el('div', `bf-ad t${tier}`);
   const skip = el('button', 'bf-ad-x', 'SKIP AD ✕');
   skip.type = 'button';
@@ -68,8 +68,24 @@ export function showAd({ root, tier, cfg, text, onSkip }) {
     window.removeEventListener('keydown', onKey);
     setTimeout(() => { card.classList.add('out'); setTimeout(() => card.remove(), 260); }, delay * 1000);
   };
-  const onKey = (e) => { if (e.key === 'Escape') { onSkip?.(); close(); } };
-  skip.onclick = (e) => { e.stopPropagation(); onSkip?.(); close(); };
+  const onKey = (e) => { if (e.key === 'Escape') trySkip(); };
+  // Skipping. Late in the game she fights it: each click is an outburst until she
+  // has been clicked as many times as she was going to allow this time.
+  let clicks = 0, lastOutburst = -1, calmAt = 0;
+  const trySkip = () => {
+    if (resist && clicks < resist.tries) {
+      clicks += 1;
+      const i = resist.pick(lastOutburst); lastOutburst = i;
+      copy.textContent = resist.outbursts[i];
+      calmAt = performance.now() + 3200;                 // hold her words back while she is in a mood
+      card.classList.remove('freak'); void card.offsetWidth; card.classList.add('freak');
+      skip.textContent = resist.labels[Math.floor(Math.random() * resist.labels.length)];
+      resist.onBlocked?.(clicks);
+      return;
+    }
+    onSkip?.(); close();
+  };
+  skip.onclick = (e) => { e.stopPropagation(); trySkip(); };
   window.addEventListener('keydown', onKey);
 
   // Start revealing her words across `seconds` (the length of the recording).
@@ -80,6 +96,8 @@ export function showAd({ root, tier, cfg, text, onSkip }) {
     timers.push(setTimeout(showProduct, 900));
     copy.textContent = '';
     ticker = setInterval(() => {
+      if (performance.now() < calmAt) return;
+      card.classList.remove('freak');
       const k = Math.min(1, (performance.now() - t0) / 1000 / (seconds * 0.92));
       copy.textContent = words.slice(0, Math.max(1, Math.ceil(words.length * k))).join(' ');
       if (k >= 1) clearInterval(ticker);

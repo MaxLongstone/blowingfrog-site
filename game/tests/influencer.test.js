@@ -74,3 +74,26 @@ test('every portrait and product image the Influencer uses exists', () => {
     }
   });
 });
+
+import { triesFor, pickOutburst } from '../systems/skipresist.js';
+import { OUTBURSTS, RESIST, SKIP_LABELS } from '../config/influencer.js';
+test('she lets you go straight away early on, and fights later', () => {
+  assert.equal(triesFor(1, () => 0.5), 0);
+  for (const tier of [2, 3, 4]) {
+    const [lo, hi] = RESIST.tries[tier];
+    const seen = new Set();
+    let n = 0; const rng = () => (n = (n * 1103515245 + 12345 + 1) % 2147483648) / 2147483648;
+    for (let i = 0; i < 300; i++) { const t = triesFor(tier, rng); assert.ok(t >= lo && t <= hi); seen.add(t); }
+    assert.ok(seen.size > 1, `tier ${tier} varies`);
+  }
+});
+test('it is never the same number of clicks twice in a row', () => {
+  let last = null; let n = 5; const rng = () => (n = (n * 1103515245 + 12345 + 1) % 2147483648) / 2147483648;
+  for (let i = 0; i < 300; i++) { const t = triesFor(4, rng, last); assert.notEqual(t, last); last = t; }
+});
+test('outbursts never repeat back to back, and the pool holds the ones that matter', () => {
+  assert.ok(OUTBURSTS.length >= 20 && SKIP_LABELS.length >= 5);
+  assert.ok(OUTBURSTS.some((t) => t.includes('OnlyFans')), 'the piggies one is in');
+  let last = -1; const rng = () => 0.5;
+  for (let i = 0; i < 20; i++) { const j = pickOutburst(OUTBURSTS, rng, last); assert.notEqual(j, last); last = j; }
+});

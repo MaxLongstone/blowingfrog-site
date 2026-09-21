@@ -1,4 +1,4 @@
-// Twenty-one achievements, in the voice of the broadcast AI. Each is unlocked
+// Twenty-two achievements, in the voice of the broadcast AI. Each is unlocked
 // by a cumulative counter that survives across sessions.
 export const ACHIEVEMENTS = [
   { id: 'sentient',    emoji: '🐸', title: 'BARELY SENTIENT',
@@ -52,6 +52,9 @@ export const ACHIEVEMENTS = [
   { id: 'sackmanDown',  emoji: '⚫', title: 'SACKED',
     blurb: 'Beat the thing with no folder, no face, and apparently no legs anymore either.',
     hint: 'Beat The Sack Man.',              test: c => c.sackmanCleared >= 1 },
+  { id: 'sackLicked',   emoji: '👅', title: 'SACK LICKED',
+    blurb: "Yes, you get a second one. Why? Because the pun was there, and you are nothing but a plaything for me. Your prize? Sack licked. Yeah. Childish? Fuck you.",
+    hint: 'Beat The Sack Man. Yes, again.',   test: c => c.sackmanCleared >= 1 },
   { id: 'ummaDown',     emoji: '👟', title: 'MOM WAS RIGHT AGAIN',
     blurb: 'Beat Umma without ever throwing a punch, because you do not hit your mother, not in this house, not in any house.',
     hint: 'Beat UMMA.',                      test: c => c.ummaCleared >= 1 },

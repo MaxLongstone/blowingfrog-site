@@ -8,6 +8,7 @@ import { Backdrop } from './backdrop.js';
 import { SPRITES } from '../config/sprites.js';
 import { MOVERS, FUSE_TARGET, KAIJU_SIZE, POWERS, PICKUPS } from '../config/stages.js';
 import { makeRng } from '../core/rng.js';
+import { createEnvFx } from './envfx.js';
 
 const CELL = 64;
 const MAX_PROJECTILES = 5;
@@ -59,6 +60,7 @@ export class Play {
     this.sprites = new Map();
 
     if (ach && stage.act === 2 && stage.id === 'K1') ach.bump('kaijuReached');
+    this.env = createEnvFx(this);            // the stage before a boss carries a hazard of its own
     this.hud.setStage(stage.name, stage.subtitle);
     this.hud.setFuse(0);
     this.hud.setLives(this.frog.isKaiju() ? this.frog.hearts : this.frog.lives, this.frog.isKaiju());
@@ -96,6 +98,7 @@ export class Play {
   update(dt) {
     if (this.over) return;
     this.time += dt;
+    this.env?.update(dt);
     const ctx = this.ctx;
 
     this.frog.update(dt);
@@ -213,21 +216,26 @@ export class Play {
       this.frog.col = nc; this.shake.add(4);
       this.hud.say('BLOWN OFF COURSE');
     } else if (result === 'damage') {
-      const out = this.frog.takeHit();
-      if (out === 'none') return;
-      this.tookHit = true;
-      this.audio.hit();
-      const fp = this.frog.position();
-      this.particles.burst((fp.col + 0.5) * CELL, (fp.row + 0.5) * CELL, 0xe23c2f, 20);
-      this.shake.add(10);
-      // A projectile is spent on impact; a beam or hand finishes its own strike window.
-      if ('vx' in e && !e.warn) e.alive = false;
-      this.hud.setLives(this.frog.isKaiju() ? this.frog.hearts : this.frog.lives, this.frog.isKaiju());
-      if (out === 'dead') { this.over = true; this.audio.lose(); this.emit('dead', { score: this.score }); }
-      else if (out === 'shielded') this.hud.say(`ARMOUR HOLDING · ${this.frog.shield} LEFT`);
-      else if (out === 'reset') this.hud.say('BACK TO THE START');
-      else this.hud.say('HIT');
+      this.hurtFrog(e);
     }
+  }
+
+  // Any damage to the frog, from a vehicle, a projectile, or an environmental hazard.
+  hurtFrog(e = null) {
+    const out = this.frog.takeHit();
+    if (out === 'none') return;
+    this.tookHit = true;
+    this.audio.hit();
+    const fp = this.frog.position();
+    this.particles.burst((fp.col + 0.5) * CELL, (fp.row + 0.5) * CELL, 0xe23c2f, 20);
+    this.shake.add(10);
+    // A projectile is spent on impact; a beam or hand finishes its own strike window.
+    if (e && 'vx' in e && !e.warn) e.alive = false;
+    this.hud.setLives(this.frog.isKaiju() ? this.frog.hearts : this.frog.lives, this.frog.isKaiju());
+    if (out === 'dead') { this.over = true; this.audio.lose(); this.emit('dead', { score: this.score }); }
+    else if (out === 'shielded') this.hud.say(`ARMOUR HOLDING · ${this.frog.shield} LEFT`);
+    else if (out === 'reset') this.hud.say('BACK TO THE START');
+    else this.hud.say('HIT');
   }
 
   spriteFor(e) {
