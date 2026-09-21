@@ -25,5 +25,19 @@ for (const [id, lines] of Object.entries(BOSS_LINES)) {
 out += `\n## The Influencer's outbursts (voice: Influencer)\n\nWhen she will not let you skip her, each click gets one of these. Not yet recorded; the card shows the words.\n\n`;
 const { OUTBURSTS } = await import('../game/config/influencer.js');
 OUTBURSTS.forEach((l, i) => { out += `${String(i + 1).padStart(2, '0')}. ${l}\n\n`; });
+
+const { INTERRUPTERS } = await import('../game/config/interrupters.js');
+const { PLANNED_ACHIEVEMENTS, AI_EXTRA_LINES } = await import('../game/config/plannedachievements.js');
+for (const [id, c] of Object.entries(INTERRUPTERS)) {
+  out += `\n## ${c.name} (${c.ministry}), voice: ${c.voice}\n\nFirst appears in ${c.firstStage}. Four tiers of three lines; a tier is how many times you have seen him.\nSave as \`voice_${id}_tier<T>_<NN>.mp3\`.\n\n`;
+  c.tiers.forEach((tier, ti) => tier.forEach((l, li) => { out += `**tier ${ti + 1}.${li + 1}** \`voice_${id}_tier${ti + 1}_${String(li + 1).padStart(2, '0')}\`\n\n${l}\n\n`; }));
+}
+out += `\n## The System (voice: System): new achievement callouts\n\nSave as \`voice_ach_<id>.mp3\`. Read the title, then the blurb, in the AI's usual sardonic voice.\n\n`;
+out += `**SACK LICKED** \`voice_ach_sackLicked\`\n\n`;
+const { getAchievement } = await import('../game/config/achievements.js');
+const sl = getAchievement('sackLicked'); out += `${sl.title}. ${sl.blurb}\n\n`;
+for (const a of PLANNED_ACHIEVEMENTS) out += `**${a.title}** \`voice_ach_${a.id}\`\n\n${a.title}. ${a.blurb}\n\n`;
+out += `\n## The System: the hidden level\n\n`;
+for (const l of AI_EXTRA_LINES) out += `**${l.id}** \`voice_${l.id}\`\n\n${l.text}\n\n`;
 writeFileSync(new URL('../docs/voice-cast.md', import.meta.url), out);
 console.log('wrote docs/voice-cast.md', out.length, 'chars');
