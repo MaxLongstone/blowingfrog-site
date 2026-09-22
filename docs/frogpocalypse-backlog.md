@@ -223,6 +223,62 @@ damage and removal-on-hit. No console errors in any of it.
 
 **All seven pre-boss stages now carry a hazard.** Next: the hidden Mario-style level.
 
+## Status (2026-09-26): the hidden level exists
+
+**Live, as a real first pass.** `config/hiddenlevel.js` (the layout) +
+`systems/hiddenlevel.js` (the engine) + `systems/hiddenrules.js` (pure, tested) build
+the whole thing. `game/config/sprites.js` gained 55 new sprite kinds -- everything
+the level draws, each with a plain procedural fallback so it is fully playable
+today.
+
+**How it plays, and why it plays that way:** every boss in this game reinterprets a
+different arcade classic while staying inside the same hop-grid engine the whole
+game is built on (Chaco is still zones, Neco is still a grid, UMMA is still a
+hop-climb) -- so the hidden level keeps that same discipline rather than bolting on
+real jump/gravity physics. It is one long single-row crossing: LEFT/RIGHT hop a
+column, SHIFT jumps two columns at once and does not care what is in the one it
+skips over (a gap, a pipe, an enemy -- all the same rule). TNT jumps the frog straight
+to kaiju-size, which is also what makes the seven defeated bosses (now walking-size
+enemies) squash on contact instead of hurting it -- reusing the *existing* kaiju
+collision rule (`systems/collision.js`) rather than inventing a new one. The beaker
+calls the *existing* `fire` power, the nuke calls the *existing* `invuln` power --
+both already built for other stages. Falling into a gap while big shrinks the frog
+back down (no life lost); while small, it costs a life and sends it back to the
+last solid ground, not to the start.
+
+**Unlock:** a secret, pulsing "???" button on the title screen, shown once every
+achievement except the hidden level's own (`worldQ`) is earned -- kept out of that
+count on purpose so it cannot lock itself. The AI announces it once
+(`voice_hidden_unlock`, already recorded), speaks on entry (`voice_hidden_intro`) and
+on victory (`voice_hidden_win`) -- all three lines were already recorded earlier in
+the project and are now actually wired in. Finishing it is achievement 37 of 37,
+`worldQ`.
+
+**What is real art already, what is still a placeholder:**
+- Real, and in use: Chaco/Landlord/Neco at walking size and Probe One with the four
+  power-ups (received earlier, sliced as H4/H6), and the wide city backdrop (`hl_bg`).
+- Still procedural stand-ins, waiting on the four prompts given to the user (H1
+  tiles, H2 small frog, H3 big frog, H5 Narrator/Sack Man/UMMA at walking size):
+  everything will pick up the real art the moment those sheets are sliced in, same
+  as every other placeholder in this project.
+
+**Verified in browser, end to end, no console errors:** the TNT/beaker/nuke pickups,
+jumping a gap, squashing an enemy while big, a small-frog gap fall (life lost,
+sent back) versus a big-frog gap fall (shrinks, no life lost), reaching the goal
+and the `won` event with the achievement bumping, an unattended bot losing all
+three lives and reaching the real game-over overlay, and the title screen's secret
+button appearing only once every other achievement is unlocked and correctly
+entering the level on click.
+
+**Known simplification, on purpose:** the whole level is a single row (no vertical
+platforming yet) -- a deliberate first-pass scope decision, not a bug. Adding
+platform tiers is a natural next step once the base level is confirmed fun.
+
+**All three rebuilds and every environmental hazard the user asked for this session
+are now done:** Neco as Centipede, UMMA as Donkey Kong, all six remaining pre-boss
+hazards, and this hidden level. Nothing outstanding except the art/audio still on
+the ElevenLabs and asset-prompt lists.
+
 ## Status (2026-09-22)
 
 **Wired and live:** the Preacher, the Podcaster and the Boss's Boss now interrupt ordinary stages

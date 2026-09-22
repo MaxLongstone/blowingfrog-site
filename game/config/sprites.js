@@ -886,5 +886,116 @@ Object.assign(SPRITES, {
   dk_bg:            { w: 1, h: 1, draw: (g, W, H) => { g.rect(-W / 2, -H / 2, W, H).fill(0x241d16); } },
 });
 
+// The hidden level, unlocked once every other achievement is earned. Real art
+// for most of this has not landed yet, so every kind below has a plain
+// procedural fallback the same as everywhere else in the game -- dropping a
+// sliced sheet in under one of these names is the entire upgrade.
+function hiddenTile(g, W, H, kind) {
+  if (kind === 'ground') { g.rect(-W / 2, -H / 2, W, H).fill(0x9a6b3c); g.rect(-W / 2, -H / 2, W, H * 0.28).fill(0x4f9a3c); stroke(g, 3); }
+  else if (kind === 'brick') { g.rect(-W / 2, -H / 2, W, H).fill(0xb5502e); for (let i = -1; i <= 1; i++) g.rect(i * W / 3 - W / 6, -H / 2, 1, H).stroke({ width: 2, color: 0x6b2c18 }); stroke(g, 3); }
+  else if (kind === 'crate') { g.rect(-W / 2, -H / 2, W, H).fill(0xf2c53d); stroke(g, 3); glowDisc(g, 0, 0, W * 0.22, 0xe23c2f, 0.7); }
+  else if (kind === 'crate_used') { g.rect(-W / 2, -H / 2, W, H).fill(0x8a7a5a); stroke(g, 3); }
+  else if (kind === 'pipe_top') { g.roundRect(-W / 2, -H * 0.2, W, H * 0.5, 8).fill(0x4f9a3c); stroke(g, 3); }
+  else if (kind === 'pipe_body') { g.rect(-W * 0.4, -H / 2, W * 0.8, H).fill(0x3d7a2e); stroke(g, 3); }
+  else if (kind === 'cloud') { g.ellipse(0, 0, W * 0.45, H * 0.3).fill(0xffffff); g.ellipse(-W * 0.2, H * 0.05, W * 0.28, H * 0.22).fill(0xffffff); g.ellipse(W * 0.2, H * 0.05, W * 0.28, H * 0.22).fill(0xffffff); }
+  else if (kind === 'bush') { g.ellipse(0, H * 0.1, W * 0.45, H * 0.3).fill(0x3d7a2e); for (const d of [-1, 0, 1]) g.circle(d * W * 0.2, -H * 0.05, 5).fill(0xc9412f); }
+  else if (kind === 'hill') { g.poly([-W / 2, H / 2, W / 2, H / 2, 0, -H / 2]).fill(0x5aa04a); stroke(g, 3); for (const d of [-1, 1]) g.circle(d * W * 0.14, -H * 0.05, 4).fill(0x1c1c1a); }
+}
+function hiddenFrog(g, W, H, o = {}) {
+  const s = Math.min(W, H) / 100;
+  const px = (x, y) => [x * s, y * s];
+  const big = !!o.big;
+  const body = big ? 0xb9c44a : C.frog;
+  g.ellipse(...px(0, big ? 4 : 8), (big ? 40 : 30) * s, (big ? 34 : 24) * s).fill(body); stroke(g, 3);
+  g.ellipse(...px(0, big ? -6 : -10), (big ? 26 : 20) * s, (big ? 22 : 17) * s).fill(body); stroke(g, 3);
+  const eyeY = big ? -20 : -22;
+  g.circle(...px(10, eyeY), (big ? 9 : 7) * s).fill(C.eye); g.circle(...px(10, eyeY), 3 * s).fill(o.shut ? body : C.pupil);
+  const legFwd = o.pose === 'run1' ? 10 : o.pose === 'run2' ? -10 : 0;
+  for (const d of [-1, 1]) g.ellipse(...px(d * 14 + legFwd * d, big ? 30 : 22), 8 * s, 6 * s).fill(body); stroke(g, 2);
+  const armY = o.pose === 'jump' ? -14 : o.pose === 'win' ? -22 : 6;
+  g.ellipse(...px(-22, armY), 7 * s, 12 * s).fill(body); stroke(g, 2);
+  if (o.tongue) { g.roundRect(...px(20, eyeY + 2), 30 * s, 5 * s, 2 * s).fill(C.pink); }
+  if (big) { for (let i = -1; i <= 1; i++) { g.roundRect(...px(i * 10 - 3, 2), 6 * s, 14 * s, 2 * s).fill(C.red); stroke(g, 1.5); } }
+  if (o.fire) { g.poly([...px(28, -18), ...px(60, -14), ...px(28, -10)]).fill(C.orange); glowDisc(g, ...px(55, -14), 10 * s, C.yellow, 0.7); }
+  if (o.dead) { for (const d of [-1, 1]) { g.moveTo(...px(d * 6 + 6, eyeY - 4)).lineTo(...px(d * 6 + 14, eyeY + 4)).stroke({ width: 2 * s, color: OUT }); g.moveTo(...px(d * 6 + 14, eyeY - 4)).lineTo(...px(d * 6 + 6, eyeY + 4)).stroke({ width: 2 * s, color: OUT }); } }
+}
+function miniBoss(g, W, H, kind, flat) {
+  const s = Math.min(W, H) / 100;
+  const px = (x, y) => [x * s, y * s];
+  const scaleY = flat ? 0.35 : 1;
+  const body = kind === 'chaco' ? 0xefe9d8 : kind === 'landlord' ? 0x6f5a3f : kind === 'neco' ? 0x7b3fb4
+    : kind === 'narrator' ? 0x3a3a42 : kind === 'sackman' ? 0x8a6a44 : 0xe8b8c8;
+  g.ellipse(0, 20 * s * scaleY - (flat ? 0 : 0), 30 * s, 26 * s * scaleY).fill(body); stroke(g, 3);
+  if (!flat) {
+    g.ellipse(0, -14 * s, 20 * s, 18 * s).fill(body); stroke(g, 3);
+    for (const d of [-1, 1]) g.circle(d * 8 * s, -16 * s, 3.5 * s).fill(kind === 'neco' ? 0xff3a2a : 0x1c1c1a);
+    for (const d of [-1, 1]) g.ellipse(d * 20 * s, 34 * s, 7 * s, 6 * s).fill(body); stroke(g, 2);
+  } else {
+    for (let i = 0; i < 5; i++) g.circle(-16 * s + i * 5, 30 * s, 2 * s).fill(0xf2c53d);
+  }
+}
+
+Object.assign(SPRITES, {
+  hl_ground:     { w: 1, h: 1, draw: (g, W, H) => hiddenTile(g, W, H, 'ground') },
+  hl_brick:      { w: 1, h: 1, draw: (g, W, H) => hiddenTile(g, W, H, 'brick') },
+  hl_crate:      { w: 1, h: 1, draw: (g, W, H) => hiddenTile(g, W, H, 'crate') },
+  hl_crate_used: { w: 1, h: 1, draw: (g, W, H) => hiddenTile(g, W, H, 'crate_used') },
+  hl_pipe_top:   { w: 1.1, h: 0.6, draw: (g, W, H) => hiddenTile(g, W, H, 'pipe_top') },
+  hl_pipe_body:  { w: 0.9, h: 1, draw: (g, W, H) => hiddenTile(g, W, H, 'pipe_body') },
+  hl_cloud:      { w: 1.2, h: 0.7, draw: (g, W, H) => hiddenTile(g, W, H, 'cloud') },
+  hl_bush:       { w: 1.1, h: 0.7, draw: (g, W, H) => hiddenTile(g, W, H, 'bush') },
+  hl_hill:       { w: 1.3, h: 1, draw: (g, W, H) => hiddenTile(g, W, H, 'hill') },
+  hl_bg:         { w: 1, h: 1, draw: (g, W, H) => { g.rect(-W / 2, -H / 2, W, H).fill(0x6fb7e6); } },
+
+  hf_small_idle:  { w: 1, h: 1.1, draw: (g, W, H) => hiddenFrog(g, W, H, {}) },
+  hf_small_run1:  { w: 1, h: 1.1, draw: (g, W, H) => hiddenFrog(g, W, H, { pose: 'run1' }) },
+  hf_small_run2:  { w: 1, h: 1.1, draw: (g, W, H) => hiddenFrog(g, W, H, { pose: 'run2' }) },
+  hf_small_jump:  { w: 1, h: 1.1, draw: (g, W, H) => hiddenFrog(g, W, H, { pose: 'jump' }) },
+  hf_small_dead:  { w: 1, h: 1.1, draw: (g, W, H) => hiddenFrog(g, W, H, { dead: true }) },
+  hf_small_skid:  { w: 1, h: 1.1, draw: (g, W, H) => hiddenFrog(g, W, H, { pose: 'run2' }) },
+  hf_small_duck:  { w: 1, h: 0.8, draw: (g, W, H) => hiddenFrog(g, W, H, { shut: true }) },
+  hf_small_tongue:{ w: 1.2, h: 1.1, draw: (g, W, H) => hiddenFrog(g, W, H, { tongue: true }) },
+  hf_small_win:   { w: 1, h: 1.1, draw: (g, W, H) => hiddenFrog(g, W, H, { pose: 'win' }) },
+
+  hf_big_idle:    { w: 1.3, h: 1.4, draw: (g, W, H) => hiddenFrog(g, W, H, { big: true }) },
+  hf_big_run1:    { w: 1.3, h: 1.4, draw: (g, W, H) => hiddenFrog(g, W, H, { big: true, pose: 'run1' }) },
+  hf_big_run2:    { w: 1.3, h: 1.4, draw: (g, W, H) => hiddenFrog(g, W, H, { big: true, pose: 'run2' }) },
+  hf_big_jump:    { w: 1.3, h: 1.4, draw: (g, W, H) => hiddenFrog(g, W, H, { big: true, pose: 'jump' }) },
+  hf_big_hurt:    { w: 1.3, h: 1.4, draw: (g, W, H) => hiddenFrog(g, W, H, { big: true, dead: true }) },
+  hf_big_fire:    { w: 1.6, h: 1.4, draw: (g, W, H) => hiddenFrog(g, W, H, { big: true, fire: true }) },
+  hf_big_firerun: { w: 1.6, h: 1.4, draw: (g, W, H) => hiddenFrog(g, W, H, { big: true, fire: true, pose: 'run1' }) },
+  hf_big_duck:    { w: 1.3, h: 1.0, draw: (g, W, H) => hiddenFrog(g, W, H, { big: true, shut: true }) },
+  hf_big_win:     { w: 1.3, h: 1.4, draw: (g, W, H) => hiddenFrog(g, W, H, { big: true, pose: 'win', fire: true }) },
+
+  hm_chaco_1:     { w: 1, h: 1, draw: (g, W, H) => miniBoss(g, W, H, 'chaco', false) },
+  hm_chaco_2:     { w: 1, h: 1, draw: (g, W, H) => miniBoss(g, W, H, 'chaco', false) },
+  hm_chaco_flat:  { w: 1.1, h: 0.5, draw: (g, W, H) => miniBoss(g, W, H, 'chaco', true) },
+  hm_landlord_1:    { w: 1, h: 1, draw: (g, W, H) => miniBoss(g, W, H, 'landlord', false) },
+  hm_landlord_2:    { w: 1, h: 1, draw: (g, W, H) => miniBoss(g, W, H, 'landlord', false) },
+  hm_landlord_flat: { w: 1.1, h: 0.5, draw: (g, W, H) => miniBoss(g, W, H, 'landlord', true) },
+  hm_neco_1:      { w: 1, h: 1, draw: (g, W, H) => miniBoss(g, W, H, 'neco', false) },
+  hm_neco_2:      { w: 1, h: 1, draw: (g, W, H) => miniBoss(g, W, H, 'neco', false) },
+  hm_neco_flat:   { w: 1.1, h: 0.5, draw: (g, W, H) => miniBoss(g, W, H, 'neco', true) },
+  hm_probe_1:     { w: 1, h: 1, draw: (g, W, H) => miniBoss(g, W, H, 'probe', false) },
+  hm_probe_2:     { w: 1, h: 1, draw: (g, W, H) => miniBoss(g, W, H, 'probe', false) },
+  hm_probe_flat:  { w: 1.1, h: 0.5, draw: (g, W, H) => miniBoss(g, W, H, 'probe', true) },
+  hm_narrator_1:    { w: 1, h: 1, draw: (g, W, H) => miniBoss(g, W, H, 'narrator', false) },
+  hm_narrator_2:    { w: 1, h: 1, draw: (g, W, H) => miniBoss(g, W, H, 'narrator', false) },
+  hm_narrator_flat: { w: 1.1, h: 0.5, draw: (g, W, H) => miniBoss(g, W, H, 'narrator', true) },
+  hm_sackman_1:     { w: 1, h: 1, draw: (g, W, H) => miniBoss(g, W, H, 'sackman', false) },
+  hm_sackman_2:     { w: 1, h: 1, draw: (g, W, H) => miniBoss(g, W, H, 'sackman', false) },
+  hm_sackman_flat:  { w: 1.1, h: 0.5, draw: (g, W, H) => miniBoss(g, W, H, 'sackman', true) },
+  hm_umma_1:        { w: 1, h: 1, draw: (g, W, H) => miniBoss(g, W, H, 'umma', false) },
+  hm_umma_2:        { w: 1, h: 1, draw: (g, W, H) => miniBoss(g, W, H, 'umma', false) },
+  hm_umma_flat:     { w: 1.1, h: 0.5, draw: (g, W, H) => miniBoss(g, W, H, 'umma', true) },
+
+  hi_beaker:     { w: 0.8, h: 1, draw: (g, W, H) => { g.roundRect(-W * 0.3, -H * 0.3, W * 0.6, H * 0.55, 6).fill(0x9fe6a0); stroke(g, 2.5); glowDisc(g, 0, -H * 0.15, W * 0.15, 0x4f9a3c, 0.7); } },
+  hi_nuke:       { w: 0.9, h: 0.9, draw: (g, W, H) => { g.circle(0, 0, W * 0.35).fill(0xf2c53d); stroke(g, 3); glowDisc(g, 0, 0, W * 0.4, 0xffe066, 0.5); } },
+  hi_tnt:        { w: 0.9, h: 1, draw: (g, W, H) => { for (const d of [-1, 0, 1]) g.roundRect(d * W * 0.24 - W * 0.08, -H * 0.35, W * 0.16, H * 0.6, 4).fill(C.red); stroke(g, 2); } },
+  hi_burger:     { w: 0.9, h: 0.7, draw: (g, W, H) => { g.ellipse(0, -H * 0.15, W * 0.4, H * 0.18).fill(0xd9a94a); g.ellipse(0, H * 0.05, W * 0.42, H * 0.14).fill(0x4f9a3c); g.ellipse(0, H * 0.2, W * 0.4, H * 0.18).fill(0xd9a94a); stroke(g, 2); } },
+  hi_detonator:  { w: 1, h: 1.2, draw: (g, W, H) => { g.roundRect(-W * 0.35, -H * 0.2, W * 0.7, H * 0.5, 6).fill(0x3a3a42); stroke(g, 3); g.roundRect(-W * 0.1, -H * 0.5, W * 0.2, H * 0.35, 4).fill(0xe23c2f); } },
+  hi_star:       { w: 0.6, h: 0.6, draw: (g, W, H) => { const pts = []; for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, r = i % 2 ? W * 0.15 : W * 0.32; pts.push(Math.cos(a) * r, Math.sin(a) * r); } g.poly(pts).fill(0xf2c53d); } },
+});
+
 export const SPRITE_KINDS = Object.keys(SPRITES);
 export { CELL, C as PALETTE };

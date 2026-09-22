@@ -214,6 +214,8 @@
       box-shadow: 0 10px 34px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.08);
     }
     .bf-below .bf-btn { margin-top: 0; padding: 11px 32px; font-size: 13px; }
+    .bf-hidden-btn { animation: bf-hidden-pulse 2.2s ease-in-out infinite; }
+    @keyframes bf-hidden-pulse { 0%, 100% { opacity: .6; } 50% { opacity: 1; box-shadow: 0 0 14px rgba(170,180,42,.6); } }
     .bf-below .bf-btn.ghost { padding: 8px 20px; font-size: 11px; }
     .bf-below .bf-best { font-size: 10px; }
     /* On a narrow screen the painted rectangle is only a couple of hundred pixels
@@ -556,6 +558,6 @@
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/pixi.js@8.20.1/dist/pixi.min.js"></script>
-  <script type="module" src="game/main.js?v=62"></script>
+  <script type="module" src="game/main.js?v=63"></script>
 </body>
 </html>

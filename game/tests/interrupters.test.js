@@ -1,7 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { INTERRUPTERS, INTERRUPTER_PROPS } from '../config/interrupters.js';
-import { PLANNED_ACHIEVEMENTS } from '../config/plannedachievements.js';
 import { ACHIEVEMENTS } from '../config/achievements.js';
 import { stripCues } from '../config/bossvoices.js';
 
@@ -25,9 +24,6 @@ test('each has nine props with sticker labels that fit', () => {
     for (const [, label] of list) assert.ok(label.length <= 34, label);
   }
 });
-test('the one achievement still waiting on the hidden level does not collide with a live one', () => {
-  assert.equal(PLANNED_ACHIEVEMENTS.length, 1);
-  assert.equal(PLANNED_ACHIEVEMENTS[0].id, 'worldQ');
-  const ids = new Set([...ACHIEVEMENTS.map((a) => a.id), ...PLANNED_ACHIEVEMENTS.map((a) => a.id)]);
-  assert.equal(ids.size, ACHIEVEMENTS.length + 1);
+test('worldQ now lives among the live achievements, not the planned ones', () => {
+  assert.ok(ACHIEVEMENTS.some((a) => a.id === 'worldQ'));
 });

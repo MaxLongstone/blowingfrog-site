@@ -29,6 +29,8 @@ import { InvaderFight } from './systems/invaderfight.js';
 import { Telemetry } from './systems/telemetry.js';
 import { LiveChat } from './ui/livechat.js';
 import { INTERRUPTERS, INTERRUPTER_PROPS } from './config/interrupters.js';
+import { HiddenLevel } from './systems/hiddenlevel.js';
+import { AI_EXTRA_LINES } from './config/plannedachievements.js';
 import { InterrupterManager } from './systems/interruptermgr.js';
 import { BOSS_LINES, stripCues } from './config/bossvoices.js';
 import { getAchievement } from './config/achievements.js';
@@ -260,6 +262,15 @@ class Game {
     this.telem.markTitleShown();
     this.audio.playMusic(url.music(MUSIC_TITLE));
     if (usesPaintedArt(this.mode)) prefetchCutscene(CUTSCENE_TITLE);
+    // Every achievement except the hidden level's own (that one cannot require
+    // itself to unlock) is what opens the door on the title screen.
+    const others = this.ach.total - 1;
+    const doneOthers = this.ach.count - (this.ach.has('worldQ') ? 1 : 0);
+    const hiddenUnlocked = doneOthers >= others;
+    if (hiddenUnlocked && !this.hiddenAnnounced) {
+      this.hiddenAnnounced = true;
+      this.sayLine('voice_hidden_unlock', AI_EXTRA_LINES.find((l) => l.id === 'hidden_unlock').text);
+    }
     this.overlays.title({
       onStart: () => this.beginRun(),
       best: this.best,
@@ -268,6 +279,36 @@ class Game {
       mode: this.mode,
       artCount: this.artCount,
       onMode: (m) => this.setMode(m),
+      hiddenUnlocked,
+      onHidden: () => this.startHidden(),
+    });
+  }
+
+  // The secret level: unlocked once every other achievement is earned.
+  startHidden(score = 0) {
+    this.overlays.hide();
+    this.clearPlay();
+    this.paused = false;
+    this.hud.show(true);
+    document.body.classList.add('playing');
+    this.audio.stopMusic({ fade: 0.4 });
+    this.sayLine('voice_hidden_intro', AI_EXTRA_LINES.find((l) => l.id === 'hidden_intro').text);
+    this.play = new HiddenLevel({ app: this.app, textures: this.tex, audio: this.audio, hud: this.hud, ach: this.ach, score });
+    this.play.on('won', ({ score }) => {
+      this.saveBest(score);
+      this.sayLine('voice_hidden_win', AI_EXTRA_LINES.find((l) => l.id === 'hidden_win').text);
+      this.clearPlay();
+      this.hud.show(false);
+      setTimeout(() => this.title(), 3000);
+    });
+    this.play.on('lost', ({ score }) => {
+      this.saveBest(score);
+      this.clearPlay();
+      this.hud.show(false);
+      this.overlays.gameOver(score, this.best, 'WORLD ???',
+        () => { this.overlays.hide(); this.startHidden(0); },
+        () => { this.overlays.hide(); this.title(); },
+        () => this.showAchievements(() => this.title()), this.ach);
     });
   }
 
@@ -593,6 +634,9 @@ async function boot() {
     const carry = { sizeClass: 3, lives: 5, hearts: 3 };
     if (qs.get('skip')) game.startBoss(boss, carry, 0);
     else game.bossIntro(boss, carry, 0);
+  } else if (qs.get('hidden')) {
+    game.audio.unlock();
+    game.startHidden(0);
   } else if (jump && getStage(jump)) {
     const st = getStage(jump);
     game.audio.unlock();

@@ -30,7 +30,7 @@ export class Overlays {
   // The cabinet art already carries the logo, so the title screen only supplies
   // what the art cannot: the rules, the mode choice, and the way in. Everything
   // sits inside the painted black screen; the buttons drop below it.
-  title({ onStart, best, ach, onAchievements, mode = 'atari', artCount = 0, onMode }) {
+  title({ onStart, best, ach, onAchievements, mode = 'atari', artCount = 0, onMode, hiddenUnlocked = false, onHidden }) {
     const screen = el('div', 'bf-screen');
     screen.append(
       el('p', 'bf-screen-line', 'You are a frog. You cross a road. You eat five bombs and come apart, and each time you come back bigger, until you are the size of the planet and the planet is the one with the problem.'),
@@ -61,6 +61,12 @@ export class Overlays {
     achBtn.onclick = onAchievements;
     const below = el('div', 'bf-below');
     below.append(go, achBtn);
+    // A secret door, once every other achievement is earned.
+    if (hiddenUnlocked) {
+      const hiddenBtn = el('button', 'bf-btn ghost bf-hidden-btn', '???');
+      hiddenBtn.onclick = onHidden;
+      below.append(hiddenBtn);
+    }
     if (best) below.append(el('div', 'bf-best', `PREVIOUS BEST: ${String(best).padStart(6, '0')}`));
 
     this.node.innerHTML = '';

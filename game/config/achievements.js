@@ -1,7 +1,7 @@
-// Thirty-six achievements, in the voice of the broadcast AI. Each is unlocked
-// by a cumulative counter that survives across sessions. A further one (finishing
-// the hidden level) exists but is not listed here until that level does --
-// see config/plannedachievements.js.
+// Thirty-seven achievements, in the voice of the broadcast AI. Each is unlocked
+// by a cumulative counter that survives across sessions. The hidden level's own
+// achievement (worldQ) is deliberately left out of the "every achievement"
+// unlock check for the level itself -- see main.js -- so it cannot lock itself.
 export const ACHIEVEMENTS = [
   { id: 'sentient',    emoji: '🐸', title: 'BARELY SENTIENT',
     blurb: 'Crossed a road. The bar was on the floor and you cleared it.',
@@ -127,6 +127,10 @@ export const ACHIEVEMENTS = [
   { id: 'neverRead',  emoji: '🙈', title: 'NEVER READ THE COMMENTS',
     blurb: 'Hid the chat. Wise. Preserved your dignity. Missed a man named Kevin. Kevin is fine.',
     hint: 'Hide the chat.', test: c => c.chatHidden >= 1 },
+
+  { id: 'worldQ', emoji: '❓', title: 'WORLD ???',
+    blurb: 'You found the level that is not on the map. The frog has never been so big, or so on fire, or so briefly invincible.',
+    hint: 'Finish the hidden level.', test: c => c.worldQFinished >= 1 },
 ];
 
 export const COUNTER_KEYS = [
@@ -140,7 +144,7 @@ export const COUNTER_KEYS = [
   'pastorFinishes', 'pastorSkips', 'pastorAppearances',
   'podcasterFinishes', 'podcasterSkips', 'podcasterAppearances', 'podcasterSkippedFirst',
   'bossbossFinishes', 'bossbossSkips', 'bossbossAppearances',
-  'chatOpenAtBossWin', 'chatHidden',
+  'chatOpenAtBossWin', 'chatHidden', 'worldQFinished',
 ];
 
 export function getAchievement(id) {
