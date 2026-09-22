@@ -113,6 +113,31 @@ they do flips."
   is UMMA's own doing (for example tripping on her own Crocs).
 - **Note:** she is currently the final boss and the true ending follows her.
 
+## Status (2026-09-22)
+
+**Wired and live:** the Preacher, the Podcaster and the Boss's Boss now interrupt ordinary stages
+exactly like the Influencer, generalised in `config/interrupters.js` + `systems/interruptermgr.js`.
+Unlock is tied to the boss they follow (Landlord, Neco, Narrator), a character is guaranteed once in
+their first stage, and after that it is the same 0.4 chance / 10-35s window as the Influencer, up to
+two interrupters a stage at least 20s apart. Portraits (4 tiers each), 9 props each, and all 12 lines
+per character are in and voiced. All 7 bosses now have all 5 heads-up lines recorded and wired. The
+Influencer's 22 skip-outbursts are recorded. 14 new achievements are live (36 total): 3 for the
+Influencer, 3 each for the Preacher/Podcaster/Boss's Boss, and 2 for the chat (read/never-read).
+
+**Received but not yet wired (no engine exists to use them):**
+- Neco Centipede art (sheet `CN`, backdrop `cent_bg`) -- the top-down chase engine itself is not built.
+- UMMA Donkey Kong art (sheet `UD`, backdrop `dk_bg`) -- the girder-climb engine itself is not built.
+- Hidden-level art received so far: Probe One + the power-ups (`H6`), and the three mini-boss sheet
+  received turned out to be Chaco/Landlord/Neco (`H4`). Still needed: tiles (`H1`), the small and big
+  frog (`H2`, `H3`), and the Narrator/Sack Man/UMMA minis (`H5`). The whole platformer engine is unbuilt.
+- Google Play icon and feature graphic, saved to `assets/store/`.
+All of this sits in the repo (sliced, or as backgrounds) waiting on its engine; nothing references it
+yet, so it costs nothing and cannot break anything.
+
+**Still outstanding in ElevenLabs:** 22 sound effects and 7 pieces of music/stings (prompts are in
+`docs/elevenlabs-master.md`, Parts 2 and 3) -- none of the environmental effects, the Centipede, the
+Donkey Kong climb, or the hidden level have sound yet.
+
 ## New interrupters
 
 Decided: **the same kind of interruption as the Influencer**, a card in a corner of the screen that

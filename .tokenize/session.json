@@ -1,0 +1,56 @@
+{
+  "sessionId": "987ae195-f5c9-43e1-a6b3-599039a456a1",
+  "startedAt": "2026-09-11T22:19:09.584Z",
+  "updatedAt": "2026-09-16T12:33:42.163Z",
+  "events": [
+    {
+      "ts": "2026-09-11T22:19:09.584Z",
+      "kind": "resolve",
+      "sessionId": "987ae195-f5c9-43e1-a6b3-599039a456a1",
+      "file": "/Users/luis/blowingfrog/play.html"
+    },
+    {
+      "ts": "2026-09-13T13:20:48.137Z",
+      "kind": "resolve",
+      "sessionId": "987ae195-f5c9-43e1-a6b3-599039a456a1",
+      "file": "/private/tmp/claude-502/-Users-luis/987ae195-f5c9-43e1-a6b3-599039a456a1/scratchpad/voicedoc/build.js"
+    },
+    {
+      "ts": "2026-09-16T11:45:56.653Z",
+      "kind": "resolve",
+      "sessionId": "987ae195-f5c9-43e1-a6b3-599039a456a1",
+      "file": "/Users/luis/blowingfrog/play.html"
+    },
+    {
+      "ts": "2026-09-16T12:05:45.925Z",
+      "kind": "resolve",
+      "sessionId": "987ae195-f5c9-43e1-a6b3-599039a456a1",
+      "file": "/Users/luis/blowingfrog/play.html"
+    },
+    {
+      "ts": "2026-09-16T12:14:38.394Z",
+      "kind": "resolve",
+      "sessionId": "987ae195-f5c9-43e1-a6b3-599039a456a1",
+      "file": "/Users/luis/blowingfrog/play.html"
+    },
+    {
+      "ts": "2026-09-16T12:33:42.163Z",
+      "kind": "resolve",
+      "sessionId": "987ae195-f5c9-43e1-a6b3-599039a456a1",
+      "file": "/Users/luis/blowingfrog/play.html"
+    }
+  ],
+  "unresolvedByFile": {
+    "/Users/luis/blowingfrog/play.html": 0,
+    "/private/tmp/claude-502/-Users-luis/987ae195-f5c9-43e1-a6b3-599039a456a1/scratchpad/voicedoc/build.js": 0
+  },
+  "fabrications": [],
+  "metrics": {
+    "violations": 0,
+    "blocks": 0,
+    "rewrites": 0,
+    "escapes": 0,
+    "denies": 0,
+    "resolves": 6
+  }
+}

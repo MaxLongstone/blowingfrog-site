@@ -6,7 +6,7 @@
 
 // Bump when any generated file is replaced, so browsers refetch instead of
 // serving the old copy from cache.
-export const MEDIA_VERSION = 2;
+export const MEDIA_VERSION = 3;
 const v = (path) => `${path}?v=${MEDIA_VERSION}`;
 
 export const url = {
@@ -41,6 +41,7 @@ export function voiceBossBeat(boss, index) {
 export const voiceBossFinale = (bossId) => `voice_boss_${bossId}_finale`;
 export const voiceAchievement = (achId) => `voice_ach_${achId}`;
 export const voiceBossLine = (bossId, n) => `voice_boss_${bossId}_${pad(n)}`;
+export const voiceInterrupter = (id, tier, n) => `voice_${id}_tier${tier}_${pad(n)}`;
 export const voiceInfluencer = (tier, line) => `voice_influencer_tier${tier}_${pad(line)}`;
 
 // ---- music --------------------------------------------------------------

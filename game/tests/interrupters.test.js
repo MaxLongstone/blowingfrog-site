@@ -25,8 +25,9 @@ test('each has nine props with sticker labels that fit', () => {
     for (const [, label] of list) assert.ok(label.length <= 34, label);
   }
 });
-test('planned achievements are fifteen, unique, and do not collide with the live ones', () => {
-  assert.equal(PLANNED_ACHIEVEMENTS.length, 15);
+test('the one achievement still waiting on the hidden level does not collide with a live one', () => {
+  assert.equal(PLANNED_ACHIEVEMENTS.length, 1);
+  assert.equal(PLANNED_ACHIEVEMENTS[0].id, 'worldQ');
   const ids = new Set([...ACHIEVEMENTS.map((a) => a.id), ...PLANNED_ACHIEVEMENTS.map((a) => a.id)]);
-  assert.equal(ids.size, ACHIEVEMENTS.length + 15);
+  assert.equal(ids.size, ACHIEVEMENTS.length + 1);
 });

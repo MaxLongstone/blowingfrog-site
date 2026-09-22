@@ -31,8 +31,8 @@ const rand = (rng, lo, hi) => lo + rng() * (hi - lo);
 const between = (rng, list) => list[Math.floor(rng() * list.length)];
 
 export class LiveChat {
-  constructor({ el, rng = Math.random }) {
-    this.el = el; this.rng = rng;
+  constructor({ el, rng = Math.random, onHide = null }) {
+    this.el = el; this.rng = rng; this.onHide = onHide;
     this.on = false;
     this.timers = new Set();
     this.recent = [];
@@ -79,6 +79,7 @@ export class LiveChat {
 
   setHidden(v) {
     this.hidden = v;
+    if (v) this.onHide?.();
     try { localStorage.setItem(HIDDEN_KEY, v ? '1' : '0'); } catch { /* private mode */ }
     this.paint(); this.refit();
   }

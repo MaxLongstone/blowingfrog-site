@@ -6,10 +6,12 @@ import { dirname, join } from 'node:path';
 import { STAGES } from '../config/stages.js';
 import { BOSSES } from '../config/bosses.js';
 import { ACHIEVEMENTS } from '../config/achievements.js';
-import { INFLUENCER } from '../config/influencer.js';
+import { INFLUENCER, OUTBURSTS } from '../config/influencer.js';
+import { INTERRUPTERS, INTERRUPTER_PROPS } from '../config/interrupters.js';
+import { BOSS_LINES } from '../config/bossvoices.js';
 import {
   url, SFX_NAMES, GAMEPLAY_SFX, CUTSCENE_SFX, DEFEAT_SFX, voiceStage, voiceBossBeat, voiceBossFinale,
-  voiceAchievement, voiceInfluencer, musicForStage, musicForBoss, MUSIC_TITLE, MUSIC_ENDING,
+  voiceAchievement, voiceInfluencer, voiceBossLine, voiceInterrupter, musicForStage, musicForBoss, MUSIC_TITLE, MUSIC_ENDING,
   cutsceneDetonation, cutsceneBossDefeat, CUTSCENE_TITLE, CUTSCENE_ENDING,
 } from '../config/media.js';
 
@@ -48,12 +50,29 @@ test("beats that quote the player's own numbers use the generic backup recording
   assert.doesNotMatch(voiceBossBeat(narrator, staticBeat), /_backup/);
 });
 
-// Achievements whose callout has not been recorded yet. The card shows the words meanwhile.
-const NOT_YET_RECORDED = ['sackLicked'];
-test('every achievement has a voiced callout, except the ones still waiting to be recorded', () => {
-  for (const id of NOT_YET_RECORDED) assert.ok(ACHIEVEMENTS.some((a) => a.id === id), `${id} is a real achievement`);
-  const wanted = ACHIEVEMENTS.filter((a) => !NOT_YET_RECORDED.includes(a.id));
-  assert.deepEqual(missing(wanted.map((a) => [a.id, url.voice(voiceAchievement(a.id))])), []);
+test('every achievement has a voiced callout', () => {
+  assert.deepEqual(missing(ACHIEVEMENTS.map((a) => [a.id, url.voice(voiceAchievement(a.id))])), []);
+});
+
+test('every boss has all five heads-up lines recorded', () => {
+  const need = [];
+  for (const id of Object.keys(BOSS_LINES)) for (let n = 1; n <= 5; n++) need.push([`${id} ${n}`, url.voice(voiceBossLine(id, n))]);
+  assert.deepEqual(missing(need), []);
+});
+
+test('every outburst the Influencer can throw when you try to skip her is recorded', () => {
+  const need = OUTBURSTS.map((_, i) => [`outburst ${i + 1}`, url.voice(`voice_influencer_outburst_${String(i + 1).padStart(2, '0')}`)]);
+  assert.deepEqual(missing(need), []);
+});
+
+test('every interrupter has all twelve lines recorded, a portrait per tier, and every prop image', () => {
+  const need = [];
+  for (const [id, c] of Object.entries(INTERRUPTERS)) {
+    c.tiers.forEach((tier, ti) => tier.forEach((_, li) => need.push([`${id} tier ${ti + 1}.${li + 1}`, url.voice(voiceInterrupter(id, ti + 1, li + 1))])));
+    for (let t = 1; t <= 4; t++) need.push([`${id} portrait tier ${t}`, `assets/game/${id}_t${t}.png`]);
+    for (const [img] of INTERRUPTER_PROPS[id]) need.push([`${id} prop ${img}`, `assets/game/${img}.png`]);
+  }
+  assert.deepEqual(missing(need), []);
 });
 
 test('all four Influencer tiers have every line recorded, and text to show', () => {

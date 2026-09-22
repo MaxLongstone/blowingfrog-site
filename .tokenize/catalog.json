@@ -1,0 +1,276 @@
+{
+  "generatedAt": "2026-09-19T11:24:25.409Z",
+  "root": "/Users/luis/blowingfrog",
+  "sources": [
+    {
+      "type": "css-vars",
+      "path": "shared.css",
+      "tokenCount": 14
+    }
+  ],
+  "tokens": {
+    "bg": {
+      "name": "bg",
+      "value": "#0b0b0b",
+      "type": "color",
+      "tier": "semantic",
+      "originPath": "/Users/luis/blowingfrog/shared.css",
+      "originType": "css-vars"
+    },
+    "bg.surface": {
+      "name": "bg.surface",
+      "value": "#141414",
+      "type": "color",
+      "tier": "semantic",
+      "originPath": "/Users/luis/blowingfrog/shared.css",
+      "originType": "css-vars"
+    },
+    "bg.card": {
+      "name": "bg.card",
+      "value": "#1a1a1a",
+      "type": "color",
+      "tier": "semantic",
+      "originPath": "/Users/luis/blowingfrog/shared.css",
+      "originType": "css-vars"
+    },
+    "text": {
+      "name": "text",
+      "value": "#ffffff",
+      "type": "color",
+      "tier": "semantic",
+      "originPath": "/Users/luis/blowingfrog/shared.css",
+      "originType": "css-vars"
+    },
+    "text.muted": {
+      "name": "text.muted",
+      "value": "rgba(255,255,255,0.52)",
+      "type": "color",
+      "tier": "semantic",
+      "originPath": "/Users/luis/blowingfrog/shared.css",
+      "originType": "css-vars"
+    },
+    "accent": {
+      "name": "accent",
+      "value": "#8b9421",
+      "type": "color",
+      "tier": "semantic",
+      "originPath": "/Users/luis/blowingfrog/shared.css",
+      "originType": "css-vars"
+    },
+    "accent.lt": {
+      "name": "accent.lt",
+      "value": "#aab42a",
+      "type": "color",
+      "tier": "semantic",
+      "originPath": "/Users/luis/blowingfrog/shared.css",
+      "originType": "css-vars"
+    },
+    "border": {
+      "name": "border",
+      "value": "rgba(255,255,255,0.1)",
+      "type": "color",
+      "tier": "semantic",
+      "originPath": "/Users/luis/blowingfrog/shared.css",
+      "originType": "css-vars"
+    },
+    "nav.h": {
+      "name": "nav.h",
+      "value": "76px",
+      "type": "dimension",
+      "tier": "semantic",
+      "originPath": "/Users/luis/blowingfrog/shared.css",
+      "originType": "css-vars"
+    },
+    "f.display": {
+      "name": "f.display",
+      "value": "'Barlow Condensed', sans-serif",
+      "type": "other",
+      "tier": "semantic",
+      "originPath": "/Users/luis/blowingfrog/shared.css",
+      "originType": "css-vars"
+    },
+    "f.body": {
+      "name": "f.body",
+      "value": "'Barlow', sans-serif",
+      "type": "other",
+      "tier": "semantic",
+      "originPath": "/Users/luis/blowingfrog/shared.css",
+      "originType": "css-vars"
+    },
+    "f.accent": {
+      "name": "f.accent",
+      "value": "'Playfair Display', serif",
+      "type": "other",
+      "tier": "semantic",
+      "originPath": "/Users/luis/blowingfrog/shared.css",
+      "originType": "css-vars"
+    },
+    "ease": {
+      "name": "ease",
+      "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+      "type": "other",
+      "tier": "semantic",
+      "originPath": "/Users/luis/blowingfrog/shared.css",
+      "originType": "css-vars"
+    }
+  },
+  "valueIndex": {
+    "color": [
+      {
+        "value": "#0b0b0b",
+        "normalized": {
+          "r": 11,
+          "g": 11,
+          "b": 11,
+          "a": 1
+        },
+        "tokenNames": [
+          "bg"
+        ]
+      },
+      {
+        "value": "#141414",
+        "normalized": {
+          "r": 20,
+          "g": 20,
+          "b": 20,
+          "a": 1
+        },
+        "tokenNames": [
+          "bg.surface"
+        ]
+      },
+      {
+        "value": "#1a1a1a",
+        "normalized": {
+          "r": 26,
+          "g": 26,
+          "b": 26,
+          "a": 1
+        },
+        "tokenNames": [
+          "bg.card"
+        ]
+      },
+      {
+        "value": "#ffffff",
+        "normalized": {
+          "r": 255,
+          "g": 255,
+          "b": 255,
+          "a": 1
+        },
+        "tokenNames": [
+          "text"
+        ]
+      },
+      {
+        "value": "#ffffff85",
+        "normalized": {
+          "r": 255,
+          "g": 255,
+          "b": 255,
+          "a": 0.52
+        },
+        "tokenNames": [
+          "text.muted"
+        ]
+      },
+      {
+        "value": "#8b9421",
+        "normalized": {
+          "r": 139,
+          "g": 148,
+          "b": 33,
+          "a": 1
+        },
+        "tokenNames": [
+          "accent"
+        ]
+      },
+      {
+        "value": "#aab42a",
+        "normalized": {
+          "r": 170,
+          "g": 180,
+          "b": 42,
+          "a": 1
+        },
+        "tokenNames": [
+          "accent.lt"
+        ]
+      },
+      {
+        "value": "#ffffff1a",
+        "normalized": {
+          "r": 255,
+          "g": 255,
+          "b": 255,
+          "a": 0.1
+        },
+        "tokenNames": [
+          "border"
+        ]
+      }
+    ],
+    "dimension": [
+      {
+        "value": "76px",
+        "normalized": {
+          "value": 76,
+          "unit": "px",
+          "px": 76
+        },
+        "tokenNames": [
+          "nav.h"
+        ]
+      }
+    ],
+    "other": [
+      {
+        "value": "'Barlow Condensed', sans-serif",
+        "normalized": "'Barlow Condensed', sans-serif",
+        "tokenNames": [
+          "f.display"
+        ]
+      },
+      {
+        "value": "'Barlow', sans-serif",
+        "normalized": "'Barlow', sans-serif",
+        "tokenNames": [
+          "f.body"
+        ]
+      },
+      {
+        "value": "'Playfair Display', serif",
+        "normalized": "'Playfair Display', serif",
+        "tokenNames": [
+          "f.accent"
+        ]
+      },
+      {
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "normalized": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "tokenNames": [
+          "ease"
+        ]
+      }
+    ]
+  },
+  "conflicts": [
+    {
+      "tokenName": "nav.h",
+      "definitions": [
+        {
+          "source": "css-vars:/Users/luis/blowingfrog/shared.css",
+          "value": "76px"
+        },
+        {
+          "source": "css-vars:/Users/luis/blowingfrog/shared.css",
+          "value": "64px"
+        }
+      ],
+      "resolution": "css-vars"
+    }
+  ]
+}

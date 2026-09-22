@@ -1,5 +1,7 @@
-// Twenty-two achievements, in the voice of the broadcast AI. Each is unlocked
-// by a cumulative counter that survives across sessions.
+// Thirty-six achievements, in the voice of the broadcast AI. Each is unlocked
+// by a cumulative counter that survives across sessions. A further one (finishing
+// the hidden level) exists but is not listed here until that level does --
+// see config/plannedachievements.js.
 export const ACHIEVEMENTS = [
   { id: 'sentient',    emoji: '🐸', title: 'BARELY SENTIENT',
     blurb: 'Crossed a road. The bar was on the floor and you cleared it.',
@@ -73,6 +75,58 @@ export const ACHIEVEMENTS = [
   { id: 'participation', emoji: '🏆', title: 'PARTICIPATION TROPHY',
     blurb: 'You opened the game. That is the entire achievement. We are as confused about this one as you are.',
     hint: 'Open the game. Yes, really.',     test: c => c.boots >= 1 },
+
+  // The Influencer.
+  { id: 'linkInBio',  emoji: '🔗', title: 'LINK IN BIO',
+    blurb: 'Sat through a whole Influencer ad without skipping. Nobody has ever done that. Not even the Influencer. The link is in the bio. There is no bio.',
+    hint: 'Sit through one of the Influencer\u2019s ads.', test: c => c.infFinishes >= 1 },
+  { id: 'blocked',    emoji: '🚫', title: 'BLOCKED AND REPORTED',
+    blurb: 'Skipped five of her ads. She has been blocked, reported, and briefly mourned. She is fine. She is not fine.',
+    hint: 'Skip five of the Influencer\u2019s ads.', test: c => c.infSkips >= 5 },
+  { id: 'notOkay',    emoji: '🔦', title: 'SHE IS NOT OKAY',
+    blurb: 'Heard her last transmission, the one with the flashlight. Someone should check on her. You are someone. Do not check on her.',
+    hint: 'Hear the Influencer\u2019s last tier.', test: c => c.infTier4Heard >= 1 },
+
+  // Pastor Dale Hollis.
+  { id: 'amen',       emoji: '🙏', title: 'AMEN',
+    blurb: 'Sat through the Preacher\u2019s entire sermon. Your soul is unaffected. Your wallet has been asked, politely, for its account number.',
+    hint: 'Sit through one of the Preacher\u2019s sermons.', test: c => c.pastorFinishes >= 1 },
+  { id: 'prayerCloth', emoji: '🧣', title: 'PRAYER CLOTH, $89',
+    blurb: 'Skipped the Preacher five times. Heaven has been notified. Eternal Acres has been notified. Your down payment has been notified.',
+    hint: 'Skip the Preacher five times.', test: c => c.pastorSkips >= 5 },
+  { id: 'heKnowsMe',  emoji: '⛵', title: 'HE KNOWS ME',
+    blurb: 'Heard his last and worst justification. He knows you. He knows everyone. He knows a guy. The guy has a boat.',
+    hint: 'Hear the Preacher\u2019s last, worst justification.', test: c => c.pastorAppearances >= 4 },
+
+  // Buck Mallory, the podcaster.
+  { id: 'research',   emoji: '📎', title: 'DO YOUR OWN RESEARCH',
+    blurb: 'Sat through the Podcaster\u2019s whole broadcast. You did your own research. It was a frog. It is always a frog.',
+    hint: 'Sit through one of the Podcaster\u2019s broadcasts.', test: c => c.podcasterFinishes >= 1 },
+  { id: 'muted',      emoji: '🔇', title: 'MUTED',
+    blurb: 'Skipped the Podcaster the very first time. Good instincts. He noted it. He notes everything. He has a corkboard.',
+    hint: 'Skip the Podcaster the first time he appears.', test: c => c.podcasterSkippedFirst >= 1 },
+  { id: 'supplements', emoji: '🐸', title: 'THE SUPPLEMENTS ARE FINE',
+    blurb: 'Heard all four tiers of the Podcaster. The supplements are fine. Do not ask what is in them. Do not ask what is in you.',
+    hint: 'Hear all four tiers of the Podcaster.', test: c => c.podcasterAppearances >= 4 },
+
+  // Gregory Pemberton, the boss's boss.
+  { id: 'lastEmail',  emoji: '📧', title: 'PER MY LAST EMAIL',
+    blurb: 'Sat through a Boss\u2019s Boss check-in. You are now, technically, aligned. We are not sure with what.',
+    hint: 'Sit through one of the Boss\u2019s Boss\u2019s check-ins.', test: c => c.bossbossFinishes >= 1 },
+  { id: 'offline',    emoji: '📵', title: "LET'S TAKE THIS OFFLINE",
+    blurb: 'Skipped him three times. He took it offline. He is calling your house now. Do not answer. He has your number and a slide.',
+    hint: 'Skip the Boss\u2019s Boss three times.', test: c => c.bossbossSkips >= 3 },
+  { id: 'synergy',    emoji: '🌀', title: 'SYNERGY',
+    blurb: 'Heard all four tiers of the Boss\u2019s Boss. Language is a construct, and you have seen the end of it.',
+    hint: 'Hear all four tiers of the Boss\u2019s Boss.', test: c => c.bossbossAppearances >= 4 },
+
+  // The live comment section.
+  { id: 'readComments', emoji: '💬', title: 'READ THE COMMENTS',
+    blurb: 'Left the chat open through an entire boss fight. Everyone told you not to. You did it anyway. You are not smarter, and you are not better.',
+    hint: 'Leave the chat open through a whole boss fight.', test: c => c.chatOpenAtBossWin >= 1 },
+  { id: 'neverRead',  emoji: '🙈', title: 'NEVER READ THE COMMENTS',
+    blurb: 'Hid the chat. Wise. Preserved your dignity. Missed a man named Kevin. Kevin is fine.',
+    hint: 'Hide the chat.', test: c => c.chatHidden >= 1 },
 ];
 
 export const COUNTER_KEYS = [
@@ -81,6 +135,12 @@ export const COUNTER_KEYS = [
   'probeOneCleared', 'probeKills',
   'chacoCleared', 'landlordCleared', 'necoCleared', 'narratorCleared',
   'sackmanCleared', 'ummaCleared', 'boots',
+  // The Influencer, the three interrupters, and the chat.
+  'infFinishes', 'infSkips', 'infTier4Heard',
+  'pastorFinishes', 'pastorSkips', 'pastorAppearances',
+  'podcasterFinishes', 'podcasterSkips', 'podcasterAppearances', 'podcasterSkippedFirst',
+  'bossbossFinishes', 'bossbossSkips', 'bossbossAppearances',
+  'chatOpenAtBossWin', 'chatHidden',
 ];
 
 export function getAchievement(id) {

@@ -1,0 +1,23 @@
+{
+  "root": "/Users/luis/blowingfrog",
+  "surfaces": {
+    "tsx": {
+      "convention": "",
+      "confidence": "none",
+      "samples": 0
+    },
+    "ts": {
+      "convention": "",
+      "confidence": "none",
+      "samples": 0
+    },
+    "css": {
+      "convention": "var(--{kebab})",
+      "confidence": "high",
+      "samples": 120,
+      "conventionCounts": {
+        "var(--{kebab})": 120
+      }
+    }
+  }
+}

@@ -5,7 +5,7 @@
 export const INTERRUPTERS = {
   pastor: {
     name: 'Pastor Dale Hollis', ministry: 'Holy Equity Ministries', voice: 'Preacher',
-    unlocksAfter: 'landlord', firstStage: 'K2', handle: '@PastorDale', tag: 'DONATE NOW',
+    unlocksAfter: 'landlord', firstStage: 'K2', handle: '@PastorDale', tag: 'DONATE NOW', avatar: '🙏',
     tiers: [
       [
         "[Southern televangelist, warm, booming] Brothers and sisters, the Lord has laid a plot on my heart. Eternal Acres. Paradise Estates. Nothing down, nothing to fear, [chuckles] and nothing you can prove in a court of law. Call the number on your screen and sow a seed of forty-nine ninety-nine.",
@@ -31,7 +31,7 @@ export const INTERRUPTERS = {
   },
   podcaster: {
     name: 'Buck Mallory', ministry: 'THE UNFILTERED HOUR', voice: 'Nixon',
-    unlocksAfter: 'neco', firstStage: 'K3', handle: '@BuckUnfiltered', tag: 'LIVE · UNFILTERED',
+    unlocksAfter: 'neco', firstStage: 'K3', handle: '@BuckUnfiltered', tag: 'LIVE · UNFILTERED', avatar: '📡',
     tiers: [
       [
         "[gravelly paranoid American, confident radio host] Welcome back to THE UNFILTERED HOUR. I'm Buck Mallory, and tonight I'm going to tell you what they don't want you to know. [pause] That frog on your screen? Ask yourself who paid for its little shoes.",
@@ -57,7 +57,7 @@ export const INTERRUPTERS = {
   },
   bossboss: {
     name: 'Gregory Pemberton', ministry: 'VP of Synergy, Strategic Alignment', voice: 'Protagonist',
-    unlocksAfter: 'narrator', firstStage: 'K4', handle: 'gpemberton@strategicalignment', tag: 'URGENT · RE: RE: RE:',
+    unlocksAfter: 'narrator', firstStage: 'K4', handle: 'gpemberton@strategicalignment', tag: 'URGENT · RE: RE: RE:', avatar: '💼',
     tiers: [
       [
         "[corporate American, fake-friendly] Hey there, Gregory here! Just circling back on that thing we discussed. Do you have a quick minute to align on some low-hanging fruit? [chuckles] I'd love to leverage your bandwidth ahead of the offsite.",

@@ -9,7 +9,7 @@ import { url, voiceBossLine } from '../config/media.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 // Bosses whose lines have been recorded. Add an id here when its five files land.
-const RECORDED = [];
+const RECORDED = ['chaco', 'probe', 'landlord', 'neco', 'narrator', 'sackman', 'umma'];
 
 test('every boss has a voice in the cast and exactly five lines', () => {
   for (const b of BOSSES) {

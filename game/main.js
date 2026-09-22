@@ -7,7 +7,7 @@ import { Overlays } from './ui/overlays.js';
 import { preloadFrames, playDetonation, playEnding, playBossDefeat, playOpening, prefetchCutscene } from './ui/cutscene.js';
 import {
   url, SFX_NAMES, ATARI_USES_REAL_SFX, MUSIC_TITLE, MUSIC_ENDING, CUTSCENE_TITLE,
-  voiceStage, voiceBossBeat, voiceBossFinale, voiceAchievement, voiceInfluencer, voiceBossLine,
+  voiceStage, voiceBossBeat, voiceBossFinale, voiceAchievement, voiceInfluencer, voiceBossLine, voiceInterrupter,
   musicForStage, musicForBoss, cutsceneDetonation,
 } from './config/media.js';
 import { INFLUENCER, OUTBURSTS, SKIP_LABELS, RESIST } from './config/influencer.js';
@@ -28,6 +28,8 @@ import { UmmaFight } from './systems/ummafight.js';
 import { InvaderFight } from './systems/invaderfight.js';
 import { Telemetry } from './systems/telemetry.js';
 import { LiveChat } from './ui/livechat.js';
+import { INTERRUPTERS, INTERRUPTER_PROPS } from './config/interrupters.js';
+import { InterrupterManager } from './systems/interruptermgr.js';
 import { BOSS_LINES, stripCues } from './config/bossvoices.js';
 import { getAchievement } from './config/achievements.js';
 import { bossAfter, getBoss, BOSSES } from './config/bosses.js';
@@ -77,7 +79,9 @@ class Game {
     this.ad = null;
     // The comment section under the game; it starts when the first boss goes down.
     const chatEl = document.getElementById('live-chat');
-    this.chat = chatEl ? new LiveChat({ el: chatEl }) : null;
+    this.chat = chatEl ? new LiveChat({ el: chatEl, onHide: () => this.ach.bump('chatHidden') }) : null;
+    // The Preacher, the Podcaster and the Boss's Boss: the Influencer's rowdier cousins.
+    this.interrupters = new InterrupterManager();
 
     this.input = new Input(window, app.canvas);
     // Z is the star punch and only means something in the Chaco bout.
@@ -91,7 +95,7 @@ class Game {
       const dt = Math.min(0.05, ticker.deltaMS / 1000);
       if (this.play && !this.paused) {
         this.play.update(dt); this.telem.tickPlay(dt);
-        if (!this.inBoss) this.tickInfluencer(dt);
+        if (!this.inBoss) { this.tickInfluencer(dt); this.tickInterrupters(dt); }
       }
     });
 
@@ -177,20 +181,60 @@ class Game {
   showInfluencer({ tier, index }) {
     const cfg = INFLUENCER.tiers[tier - 1];
     this.chat?.react('ad', tier);
+    if (tier === 4) this.ach.bump('infTier4Heard');
     const tries = triesFor(tier, Math.random, this.lastTries);
     this.lastTries = tries;
     const resist = tries ? {
       tries, outbursts: OUTBURSTS, labels: SKIP_LABELS, pick: (last) => pickOutburst(OUTBURSTS, Math.random, last),
       onBlocked: () => this.audio.warn(),
     } : null;
-    const ad = showAd({ root: this.overlayRoot, tier, cfg, text: cfg.lines[index], onSkip: () => this.audio.stopVoice(), resist });
+    const ad = showAd({
+      root: this.overlayRoot, tier, cfg, text: cfg.lines[index], resist,
+      onSkip: () => { this.audio.stopVoice(); this.ach.bump('infSkips'); },
+    });
     this.ad = ad;
     let started = false;
     this.audio.playVoice(url.voice(voiceInfluencer(tier, index + 1)), {
       onstart: (seconds) => { started = true; ad.start(seconds); },
       onend: () => {
-        if (started) { ad.close(1.0); return; }
+        if (started) { ad.close(1.0); this.ach.bump('infFinishes'); return; }
         ad.start(6); ad.close(6.5);             // the recording never loaded: show her words anyway
+      },
+    });
+  }
+
+  // ---- the three newer interrupters: same slot, same card, their own data ----------
+  tickInterrupters(dt) {
+    if (this.ad && !this.ad.closed) return;
+    const canFire = !this.audio.voiceBusy && this.overlays.node.style.display === 'none';
+    const pick = this.interrupters.tick(dt, canFire);
+    if (pick) this.showInterrupter(pick);
+  }
+  showInterrupter({ id, tier, index }) {
+    const c = INTERRUPTERS[id];
+    const line = c.tiers[tier - 1][index];
+    const cfg = {
+      tag: c.tag, avatar: c.avatar, handle: c.handle, badge: tier >= 3 ? 'LIVE' : '',
+      art: `assets/game/${id}_t${tier}.png`,
+      products: INTERRUPTER_PROPS[id].map(([img, label]) => ({ img: `assets/game/${img}.png`, label })),
+    };
+    const finishKey = `${id}Finishes`, skipKey = `${id}Skips`, appearKey = `${id}Appearances`;
+    this.ach.bump(appearKey);
+    const ad = showAd({
+      root: this.overlayRoot, tier, cfg, text: stripCues(line),
+      onSkip: () => {
+        this.audio.stopVoice();
+        this.ach.bump(skipKey);
+        if (id === 'podcaster' && tier === 1) this.ach.bump('podcasterSkippedFirst');
+      },
+    });
+    this.ad = ad;
+    let started = false;
+    this.audio.playVoice(url.voice(voiceInterrupter(id, tier, index + 1)), {
+      onstart: (seconds) => { started = true; ad.start(seconds); },
+      onend: () => {
+        if (started) { ad.close(1.0); this.ach.bump(finishKey); return; }
+        ad.start(6); ad.close(6.5);
       },
     });
   }
@@ -266,6 +310,7 @@ class Game {
     this.play.on('stillHungry', ({ fuse, score }) => this.onStillHungry(stage, fuse, score));
     this.play.on('dead', ({ score }) => this.onDead(stage, score));
     this.influencer.arm(stage.id);
+    this.interrupters.arm();
   }
 
   bossIntro(boss, carry, score, index = 0, stats = null) {
@@ -342,6 +387,7 @@ class Game {
     this.play.on('finale', ({ text }) => this.speak(voiceBossFinale(boss.id), { caption: text }));
     this.play.on('won', async ({ score }) => {
       (this.beaten ||= new Set()).add(boss.id);
+      this.interrupters.unlock(boss.id);
       this.clearPlay();
       const next = getStage(boss.after) && nextStage(boss.after);
       this.saveBest(score);
@@ -350,6 +396,7 @@ class Game {
       this.hud.clearCaption();
       if (boss.id === 'chaco') this.chat?.enable();     // the first boss down is when the comments begin
       this.chat?.react('bossWin', boss.id);
+      if (this.chat?.on && !this.chat.hidden) this.ach.bump('chatOpenAtBossWin');
       await this.showTrophyRecap();
       // A boss placed after the very last ladder stage IS the final boss --
       // beating it should roll into the planet-sitting ending, not bounce
