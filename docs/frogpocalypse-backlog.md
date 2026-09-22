@@ -146,6 +146,48 @@ tested) replace `mirrorfight.js` (deleted). `NECO_FROG.kind` is now `'centipede'
 
 **Next up, in the order asked for: UMMA as Donkey Kong, then the hidden Mario-style level.**
 
+## Status (2026-09-24): UMMA rebuilt as the Donkey Kong climb
+
+**Live.** `game/systems/ummafight.js` rewritten in place (same `kind: 'umma'`, same
+class name, so nothing else needed to change) + new `game/systems/dkrules.js` (pure,
+tested). `UMMA` in `config/bosses.js` is now grid/ladder/croc-speed/round data instead
+of the old zone attacks.
+
+- A fixed 5-level, 7-column girder-and-ladder climb; ladders are offset on purpose
+  (never the same column two levels running) so the climb genuinely zigzags, the
+  way the arcade game's do. Frog moves with the same arrow-hop grammar as every
+  other fight.
+- **The differentiator from the Landlord's climb** (per the open question in the
+  last status note): the Landlord free-roams a grid dodging things that drop
+  straight down; UMMA's Crocs *roll along a girder* and, at the edge, *tumble down
+  to the next level and keep rolling the same direction* -- a real barrel cascade
+  (`dkrules.js`: `cascadeStep`), not a falling-object dodge.
+- SHIFT is now a jump (a short cooldown-gated invulnerability window) for hopping
+  over whatever is rolling through your column -- the "SHIFT does nothing here"
+  line from the old intro is gone along with the fact it described.
+- Banchan on the girders still fill the universal fuse; at 5 she still doesn't get
+  hurt, she gets *proud* -- a new twist where the board clears and she stops
+  throwing for a few seconds, which is the twist for this boss specifically being
+  the one nobody is punching.
+- The three barked commands survive unchanged in spirit (TAKE OFF YOUR SHOES / SIT
+  STILL / EAT!), re-pointed at the new grammar (`need: 'ladder'` in place of
+  `'zoneOut'`).
+- Also new: a locked-column hot-jar tell (`dk_jar`), reusing the old `soupBomb`
+  attack's idea of "watch your own column," now telegraphed rather than instant.
+- 3 rounds (reusing `outburstsToWin`), Crocs faster and thrown more often each
+  round. The finale reuses the existing painted `umma_pride`/`umma_trip` sprites --
+  no new art needed for it.
+- Verified in-browser: climbing gated correctly by ladder column, jump/cooldown,
+  banchan eating, both command outcomes, contact damage from a Croc and from the
+  jar, the proud state clearing the board, and a full three-round climb through to
+  the finale and the `won` event, all fired correctly with no console errors. Also
+  ran an unattended foraging bot for 300 ticks with no errors.
+- No new audio yet (music/stings still on the ElevenLabs list); reuses the
+  existing synth SFX.
+
+**Next up: the hidden Mario-style level** (the last of the three the user asked
+for, in order).
+
 ## Status (2026-09-22)
 
 **Wired and live:** the Preacher, the Podcaster and the Boss's Boss now interrupt ordinary stages

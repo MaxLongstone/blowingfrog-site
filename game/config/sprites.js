@@ -855,5 +855,36 @@ Object.assign(SPRITES, {
   } },
 });
 
+// UMMA rebuilt as a Donkey Kong climb: girders, ladders, the hot jar, the
+// tumbling Crocs, the goal, and the plate she keeps pushing at you.
+Object.assign(SPRITES, {
+  dk_girder:        { w: 4.0, h: 0.5, draw: (g, W, H) => { g.roundRect(-W / 2, -H / 2, W, H, H * 0.3).fill(0xb9862f); stroke(g, 2.5);
+    for (let i = 0; i < 9; i++) g.circle(-W / 2 + (i + 0.5) * (W / 9), 0, H * 0.16).fill({ color: 0x8a611c, alpha: 0.6 }); } },
+  dk_girder_broken: { w: 4.0, h: 0.5, draw: (g, W, H) => { g.roundRect(-W / 2, -H / 2, W * 0.4, H, H * 0.3).fill(0xb9862f);
+    g.roundRect(W * 0.1, -H / 2, W * 0.4, H, H * 0.3).fill(0xb9862f); stroke(g, 2.5); } },
+  dk_ladder:        { w: 0.7, h: 1.6, draw: (g, W, H) => { for (const d of [-1, 1]) g.roundRect(d * W * 0.32 - 4, -H / 2, 8, H).fill(0xd9a94a);
+    for (let i = 0; i < 6; i++) g.roundRect(-W * 0.32, -H / 2 + (i + 0.5) * (H / 6) - 3, W * 0.64, 6, 3).fill(0xd9a94a); } },
+  dk_ladder_broken: { w: 0.7, h: 1.6, draw: (g, W, H) => { for (const d of [-1, 1]) g.roundRect(d * W * 0.32 - 4, -H * 0.1, 8, H * 0.6).fill(0xd9a94a);
+    for (let i = 0; i < 3; i++) g.roundRect(-W * 0.32, -H * 0.1 + (i + 0.5) * (H * 0.6 / 3) - 3, W * 0.64, 6, 3).fill(0xd9a94a); } },
+  dk_jar:           { w: 1.1, h: 1.3, draw: (g, W, H) => { g.roundRect(-W * 0.34, -H * 0.1, W * 0.68, H * 0.5, 10).fill(0xd8d2c4); stroke(g, 3);
+    g.roundRect(-W * 0.4, -H * 0.42, W * 0.8, H * 0.16, 6).fill(0x6f4d2c); stroke(g, 2.5);
+    glowDisc(g, 0, 0, W * 0.24, 0xe23c2f, 0.55); } },
+  dk_crocs:         { w: 1.6, h: 1.2, draw: (g, W, H) => { for (const [x, y, c] of [[-0.28, 0.1, 0xffb703], [0.05, -0.1, 0xe86fa7], [0.3, 0.12, 0x4f9a3c]]) {
+    g.ellipse(x * W, y * H, W * 0.26, H * 0.3).fill(c); stroke(g, 2.5); } } },
+  dk_ricecooker:    { w: 1.3, h: 1.2, draw: (g, W, H) => { g.roundRect(-W * 0.4, -H * 0.1, W * 0.8, H * 0.5, 12).fill(0xe8e4d8); stroke(g, 3);
+    g.roundRect(-W * 0.44, -H * 0.32, W * 0.88, H * 0.24, 10).fill(0xc23fe0);
+    glowDisc(g, 0, -H * 0.18, W * 0.1, 0xff6fa7, 0.8); } },
+  dk_steam:         { w: 0.6, h: 0.9, draw: (g, W, H) => { for (let i = -1; i <= 1; i++) g.circle(i * W * 0.22, -i * H * 0.1, W * 0.22).fill({ color: 0xffffff, alpha: 0.35 }); } },
+  dk_banchan:       { w: 1.0, h: 0.8, draw: (g, W, H) => {
+    g.ellipse(0, H * 0.14, W * 0.44, H * 0.32).fill(0xf4f0e6); stroke(g, 2.5);
+    g.ellipse(0, H * 0.04, W * 0.36, H * 0.22).fill(0xc9412f);
+    for (const [x, y, r] of [[-0.16, 0.0, 0.1], [0.06, -0.04, 0.12], [0.18, 0.06, 0.09], [-0.04, 0.1, 0.08]])
+      g.ellipse(x * W, y * H, r * W, r * H * 0.8).fill(0xe8664a);
+    shine(g, -W * 0.18, H * 0.02, W * 0.08, H * 0.05);
+  } },
+  // The kitchen scaffold, seen face on; a dark stand-in until the painted plate lands.
+  dk_bg:            { w: 1, h: 1, draw: (g, W, H) => { g.rect(-W / 2, -H / 2, W, H).fill(0x241d16); } },
+});
+
 export const SPRITE_KINDS = Object.keys(SPRITES);
 export { CELL, C as PALETTE };

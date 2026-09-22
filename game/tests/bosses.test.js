@@ -58,24 +58,28 @@ test('NECO_FROG is a centipede fight after K2, three rounds of two chains gettin
 test('every intro beat has a heading and a string-or-function body', () => {
   for (const b of BOSSES) checkIntro(b);
 });
-test('UMMA is the final boss after K5, with no punch reliance and three outbursts to win', () => {
+test('UMMA is the final boss after K5: a Donkey Kong climb with no punch reliance and three rounds', () => {
   assert.equal(UMMA.kind, 'umma');
   assert.equal(UMMA.after, 'K5');
   assert.equal(UMMA.outburstsToWin, 3);
   assert.equal(UMMA.fuseTarget, 5);
-  const attackKeys = Object.keys(UMMA.attacks);
-  assert.ok(attackKeys.length >= 3, 'needs a few distinct attacks');
-  for (const a of Object.values(UMMA.attacks)) {
-    assert.ok(['zone', 'double', 'locked'].includes(a.reach), a.name);
-    assert.ok(a.tell > 0 && a.damage >= 0, a.name);
-    if (a.reach === 'zone') assert.ok([0, 1, 2].includes(a.zone), a.name);
+  assert.ok(UMMA.levels >= 3 && UMMA.cols >= 3);
+  // no ladder repeats its column with the one directly below it -- that is the zigzag
+  for (let i = 1; i < UMMA.ladders.length; i++) assert.notEqual(UMMA.ladders[i].col, UMMA.ladders[i - 1].col);
+  for (const arr of [UMMA.crocSpeed, UMMA.throwEvery, UMMA.soupEvery, UMMA.commandEvery]) {
+    assert.equal(arr.length, UMMA.outburstsToWin, 'one entry per round');
+  }
+  // it should get harder each round, not easier
+  for (let i = 1; i < UMMA.outburstsToWin; i++) {
+    assert.ok(UMMA.crocSpeed[i] >= UMMA.crocSpeed[i - 1], `crocs are faster by round ${i + 1}`);
+    assert.ok(UMMA.throwEvery[i] <= UMMA.throwEvery[i - 1], `thrown more often by round ${i + 1}`);
   }
   const commandKeys = Object.keys(UMMA.commands);
   assert.ok(commandKeys.length >= 3, 'needs a few distinct commands');
   for (const c of Object.values(UMMA.commands)) {
     assert.ok(c.window > 0, c.name);
     assert.ok(c.line && c.line.length > 0, c.name);
-    assert.ok(['zoneOut', 'freeze', 'eat'].includes(c.need), c.name);
+    assert.ok(['ladder', 'freeze', 'eat'].includes(c.need), c.name);
   }
   assert.ok(UMMA.finale.card && UMMA.finale.card.length > 10);
 });

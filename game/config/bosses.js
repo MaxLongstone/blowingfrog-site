@@ -380,8 +380,8 @@ export const UMMA = {
       body: "You have eaten a hurricane, a cop, most of a coastline, and a man who was doing cocaine off his own belt. None of that prepared you for a doorway with the porch light on and someone standing in it who has been up the whole time. She has a Croc in her hand already. She has had a Croc in her hand since before you were born.",
     },
     {
-      heading: 'THE SUPPLY NEVER RUNS OUT',
-      body: "There is no bottom to the shoe pile. I have looked. Every mismatched pair that has ever gone missing in every house on this planet is in that front hall, and she is not out of ammunition until physics says otherwise, and physics has learned to stay quiet in this house.",
+      heading: 'THE HOUSE IS THE FIGHT NOW',
+      body: "Girders where the stairs should be, ladders where a normal house would put a hallway, and her at the very top of it, pacing. Every Croc she throws does not fall straight down at you. It rolls, all the way along one level, and when it runs out of floor it tumbles down to the next one and keeps going, the same direction, all the way to the ground. It will find you eventually. Climb faster than it falls.",
     },
     {
       heading: 'A NOTE ON THE WORD I JUST USED',
@@ -389,16 +389,16 @@ export const UMMA = {
     },
     {
       heading: 'SHE IS NOT TRYING TO HURT YOU, WHICH IS WORSE',
-      body: "Everything she throws is a side dish. Banchan, still in the little dishes, thrown with the same arm and the same accuracy as the Croc. Eat it and the fuse fills exactly like it always has, except this time filling it does not make her angrier. It is the only boss in this entire game where doing the thing correctly makes her happy instead of hurt, and somehow that is scarier.",
+      body: "Banchan turns up on the girders too, still in the little dishes. Eat it and the fuse fills exactly like it always has, except here filling it does not hurt her, it just makes her proud, and for a few seconds she stops throwing anything at all. It is the only boss in the game where doing the thing correctly makes her happy instead of hurt, and somehow that is scarier.",
     },
     {
       heading: 'WHEN SHE TALKS, YOU LISTEN',
-      body: "She will bark an order between throws. Move. Sit still. Eat. There is exactly one correct response and a very short window to give it, and getting it wrong lands a hit no amount of good zone positioning will save you from. This is not a metaphor I am choosing for you. This is just what happens.",
+      body: "She will bark an order mid-climb. Get on a ladder. Stand completely still. Eat something. There is exactly one correct response and a very short window to give it, and getting it wrong costs you regardless of how well you were dodging everything else.",
       menace: true,
     },
     {
-      heading: 'THERE IS NO PUNCH IN THIS FIGHT',
-      body: "SHIFT does nothing here and I am not fixing that, because you do not hit your mother, not in this house, not in any house, not even the fake one made of triangles I drew for you. ARROWS move you between the three zones, SPACE is your tongue for whatever lands on a plate. Survive the orders, eat what she gives you, and let her own front hall finish this.",
+      heading: 'GO ON THEN',
+      body: "ARROWS move you along a girder and up or down a ladder where one actually connects. SHIFT jumps -- not at her, never at her, just over whatever is rolling through your column. SPACE eats whatever is on your plate. Reach the top three times. Her own front hall finishes it, not you.",
     },
   ],
 
@@ -406,23 +406,48 @@ export const UMMA = {
   hearts: 3,
   fuseTarget: 5,
 
-  attacks: {
-    crocOut:    { name: 'THE LEFT ONE',  tell: 0.5,  damage: 1, reach: 'zone', zone: 0 },
-    crocIn:     { name: 'THE RIGHT ONE', tell: 0.5,  damage: 1, reach: 'zone', zone: 2 },
-    doubleCroc: { name: 'BOTH AT ONCE',  tell: 0.65, damage: 1, reach: 'double' },
-    soupBomb:   { name: 'HOT SOUP',      tell: 0.55, damage: 1, reach: 'locked' },
-  },
+  // The climb: a fixed number of girder levels, a frog-height grid of columns
+  // along each one, and the ladders that connect them -- offset on purpose so
+  // no climb is a straight line up.
+  levels: 5,
+  cols: 7,
+  ladders: [
+    { level: 0, col: 1 }, { level: 1, col: 5 }, { level: 2, col: 1 }, { level: 3, col: 5 },
+  ],
 
+  // How fast a thrown Croc rolls (cells/second) and how often she throws one,
+  // both per round; more of both as the rounds go on.
+  crocSpeed: [2.2, 2.8, 3.4],
+  throwEvery: [2.0, 1.5, 1.15],
+  maxCrocsOnScreen: 3,
+
+  // The other thing she throws: a jar of something hot, straight down onto
+  // whatever column the frog is standing in, with enough warning to move.
+  soupEvery: [6.0, 5.0, 4.2],
+  soupTell: 0.75,
+
+  // The plates on the girders. Eating one fills the universal fuse; filling it
+  // does not hurt her here -- it makes her proud, and she stops throwing for a
+  // few seconds while it lasts.
+  minBanchan: 3,
+  banchanRespawn: [1.6, 3.2],
+  proudFor: 3.5,
+
+  // Barked mid-climb orders, same three as always: a name, the line she says,
+  // how long you have, and what satisfies it.
   commands: {
-    shoes:  { name: 'TAKE OFF YOUR SHOES', line: 'TAKE OFF YOUR SHOES!',        window: 1.0, need: 'zoneOut' },
-    freeze: { name: 'SIT STILL',           line: 'SIT STILL AND EAT YOUR FOOD', window: 1.1, need: 'freeze' },
-    eat:    { name: 'EAT YOUR BANCHAN',    line: 'EAT!',                        window: 1.2, need: 'eat' },
+    shoes:  { name: 'TAKE OFF YOUR SHOES', line: 'TAKE OFF YOUR SHOES!',        window: 1.4, need: 'ladder' },
+    freeze: { name: 'SIT STILL',           line: 'SIT STILL AND EAT YOUR FOOD', window: 1.3, need: 'freeze' },
+    eat:    { name: 'EAT YOUR BANCHAN',    line: 'EAT!',                        window: 1.5, need: 'eat' },
   },
+  commandEvery: [8.5, 7.5, 6.5],
+
+  scoring: { banchan: 100, dodge: 40, commandGood: 250, commandBad: 0, roundClear: 900 },
 
   finale: {
     card: "She is so busy being proud of you that she stops watching her own feet, and the front hall has been a minefield of thrown Crocs since before this fight started. She goes down the way she always said someone in this house was going to.",
   },
-};
+}
 
 // Boss seven: PROBE ONE. Placed early, after stage 4 -- a full alien recon
 // grid sent for a frog that is nowhere near kaiju-sized yet. Space Invaders
