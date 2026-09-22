@@ -39,17 +39,21 @@ test('SACK_MAN is a dark fight after K4 with three surges and three attacks', ()
     assert.ok(SACK_MAN.light.decay[i] >= SACK_MAN.light.decay[i - 1], `decay slows at surge ${i}`);
   }
 });
-test('NECO_FROG is a mirror fight after K2 with three attacks and three rounds', () => {
-  assert.equal(NECO_FROG.kind, 'mirror');
+test('NECO_FROG is a centipede fight after K2, three rounds of two chains getting longer', () => {
+  assert.equal(NECO_FROG.kind, 'centipede');
   assert.equal(NECO_FROG.after, 'K2');
   assert.equal(NECO_FROG.roundsToWin, 3);
-  assert.equal(Object.keys(NECO_FROG.attacks).length, 3);
-  for (const a of Object.values(NECO_FROG.attacks)) {
-    assert.ok(['out', 'mid', 'in'].includes(a.reach), a.name);
-    assert.ok(a.tell > 0 && a.damage >= 0, a.name);
+  assert.equal(NECO_FROG.rounds.length.length, 3);
+  assert.equal(NECO_FROG.rounds.speedMult.length, 3);
+  // each round is at least as long and at least as fast as the one before
+  for (let i = 1; i < 3; i++) {
+    assert.ok(NECO_FROG.rounds.length[i] >= NECO_FROG.rounds.length[i - 1], `round ${i + 1} length`);
+    assert.ok(NECO_FROG.rounds.speedMult[i] >= NECO_FROG.rounds.speedMult[i - 1], `round ${i + 1} speed`);
   }
-  assert.equal(NECO_FROG.growth.raceSpeed.length, 3);
-  assert.equal(NECO_FROG.growth.attackEvery.length, 3);
+  assert.ok(NECO_FROG.chainSpeed.base > 0 && NECO_FROG.chainSpeed.cap > 1);
+  assert.ok(NECO_FROG.overloadAt > 0);
+  assert.ok(NECO_FROG.grid.cols > 0 && NECO_FROG.grid.rows > 0);
+  for (const k of ['pod', 'bite', 'headKill', 'burst', 'superBite']) assert.ok(NECO_FROG.scoring[k] > 0, k);
 });
 test('every intro beat has a heading and a string-or-function body', () => {
   for (const b of BOSSES) checkIntro(b);

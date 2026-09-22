@@ -22,7 +22,7 @@ import { buildShareCard, shareCardNatively, downloadCard } from './ui/sharecard.
 import { BossFight } from './systems/bossfight.js';
 import { ClimbFight } from './systems/climbfight.js';
 import { TrialFight } from './systems/trialfight.js';
-import { MirrorFight } from './systems/mirrorfight.js';
+import { CentipedeFight } from './systems/centipedefight.js';
 import { DarkFight } from './systems/darkfight.js';
 import { UmmaFight } from './systems/ummafight.js';
 import { InvaderFight } from './systems/invaderfight.js';
@@ -371,7 +371,7 @@ class Game {
     document.body.classList.add('playing');
     const Fight = boss.kind === 'climb' ? ClimbFight
       : boss.kind === 'trial' ? TrialFight
-      : boss.kind === 'mirror' ? MirrorFight
+      : boss.kind === 'centipede' ? CentipedeFight
       : boss.kind === 'dark' ? DarkFight
       : boss.kind === 'umma' ? UmmaFight
       : boss.kind === 'invader' ? InvaderFight

@@ -229,7 +229,7 @@ I find that more impressive than you probably do.`,
 export const NECO_FROG = {
   id: 'neco',
   after: 'K2',
-  kind: 'mirror',
+  kind: 'centipede',
   name: 'THE NECO FROG',
   eyebrow: 'BOSS \u00b7 EVIDENCE OF A GOATEE',
 
@@ -243,21 +243,21 @@ export const NECO_FROG = {
       body: "It has a goatee. That is the entire tell, and I want you to sit with how stupid that is for a moment. It is an amphibian. It does not grow facial hair. It grew one anyway, out of pure narrative obligation, because that is how you are supposed to know the evil version of somebody, and it read the memo.",
     },
     {
-      heading: "HE PLAYS BY YOUR RULES",
-      body: "This is the part that should worry you. It eats explosives too. Same fuse, same count to five, same detonation. Every bomb in that rift is a race, and whoever gets there first is the one who grows.",
+      heading: "IT DID NOT CRACK. IT MULTIPLIED.",
+      body: "One reflection was never going to be enough of an insult, so the mirror kept going: a whole segmented line of it, nose to tail, and then a second line just to be sure you got the point. Cut one of those lines anywhere along its body and you do not kill it. You just made two of it.",
     },
     {
-      heading: "WATCH THE GOATEE",
-      body: "It strokes it before every move, like a cartoon villain who has never once been embarrassed about being a cartoon villain. That is your tell, the only one you get. Everything else about this fight is new: shared bombs, three rounds, and it gets bigger every time it beats you to one.",
+      heading: "IT EATS TOO",
+      body: "Same fuse, same count to five, same detonation, and it will race you for every one of them. Every one it swallows before you do makes it faster. Let it swallow enough in a row without you touching it and it will swallow one too many and take care of itself. That part, at least, is funny.",
     },
     {
       heading: "WHAT IT ACTUALLY IS",
-      body: "It is not stronger than you. It is not smarter than you. It is simply worse at knowing when to stop, and it is going to prove that by trying to out-eat you on the last one. Watch what happens to a thing that has never once, in its short backwards life, decided five was enough.",
+      body: "It is not stronger than you. It is not smarter than you. It is simply worse at knowing when to stop, twice over, in two directions at once. Watch what happens to a thing that has never once, in its short backwards life, decided five was enough.",
       menace: true,
     },
     {
       heading: "GO ON THEN",
-      body: "ARROWS move you between the bombs, SPACE eats them, SHIFT swings at it when it is close enough to hit. Win the race three times. It will not go quietly, but it will go on its own terms, which is worse for it than anything you could do on purpose.",
+      body: "ARROWS move you across the grid, SPACE eats whatever you are standing on, SHIFT bites whatever is next to you. Bite the head and the whole line dies. Bite the body and you just made your problem smaller, which still counts. Fill the fuse and everything left on the board goes at once. Three rounds. It will not go quietly.",
     },
   ],
 
@@ -265,22 +265,37 @@ export const NECO_FROG = {
   hearts: 3,
   fuseTarget: 5,
 
-  // Its three attacks. Same telegraph grammar as Chaco: a readable wind-up,
-  // then a strike with one correct answer.
-  attacks: {
-    claw:  { name: 'THE CLAW',   tell: 0.5,  damage: 1, reach: 'in'  },
-    lash:  { name: 'THE LASH',   tell: 0.62, damage: 1, reach: 'mid' },
-    throw: { name: 'THE SHARD',  tell: 0.55, damage: 2, reach: 'out' },
+  // The grid the chains wind down and the frog forages on.
+  grid: { cols: 10, rows: 10, cell: 66 },
+
+  // How long each round's two chains start, and how much sharper the whole
+  // round runs -- length is the real difficulty curve, since a longer chain
+  // takes longer to fully clear and gives it more chances to reach a pod first.
+  rounds: {
+    length: [6, 8, 10],
+    speedMult: [1, 1.15, 1.3],
   },
 
-  // Multipliers per growth tier (0, 1, 2), applied to its race speed and
-  // attack pace after it wins a race instead of the player.
-  growth: { raceSpeed: [1, 1.28, 1.6], attackEvery: [1, 0.82, 0.68] },
+  // A chain's own pace, before that round's multiplier and before it has eaten
+  // anything: cells per second. Compounds per pod it reaches first (perEat),
+  // capped so an early streak cannot make it uncatchable (cap).
+  chainSpeed: { base: 2.0, perEat: 0.10, cap: 2.5 },
+
+  // How many pods one chain can eat before it eats one too many and bursts on
+  // its own -- a free kill for anyone patient enough to just watch it happen.
+  overloadAt: 6,
+
+  // The field always has at least this many pods out; a new one lands a few
+  // seconds after the count drops below it.
+  minPods: 6,
+  podRespawn: [1.4, 3.0],
+
+  scoring: { pod: 100, bite: 150, headKill: 400, burst: 250, superBite: 900 },
 
   finale: {
-    card: "It has one bomb left to grab and it is not going to get there first, and it knows it, and it goes for it anyway. That is the whole species, in both dimensions.",
+    card: "There is one line of it left, one segment long, and one pod left on the board, and it is not going to get there first, and it knows it, and it goes for it anyway. That is the whole species, in both directions.",
   },
-};
+}
 
 
 // Boss five: THE SACK MAN. No design, almost no character art on purpose --

@@ -814,5 +814,46 @@ Object.assign(SPRITES, {
   ...Object.fromEntries(Object.entries(FIRE_FROG_POSES).map(([kind, opts]) => [kind, { w: 1.7, h: 1.7, draw: (g, W, H) => frog(g, W, H, opts) }])),
 });
 
+// The Neco Centipede rebuild: two mirrored chains winding down a grid, the
+// pods they race the frog for, and what is left when one of them goes.
+function centSegment(g, W, H, o = {}) {
+  const s = Math.min(W, H) / 100;
+  const px = (x, y) => [x * s, y * s];
+  const skin = o.tail ? 0x6a2f8f : (o.alt ? 0x8b3fb0 : 0x7b3fb4);
+  g.ellipse(0, 0, 44 * s, 40 * s).fill(skin); stroke(g, 3);
+  for (let i = -1; i <= 1; i++) g.circle(...px(i * 14, 20), 3 * s).fill({ color: 0x2a0f3a, alpha: 0.6 });
+  if (o.head) {
+    for (const d of [-1, 1]) {
+      g.circle(...px(d * 15, -14), 9 * s).fill(0xf4f2ec); stroke(g, 2);
+      g.circle(...px(d * 15, -14), (o.swollen ? 6 : 4.5) * s).fill(o.swollen ? 0xff4433 : 0xe23c2f);
+    }
+    if (o.open) { g.ellipse(0, 18, 16 * s, 12 * s).fill(0x2a0f12); for (let i = -1; i <= 1; i++) g.poly([...px(i * 8 - 3, 4), ...px(i * 8 + 3, 4), ...px(i * 8, 12)]).fill(0xfffaf0); }
+    else g.moveTo(...px(-14, 8)).quadraticCurveTo(...px(0, o.swollen ? 18 : 14), ...px(14, 8)).stroke({ width: 3 * s, color: 0x2a0f3a });
+    for (let i = -2; i <= 2; i++) g.poly([...px(i * 9 - 4, -30), ...px(i * 9 + 4, -30), ...px(i * 9, -18)]).fill(skin);
+    g.roundRect(...px(-3, 24), 6 * s, 14 * s, 3 * s).fill(0x3a2410);   // the goatee, obviously
+  }
+  if (o.tail) g.poly([...px(-30, 0), ...px(30, 0), ...px(0, 30)]).fill(skin);
+  if (o.swollen) glowDisc(g, 0, 0, 50 * s, 0xff4433, 0.4);
+}
+Object.assign(SPRITES, {
+  cent_head:         { w: 1.5, h: 1.4, draw: (g, W, H) => centSegment(g, W, H, { head: true }) },
+  cent_head_full:    { w: 1.6, h: 1.5, draw: (g, W, H) => centSegment(g, W, H, { head: true, swollen: true, open: true }) },
+  cent_body_a:       { w: 1.4, h: 1.3, draw: (g, W, H) => centSegment(g, W, H, {}) },
+  cent_body_b:       { w: 1.4, h: 1.3, draw: (g, W, H) => centSegment(g, W, H, { alt: true }) },
+  cent_tail:         { w: 1.4, h: 1.3, draw: (g, W, H) => centSegment(g, W, H, { tail: true }) },
+  cent_body_swollen: { w: 1.5, h: 1.4, draw: (g, W, H) => centSegment(g, W, H, { swollen: true }) },
+  cent_burst:        { w: 1.8, h: 1.8, draw: (g, W, H) => {
+    for (let i = 0; i < 10; i++) { const a = i * 0.628; g.poly([0, 0, Math.cos(a) * W * 0.5, Math.sin(a) * H * 0.5, Math.cos(a + 0.3) * W * 0.5, Math.sin(a + 0.3) * H * 0.5]).fill({ color: 0xc23fe0, alpha: 0.7 }); }
+    glowDisc(g, 0, 0, W * 0.3, 0xffffff, 0.6);
+  } },
+  cent_pod:          { w: 0.9, h: 1.0, draw: (g, W, H) => { g.roundRect(-W * 0.3, -H * 0.4, W * 0.6, H * 0.8, 6).fill(C.red); stroke(g, 2.5); glowDisc(g, 0, -H * 0.4, 5, C.yellow, 0.9); } },
+  cent_husk:         { w: 1.3, h: 1.1, draw: (g, W, H) => { g.ellipse(0, 0, 40, 30).fill({ color: 0x4a4a52, alpha: 0.6 }); stroke(g, 2, 0x2a2a30); } },
+  // The mirror-dimension arena, seen top-down; a dark grid until the painted plate lands.
+  cent_bg:           { w: 1, h: 1, draw: (g, W, H) => {
+    g.rect(-W / 2, -H / 2, W, H).fill(0x0a0710);
+    for (let i = 0; i < 40; i++) g.circle(-W / 2 + (i * 53) % W, -H / 2 + (i * 97) % H, 1.5 + (i % 3)).fill({ color: 0xc23fe0, alpha: 0.25 + (i % 4) * 0.1 });
+  } },
+});
+
 export const SPRITE_KINDS = Object.keys(SPRITES);
 export { CELL, C as PALETTE };

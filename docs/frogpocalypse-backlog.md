@@ -113,6 +113,39 @@ they do flips."
   is UMMA's own doing (for example tripping on her own Crocs).
 - **Note:** she is currently the final boss and the true ending follows her.
 
+## Status (2026-09-23): Neco rebuilt as the Centipede knock-off
+
+**Live.** `game/systems/centipedefight.js` (new) + `game/systems/centiperules.js` (pure,
+tested) replace `mirrorfight.js` (deleted). `NECO_FROG.kind` is now `'centipede'`.
+
+- Two mirrored chains zigzag down a 10x10 grid the way an arcade centipede does (across,
+  drop a row at the edge, back the other way), racing the frog for scattered pods.
+- **"10 faster" resolved as:** +10% chain speed per pod *that chain* reaches first,
+  compounding, capped at 2.5x (`chainSpeed` in bosses.js). A chain that eats 6 without being
+  touched bursts on its own (free kill, no player action needed) -- the original "eats too
+  many, overloads" idea from the first brief.
+  the same universal fuse rule, but the twist is what it does: at 5, every segment on the
+  board bursts at once (Super Bite), which is the only way to clear a round outright besides
+  biting every segment by hand.
+- SHIFT bites whatever is adjacent in the frog's last-faced direction: the head dies outright
+  (400 pts), a body segment splits the chain in two around the bite (150 pts) -- both pure
+  logic in `centiperules.js` (`biteOutcome`, `nextHeadCell`, `speedFor`, `willBurst`, tested
+  with 11 unit tests).
+- 3 rounds, chains get longer (6/8/10) and a little faster each round; contact with any
+  segment costs a heart (3 total, unchanged). The round-3 finale reuses the original single
+  large Neco sprite and its `greedy/overload/dead` beats -- no new art needed for that part.
+- Verified in-browser: a foraging bot cleared all 3 rounds with no errors; manual pokes
+  confirmed pod-eating, chain-eating-and-speeding-up, both bite outcomes, self-burst, contact
+  damage, and Super Bite each fire correctly and award the right score.
+- Sprite kinds added to `config/sprites.js` (`cent_head`, `cent_head_full`, `cent_body_a/b`,
+  `cent_tail`, `cent_body_swollen`, `cent_burst`, `cent_pod`, `cent_husk`, `cent_bg`) with
+  procedural fallbacks; the received `CN` sheet and `cent_bg` plate are now actually in use.
+- **No new audio yet** -- `music_boss_neco` and `sfx_cent_skitter`/`sfx_cent_overload` are
+  still on the ElevenLabs list (`docs/elevenlabs-master.md`). The fight uses the existing
+  synth SFX (hop/tick/squash/roar/boom) in the meantime, same as it always did.
+
+**Next up, in the order asked for: UMMA as Donkey Kong, then the hidden Mario-style level.**
+
 ## Status (2026-09-22)
 
 **Wired and live:** the Preacher, the Podcaster and the Boss's Boss now interrupt ordinary stages
