@@ -188,6 +188,41 @@ of the old zone attacks.
 **Next up: the hidden Mario-style level** (the last of the three the user asked
 for, in order).
 
+## Status (2026-09-25): all six remaining environmental hazards built
+
+**Live.** `config/envfx.js` now maps every boss-preceding stage to its own hazard; six
+new classes joined `PowderDrop` in `systems/envfx.js`, all following the same shape
+(a small state machine, an optional `Graphics` layer parented onto `play.world`, and
+hooks into `play.hud` / `play.audio` / `play.particles` / `play.hurtFrog()`).
+No new art was needed for any of them -- like the powder drop, they draw themselves
+with plain shapes, except the Croc, which reuses the existing `croc_shoe` sprite.
+
+| Stage | Before | What it does |
+|---|---|---|
+| 4 | Probe One | A saucer sweeps a tractor beam over 3 columns; caught in it, the frog is pushed 3 rows back down the road. A cow drifts up through the light for no reason but the joke |
+| K1 | The Landlord | Rent notices stamp a lane, which runs 60% faster for 6s; steam vents puff in the background |
+| K2 | The Neco Frog | The whole camera mirrors for 3.5s, twice a stage. Purely visual -- controls stay completely literal |
+| K3 | The Narrator | Two independent lies: a lane quietly speeds up under an "ALL CLEAR" caption, and every so often "LEFT IS RIGHT" actually swaps the two for 4s |
+| K4 | The Sack Man | The lights go out for 3-4s, repeatedly, leaving only a small window around the frog (four dark panels around a clear rect, not a true mask -- simpler and reads the same) |
+| K5 | UMMA | Individual Crocs tumble across random lanes every few seconds, and steam clouds drift through |
+
+Two small hooks were added to `systems/play.js` for this: `render()` now asks
+`this.env?.worldTransform?.()` for a `{x, scaleX}` before setting `this.world.x`
+(used only by the Neco mirror), and `intent()` asks `this.env?.remapDir?.(dir)`
+before handing a hop to the frog (used only by the Narrator's swap). Both default
+to the identity when an effect does not implement them, so every other stage is
+unaffected.
+
+9 new unit tests cover the pure pieces (`beamCatches`, `pushBackRow`,
+`laneSpeedMultiplier`, `worldFlipTransform`, `swappedDir`, `blackoutWindow`, plus
+`inBlast`/`powderAlpha` which had never been tested). Verified every one of the six
+by hand in the browser: the beam's push-back, the lane speed-up and its reversion,
+the mirror's flip/unflip and its two-per-stage cap, both the Narrator's speed-up and
+its control swap, the blackout's window tracking the frog, and a Croc's contact
+damage and removal-on-hit. No console errors in any of it.
+
+**All seven pre-boss stages now carry a hazard.** Next: the hidden Mario-style level.
+
 ## Status (2026-09-22)
 
 **Wired and live:** the Preacher, the Podcaster and the Boss's Boss now interrupt ordinary stages

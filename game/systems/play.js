@@ -84,7 +84,10 @@ export class Play {
   intent(i) {
     if (this.over || this.frog.dead) return;
     if (i.type === 'hop') {
-      if (this.frog.hop(i.dir, this.grid)) this.audio.hop();
+      // The Narrator's stage can be lying about which way is which for a few
+      // seconds; everywhere else this is a no-op pass-through.
+      const dir = this.env?.remapDir ? this.env.remapDir(i.dir) : i.dir;
+      if (this.frog.hop(dir, this.grid)) this.audio.hop();
     } else {                                  // punch and tongue both mean "eat" here
       const t = this.frog.startTongue(i.dir);
       if (t) this.audio.tongue();
@@ -334,8 +337,12 @@ export class Play {
     }
     this.hud.setPower(this.frog.activePower());
 
+    // The Neco stage can mirror the whole camera for a few seconds; everywhere
+    // else this is the identity transform.
+    const t = this.env?.worldTransform ? this.env.worldTransform() : { x: 0, scaleX: 1 };
+    this.world.scale.x = t.scaleX;
     const s = this.shake.update(1 / 60);
-    this.world.x = s.x; this.world.y = s.y;
+    this.world.x = t.x + s.x; this.world.y = s.y;
   }
 
   frogState() {

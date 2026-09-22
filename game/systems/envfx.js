@@ -1,7 +1,7 @@
-// The stage before Chaco: a plane crosses the screen and drops a package. It
-// falls where the frog can see it land, explodes, and blankets the screen in
-// white powder. Getting caught in the blast costs a hit; then the powder makes
-// the rest of the crossing hard to see.
+// One environmental hazard per stage that leads into a boss -- thrown in at
+// random, meant to make that crossing harder, never fatal on its own to read.
+// Each class below only needs update(dt) and, where it draws, its own Graphics
+// layer parented onto play.world so it rides along with the camera shake.
 import { ENV } from '../config/envfx.js';
 import { makeRng } from '../core/rng.js';
 
@@ -128,9 +128,354 @@ class PowderDrop {
 }
 const p2t = (o) => o.play.time;
 
+// ---------------------------------------------------------------------------
+// Stage 4, before Probe One: a saucer sweeps a tractor beam across the road.
+// Anything caught in it when the beam locks in gets lifted and set down a
+// few rows back down the road. A cow drifts up through the light because
+// somebody has to, and it costs the frog nothing to watch it happen.
+export const BEAM_COLS = 3;                 // how many columns wide the beam is
+export function beamCatches(beamCol, frogCol, width = BEAM_COLS) {
+  return frogCol >= beamCol && frogCol < beamCol + width;
+}
+export function pushBackRow(row, rows, by = 3) {
+  return Math.min(rows - 1, row + by);
+}
+
+class TractorBeam {
+  constructor(play, cfg) {
+    this.play = play; this.boss = cfg.boss;
+    this.rng = makeRng();
+    this.W = play.grid.cols * CELL; this.H = play.grid.rows * CELL;
+    this.g = new PIXI.Graphics();
+    play.world.addChild(this.g);
+    this.state = 'wait';
+    this.timer = this.rng.range(10, 20);
+    this.saucerX = this.W * 0.5;
+    this.cow = null;
+  }
+
+  update(dt) {
+    const p = this.play;
+    if (this.state === 'wait') {
+      this.timer -= dt;
+      if (this.timer <= 0) {
+        this.state = 'sweep';
+        this.beamCol = this.rng.int(0, p.grid.cols - BEAM_COLS);
+        this.saucerX = (this.beamCol + BEAM_COLS / 2) * CELL;
+        this.lockT = 1.1;
+        this.cow = { y: this.H * 0.55, t: 0 };
+        p.emit('envCue', { boss: this.boss });
+        p.hud.say('BEAM LOCKING ON', 900);
+        p.audio.warn();
+      }
+    } else if (this.state === 'sweep') {
+      this.lockT -= dt;
+      if (this.cow) { this.cow.t += dt; this.cow.y -= 40 * dt; if (this.cow.y < CELL * 1.2) this.cow = null; }
+      if (this.lockT <= 0) {
+        const fp = p.frog.position();
+        if (beamCatches(this.beamCol, fp.col)) {
+          p.frog.row = pushBackRow(fp.row, p.grid.rows);
+          p.frog.invuln = Math.max(p.frog.invuln, 1.0);
+          p.audio.boom(); p.shake.add(10);
+          p.particles.burst(this.saucerX, this.H * 0.45, 0x9fe6ff, 26);
+          p.hud.say('BEAMED BACK DOWN THE ROAD', 1400);
+        }
+        this.state = 'wait';
+        this.timer = this.rng.range(12, 22);
+      }
+    }
+    this.draw();
+  }
+
+  draw() {
+    const g = this.g; g.clear();
+    g.ellipse(this.W / 2, CELL * 0.7, 70, 20).fill(0x8f95a0).stroke({ width: 3, color: 0x1c1c1a });
+    g.ellipse(this.W / 2, CELL * 0.62, 34, 12).fill(0x9fe6ff);
+    if (this.state === 'sweep') {
+      const beat = 0.5 + 0.5 * Math.sin(this.play.time * 14);
+      g.poly([this.saucerX - 18, CELL * 0.85, this.saucerX + 18, CELL * 0.85, this.saucerX + 90, this.H, this.saucerX - 90, this.H])
+        .fill({ color: 0x9fe6ff, alpha: 0.18 + beat * 0.12 });
+      if (this.cow) {
+        const cx = this.saucerX, cy = this.cow.y;
+        g.ellipse(cx, cy, 22, 14).fill(0xf4f2ec).stroke({ width: 2, color: 0x1c1c1a });
+        for (const [dx, dy] of [[-10, -6], [8, -8], [2, 4]]) g.circle(cx + dx, cy + dy, 4).fill(0x2a2a30);
+      }
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// K1, before The Landlord: rent notices flutter down and stamp one lane,
+// which runs faster for a few seconds while they are stuck to it. Steam
+// vents burst here and there for flavour; they do nothing but look mean.
+export function laneSpeedMultiplier(active, mult = 1.6) { return active ? mult : 1; }
+
+class RentNotice {
+  constructor(play, cfg) {
+    this.play = play; this.boss = cfg.boss;
+    this.rng = makeRng();
+    this.W = play.grid.cols * CELL; this.H = play.grid.rows * CELL;
+    this.g = new PIXI.Graphics();
+    play.world.addChild(this.g);
+    this.timer = this.rng.range(12, 20);
+    this.activeRow = -1; this.activeT = 0;
+    this.steamTimer = this.rng.range(3, 7);
+    this.papers = [];
+  }
+
+  update(dt) {
+    const p = this.play;
+    if (this.activeRow < 0) {
+      this.timer -= dt;
+      if (this.timer <= 0) {
+        this.activeRow = this.rng.int(2, p.grid.rows - 2);
+        this.activeT = 6.0;
+        this.papers = Array.from({ length: 10 }, () => ({ x: this.rng() * this.W, y: -this.rng() * 200, r: this.rng() * 6.28 }));
+        p.emit('envCue', { boss: this.boss });
+        p.hud.say('THAT LANE JUST GOT FASTER', 1400);
+      }
+    } else {
+      this.activeT -= dt;
+      for (const paper of this.papers) { paper.y += 160 * dt; paper.r += dt * 2; }
+      for (const m of p.movers) if (m.row === this.activeRow) m.speed = m.baseSpeed * laneSpeedMultiplier(true);
+      if (this.activeT <= 0) {
+        for (const m of p.movers) if (m.row === this.activeRow) m.speed = m.baseSpeed;
+        this.activeRow = -1;
+        this.timer = this.rng.range(14, 24);
+      }
+    }
+    this.steamTimer -= dt;
+    if (this.steamTimer <= 0) {
+      p.particles.smoke(this.rng() * this.W, this.rng.int(1, p.grid.rows - 2) * CELL + CELL / 2, 6);
+      this.steamTimer = this.rng.range(4, 8);
+    }
+    this.draw();
+  }
+
+  draw() {
+    const g = this.g; g.clear();
+    if (this.activeRow >= 0) {
+      const beat = 0.5 + 0.5 * Math.sin(this.play.time * 10);
+      g.rect(0, this.activeRow * CELL, this.W, CELL).fill({ color: 0xe23c2f, alpha: 0.1 + beat * 0.08 });
+      for (const paper of this.papers) {
+        g.rect(paper.x - 8, paper.y - 10, 16, 20).fill({ color: 0xf4f0e6, alpha: 0.85 });
+      }
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// K2, before The Neco Frog: the whole screen mirrors for a few seconds, twice
+// a stage. Purely a camera trick -- the controls stay exactly as literal as
+// they always were, which is what makes it disorienting rather than unfair.
+export function worldFlipTransform(cols, cell, flipped) {
+  return flipped ? { x: cols * cell, scaleX: -1 } : { x: 0, scaleX: 1 };
+}
+
+class MirrorFlip {
+  constructor(play, cfg) {
+    this.play = play; this.boss = cfg.boss;
+    this.rng = makeRng();
+    this.firesLeft = 2;
+    this.flipped = false;
+    this.timer = this.rng.range(8, 16);
+    this.flipT = 0;
+  }
+
+  update(dt) {
+    const p = this.play;
+    if (!this.flipped) {
+      if (this.firesLeft > 0) {
+        this.timer -= dt;
+        if (this.timer <= 0) {
+          this.flipped = true; this.flipT = 3.5; this.firesLeft -= 1;
+          p.emit('envCue', { boss: this.boss });
+          p.hud.say('THE MIRROR FLIPS', 1200);
+          p.audio.warn();
+        }
+      }
+    } else {
+      this.flipT -= dt;
+      if (this.flipT <= 0) { this.flipped = false; this.timer = this.rng.range(10, 18); }
+    }
+  }
+
+  worldTransform() { return worldFlipTransform(this.play.grid.cols, CELL, this.flipped); }
+}
+
+// ---------------------------------------------------------------------------
+// K3, before The Narrator: the captions lie. "ALL CLEAR" while a lane quietly
+// speeds up, and every so often a fake "LEFT IS RIGHT" notice actually swaps
+// the two for a few seconds -- the one hazard here that touches the controls
+// at all, and it says so, which does not make it less annoying.
+export function swappedDir(dir) {
+  return dir === 'left' ? 'right' : dir === 'right' ? 'left' : dir;
+}
+
+class LyingCaptions {
+  constructor(play, cfg) {
+    this.play = play; this.boss = cfg.boss;
+    this.rng = makeRng();
+    this.speedTimer = this.rng.range(10, 18);
+    this.activeRow = -1; this.activeT = 0;
+    this.swapTimer = this.rng.range(16, 26);
+    this.swapT = 0;
+  }
+
+  get swapped() { return this.swapT > 0; }
+  remapDir(dir) { return this.swapped ? swappedDir(dir) : dir; }
+
+  update(dt) {
+    const p = this.play;
+    if (this.activeRow < 0) {
+      this.speedTimer -= dt;
+      if (this.speedTimer <= 0) {
+        this.activeRow = this.rng.int(2, p.grid.rows - 2);
+        this.activeT = 5.0;
+        p.emit('envCue', { boss: this.boss });
+        p.hud.say('ALL CLEAR', 1400);
+      }
+    } else {
+      this.activeT -= dt;
+      for (const m of p.movers) if (m.row === this.activeRow) m.speed = m.baseSpeed * 1.5;
+      if (this.activeT <= 0) {
+        for (const m of p.movers) if (m.row === this.activeRow) m.speed = m.baseSpeed;
+        this.activeRow = -1;
+        this.speedTimer = this.rng.range(12, 20);
+      }
+    }
+    if (this.swapT > 0) {
+      this.swapT -= dt;
+    } else {
+      this.swapTimer -= dt;
+      if (this.swapTimer <= 0) {
+        this.swapT = 4.0;
+        p.hud.say('LEFT IS RIGHT', 1600);
+        p.audio.warn();
+        this.swapTimer = this.rng.range(18, 28);
+      }
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// K4, before The Sack Man: the lights go out, again and again, and for a few
+// seconds you can only see a small window around the frog. Drawn as four
+// dark panels around a clear rectangle rather than a true mask, which is
+// simpler and just as effective.
+export function blackoutWindow(fx, fy, half, W, H) {
+  return {
+    x0: Math.max(0, fx - half), y0: Math.max(0, fy - half),
+    x1: Math.min(W, fx + half), y1: Math.min(H, fy + half),
+  };
+}
+
+class Blackout {
+  constructor(play, cfg) {
+    this.play = play; this.boss = cfg.boss;
+    this.rng = makeRng();
+    this.W = play.grid.cols * CELL; this.H = play.grid.rows * CELL;
+    this.g = new PIXI.Graphics();
+    play.world.addChild(this.g);
+    this.timer = this.rng.range(10, 16);
+    this.outT = 0;
+    this.firstCue = true;
+  }
+
+  update(dt) {
+    const p = this.play;
+    if (this.outT <= 0) {
+      this.timer -= dt;
+      if (this.timer <= 0) {
+        this.outT = this.rng.range(3, 4);
+        if (this.firstCue) { this.firstCue = false; p.emit('envCue', { boss: this.boss }); }
+        p.hud.say('THE LIGHTS ARE OUT', 900);
+        p.audio.warn();
+        this.timer = this.rng.range(12, 18);
+      }
+    } else {
+      this.outT -= dt;
+    }
+    this.draw();
+  }
+
+  draw() {
+    const g = this.g; g.clear();
+    if (this.outT <= 0) return;
+    const fp = this.play.frog.position();
+    const fx = (fp.col + 0.5) * CELL, fy = (fp.row + 0.5) * CELL;
+    const w = blackoutWindow(fx, fy, CELL * 1.7, this.W, this.H);
+    const a = 0.94;
+    g.rect(0, 0, this.W, w.y0).fill({ color: 0x05050a, alpha: a });
+    g.rect(0, w.y1, this.W, this.H - w.y1).fill({ color: 0x05050a, alpha: a });
+    g.rect(0, w.y0, w.x0, w.y1 - w.y0).fill({ color: 0x05050a, alpha: a });
+    g.rect(w.x1, w.y0, this.W - w.x1, w.y1 - w.y0).fill({ color: 0x05050a, alpha: a });
+  }
+}
+
+// ---------------------------------------------------------------------------
+// K5, before UMMA: Crocs come tumbling across the lanes end over end, ahead
+// of the real thing waiting up the road, and steam clouds blow through.
+class TumblingCrocs {
+  constructor(play, cfg) {
+    this.play = play; this.boss = cfg.boss;
+    this.rng = makeRng();
+    this.W = play.grid.cols * CELL;
+    this.g = new PIXI.Graphics();
+    play.world.addChild(this.g);
+    this.timer = this.rng.range(4, 9);
+    this.steamTimer = this.rng.range(3, 6);
+    this.crocs = [];
+    this.firstCue = true;
+  }
+
+  update(dt) {
+    const p = this.play;
+    this.timer -= dt;
+    if (this.timer <= 0) {
+      const row = this.rng.int(1, p.grid.rows - 2);
+      const dir = this.rng() < 0.5 ? 1 : -1;
+      this.crocs.push({ row, x: dir > 0 ? -1 : p.grid.cols + 1, dir, speed: this.rng.range(3.2, 4.4), spin: 0 });
+      if (this.firstCue) { this.firstCue = false; p.emit('envCue', { boss: this.boss }); }
+      this.timer = this.rng.range(3.5, 7);
+    }
+    this.steamTimer -= dt;
+    if (this.steamTimer <= 0) {
+      p.particles.smoke(this.rng() * this.W, this.rng.int(1, p.grid.rows - 2) * CELL + CELL / 2, 5);
+      this.steamTimer = this.rng.range(3, 6);
+    }
+    const survivors = [];
+    for (const c of this.crocs) {
+      c.x += c.dir * c.speed * dt; c.spin += dt * 10;
+      const fp = p.frog.position();
+      if (Math.round(fp.col) === Math.round(c.x) && fp.row === c.row) { p.hurtFrog(); continue; }
+      if (c.x >= -1.5 && c.x <= p.grid.cols + 1.5) survivors.push(c);
+    }
+    this.crocs = survivors;
+    this.draw();
+  }
+
+  draw() {
+    const g = this.g; g.clear();
+    const t = this.play.tex;
+    for (const c of this.crocs) {
+      const x = (c.x + 0.5) * CELL, y = (c.row + 0.5) * CELL;
+      const s = t?.scaleFor ? t.scaleFor('croc_shoe') : 1;
+      if (t?.get) {
+        const sp = c.sprite || (c.sprite = new PIXI.Sprite());
+        if (!c.sprite.parent) this.play.layer.addChild(c.sprite);
+        sp.texture = t.get('croc_shoe'); sp.anchor.set(0.5);
+        sp.x = x; sp.y = y; sp.rotation = c.spin; sp.scale.set(s * 1.1);
+      }
+    }
+    // sprites for crocs no longer in this.crocs are cleaned up on stage teardown
+  }
+}
+
 export function createEnvFx(play) {
   const cfg = ENV[play.stage.id];
   if (!cfg) return null;
-  if (cfg.id === 'powder') return new PowderDrop(play, cfg);
-  return null;
+  const kinds = { powder: PowderDrop, beam: TractorBeam, speedlane: RentNotice, mirror: MirrorFlip, lying: LyingCaptions, blackout: Blackout, crocs: TumblingCrocs };
+  const Kind = kinds[cfg.id];
+  return Kind ? new Kind(play, cfg) : null;
 }
