@@ -23,7 +23,7 @@ export const HIDDEN = {
     { id: 'chaco1',   type: 'chaco',    pipe: 0 },
     { id: 'landlord', type: 'landlord', range: [17, 21] },
     { id: 'chaco2',   type: 'chaco',    pipe: 1 },
-    { id: 'neco',     type: 'walker',   range: [29, 33] },
+    { id: 'neco',     type: 'walker',   range: [29, 33], explodes: true },
     { id: 'umma',     type: 'umma',     col: 37 },
     { id: 'sackman',  type: 'ghost',    range: [29, 47] },
     { id: 'narrator', type: 'narrator', col: 47 },

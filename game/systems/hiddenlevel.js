@@ -11,7 +11,7 @@ import { KAIJU_SIZE } from '../config/stages.js';
 import { HIDDEN, buildHeights } from '../config/hiddenlevel.js';
 import { makeRng } from '../core/rng.js';
 import { hopTarget, jumpTarget, jumpArc, sizeAfterHit, crocArc } from './hiddenrules.js';
-import { createFoes } from './hiddenfoes.js';
+import { createFoes, EXPLODE_TIME, SWELL_TIME } from './hiddenfoes.js';
 
 const W = 832, H = 960;
 const CELL = 64;
@@ -20,6 +20,7 @@ const SURF = H * 0.72 - CELL / 2;            // the top of the ground: what ever
 const elevY = (el) => SURF - el * CELL;      // screen y of a foot at `el` blocks above the ground
 const px = (x) => x * CELL + CELL / 2;       // screen x of the middle of column x
 const HOP_DUR = 0.16, JUMP_DUR = 0.42, HOP_ARC = 0.3;
+const BLACKOUT_TIME = 3;
 const FIRE_TIME = 0.5, HURT_FLASH = 0.5, HIT_INVULN = 1.6;
 const HEIGHTS = buildHeights();
 const LEVEL = { cols: HIDDEN.cols, heights: HEIGHTS };
@@ -67,6 +68,7 @@ export class HiddenLevel {
     this.foeSprites = new Map();
     this.crocs = [];
     this.cows = [];
+    this.blackout = 0;               // seconds of darkness left, after Neco goes off
     this.projSprites = new Map();
     this.pickups = [
       ...HIDDEN.tnt.map((p) => ({ ...p, kind: 'tnt', taken: false })),
@@ -300,9 +302,21 @@ export class HiddenLevel {
     this.crocs.push({ from, to: { x: tx, el }, t: 0, dur });
   }
 
+  // Neco does not just fall over: he goes off in a cloud of black and the whole
+  // screen goes dark for three seconds.
+  explode(f) {
+    f.burst = true;
+    this.blackout = BLACKOUT_TIME;
+    this.audio.hit(); this.shake.add(16);
+    const cx = px(f.x), cy = elevY(f.level) - 30;
+    this.particles.burst(cx, cy, 0x0b0b12, 26, 300);
+    this.particles.smoke(cx, cy, 14);
+    this.hud.say('NECO: LIGHTS OUT', 2600);
+  }
+
   killFoe(f, points, say) {
     if (!f.alive) return;
-    f.alive = false; f.deadT = 0.6; f.deadLook = 'flat';
+    f.alive = false; f.deadT = f.explodes ? EXPLODE_TIME : 0.6; f.deadLook = 'flat';
     this.audio.squash(); this.shake.add(5);
     this.particles.debris(px(f.x), elevY(f.level) - 10, 10);
     this.addScore(points);
@@ -319,6 +333,7 @@ export class HiddenLevel {
     if (this.duckT > 0) this.duckT -= dt;
     if (this.fireT > 0) this.fireT -= dt;
     if (this.hurtFlash > 0) this.hurtFlash -= dt;
+    if (this.blackout > 0) this.blackout -= dt;
 
     this.env.frog = this.frogInfo();
     const info = this.env.frog;
@@ -329,6 +344,7 @@ export class HiddenLevel {
       f.update(dt, this.env);
     }
     this.updateProjectiles(dt, info);
+    for (const f of this.foes) if (!f.alive && f.explodes && !f.burst && f.deadT <= EXPLODE_TIME - SWELL_TIME) this.explode(f);
 
     // pickups: you have to actually be there
     const fc = Math.round(info.x);
@@ -446,7 +462,8 @@ export class HiddenLevel {
       sp.visible = !v.hidden;
       sp.texture = this.tex.get(v.tex);
       const s = this.tex.scaleFor(v.tex);
-      sp.scale.set(s * (v.flip ? -1 : 1), s);
+      const mul = v.scaleMul ?? 1;
+      sp.scale.set(s * mul * (v.flip ? -1 : 1), s * mul);
       sp.x = px(f.x + (v.xOff ?? 0)); sp.y = elevY(v.elev) + 3;
       sp.tint = v.tint ?? 0xffffff;
       sp.alpha = v.alpha ?? 1;
@@ -497,6 +514,12 @@ export class HiddenLevel {
 
     const o = this.fx; o.clear();
     if (this.hurtFlash > 0) o.rect(0, 0, W, H).fill({ color: 0xe23c2f, alpha: this.hurtFlash * 0.5 });
+    if (this.blackout > 0) {                     // black in fast, out slowly; two glowing eyes are all that is left of the frog
+      const a = Math.min(1, (BLACKOUT_TIME - this.blackout) / 0.2) * Math.min(1, this.blackout / 0.6);
+      o.rect(0, 0, W, H).fill({ color: 0x000000, alpha: a });
+      const ex = px(info.x) - camX, ey = elevY(info.el) - CELL * (info.kaiju ? 0.9 : 0.6);
+      for (const d of [-1, 1]) o.circle(ex + d * 7, ey, 3.5).fill({ color: 0xf4f2ec, alpha: a });
+    }
     const pct = Math.max(0, Math.min(1, (info.x - HIDDEN.startCol) / (HIDDEN.goalCol - HIDDEN.startCol)));
     o.roundRect(W * 0.25, 20, W * 0.5, 8, 4).fill({ color: 0x000000, alpha: 0.5 });
     o.roundRect(W * 0.25, 20, W * 0.5 * pct, 8, 4).fill(0xaab42a);

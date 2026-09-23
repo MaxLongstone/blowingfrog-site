@@ -179,9 +179,23 @@ def update_manifest(names):
     return len(data["sprites"])
 
 
+def slice_one(name, path):
+    """A single generated image (one subject on white) -> one sprite. Used when
+    poses are generated one at a time for consistency instead of as a grid."""
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    sprite = trim(drop_background(Image.open(path).convert("RGBA")))
+    if sprite is None:
+        sys.exit(f"{name}: the image came out empty")
+    sprite.save(OUT_DIR / f"{name}.png")
+    total = update_manifest([name])
+    print(f"  ok {name}.png  {sprite.width}x{sprite.height}\nManifest now lists {total}.")
+
+
 def main():
+    if len(sys.argv) == 4 and sys.argv[1].upper() == "ONE":
+        return slice_one(sys.argv[2], sys.argv[3])
     if len(sys.argv) != 3 or sys.argv[1].upper() not in SHEETS:
-        sys.exit(f"usage: python3 {Path(__file__).name} <{'|'.join(SHEETS)}> <sheet.png>")
+        sys.exit(f"usage: python3 {Path(__file__).name} <{'|'.join(SHEETS)}> <sheet.png>\n   or: python3 {Path(__file__).name} ONE <sprite_name> <image.png>")
 
     key = sys.argv[1].upper()
     cols, rows, names = SHEETS[key]

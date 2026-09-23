@@ -13,23 +13,31 @@
 import { patrolStep, contactVerdict, popOut, twinkleRate } from './hiddenrules.js';
 
 const RIGHT = 1, LEFT = -1;
+export const EXPLODE_TIME = 1.0;      // a foe that bursts: it swells, then goes off
+export const SWELL_TIME = 0.45;
 
 function base(def, x, level) {
-  return { id: def.id, type: def.type, x, level, dir: LEFT, alive: true, deadT: 0, deadLook: 'flat', t: 0, score: 0 };
+  return { id: def.id, type: def.type, x, level, dir: LEFT, alive: true, deadT: 0, deadLook: 'flat', t: 0, score: 0, explodes: !!def.explodes, burst: false };
 }
 const frames = (t, rate = 4) => 1 + (Math.floor(t * rate) % 2);
 const faceFrog = (f, frog) => { f.dir = frog.x >= f.x ? RIGHT : LEFT; };
 function verdictAgainst(f, frog, opts) {
   return contactVerdict({ dx: frog.x - f.x, dEl: frog.el - f.level, falling: frog.falling }, opts);
 }
-function die(f, look = 'flat', points = 0) { f.alive = false; f.deadT = 0.6; f.deadLook = look; f.score += points; }
+function die(f, look = 'flat', points = 0) { f.alive = false; f.deadT = f.explodes ? EXPLODE_TIME : 0.6; f.deadLook = look; f.score += points; }
 
 // ---- Neco: a plain walker ----------------------------------------------
 function walker(def, ctx) {
   const f = base(def, def.range[0], ctx.heights[def.range[0]]);
   f.range = def.range; f.dir = RIGHT;
   f.update = (dt) => { const s = patrolStep(f.x, f.dir, f.range, 1.3, dt); f.x = s.x; f.dir = s.dir; f.t += dt; };
-  f.view = () => ({ tex: f.alive ? `hm_neco_${frames(f.t)}` : 'hm_neco_flat', elev: f.level, flip: f.dir > 0 });
+  f.view = () => {
+    if (f.alive) return { tex: `hm_neco_${frames(f.t)}`, elev: f.level, flip: f.dir > 0 };
+    const e = EXPLODE_TIME - f.deadT;                                            // Neco does not flatten: it swells, then goes off
+    if (e < SWELL_TIME) return { tex: 'hm_neco_swell', elev: f.level, flip: f.dir > 0, scaleMul: 1 + e * 1.1, xOff: Math.sin(e * 90) * 0.05, tint: e * 20 % 2 < 1 ? 0xffffff : 0x9a6cff };
+    const c = e - SWELL_TIME;
+    return { tex: 'hi_blackcloud', elev: f.level + 0.2, flip: false, scaleMul: 0.6 + c * 1.6, alpha: Math.max(0, f.deadT / (EXPLODE_TIME - SWELL_TIME)) };
+  };
   f.hit = (frog) => verdictAgainst(f, frog);
   f.stomp = () => { die(f, 'flat', 200); return { points: 200 }; };
   return f;

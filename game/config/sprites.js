@@ -997,6 +997,8 @@ Object.assign(SPRITES, {
   hm_chaco_pop:     { w: 1, h: 1, draw: (g, W, H) => miniBoss(g, W, H, 'chaco', false) },
   hm_ufo_drop:      { w: 1, h: 1, draw: (g, W, H) => miniBoss(g, W, H, 'probe', false) },
   hi_cow:           { w: 1, h: 0.8, draw: (g, W, H) => { g.ellipse(0, 0, W * 0.4, H * 0.25).fill(0xf4f2ec); stroke(g, 3); for (const [x, y] of [[-0.15, -0.05], [0.1, 0.05]]) g.circle(W * x, H * y, W * 0.07).fill(0x2a2a30); g.circle(W * 0.38, -H * 0.1, W * 0.12).fill(0xf4f2ec); stroke(g, 2); } },
+  hm_neco_swell:    { w: 1.2, h: 1.2, draw: (g, W, H) => miniBoss(g, W, H, 'neco', false) },
+  hi_blackcloud:    { w: 2.6, h: 2, draw: (g, W, H) => { for (const [x, y, r] of [[-0.25, 0.05, 0.28], [0.2, -0.1, 0.33], [0, 0.15, 0.3], [0.05, -0.25, 0.24]]) g.circle(W * x, H * y, W * r).fill({ color: 0x0b0b12, alpha: 0.92 }); } },
   hi_puff:          { w: 1.4, h: 1, draw: (g, W, H) => { for (const [x, y, r] of [[-0.2, 0, 0.28], [0.15, -0.1, 0.32], [0.05, 0.12, 0.26]]) g.circle(W * x, H * y, W * r).fill({ color: 0xffffff, alpha: 0.85 }); } },
 
   env_plane:    { w: 2.2, h: 0.9, draw: (g, W, H) => { g.ellipse(0, 0, W * 0.4, H * 0.2).fill(0xd8d8d0); stroke(g, 3); g.poly([-W * 0.3, -H * 0.05, -W * 0.45, -H * 0.4, -W * 0.36, 0]).fill(0xb8b8b0); } },

@@ -107,3 +107,19 @@ A big soft puff of white powder, a round billowing cloud made of three or four o
 ```
 Same object as the attached image: the small silver flying saucer with a blue glass dome and a ring of coloured lights. Same soft 3D felt and clay puppet style, same outline, same size, side view, plain pure white background, no shadow, no text, no watermark, centred, square image. Change only one thing: a hatch on the belly is swung open with a warm glow spilling out, and the little green alien is leaning out of it and looking down mischievously, one hand raised as if about to let something go.
 ```
+
+# Neco: swells, then goes off in black
+
+Neco no longer flattens. He swells for about half a second, then bursts in a cloud of black and the screen goes dark for three seconds. Two images. Save each and install with `python3 tools/slice_sheet.py ONE <name> <file>` (it strips the white background and registers the sprite).
+
+**`hm_neco_swell`** (attach Neco walking, from the H4 sheet)
+
+```
+Same character as the attached image: the tiny grinning mirror-frog with purple skin, glowing red eyes and a cracked-glass sheen. Same soft 3D felt and clay puppet style, same outline, strict side view facing left, plain pure white background, no shadow, no text, no watermark, centred, square image. Change only his state: swollen up like a balloon about to pop, his body puffed to almost twice the width, the cracks in his glass-like skin glowing violet and leaking wisps of black smoke, his red eyes bulging, his tiny feet just leaving the ground, a wide, panicked, guilty grin.
+```
+
+**`hi_blackcloud`** (no reference needed)
+
+```
+A huge billowing cloud of pitch-black smoke from an explosion, a round mushrooming shape made of many overlapping lobes, thick dense inky-black with faint deep-violet highlights on the edges, a few cracked glass-like purple shards flying out of it, no character, no face. Soft 3D felt and clay render, matte, thick dark outline, plain pure white background, no shadow, no text, no watermark, centred, square image.
+```
