@@ -21,6 +21,10 @@ const VIEW_COLS = W / CELL;               // 13
 const GROUND_Y = H * 0.72;
 const DUCK_TIME = 0.4;
 const HURT_FLASH = 0.5;
+const HOP_DUR = 0.16;    // a plain one-column move
+const JUMP_DUR = 0.4;    // the two-column jump: longer and higher, so it reads as a jump
+const HOP_ARC = 0.35;    // how high a plain move bobs, in cells
+const JUMP_ARC = 1.15;   // how high the jump arcs, in cells
 
 // Precomputed once: which columns you can stand on.
 function buildSolid() {
@@ -64,6 +68,10 @@ export class HiddenLevel {
     this.frogSprite.anchor.set(0.5, 1);
     this.layer.addChild(this.frogSprite);
     this.facing = 1; this.duckT = 0; this.hurtFlash = 0;
+    // The frog's own on-screen glide, independent of Frog's built-in hop timer
+    // so a jump can take its own, longer time to land than an ordinary step.
+    this.action = null;         // { fromCol, toCol, t, dur, arc, jumping }
+    this.drawCol = HIDDEN.startCol;
     this.camCol = HIDDEN.startCol;
     this.lastSafeCol = HIDDEN.startCol;
 
@@ -77,7 +85,7 @@ export class HiddenLevel {
     this.pickupSprites = new Map();
 
     this.hud.setStage('WORLD ???', 'The level that does not exist.');
-    this.hud.say('LEFT/RIGHT MOVE · SHIFT JUMPS TWO · IT DOES NOT CARE WHAT IT SKIPS', 4200);
+    this.hud.say('ARROWS MOVE · SPACE JUMPS TWO · IT DOES NOT CARE WHAT IT SKIPS', 4200);
     this.hud.setFuse(0);
     this.hud.setLives(this.frog.lives, false);
     this.hud.setScore(this.score);
@@ -122,6 +130,8 @@ export class HiddenLevel {
   }
 
   // ---- input --------------------------------------------------------------
+  // Arrows move and turn to face that way; SPACE jumps two columns in whatever
+  // direction the frog is already facing; SHIFT is just a cosmetic duck.
   intent(i) {
     if (this.over) return;
     if (i.type === 'hop') {
@@ -129,40 +139,42 @@ export class HiddenLevel {
       else this.duck();
       return;
     }
-    if (i.type === 'punch') { this.jump(); return; }
+    if (i.type === 'tongue') { this.jump(); return; }
     this.duck();
   }
 
   duck() { this.duckT = DUCK_TIME; }
+  get busy() { return !!this.action; }
 
-  move(dir) {
-    if (this.frog.isHopping) return;
-    const dest = canHop(LEVEL, this.frog.col, R, dir);
-    if (!dest) { this.fall(); return; }
-    this.frog.hopAnim = { fromCol: this.frog.col, fromRow: R, t: 0 };
-    this.frog.col = dest.col;
-    this.audio.hop();
-    this.lastSafeCol = this.frog.col;
+  startAction(toCol, { jumping = false } = {}) {
+    this.action = { fromCol: this.frog.col, toCol, t: 0, dur: jumping ? JUMP_DUR : HOP_DUR, arc: jumping ? JUMP_ARC : HOP_ARC, jumping };
+    this.frog.col = toCol;
+    this.lastSafeCol = toCol;
     this.checkGoal();
   }
 
+  move(dir) {
+    if (this.busy) return;
+    const dest = canHop(LEVEL, this.frog.col, R, dir);
+    if (!dest) { this.fall(); return; }
+    this.audio.hop();
+    this.startAction(dest.col);
+  }
+
   jump() {
-    if (this.frog.isHopping) return;
+    if (this.busy) return;
     const dir = this.facing > 0 ? 'right' : 'left';
     const dest = canJump(LEVEL, this.frog.col, R, dir);
     this.audio.hop();
     if (!dest) {
-      // nothing to land on two over: try one, same as an ordinary hop
+      // nothing to land on two over: try one, so a jump right at the goal or
+      // against a wall still does something instead of nothing
       const one = canHop(LEVEL, this.frog.col, R, dir);
-      if (one) { this.frog.hopAnim = { fromCol: this.frog.col, fromRow: R, t: 0 }; this.frog.col = one.col; this.lastSafeCol = one.col; this.checkGoal(); }
+      if (one) this.startAction(one.col, { jumping: true });
       else this.fall();
       return;
     }
-    this.jumpingOver = { from: this.frog.col };
-    this.frog.hopAnim = { fromCol: this.frog.col, fromRow: R, t: 0 };
-    this.frog.col = dest.col;
-    this.lastSafeCol = dest.col;
-    this.checkGoal();
+    this.startAction(dest.col, { jumping: true });
   }
 
   // Stepping into a gap or a pipe you did not clear.
@@ -171,6 +183,7 @@ export class HiddenLevel {
     this.hurtFlash = HURT_FLASH;
     this.shake.add(8);
     this.audio.hit();
+    this.action = null;
     if (this.frog.isKaiju()) {
       this.frog.sizeClass = sizeAfterHit(this.frog.sizeClass, KAIJU_SIZE);
       this.frog.hearts = this.frog.maxHearts;
@@ -183,6 +196,7 @@ export class HiddenLevel {
       if (out === 'dead') { this.finish(false); return; }
       this.hud.say('BACK A FEW STEPS', 1000);
     }
+    this.drawCol = this.frog.col;
     this.hud.setLives(this.frog.act === 2 ? this.frog.hearts : this.frog.lives, this.frog.act === 2);
     this.particles.burst(this.colPx(this.frog.col) + CELL / 2, GROUND_Y, 0xe23c2f, 16);
   }
@@ -238,6 +252,7 @@ export class HiddenLevel {
     if (this.over) { this.render(dt); return; }
     this.time += dt;
     this.frog.update(dt);
+    if (this.action) { this.action.t += dt; if (this.action.t >= this.action.dur) this.action = null; }
     if (this.duckT > 0) this.duckT -= dt;
     if (this.hurtFlash > 0) this.hurtFlash -= dt;
 
@@ -265,7 +280,9 @@ export class HiddenLevel {
       else if (outcome === 'damage') {
         this.hurtFlash = HURT_FLASH;
         const out = this.frog.takeHit();
+        this.action = null;
         this.frog.col = this.lastSafeCol;
+        this.drawCol = this.frog.col;
         this.hud.setLives(this.frog.act === 2 ? this.frog.hearts : this.frog.lives, this.frog.act === 2);
         if (out === 'dead') { this.finish(false); return; }
       }
@@ -289,16 +306,22 @@ export class HiddenLevel {
     const fire = this.frog.breathingFire;
     const pfx = big ? 'hf_big' : 'hf_small';
     if (this.over) return `${pfx}_${this.won ? 'win' : 'dead'}`;
-    if (this.frog.isHopping) return fire ? `${pfx}_firerun` : `${pfx}_jump`;
+    if (this.action?.jumping) return fire ? `${pfx}_firerun` : `${pfx}_jump`;
+    if (this.action) return fire ? `${pfx}_firerun` : `${pfx}_run2`;
     if (this.duckT > 0) return `${pfx}_duck`;
     if (this.hurtFlash > 0 && !big) return 'hf_small_dead';
     return fire ? `${pfx}_firerun` : `${pfx}_run1`;
   }
 
   render(dt) {
-    // camera: follows the frog, clamped to the level's own width
-    const p = this.frog.position();
-    const targetCam = Math.max(VIEW_COLS / 2, Math.min(HIDDEN.cols - VIEW_COLS / 2, p.col));
+    // where the frog is actually drawn: mid-glide during a move or jump, its
+    // resting column otherwise -- decoupled from Frog's own fixed hop timer
+    // so a jump can take its own, longer time to land.
+    const a = this.action;
+    const drawnCol = a ? a.fromCol + (a.toCol - a.fromCol) * Math.min(1, a.t / a.dur) : this.frog.col;
+    const arcK = a ? Math.sin(Math.PI * Math.min(1, a.t / a.dur)) * a.arc : 0;
+    const p = { col: this.frog.col };
+    const targetCam = Math.max(VIEW_COLS / 2, Math.min(HIDDEN.cols - VIEW_COLS / 2, drawnCol));
     this.camCol += (targetCam - this.camCol) * Math.min(1, dt * 6);
     const camX = this.colPx(this.camCol) - W / 2 + CELL / 2;
     this.tileLayer.x = -camX; this.layer.x = -camX;
@@ -329,10 +352,10 @@ export class HiddenLevel {
     const ft = this.frogTexture();
     this.frogSprite.texture = this.tex.get(ft);
     const big = this.frog.isKaiju();
-    this.frogSprite.scale.set(this.tex.scaleFor(ft) * (this.facing < 0 ? 1 : -1) * (big ? 1.3 : 1), this.tex.scaleFor(ft) * (big ? 1.3 : 1));
-    const hopK = this.frog.isHopping ? Math.sin(Math.PI * this.frog.hopProgress) : 0;
-    this.frogSprite.x = this.colPx(p.col) + CELL / 2;
-    this.frogSprite.y = GROUND_Y + CELL / 2 - hopK * CELL * 0.6;
+    // The art faces right natively: face right unflipped, flip to face left.
+    this.frogSprite.scale.set(this.tex.scaleFor(ft) * (this.facing > 0 ? 1 : -1) * (big ? 1.3 : 1), this.tex.scaleFor(ft) * (big ? 1.3 : 1));
+    this.frogSprite.x = this.colPx(drawnCol) + CELL / 2;
+    this.frogSprite.y = GROUND_Y + CELL / 2 - arcK * CELL;
     this.frogSprite.alpha = this.frog.invuln > 0 ? (Math.sin(this.time * 30) > 0 ? 0.4 : 1) : 1;
 
     const g = this.fx; g.clear();
