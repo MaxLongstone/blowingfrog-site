@@ -146,6 +146,21 @@ export class HiddenLevel {
   duck() { this.duckT = DUCK_TIME; }
   get busy() { return !!this.action; }
 
+  // Where the frog actually is on screen, in columns. Contact with pickups and
+  // enemies follows this, not the landing cell, so nothing hurts you before
+  // you have got there.
+  drawnCol() {
+    const a = this.action;
+    return a ? a.fromCol + (a.toCol - a.fromCol) * Math.min(1, a.t / a.dur) : this.frog.col;
+  }
+  // Mid-jump the frog is over whatever it is skipping: no contact until it lands.
+  airborne() {
+    const a = this.action;
+    if (!a || !a.jumping) return false;
+    const k = a.t / a.dur;
+    return k > 0.12 && k < 0.88;
+  }
+
   startAction(toCol, { jumping = false } = {}) {
     this.action = { fromCol: this.frog.col, toCol, t: 0, dur: jumping ? JUMP_DUR : HOP_DUR, arc: jumping ? JUMP_ARC : HOP_ARC, jumping };
     this.frog.col = toCol;
@@ -267,15 +282,17 @@ export class HiddenLevel {
     }
 
     // pickups: same cell, auto-collect
-    const fc = Math.round(this.frog.col);
-    for (const p of this.pickups) if (!p.taken && p.col === fc) this.collect(p);
+    const fc = Math.round(this.drawnCol());
+    if (!this.airborne()) for (const p of this.pickups) if (!p.taken && p.col === fc) this.collect(p);
 
     // enemies: squash if big, otherwise it costs you, exactly like collision.resolve already says
     const kaiju = this.frog.isKaiju();
+    const dc = this.drawnCol();
+    const frogBox = { bounds: () => ({ x: dc + 0.2, y: R + 0.2, w: 0.6, h: 0.6 }) };
     for (const e of this.enemies) {
-      if (!e.alive) continue;
+      if (!e.alive || this.airborne()) continue;
       const eBounds = { x: e.col + 0.1, y: R + 0.1, w: 0.8, h: 0.8 };
-      const outcome = resolve(this.frog, { bounds: () => eBounds }, { kaiju, invulnerable: this.frog.invuln > 0 });
+      const outcome = resolve(frogBox, { bounds: () => eBounds }, { kaiju, invulnerable: this.frog.invuln > 0 });
       if (outcome === 'squash') this.squash(e);
       else if (outcome === 'damage') {
         this.hurtFlash = HURT_FLASH;
@@ -318,7 +335,7 @@ export class HiddenLevel {
     // resting column otherwise -- decoupled from Frog's own fixed hop timer
     // so a jump can take its own, longer time to land.
     const a = this.action;
-    const drawnCol = a ? a.fromCol + (a.toCol - a.fromCol) * Math.min(1, a.t / a.dur) : this.frog.col;
+    const drawnCol = this.drawnCol();
     const arcK = a ? Math.sin(Math.PI * Math.min(1, a.t / a.dur)) * a.arc : 0;
     const p = { col: this.frog.col };
     const targetCam = Math.max(VIEW_COLS / 2, Math.min(HIDDEN.cols - VIEW_COLS / 2, drawnCol));
