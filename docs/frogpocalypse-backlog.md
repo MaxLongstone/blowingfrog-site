@@ -292,6 +292,24 @@ procedural placeholder anymore. Re-verified the whole loop with the real art in 
 browser: TNT growth, fire breath, a gap-fall shrinking the frog back down, and the
 tile/backdrop layout, all with no console errors. 180 tests still passing.
 
+## Status (2026-09-24): the hidden level, second pass
+
+Terrain now has heights (blocks under the feet, stacks, stairs, a raised platform,
+wide pipes 2-3 blocks tall). Arrows hop and step up one block; SPACE jumps two
+columns and can land on a pipe top; SHIFT breathes fire with the beaker.
+Every boss attacks differently (`systems/hiddenfoes.js`): Chaco pops from
+pipes in a puff of powder; the new bald Landlord crouches when stomped and can
+be kicked down the road; UMMA throws Crocs; the Sack Man is a ghost that
+freezes when the frog looks at him; the Narrator twinkles then dashes and dies
+if the frog jumps it; the UFO drops cows; Neco just walks. Landing on a head
+is a stomp; a big frog (TNT) or the nuke flattens everything.
+
+**Waiting on art:** sheet H7 (per-character prompts in
+`docs/asset-prompts-hidden-v2.md`) for the hide/throw/dash/ghost/cow/pop poses,
+and sheet V1 for the pre-boss environmentals (drawn with plain shapes today; the
+hazards need wiring to the painted art once it lands). Stand-in drawings cover
+every missing pose until then.
+
 ## Status (2026-09-22)
 
 **Wired and live:** the Preacher, the Podcaster and the Boss's Boss now interrupt ordinary stages

@@ -108,6 +108,12 @@ SHEETS = {
                   "hm_sackman_flat", "hm_umma_1", "hm_umma_2", "hm_umma_flat"]),
     "H6": (3, 3, ["hm_probe_1", "hm_probe_2", "hm_probe_flat", "hi_beaker", "hi_nuke",
                   "hi_tnt", "hi_burger", "hi_detonator", "hi_star"]),
+    # Poses the hidden level's villains need for their own moves.
+    "H7": (3, 3, ["hm_landlord_hide", "hm_umma_throw", "hm_narrator_dash", "hm_sackman_ghost_1",
+                  "hm_sackman_ghost_2", "hi_cow", "hm_chaco_pop", "hi_puff", "hm_ufo_drop"]),
+    # The pre-boss environmental hazards, currently drawn with plain shapes.
+    "V1": (3, 3, ["env_plane", "env_package", "env_powder_puff", "env_saucer", "env_cow",
+                  "env_notice", "env_stamp", "env_beam_ring", "env_sack_lightbulb"]),
     "AA": (3, 3, ["prod_wine", "prod_wineglass", "prod_deck", "prod_flashlight", "prod_oldring",
                   "prod_discount", "prod_prbox", "prod_phone", "prod_frogmerch"]),
 }
