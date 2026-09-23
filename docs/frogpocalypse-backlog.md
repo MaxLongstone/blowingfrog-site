@@ -279,6 +279,19 @@ are now done:** Neco as Centipede, UMMA as Donkey Kong, all six remaining pre-bo
 hazards, and this hidden level. Nothing outstanding except the art/audio still on
 the ElevenLabs and asset-prompt lists.
 
+## Status (2026-09-23): the hidden level's real art is in
+
+All four remaining sheets (H1 tiles, H2 small frog, H3 big frog, H5 Narrator/Sack
+Man/UMMA) arrived and are sliced in. H5 came back as a 4x4 sheet with a spare pose
+per character rather than the requested 3x3, so it was cropped by hand (`hm_narrator_1/2/flat`,
+`hm_sackman_1/2/flat`, `hm_umma_1/2/flat` -- the row with UMMA actually holding a Croc was
+picked over the spare one without it) instead of going through the usual grid slicer.
+
+**Every sprite the hidden level draws is now real, painted art** -- nothing in it is a
+procedural placeholder anymore. Re-verified the whole loop with the real art in the
+browser: TNT growth, fire breath, a gap-fall shrinking the frog back down, and the
+tile/backdrop layout, all with no console errors. 180 tests still passing.
+
 ## Status (2026-09-22)
 
 **Wired and live:** the Preacher, the Podcaster and the Boss's Boss now interrupt ordinary stages
