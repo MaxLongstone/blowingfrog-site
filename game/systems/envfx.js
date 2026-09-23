@@ -7,6 +7,30 @@ import { makeRng } from '../core/rng.js';
 
 const CELL = 64;
 
+// Painted art for the hazards. Each hazard keeps its plain-shape drawing as a
+// fallback: put() returns false when a kind has no painted sprite installed, so
+// the caller draws the old shapes instead.
+class Pool {
+  constructor(play) {
+    this.tex = play.tex;
+    this.c = new PIXI.Container();
+    play.world.addChild(this.c);
+    this.items = []; this.n = 0;
+  }
+  begin() { this.n = 0; }
+  put(kind, x, y, w, { rot = 0, alpha = 1, flip = false } = {}) {
+    if (!this.tex?.painted?.(kind)) return false;
+    let s = this.items[this.n];
+    if (!s) { s = new PIXI.Sprite(); s.anchor.set(0.5); this.c.addChild(s); this.items[this.n] = s; }
+    const t = this.tex.get(kind), k = w / t.width;
+    s.texture = t; s.scale.set(k * (flip ? -1 : 1), k);
+    s.x = x; s.y = y; s.rotation = rot; s.alpha = alpha; s.visible = true;
+    this.n++;
+    return true;
+  }
+  end() { for (let i = this.n; i < this.items.length; i++) this.items[i].visible = false; }
+}
+
 export const BLAST_RADIUS = 1.7;            // in cells
 export function inBlast(blast, frog, radius = BLAST_RADIUS) {
   return Math.hypot(blast.x - frog.x, blast.y - frog.y) < radius * CELL;
@@ -26,6 +50,7 @@ class PowderDrop {
     this.W = play.grid.cols * CELL; this.H = play.grid.rows * CELL;
     this.g = new PIXI.Graphics();
     play.world.addChild(this.g);             // on top of everything else in the world
+    this.pool = new Pool(play);
     this.drops = 1 + (this.rng() < 0.5 ? 1 : 0);
     this.state = 'wait';
     this.timer = this.rng.range(14, 30);
@@ -95,14 +120,17 @@ class PowderDrop {
 
   draw(dt) {
     const g = this.g; g.clear();
-    if (this.state === 'plane' || this.state === 'fall') this.drawPlane(g);
+    const pool = this.pool; pool.begin();
+    if (this.state === 'plane' || this.state === 'fall') { if (!pool.put('env_plane', this.px, this.py, 190, { flip: this.dir < 0 })) this.drawPlane(g); }
     if (this.pkg) {
       const k = this.pkg;
       // where it is going to land, so the crossing can be planned around it
       const beat = 0.5 + 0.5 * Math.sin(p2t(this) * 18);
       g.circle(k.x, k.ty, BLAST_RADIUS * CELL).stroke({ width: 5, color: 0xff3a2a, alpha: 0.3 + beat * 0.5 });
-      g.roundRect(k.x - 16, k.y - 20, 32, 40, 6).fill(0xd6b483).stroke({ width: 3, color: 0x3a2a14 });
-      g.rect(k.x - 16, k.y - 6, 32, 6).fill(0xffffff);
+      if (!pool.put('env_package', k.x, k.y, 50, { rot: Math.sin(this.play.time * 7) * 0.25 })) {
+        g.roundRect(k.x - 16, k.y - 20, 32, 40, 6).fill(0xd6b483).stroke({ width: 3, color: 0x3a2a14 });
+        g.rect(k.x - 16, k.y - 6, 32, 6).fill(0xffffff);
+      }
     }
     if (this.state === 'boom' && this.blast) {
       const a = Math.max(0, this.boomT / 0.45);
@@ -113,9 +141,10 @@ class PowderDrop {
       g.rect(0, 0, this.W, this.H).fill({ color: 0xf4f1e8, alpha: a * 0.92 });
       for (const b of this.blobs) {
         b.x += b.s * dt; if (b.x - b.r > this.W) b.x = -b.r;
-        g.circle(b.x, b.y, b.r).fill({ color: 0xffffff, alpha: a * 0.12 });
+        if (!pool.put('env_powder_puff', b.x, b.y, b.r * 2.6, { alpha: a * 0.55 })) g.circle(b.x, b.y, b.r).fill({ color: 0xffffff, alpha: a * 0.12 });
       }
     }
+    pool.end();
   }
 
   drawPlane(g) {
@@ -148,6 +177,7 @@ class TractorBeam {
     this.W = play.grid.cols * CELL; this.H = play.grid.rows * CELL;
     this.g = new PIXI.Graphics();
     play.world.addChild(this.g);
+    this.pool = new Pool(play);
     this.state = 'wait';
     this.timer = this.rng.range(10, 20);
     this.saucerX = this.W * 0.5;
@@ -189,18 +219,28 @@ class TractorBeam {
 
   draw() {
     const g = this.g; g.clear();
-    g.ellipse(this.W / 2, CELL * 0.7, 70, 20).fill(0x8f95a0).stroke({ width: 3, color: 0x1c1c1a });
-    g.ellipse(this.W / 2, CELL * 0.62, 34, 12).fill(0x9fe6ff);
+    const pool = this.pool; pool.begin();
+    if (!pool.put('env_saucer', this.W / 2, CELL * 0.7, 190)) {
+      g.ellipse(this.W / 2, CELL * 0.7, 70, 20).fill(0x8f95a0).stroke({ width: 3, color: 0x1c1c1a });
+      g.ellipse(this.W / 2, CELL * 0.62, 34, 12).fill(0x9fe6ff);
+    }
     if (this.state === 'sweep') {
       const beat = 0.5 + 0.5 * Math.sin(this.play.time * 14);
       g.poly([this.saucerX - 18, CELL * 0.85, this.saucerX + 18, CELL * 0.85, this.saucerX + 90, this.H, this.saucerX - 90, this.H])
         .fill({ color: 0x9fe6ff, alpha: 0.18 + beat * 0.12 });
       if (this.cow) {
         const cx = this.saucerX, cy = this.cow.y;
-        g.ellipse(cx, cy, 22, 14).fill(0xf4f2ec).stroke({ width: 2, color: 0x1c1c1a });
-        for (const [dx, dy] of [[-10, -6], [8, -8], [2, 4]]) g.circle(cx + dx, cy + dy, 4).fill(0x2a2a30);
+        if (!pool.put('env_cow', cx, cy, 70, { rot: Math.sin(this.play.time * 3) * 0.15 })) {
+          g.ellipse(cx, cy, 22, 14).fill(0xf4f2ec).stroke({ width: 2, color: 0x1c1c1a });
+          for (const [dx, dy] of [[-10, -6], [8, -8], [2, 4]]) g.circle(cx + dx, cy + dy, 4).fill(0x2a2a30);
+        }
+      }
+      for (let i = 0; i < 4; i++) {                 // rings of light sliding down the beam
+        const k = ((this.play.time * 0.9 + i / 4) % 1);
+        pool.put('env_beam_ring', this.saucerX, CELL * 0.9 + k * (this.H - CELL), 70 + k * 130, { alpha: 0.7 * (1 - k) });
       }
     }
+    pool.end();
   }
 }
 
@@ -217,6 +257,7 @@ class RentNotice {
     this.W = play.grid.cols * CELL; this.H = play.grid.rows * CELL;
     this.g = new PIXI.Graphics();
     play.world.addChild(this.g);
+    this.pool = new Pool(play);
     this.timer = this.rng.range(12, 20);
     this.activeRow = -1; this.activeT = 0;
     this.steamTimer = this.rng.range(3, 7);
@@ -254,13 +295,16 @@ class RentNotice {
 
   draw() {
     const g = this.g; g.clear();
+    const pool = this.pool; pool.begin();
     if (this.activeRow >= 0) {
       const beat = 0.5 + 0.5 * Math.sin(this.play.time * 10);
       g.rect(0, this.activeRow * CELL, this.W, CELL).fill({ color: 0xe23c2f, alpha: 0.1 + beat * 0.08 });
+      [0.18, 0.5, 0.82].forEach((f, i) => pool.put('env_stamp', this.W * f, this.activeRow * CELL + CELL / 2, 56, { rot: -0.3 + i * 0.25, alpha: 0.8 }));
       for (const paper of this.papers) {
-        g.rect(paper.x - 8, paper.y - 10, 16, 20).fill({ color: 0xf4f0e6, alpha: 0.85 });
+        if (!pool.put('env_notice', paper.x, paper.y, 30, { rot: paper.r, alpha: 0.95 })) g.rect(paper.x - 8, paper.y - 10, 16, 20).fill({ color: 0xf4f0e6, alpha: 0.85 });
       }
     }
+    pool.end();
   }
 }
 
@@ -377,6 +421,7 @@ class Blackout {
     this.W = play.grid.cols * CELL; this.H = play.grid.rows * CELL;
     this.g = new PIXI.Graphics();
     play.world.addChild(this.g);
+    this.pool = new Pool(play);
     this.timer = this.rng.range(10, 16);
     this.outT = 0;
     this.firstCue = true;
@@ -401,7 +446,8 @@ class Blackout {
 
   draw() {
     const g = this.g; g.clear();
-    if (this.outT <= 0) return;
+    this.pool.begin();
+    if (this.outT <= 0) { this.pool.end(); return; }
     const fp = this.play.frog.position();
     const fx = (fp.col + 0.5) * CELL, fy = (fp.row + 0.5) * CELL;
     const w = blackoutWindow(fx, fy, CELL * 1.7, this.W, this.H);
@@ -410,6 +456,10 @@ class Blackout {
     g.rect(0, w.y1, this.W, this.H - w.y1).fill({ color: 0x05050a, alpha: a });
     g.rect(0, w.y0, w.x0, w.y1 - w.y0).fill({ color: 0x05050a, alpha: a });
     g.rect(w.x1, w.y0, this.W - w.x1, w.y1 - w.y0).fill({ color: 0x05050a, alpha: a });
+    // a dead bulb, dangling and flickering, over the little patch of light you have left
+    const flick = Math.sin(this.play.time * 31) > 0.2 ? 1 : 0.3;
+    this.pool.put('env_sack_lightbulb', fx + Math.sin(this.play.time * 2) * 6, w.y0 + 26, 36, { alpha: flick });
+    this.pool.end();
   }
 }
 
