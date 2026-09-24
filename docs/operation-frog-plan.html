@@ -142,16 +142,18 @@ th{color:var(--dim);font-weight:600;font-size:12px;letter-spacing:.08em;text-tra
 </table>
 </div>
 
-<h2>7. Decisions I need from you before we build</h2>
+<h2>7. Decisions</h2>
 <div class="card">
 <table>
-<tr><th>Decision</th><th>Options</th><th>My lean</th></tr>
-<tr><td>How the mid-game connects to the web run</td><td>A) a downloadable app the site links to, with a return code<br>B) Pixel Streaming, so it plays in the browser but runs on a server you pay for<br>C) a mobile build for Google Play</td><td>A first. Cheapest, and the code returned is easy to verify. B later as a demo.</td></tr>
-<tr><td>Where the frog model comes from</td><td>Marketplace asset, AI 3D generation, or hand-made</td><td>Generate, then let Opus fix the materials in-engine.</td></tr>
-<tr><td>Input</td><td>Mouse steady-hand, controller, or touch</td><td>Mouse first, controller second.</td></tr>
-<tr><td>Tone</td><td>Comic gross-out, or a straight tense thriller</td><td>Comic. It matches the System AI.</td></tr>
-<tr><td>Scope cap</td><td>One operation, five bombs, about 8 minutes</td><td>Yes. Cap it hard.</td></tr>
+<tr><th>Decision</th><th>Answer</th><th>Why</th></tr>
+<tr><td>Connection to the web run</td><td><b>Unreal, streamed into the page (Pixel Streaming).</b> It sits in the site as another hidden level and the same page later loads inside the app.</td><td>Unreal Engine dropped browser export after 4.24, so streaming is the only way to show real Unreal in a web page. The hidden level is rare, so the server bill stays tiny. The result goes back to the game through the page itself, so no return code is needed.</td></tr>
+<tr><td>Frog model</td><td><b>Hybrid:</b> AI-generate the frog skin and each organ as separate pieces, then clean up in Blender and finish the materials in Unreal.</td><td>Operation needs a hollow body, loose organs and collision shapes. One AI mesh has none of that.</td></tr>
+<tr><td>Look</td><td><b>Stylized felt-and-clay, not photoreal.</b></td><td>Matches the 2D game, suits comic gross-out, and hides AI mesh flaws.</td></tr>
+<tr><td>Input</td><td>Mouse first.</td><td>Decided.</td></tr>
+<tr><td>Tone</td><td>Comic gross-out.</td><td>Decided.</td></tr>
+<tr><td>Scope cap</td><td>One operation, five bombs, about 8 minutes.</td><td>Decided.</td></tr>
 </table>
+<p class="note">Known risk: streaming adds roughly 50 to 100 ms of delay, which matters for a steady-hand game. The design absorbs it: the tremor is part of the fun and contact is judged on the server. Fallback if it bites: a lighter web-native version of the same operation.</p>
 </div>
 
 <p class="note" style="margin-top:30px">Sources: <a href="https://platform.claude.com/docs/en/models/opus-5-5/overview">Claude Opus 5.5 overview</a> · <a href="https://venturebeat.com/technology/anthropic-releases-claude-opus-5-5-beating-fable-5-1-on-key-agentic-benchmarks-at-60-cheaper-api-price">VentureBeat</a> · <a href="https://dev.epicgames.com/documentation/unreal-engine/unreal-mcp-in-unreal-editor">Epic Unreal MCP docs</a> · <a href="https://www.explainx.ai/blog/unreal-engine-5-8-claude-codex-mcp-ai-integration-2026">UE 5.8 + Claude guide</a> · <a href="https://www.soonlab.ai/blog/claude-opus-5-game-development/">Opus for game development review</a></p>
