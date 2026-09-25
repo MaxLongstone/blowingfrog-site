@@ -147,6 +147,7 @@ th{color:var(--dim);font-weight:600;font-size:12px;letter-spacing:.08em;text-tra
 <table>
 <tr><th>Decision</th><th>Answer</th><th>Why</th></tr>
 <tr><td>Connection to the web run</td><td><b>Unreal, streamed into the page (Pixel Streaming).</b> It sits in the site as another hidden level and the same page later loads inside the app.</td><td>Unreal Engine dropped browser export after 4.24, so streaming is the only way to show real Unreal in a web page. The hidden level is rare, so the server bill stays tiny. The result goes back to the game through the page itself, so no return code is needed.</td></tr>
+<tr><td>Free option (no server bill)</td><td><b>Build the playable in a web 3D engine (Three.js or Babylon.js), not Unreal.</b> Keep Unreal for an offline-rendered cinematic intro.</td><td>It runs inside the site and the app with no streaming cost and no added latency, so the steady hand stays precise. Lower graphics ceiling than Unreal (no Lumen or Nanite), but stylized clay art with baked lighting and post-processing looks very good in the browser.</td></tr>
 <tr><td>Frog model</td><td><b>Hybrid:</b> AI-generate the frog skin and each organ as separate pieces, then clean up in Blender and finish the materials in Unreal.</td><td>Operation needs a hollow body, loose organs and collision shapes. One AI mesh has none of that.</td></tr>
 <tr><td>Look</td><td><b>Stylized felt-and-clay, not photoreal.</b></td><td>Matches the 2D game, suits comic gross-out, and hides AI mesh flaws.</td></tr>
 <tr><td>Input</td><td>Mouse first.</td><td>Decided.</td></tr>
