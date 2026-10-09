@@ -359,7 +359,14 @@ function enter(){
   else if(tl.progress()===1){$('#replay').classList.remove('show');tl.restart();}
   else tl.resume();
 }
-if('IntersectionObserver' in window){
+function leave(){if(started&&tl.progress()<1)tl.pause();}
+// When embedded, the parent page reports visibility (in-iframe observers are unreliable, esp. Safari)
+window.addEventListener('message',e=>{
+  if(e.data==='mdx:in'){if(!inView){inView=true;enter();}}
+  else if(e.data==='mdx:out'){if(inView){inView=false;leave();}}
+});
+if(window.parent!==window){/* driven by parent */}
+else if('IntersectionObserver' in window){
   new IntersectionObserver(es=>{
     const vis=es[0].intersectionRatio>=.5;
     if(vis&&!inView)enter();

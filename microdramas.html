@@ -588,6 +588,18 @@ animBars();
   v.addEventListener('error',function(){hero.classList.add('ended');});
   play();
   setTimeout(function(){if(v.paused&&!hero.classList.contains('ended'))hero.classList.add('ended');},2500);
+  // Keep it running: resume whenever the hero is on screen, pause when it's scrolled away,
+  // and retry on the first interaction in case the browser blocked autoplay (e.g. Low Power Mode)
+  var onScreen=true;
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      onScreen=es[0].isIntersecting;
+      if(onScreen){if(v.paused)play();}else if(!v.paused)v.pause();
+    },{threshold:.15}).observe(hero);
+  }
+  ['pointerdown','touchend','keydown','scroll','wheel'].forEach(function(t){
+    window.addEventListener(t,function(){if(onScreen&&v.paused)play();},{passive:true});
+  });
   snd.addEventListener('click',function(){v.muted=!v.muted;label();if(!v.muted&&hero.classList.contains('ended'))playOnce();});
   rep.addEventListener('click',playOnce);
 })();
@@ -616,6 +628,19 @@ animBars();
   document.getElementById('svClose').addEventListener('click',close);
   m.addEventListener('click',function(e){if(e.target===m)close();});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&m.classList.contains('open'))close();});
+})();
+</script>
+<script>
+// Start/pause the explainer iframe when at least half of it is on screen
+(function(){
+  var f=document.querySelector('.num-film iframe');if(!f||!('IntersectionObserver' in window))return;
+  var vis=false;
+  function send(m){try{f.contentWindow.postMessage(m,location.origin)}catch(e){}}
+  new IntersectionObserver(function(es){
+    var v=es[0].intersectionRatio>=.5;
+    if(v!==vis){vis=v;send(v?'mdx:in':'mdx:out');}
+  },{threshold:[0,.5,1]}).observe(f);
+  f.addEventListener('load',function(){if(vis)send('mdx:in');});
 })();
 </script>
 <script src="app.js?v=2"></script>
