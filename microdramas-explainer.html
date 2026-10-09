@@ -353,10 +353,20 @@ tl.call(()=>$('#replay').classList.add('show'),null,20.0);
 tl.set(['#china','#usa','#mapTitle','#p1','#p2','#p3'],{opacity:0},0);
 
 $('#replay').onclick=()=>{$('#replay').classList.remove('show');tl.restart()};
-const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-let started=false;
-function go(){if(started)return;started=true;if(reduce){tl.progress(1);return;}document.fonts.ready.then(()=>tl.play(0));}
-if('IntersectionObserver' in window){new IntersectionObserver((es,o)=>{if(es[0].isIntersecting&&es[0].intersectionRatio>=.5){go();o.disconnect();}},{threshold:[.5]}).observe(document.body);}else go();
+let started=false,inView=false;
+function enter(){
+  if(!started){started=true;document.fonts.ready.then(()=>tl.play(0));}
+  else if(tl.progress()===1){$('#replay').classList.remove('show');tl.restart();}
+  else tl.resume();
+}
+if('IntersectionObserver' in window){
+  new IntersectionObserver(es=>{
+    const vis=es[0].intersectionRatio>=.5;
+    if(vis&&!inView)enter();
+    if(!vis&&inView&&started&&tl.progress()<1)tl.pause();
+    inView=vis;
+  },{threshold:[0,.5]}).observe(document.body);
+}else enter();
 </script>
 </body>
 </html>

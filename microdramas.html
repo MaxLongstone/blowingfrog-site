@@ -49,7 +49,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px
 .hero-flash{position:absolute;inset:0;background:#000;z-index:1;pointer-events:none;opacity:0}
 .hero.ended .hero-flash{animation:heroFlash .5s ease-out}
 @keyframes heroFlash{0%{opacity:1}100%{opacity:0}}
-@media(prefers-reduced-motion:reduce){.hero.ended .hero-title{animation:none}}
 .hero-body{position:relative;z-index:2;padding:0 44px;max-width:1200px;margin:0 auto;width:100%}
 .hero-eye{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-lt);margin-bottom:18px;display:flex;align-items:center;gap:12px}
 .hero-eye::before{content:'';width:26px;height:1px;background:var(--accent)}
@@ -186,7 +185,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px
 .foot-logo{font-family:var(--fd);font-weight:800;font-size:14px;color:var(--dim);letter-spacing:.08em}
 .foot-note{font-size:11px;color:var(--dim);letter-spacing:.04em}
 @media(max-width:640px){.foot{padding:24px 20px;flex-direction:column;gap:8px;text-align:center}}
-@media(prefers-reduced-motion:reduce){.mq-track{animation:none}.bar-fill{transition:none}.egg{transition:none}}
 </style>
 
 <!-- NAV -->
@@ -351,7 +349,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px
       <div>
         <div class="num-eye">Explained — 20 seconds</div>
         <h2 class="num-h">THE DATA<br>IS INSANE</h2>
-        <p class="num-desc">China's short drama market went from <strong>$500 million in 2021</strong> to <strong>$7 billion in 2024</strong>. Global hit <strong>$11 billion in 2025</strong>. Projected <strong>$26 billion by 2030</strong>.</p>
+        <p class="num-desc">The market went from <strong>$500 million in 2021</strong> to <strong>$8 billion in 2024</strong>. It hit <strong>$11 billion in 2025</strong>. Projected <strong>$26 billion by 2030</strong>.</p>
         <p class="num-desc">Numbers are boring. So we animated them. The whole format in 20 seconds — <strong>where it came from, how it hooks you, who's watching, and why Hollywood is suddenly paying union rates</strong> to get in on it.</p>
       </div>
       <div class="num-chart">
@@ -573,8 +571,7 @@ window.addEventListener('scroll', checkEggs, {passive: true});
   var hero=document.querySelector('.hero'), v=document.getElementById('heroVid'),
       snd=document.getElementById('heroSound'), rep=document.getElementById('heroReplay');
   function end(){hero.classList.add('ended')}
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){v.removeAttribute('autoplay');v.pause();end();}
-  else{var pp=v.play();if(pp&&pp.catch)pp.catch(function(){});}
+  var pp=v.play();if(pp&&pp.catch)pp.catch(function(){});
   v.addEventListener('ended',end);
   v.addEventListener('error',end);
   setTimeout(function(){if(v.paused&&!hero.classList.contains('ended'))end()},2500);
