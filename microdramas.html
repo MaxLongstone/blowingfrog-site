@@ -1,0 +1,549 @@
+<title>Microdramas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;700;800;900&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Playfair+Display:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0b0b0b;--bg-s:#111;--bg-c:#141414;
+  --text:#fff;--muted:rgba(255,255,255,.46);--dim:rgba(255,255,255,.2);--faint:rgba(255,255,255,.07);
+  --accent:#8b9421;--accent-lt:#a8b329;--accent-dim:rgba(139,148,33,.13);
+  --red:#c0392b;--border:rgba(255,255,255,.08);
+  --fd:"Barlow Condensed",sans-serif;--fb:"Barlow",sans-serif;--fs:"Playfair Display",serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px;line-height:1.6;overflow-x:hidden}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:17px 44px;background:rgba(11,11,11,.9);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.05)}
+.nav-logo{font-family:var(--fd);font-weight:800;font-size:17px;color:#fff;text-decoration:none;letter-spacing:.06em}
+.nav-links{display:flex;gap:28px}
+.nav-link{font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);text-decoration:none;transition:color .2s}
+.nav-link:hover{color:rgba(255,255,255,.82)}
+.nav-link.active{color:var(--accent-lt)}
+@media(max-width:640px){.nav{padding:14px 20px}.nav-links{display:none}}
+
+/* HERO */
+.hero{min-height:100vh;background:#0b0b0b;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden}
+.hero-reel{position:absolute;inset:0;display:grid;grid-template-columns:repeat(5,1fr);gap:3px;opacity:.14;pointer-events:none}
+.reel-col{display:flex;flex-direction:column;gap:3px}
+.reel-card{flex:1;background:linear-gradient(180deg,#1c1c1c 0%,#0d0d0d 100%);border:1px solid rgba(255,255,255,.04)}
+.reel-col:nth-child(even){transform:translateY(-40px)}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,11,.4) 0%,rgba(11,11,11,0) 30%,rgba(11,11,11,0) 55%,rgba(11,11,11,1) 100%);pointer-events:none}
+
+.hero-body{position:relative;z-index:2;padding:0 44px;max-width:1200px;margin:0 auto;width:100%}
+.hero-eye{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-lt);margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.hero-eye::before{content:'';width:26px;height:1px;background:var(--accent)}
+.hero-title{font-family:var(--fd);font-weight:900;font-size:clamp(78px,14vw,188px);line-height:.88;letter-spacing:-.025em;color:#fff}
+
+/* MARQUEE */
+.mq-wrap{overflow:hidden;border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07);padding:12px 0;margin-top:36px;background:rgba(139,148,33,.04)}
+.mq-track{display:flex;width:max-content;animation:mq 48s linear infinite}
+.mq-track:hover{animation-play-state:paused}
+@keyframes mq{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.mi{font-family:var(--fd);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-lt);white-space:nowrap;padding:0 20px}
+.mi.d{color:rgba(255,255,255,.18)}
+.ms{color:var(--accent);padding:0 4px;font-size:10px}
+
+.hero-tagline{position:relative;z-index:2;padding:26px 44px 52px;max-width:1200px;margin:0 auto;width:100%;font-size:clamp(15px,1.6vw,19px);font-weight:300;color:rgba(255,255,255,.4);font-style:italic}
+.hero-tagline strong{color:rgba(255,255,255,.72);font-weight:500;font-style:normal}
+@media(max-width:640px){.hero-body,.hero-tagline{padding-left:20px;padding-right:20px}}
+
+/* FRANCO BANNER */
+.franco-banner{background:var(--accent);padding:0;overflow:hidden;position:relative}
+.franco-inner{display:flex;align-items:stretch;min-height:72px}
+.franco-label{background:#0b0b0b;color:var(--accent-lt);font-family:var(--fd);font-weight:800;font-size:11px;letter-spacing:.2em;text-transform:uppercase;padding:0 28px;display:flex;align-items:center;white-space:nowrap;border-right:2px solid rgba(0,0,0,.3)}
+.franco-text{font-family:var(--fd);font-weight:800;font-size:clamp(14px,2.2vw,22px);letter-spacing:.04em;color:#0b0b0b;padding:18px 32px;display:flex;align-items:center;line-height:1.2}
+.franco-text em{font-style:italic;opacity:.7}
+@media(max-width:640px){.franco-inner{flex-direction:column}.franco-label{padding:10px 20px;justify-content:center}.franco-text{padding:14px 20px;font-size:14px}}
+
+/* SECTIONS */
+.sec{padding:88px 44px}
+.sec-in{max-width:1200px;margin:0 auto}
+.sec-label{font-size:10px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--dim);margin-bottom:48px;display:flex;align-items:center;gap:14px}
+.sec-label::after{content:'';flex:0 0 64px;height:1px;background:var(--border)}
+@media(max-width:640px){.sec{padding:60px 20px}}
+
+/* FORMAT */
+.format{background:var(--bg)}
+.format-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+@media(max-width:768px){.format-grid{grid-template-columns:1fr;gap:36px}}
+.format-h{font-family:var(--fd);font-weight:900;font-size:clamp(38px,5vw,60px);line-height:1.0;letter-spacing:-.01em;color:var(--text)}
+.format-h em{font-style:italic;color:var(--accent-lt);font-family:var(--fs)}
+.format-stats{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:32px}
+.stat{background:var(--bg-c);border:1px solid var(--border);padding:20px 22px}
+.stat-num{font-family:var(--fd);font-weight:900;font-size:36px;color:var(--text);line-height:1;letter-spacing:-.02em}
+.stat-num span{font-size:18px;color:var(--accent-lt)}
+.stat-label{font-size:12px;color:var(--muted);margin-top:5px;letter-spacing:.02em}
+.format-body p{font-size:15.5px;line-height:1.8;color:var(--muted);margin-bottom:18px;font-weight:300}
+.format-body p strong{color:var(--text);font-weight:600}
+.format-body p em{color:var(--accent-lt);font-style:italic}
+
+/* SERIES */
+.catalog{background:var(--bg-s)}
+.cat-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:40px;flex-wrap:wrap;gap:12px}
+.cat-title{font-family:var(--fd);font-weight:900;font-size:clamp(32px,4vw,48px);color:var(--text);letter-spacing:-.01em}
+.cat-sub{font-size:12px;color:var(--dim);letter-spacing:.06em}
+.series-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media(max-width:1000px){.series-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:680px){.series-grid{grid-template-columns:repeat(2,1fr)}}
+
+.series-card{position:relative;aspect-ratio:9/16;background:var(--bg-c);border:1px solid var(--border);overflow:hidden;cursor:pointer;transition:transform .3s var(--ease),border-color .3s}
+.series-card:hover{transform:scale(1.025);border-color:rgba(139,148,33,.5)}
+.sc-img{position:absolute;inset:0;background-size:cover;background-position:center top}
+.sc-grad{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.96) 0%,rgba(0,0,0,.5) 45%,rgba(0,0,0,.15) 100%)}
+.sc-badge{position:absolute;top:12px;left:12px;font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:4px 9px;z-index:2}
+.sc-badge.free{background:var(--accent);color:#0b0b0b}
+.sc-badge.new{background:var(--red);color:#fff}
+.sc-eps{position:absolute;top:12px;right:12px;font-size:10px;font-weight:600;color:rgba(255,255,255,.55);background:rgba(0,0,0,.6);padding:4px 8px;z-index:2}
+.sc-body{position:absolute;bottom:0;left:0;right:0;padding:16px 14px 18px;z-index:2}
+.sc-genre{font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-lt);margin-bottom:7px}
+.sc-title{font-family:var(--fd);font-weight:800;font-size:clamp(13px,1.5vw,17px);line-height:1.15;color:#fff;letter-spacing:-.01em}
+.sc-hook{font-size:11px;color:rgba(255,255,255,.42);margin-top:7px;line-height:1.4;font-style:italic}
+.sc-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .25s;z-index:3}
+.sc-play svg{fill:#fff;margin-left:3px}
+.series-card:hover .sc-play{opacity:1}
+
+/* NUMBERS */
+.numbers{background:#0e0e0e;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.num-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+@media(max-width:768px){.num-grid{grid-template-columns:1fr;gap:40px}}
+.num-eye{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-lt);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.num-eye::before{content:'';width:22px;height:1px;background:var(--accent)}
+.num-h{font-family:var(--fd);font-weight:900;font-size:clamp(36px,4vw,54px);line-height:1.0;color:var(--text);margin-bottom:22px;letter-spacing:-.01em}
+.num-desc{font-size:15px;line-height:1.8;color:var(--muted);font-weight:300;margin-bottom:12px}
+.num-desc strong{color:var(--text);font-weight:600}
+.num-cta{display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);border:1px solid var(--border);padding:11px 22px;cursor:default;margin-top:12px}
+.num-chart{background:var(--bg-c);border:1px solid var(--border);padding:28px 28px 20px}
+.chart-title{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:20px}
+.bar-group{display:flex;flex-direction:column;gap:10px}
+.bar-row{display:flex;align-items:center;gap:12px}
+.bar-year{font-family:var(--fd);font-size:12px;font-weight:700;color:var(--muted);width:36px;flex-shrink:0}
+.bar-track{flex:1;height:8px;background:rgba(255,255,255,.06);min-width:0}
+.bar-fill{height:100%;background:var(--accent);transform-origin:left;transform:scaleX(0);transition:transform 1s var(--ease)}
+.bar-fill.proj{background:rgba(139,148,33,.28)}
+.bar-val{font-family:var(--fd);font-size:13px;font-weight:700;color:var(--text);width:52px;text-align:right;flex-shrink:0}
+.chart-note{font-size:10px;color:var(--dim);margin-top:16px;letter-spacing:.04em}
+
+/* PRODUCE */
+.produce{background:var(--bg)}
+.produce-grid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+@media(max-width:768px){.produce-grid{grid-template-columns:1fr;gap:40px}}
+.produce-h{font-family:var(--fd);font-weight:900;font-size:clamp(40px,5.5vw,68px);line-height:.95;letter-spacing:-.02em;color:var(--text);margin-bottom:24px}
+.produce-h em{color:var(--accent-lt);font-style:italic;font-family:var(--fs)}
+.produce-body{font-size:15px;line-height:1.8;color:var(--muted);font-weight:300;margin-bottom:28px}
+.produce-body strong{color:var(--text);font-weight:600}
+.produce-btn{display:inline-flex;align-items:center;gap:12px;font-family:var(--fd);font-size:14px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#0b0b0b;background:var(--accent);border:none;padding:16px 32px;cursor:pointer;transition:background .2s}
+.produce-btn:hover{background:var(--accent-lt)}
+.produce-features{display:flex;flex-direction:column;gap:2px}
+/* ICON CARDS — services page style */
+.pf{background:var(--bg-c);border:1px solid var(--border);padding:22px 24px;display:flex;align-items:flex-start;gap:20px;transition:border-color .2s}
+.pf:hover{border-color:rgba(139,148,33,.35)}
+.pf-icon{flex-shrink:0;width:52px;height:52px}
+.pf-icon svg{width:52px;height:52px}
+.pf-title{font-family:var(--fd);font-weight:700;font-size:15px;color:var(--text);letter-spacing:.04em;text-transform:uppercase;margin-bottom:4px}
+.pf-sub{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* EASTER EGGS */
+.egg{position:fixed;z-index:999;width:230px;background:#141414;border:1px solid rgba(139,148,33,.4);border-left:3px solid var(--accent);padding:12px 14px 14px;pointer-events:none;opacity:0;transition:opacity .35s,transform .4s var(--ease)}
+.egg.from-left{left:-260px;top:40%;transform:translateX(0)}
+.egg.from-right{right:-260px;top:55%;transform:translateX(0)}
+.egg.from-left.show{opacity:1;transform:translateX(270px)}
+.egg.from-right.show{opacity:1;transform:translateX(-270px)}
+.egg-badge{font-size:9px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#0b0b0b;background:var(--accent);padding:2px 7px;display:inline-block;margin-bottom:8px}
+.egg-title{font-family:var(--fd);font-size:13px;font-weight:700;color:#fff;line-height:1.2;letter-spacing:.01em}
+.egg-hook{font-size:11px;color:rgba(255,255,255,.38);margin-top:5px;font-style:italic;line-height:1.3}
+
+
+/* Coming soon strip on cards */
+.sc-soon{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.72);border-top:1px solid rgba(139,148,33,.3);padding:7px 14px;z-index:3;display:flex;align-items:center;justify-content:space-between}
+.sc-soon-ep{font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-lt)}
+.sc-soon-tag{font-size:9px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.32)}
+
+/* FOOT */
+.foot{padding:34px 44px;border-top:1px solid var(--border);background:var(--bg);display:flex;justify-content:space-between;align-items:center}
+.foot-logo{font-family:var(--fd);font-weight:800;font-size:14px;color:var(--dim);letter-spacing:.08em}
+.foot-note{font-size:11px;color:var(--dim);letter-spacing:.04em}
+@media(max-width:640px){.foot{padding:24px 20px;flex-direction:column;gap:8px;text-align:center}}
+@media(prefers-reduced-motion:reduce){.mq-track{animation:none}.bar-fill{transition:none}.egg{transition:none}}
+</style>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">BLOWING FROG</a>
+  <div class="nav-links">
+    <a href="about.html" class="nav-link">About Us</a>
+    <a href="services.html" class="nav-link">Services</a>
+    <a href="blog.html" class="nav-link">Blog</a>
+    <a href="microdramas.html" class="nav-link active">Microdramas</a>
+    <a href="play.html" class="nav-link">Play</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-reel">
+    <div class="reel-col"><div class="reel-card"></div><div class="reel-card"></div><div class="reel-card"></div></div>
+    <div class="reel-col"><div class="reel-card"></div><div class="reel-card"></div><div class="reel-card"></div></div>
+    <div class="reel-col"><div class="reel-card"></div><div class="reel-card"></div><div class="reel-card"></div></div>
+    <div class="reel-col"><div class="reel-card"></div><div class="reel-card"></div><div class="reel-card"></div></div>
+    <div class="reel-col"><div class="reel-card"></div><div class="reel-card"></div><div class="reel-card"></div></div>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-body">
+    <div class="hero-eye">Blowing Frog — Short Form Video</div>
+    <h1 class="hero-title">MICRO<br>DRAMAS</h1>
+  </div>
+  <div class="mq-wrap">
+    <div class="mq-track">
+      <span class="mi">MY BILLIONAIRE BOSS RECOGNIZED MY FACE</span><span class="ms">◆</span>
+      <span class="mi d">80 EPISODES</span><span class="ms">◆</span>
+      <span class="mi">MY SON'S VENTRILOQUIST DOLL IS LEADING A LATIN AMERICAN REVOLUTION</span><span class="ms">◆</span>
+      <span class="mi d">90 SECONDS</span><span class="ms">◆</span>
+      <span class="mi">I WAS KIDNAPPED BY MALIBU SURFERS WHO ARE IN FACT NINJA SPIES</span><span class="ms">◆</span>
+      <span class="mi d">EP. 1 FREE</span><span class="ms">◆</span>
+      <span class="mi">A VAMPIRE ATE MY FAMILY AND NOW I'M OUT FOR REVENGE</span><span class="ms">◆</span>
+      <span class="mi d">$11 BILLION DOLLARS</span><span class="ms">◆</span>
+      <span class="mi">I WAS BRAINWASHED BY A CULT AND NOW I SELL LIVING TUPPERWARE</span><span class="ms">◆</span>
+      <span class="mi d">NEXT EPISODE IN 3…</span><span class="ms">◆</span>
+      <span class="mi">MY HUSBAND WAS ABDUCTED BY ALIENS (OVERSEXED LOOKALIKE)</span><span class="ms">◆</span>
+      <span class="mi d">DARK ROMANCE</span><span class="ms">◆</span>
+      <span class="mi">MY BILLIONAIRE BOSS RECOGNIZED MY FACE</span><span class="ms">◆</span>
+      <span class="mi d">80 EPISODES</span><span class="ms">◆</span>
+      <span class="mi">MY SON'S VENTRILOQUIST DOLL IS LEADING A LATIN AMERICAN REVOLUTION</span><span class="ms">◆</span>
+      <span class="mi d">90 SECONDS</span><span class="ms">◆</span>
+      <span class="mi">I WAS KIDNAPPED BY MALIBU SURFERS WHO ARE IN FACT NINJA SPIES</span><span class="ms">◆</span>
+      <span class="mi d">EP. 1 FREE</span><span class="ms">◆</span>
+      <span class="mi">A VAMPIRE ATE MY FAMILY AND NOW I'M OUT FOR REVENGE</span><span class="ms">◆</span>
+      <span class="mi d">$11 BILLION DOLLARS</span><span class="ms">◆</span>
+      <span class="mi">I WAS BRAINWASHED BY A CULT AND NOW I SELL LIVING TUPPERWARE</span><span class="ms">◆</span>
+      <span class="mi d">NEXT EPISODE IN 3…</span><span class="ms">◆</span>
+      <span class="mi">MY HUSBAND WAS ABDUCTED BY ALIENS (OVERSEXED LOOKALIKE)</span><span class="ms">◆</span>
+      <span class="mi d">DARK ROMANCE</span><span class="ms">◆</span>
+    </div>
+  </div>
+  <div class="hero-tagline">
+    90 seconds. 80 episodes. <strong>$11 billion dollars.</strong> The format China invented, Hollywood is now panic-buying — and nobody, absolutely <em>nobody</em>, can stop watching at 2am when they absolutely should.
+  </div>
+</section>
+
+<!-- FRANCO BANNER -->
+<div class="franco-banner">
+  <div class="franco-inner">
+    <div class="franco-label">⚡ BREAKING</div>
+    <div class="franco-text">One scene. One turn. Something shifts.... Is that James Franco in a chopper? Didn't we cancel the motherf&amp;@ker?</div>
+  </div>
+</div>
+
+<!-- THE FORMAT -->
+<section class="sec format">
+  <div class="sec-in">
+    <div class="sec-label">What this is</div>
+    <div class="format-grid">
+      <div>
+        <h2 class="format-h">The most<br>addictive<br>format in<br><em>the world</em><br>right now.</h2>
+        <div class="format-stats">
+          <div class="stat"><div class="stat-num"><span>$</span>11B</div><div class="stat-label">Global market 2025</div></div>
+          <div class="stat"><div class="stat-num">90<span>s</span></div><div class="stat-label">Per episode</div></div>
+          <div class="stat"><div class="stat-num">80<span>+</span></div><div class="stat-label">Episodes per series</div></div>
+          <div class="stat"><div class="stat-num"><span>$</span>26B</div><div class="stat-label">Projected by 2030</div></div>
+        </div>
+      </div>
+      <div class="format-body">
+        <p>China invented the format. A full storyline — romance, betrayal, revenge, usually in that order, sometimes simultaneously — broken into 60 to 90 episodes of about 90 seconds each. Vertical. Designed for a phone. Designed to <strong>make you watch the next one before you've consciously decided to.</strong></p>
+        <p>The hooks are aggressively stupid in the best possible way. <em>"My Billionaire Boss Recognized My Face."</em> <em>"I Married the Wrong Twin."</em> <em>"My Son's Ventriloquist Doll Is Leading a Latin American Revolution."</em> They sound like they were written by an algorithm that only ever read airport paperbacks and one Telenovela synopsis. Except they work. <strong>Seventy million monthly active users on ReelShort alone.</strong> Ninety percent from the US.</p>
+        <p>Fox Entertainment bought a stake. Telemundo adapted telenovelas. SAG-AFTRA signed vertical agreements. When Hollywood starts paying union rates to protect people from a format, <strong>the format has already won.</strong></p>
+        <p>And now we're in.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERIES -->
+<section class="sec catalog">
+  <div class="sec-in">
+    <div class="sec-label">Now streaming</div>
+    <div class="cat-header">
+      <h2 class="cat-title">THE SERIES</h2>
+      <span class="cat-sub">EP. 1 ALWAYS FREE — WHEN THEY DROP</span>
+    </div>
+    <div class="series-grid">
+
+      <div class="series-card">
+        <div class="sc-img" style="background-image:url('assets/images/microdramas_series_priest.webp')"></div>
+        <div class="sc-grad"></div>
+        <div class="sc-badge free">EP. 1 FREE</div><div class="sc-eps">72 eps</div>
+        <div class="sc-play"><svg width="14" height="16" viewBox="0 0 14 16"><path d="M0 0l14 8L0 16z" fill="#fff"/></svg></div>
+        <div class="sc-soon"><span class="sc-soon-ep">EP. 1 FREE</span><span class="sc-soon-tag">When it drops</span></div>
+        <div class="sc-body">
+          <div class="sc-genre">Thriller / Dark Romance</div>
+          <div class="sc-title">I MARRIED A FORMER PRIEST (MY INFANT IS POSSESSED BY THE DEVIL)</div>
+          <div class="sc-hook">The Vatican knew. The priest knew. The baby definitely knew.</div>
+        </div>
+      </div>
+
+      <div class="series-card">
+        <div class="sc-img" style="background-image:url('assets/images/microdramas_series_ventriloquist.webp');background-position:center center"></div>
+        <div class="sc-grad"></div>
+        <div class="sc-badge new">NEW</div><div class="sc-eps">88 eps</div>
+        <div class="sc-play"><svg width="14" height="16" viewBox="0 0 14 16"><path d="M0 0l14 8L0 16z" fill="#fff"/></svg></div>
+        <div class="sc-soon"><span class="sc-soon-ep">EP. 1 FREE</span><span class="sc-soon-tag">When it drops</span></div>
+        <div class="sc-body">
+          <div class="sc-genre">Mystery / Steampunk</div>
+          <div class="sc-title">MY SON'S VENTRILOQUIST DOLL IS LEADING A LATIN AMERICAN REVOLUTION</div>
+          <div class="sc-hook">His approval ratings are inexplicably high.</div>
+        </div>
+      </div>
+
+      <div class="series-card">
+        <div class="sc-img" style="background-image:url('assets/images/microdramas_series_dont_research.webp');background-position:center center"></div>
+        <div class="sc-grad"></div>
+        <div class="sc-badge free">EP. 1 FREE</div><div class="sc-eps">64 eps</div>
+        <div class="sc-play"><svg width="14" height="16" viewBox="0 0 14 16"><path d="M0 0l14 8L0 16z" fill="#fff"/></svg></div>
+        <div class="sc-soon"><span class="sc-soon-ep">EP. 1 FREE</span><span class="sc-soon-tag">When it drops</span></div>
+        <div class="sc-body">
+          <div class="sc-genre">Paranoia / Thriller</div>
+          <div class="sc-title">DON'T RESEARCH THIS</div>
+          <div class="sc-hook">She did. Now she can't unsee it.</div>
+        </div>
+      </div>
+
+      <div class="series-card"><div class="sc-img" style="background-image:url('assets/images/microdramas_series_alien_husband.webp');background-position:center top"></div>
+        <div class="sc-grad"></div>
+        <div class="sc-badge new">NEW</div><div class="sc-eps">96 eps</div>
+        <div class="sc-play"><svg width="14" height="16" viewBox="0 0 14 16"><path d="M0 0l14 8L0 16z" fill="#fff"/></svg></div>
+        <div class="sc-soon"><span class="sc-soon-ep">EP. 1 FREE</span><span class="sc-soon-tag">When it drops</span></div>
+        <div class="sc-body">
+          <div class="sc-genre">Sci-Fi Romance</div>
+          <div class="sc-title">MY HUSBAND WAS ABDUCTED BY ALIENS (WHO REPLACED HIM WITH AN OVERSEXED LOOKALIKE)</div>
+          <div class="sc-hook">She noticed the difference on day three. She didn't say anything.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- NUMBERS -->
+<section class="sec numbers">
+  <div class="sec-in">
+    <div class="num-grid">
+      <div>
+        <div class="num-eye">Coming soon — Illustrated</div>
+        <h2 class="num-h">THE DATA<br>IS INSANE</h2>
+        <p class="num-desc">China's short drama market went from <strong>$500 million in 2021</strong> to <strong>$7 billion in 2024</strong>. Global hit <strong>$11 billion in 2025</strong>. Projected <strong>$26 billion by 2030</strong>.</p>
+        <p class="num-desc">We're turning these numbers into something you'll actually want to look at — <strong>animated Vox-style infographics</strong>. The full anatomy of the format. How it spread, who's watching, why it works on a biological level, what it costs to make one, and why Hollywood is terrified.</p>
+        <div class="num-cta">⬡ &nbsp;Skill loading — check back soon</div>
+      </div>
+      <div class="num-chart">
+        <div class="chart-title">Global market revenue (USD)</div>
+        <div class="bar-group">
+          <div class="bar-row"><span class="bar-year">2021</span><div class="bar-track"><div class="bar-fill" data-w="1.9"></div></div><span class="bar-val">$0.5B</span></div>
+          <div class="bar-row"><span class="bar-year">2022</span><div class="bar-track"><div class="bar-fill" data-w="5.8"></div></div><span class="bar-val">$1.5B</span></div>
+          <div class="bar-row"><span class="bar-year">2023</span><div class="bar-track"><div class="bar-fill" data-w="15.4"></div></div><span class="bar-val">$4B</span></div>
+          <div class="bar-row"><span class="bar-year">2024</span><div class="bar-track"><div class="bar-fill" data-w="30.8"></div></div><span class="bar-val">$8B</span></div>
+          <div class="bar-row"><span class="bar-year">2025</span><div class="bar-track"><div class="bar-fill" data-w="42.3"></div></div><span class="bar-val" style="color:var(--accent-lt)">$11B</span></div>
+          <div class="bar-row"><span class="bar-year" style="color:var(--dim)">2030*</span><div class="bar-track"><div class="bar-fill proj" data-w="100"></div></div><span class="bar-val" style="color:var(--dim)">$26B</span></div>
+        </div>
+        <div class="chart-note">* Projected — Source: Media Partners Asia, Vitrina.ai 2025</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCE -->
+<section class="sec produce">
+  <div class="sec-in">
+    <div class="produce-grid">
+      <div>
+        <h2 class="produce-h">Got a story.<br>We'll make it<br><em>a series.</em></h2>
+        <p class="produce-body">The format is figured out. The audience is there. What the world is tragically short of is content that doesn't feel like it was generated by someone who has never spoken to a human being outside of a pitch deck.</p>
+        <p class="produce-body"><strong>We write, direct, and produce vertical micro-dramas.</strong> Full cycle — concept, script, shoot, post. 60–90 episodes. 90 seconds each. A hook at the end of every single one. Distributed on ReelShort, DramaBox, your own channels, or all three.</p>
+        <button class="produce-btn" onclick="document.getElementById('pm').style.display='block';this.style.display='none'">Pitch a series →</button>
+        <p id="pm" style="display:none;margin-top:16px;font-size:14px;color:var(--accent-lt);letter-spacing:.04em">Get in touch at contact@blowingfrog.com</p>
+      </div>
+      <div class="produce-features">
+
+        <!-- VERTICAL NATIVE icon: phone portrait with play triangle -->
+        <div class="pf">
+          <div class="pf-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+              <rect x="22" y="8" width="56" height="84" rx="7" stroke="#8b9421" stroke-width="3"/>
+              <rect x="30" y="18" width="40" height="58" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+              <circle cx="50" cy="84" r="3.5" stroke="#8b9421" stroke-width="2"/>
+              <rect x="38" y="11" width="24" height="3" rx="1.5" fill="rgba(255,255,255,0.2)"/>
+              <!-- play triangle -->
+              <path d="M43 42 L62 50 L43 58 Z" stroke="#8b9421" stroke-width="2" stroke-linejoin="round"/>
+              <!-- aspect ratio lines -->
+              <line x1="30" y1="30" x2="70" y2="30" stroke="rgba(139,148,33,0.25)" stroke-width="1" stroke-dasharray="3 3"/>
+              <line x1="30" y1="70" x2="70" y2="70" stroke="rgba(139,148,33,0.25)" stroke-width="1" stroke-dasharray="3 3"/>
+            </svg>
+          </div>
+          <div class="pf-text"><div class="pf-title">VERTICAL NATIVE</div><div class="pf-sub">Shot 9:16 from day one. Not cropped. Not adapted. Built for the phone from the first frame.</div></div>
+        </div>
+
+        <!-- CLAPPER / 8-10 day shoot icon -->
+        <div class="pf">
+          <div class="pf-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+              <!-- clapper base -->
+              <rect x="12" y="35" width="76" height="52" rx="3" stroke="#8b9421" stroke-width="3"/>
+              <!-- clapper top bar -->
+              <rect x="12" y="24" width="76" height="14" rx="2" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+              <!-- clapper stripes on top -->
+              <line x1="28" y1="24" x2="22" y2="38" stroke="rgba(255,255,255,0.35)" stroke-width="3"/>
+              <line x1="44" y1="24" x2="38" y2="38" stroke="rgba(255,255,255,0.35)" stroke-width="3"/>
+              <line x1="60" y1="24" x2="54" y2="38" stroke="rgba(255,255,255,0.35)" stroke-width="3"/>
+              <line x1="76" y1="24" x2="70" y2="38" stroke="rgba(255,255,255,0.35)" stroke-width="3"/>
+              <!-- hinge/pin -->
+              <circle cx="12" cy="31" r="4" stroke="#8b9421" stroke-width="2"/>
+              <!-- text lines inside -->
+              <line x1="22" y1="52" x2="54" y2="52" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+              <line x1="22" y1="62" x2="44" y2="62" stroke="rgba(255,255,255,0.15)" stroke-width="2"/>
+              <!-- day counter -->
+              <text x="62" y="75" font-family="Barlow Condensed,sans-serif" font-weight="900" font-size="18" fill="#8b9421" text-anchor="middle">10</text>
+              <text x="62" y="84" font-family="Barlow Condensed,sans-serif" font-size="8" fill="rgba(255,255,255,0.3)" text-anchor="middle">DAYS</text>
+            </svg>
+          </div>
+          <div class="pf-text"><div class="pf-title">8–10 DAY SHOOT</div><div class="pf-sub">Full series in under two weeks. The production cycle is built around the format, not the other way around.</div></div>
+        </div>
+
+        <!-- HOOK ENGINEERING — fishing hook meets narrative arc -->
+        <div class="pf">
+          <div class="pf-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+              <!-- hook shape -->
+              <path d="M50 15 C50 15 50 52 50 58 C50 72 40 80 32 75 C24 70 24 58 32 54 C38 51 44 56 44 62" stroke="#8b9421" stroke-width="3.5" stroke-linecap="round"/>
+              <!-- barb -->
+              <path d="M44 62 L38 70" stroke="#8b9421" stroke-width="3" stroke-linecap="round"/>
+              <!-- eye ring at top -->
+              <circle cx="50" cy="15" r="6" stroke="rgba(255,255,255,0.5)" stroke-width="2"/>
+              <!-- pulse rings suggesting lure/bait -->
+              <circle cx="32" cy="68" r="10" stroke="rgba(139,148,33,0.25)" stroke-width="1.5" stroke-dasharray="4 3"/>
+              <circle cx="32" cy="68" r="17" stroke="rgba(139,148,33,0.12)" stroke-width="1" stroke-dasharray="4 4"/>
+              <!-- line going up off-screen suggestion -->
+              <line x1="50" y1="9" x2="80" y2="9" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-dasharray="3 3"/>
+            </svg>
+          </div>
+          <div class="pf-text"><div class="pf-title">HOOK ENGINEERING</div><div class="pf-sub">Every episode ends on a cliff. That's not an accident. That's the entire job. We architect the compulsion loop.</div></div>
+        </div>
+
+        <!-- MULTI-MARKET — globe with speech wave -->
+        <div class="pf">
+          <div class="pf-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+              <!-- globe -->
+              <circle cx="42" cy="55" r="30" stroke="#8b9421" stroke-width="2.5"/>
+              <!-- meridian lines -->
+              <ellipse cx="42" cy="55" rx="14" ry="30" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+              <line x1="12" y1="55" x2="72" y2="55" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+              <path d="M18 38 C30 42 54 42 66 38" stroke="rgba(255,255,255,0.15)" stroke-width="1.2"/>
+              <path d="M18 72 C30 68 54 68 66 72" stroke="rgba(255,255,255,0.15)" stroke-width="1.2"/>
+              <!-- signal waves top right -->
+              <path d="M68 28 C72 24 72 18 68 14" stroke="rgba(139,148,33,0.6)" stroke-width="2" stroke-linecap="round"/>
+              <path d="M73 32 C80 24 80 14 73 6" stroke="rgba(139,148,33,0.4)" stroke-width="2" stroke-linecap="round"/>
+              <path d="M78 36 C88 24 88 10 78 -2" stroke="rgba(139,148,33,0.2)" stroke-width="1.5" stroke-linecap="round"/>
+              <!-- signal origin dot -->
+              <circle cx="65" cy="22" r="3" fill="#8b9421"/>
+            </svg>
+          </div>
+          <div class="pf-text"><div class="pf-title">MULTI-MARKET</div><div class="pf-sub">Spanish, English, Portuguese. AI-assisted dubbing for additional markets. Built to travel from day one.</div></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <span class="foot-logo">BLOWING FROG</span>
+  <span class="foot-note">© 2026 — Microdramas Division</span>
+</footer>
+
+<!-- EASTER EGGS -->
+<div class="egg from-left" id="egg0">
+  <div class="egg-badge">EP. 1 FREE</div>
+  <div class="egg-title">MY BILLIONAIRE BOSS RECOGNIZED MY FACE</div>
+  <div class="egg-hook">She changed her name. Her face, apparently, was non-negotiable.</div>
+</div>
+<div class="egg from-right" id="egg1">
+  <div class="egg-badge">DARK COMEDY</div>
+  <div class="egg-title">I WAS BRAINWASHED BY A CULT AND NOW I SELL LIVING TUPPERWARE</div>
+  <div class="egg-hook">The containers breathe. Customers love it.</div>
+</div>
+<div class="egg from-left" id="egg2">
+  <div class="egg-badge">SCI-FI</div>
+  <div class="egg-title">MY HUSBAND WAS ABDUCTED BY ALIENS (OVERSEXED LOOKALIKE)</div>
+  <div class="egg-hook">She noticed on day three. She said nothing.</div>
+</div>
+<div class="egg from-right" id="egg3">
+  <div class="egg-badge">THRILLER</div>
+  <div class="egg-title">I WAS KIDNAPPED BY MALIBU SURFERS WHO ARE IN FACT NINJA SPIES</div>
+  <div class="egg-hook">The wave heights were classified information.</div>
+</div>
+<div class="egg from-left" id="egg4">
+  <div class="egg-badge">HORROR</div>
+  <div class="egg-title">A VAMPIRE ATE MY FAMILY AND NOW I'M OUT FOR REVENGE</div>
+  <div class="egg-hook">The support group was not prepared for her.</div>
+</div>
+<div class="egg from-right" id="egg5">
+  <div class="egg-badge">POLITICAL DRAMA</div>
+  <div class="egg-title">MY SON'S VENTRILOQUIST DOLL IS LEADING A LATIN AMERICAN REVOLUTION</div>
+  <div class="egg-hook">His approval ratings are inexplicably high.</div>
+</div>
+<div class="egg from-left" id="egg6">
+  <div class="egg-badge">DARK ROMANCE</div>
+  <div class="egg-title">MY THERAPIST IS ALSO MY HUSBAND'S THERAPIST AND WE'RE ALL IN LOVE</div>
+  <div class="egg-hook">This violates seven ethical guidelines. She checked.</div>
+</div>
+<div class="egg from-right" id="egg7">
+  <div class="egg-badge">MYSTERY</div>
+  <div class="egg-title">MY DOG CAN TALK BUT ONLY IN STOCK MARKET TIPS</div>
+  <div class="egg-hook">The SEC is not amused. She is retired.</div>
+</div>
+
+<script>
+// Bar chart animation on scroll
+var bars = document.querySelectorAll('.bar-fill');
+var barDone = false;
+function animBars() {
+  if (barDone) return;
+  var chart = document.querySelector('.num-chart');
+  if (!chart) return;
+  if (chart.getBoundingClientRect().top < window.innerHeight * 0.85) {
+    barDone = true;
+    bars.forEach(function(b) {
+      b.style.transform = 'scaleX(' + (parseFloat(b.dataset.w) / 100) + ')';
+    });
+  }
+}
+window.addEventListener('scroll', animBars, {passive: true});
+animBars();
+
+// Easter eggs
+var eggs = [
+  {id:'egg0',trigger:0.18},
+  {id:'egg1',trigger:0.32},
+  {id:'egg2',trigger:0.45},
+  {id:'egg3',trigger:0.56},
+  {id:'egg4',trigger:0.65},
+  {id:'egg5',trigger:0.74},
+  {id:'egg6',trigger:0.83},
+  {id:'egg7',trigger:0.91}
+];
+var shownEggs = {};
+function checkEggs() {
+  var scrollPct = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
+  eggs.forEach(function(e) {
+    if (!shownEggs[e.id] && scrollPct >= e.trigger) {
+      shownEggs[e.id] = true;
+      var el = document.getElementById(e.id);
+      if (!el) return;
+      el.classList.add('show');
+      setTimeout(function() { el.classList.remove('show'); }, 4200);
+    }
+  });
+}
+window.addEventListener('scroll', checkEggs, {passive: true});
+</script>
