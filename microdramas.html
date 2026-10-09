@@ -22,6 +22,16 @@
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px;line-height:1.6;overflow-x:hidden}
 
+/* SERIES VIDEO LIGHTBOX */
+.cursor{z-index:10004}.cursor-dot{z-index:10005}
+.sv-modal{position:fixed;inset:0;z-index:10003;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s var(--ease)}
+.sv-modal.open{opacity:1;pointer-events:auto}
+.sv-frame{position:relative;height:min(86vh,calc(92vw*16/9));aspect-ratio:9/16;background:#000;border:1px solid rgba(139,148,33,.4);box-shadow:0 30px 80px rgba(0,0,0,.6);transform:scale(.94);transition:transform .35s var(--ease)}
+.sv-modal.open .sv-frame{transform:scale(1)}
+.sv-frame video{width:100%;height:100%;object-fit:cover;display:block}
+.sv-title{position:absolute;left:0;right:0;bottom:100%;padding-bottom:10px;font-family:var(--fd);font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#fff;line-height:1.25}
+.sv-close{position:absolute;top:10px;right:10px;width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:18px;line-height:1;cursor:pointer;z-index:2}
+.sv-close:hover{border-color:var(--accent-lt);color:var(--accent-lt)}
 /* HERO */
 .hero{min-height:100vh;background:#0b0b0b;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden}
 .hero-reel{position:absolute;inset:0;display:grid;grid-template-columns:repeat(5,1fr);gap:3px;opacity:.14;pointer-events:none}
@@ -302,7 +312,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px
     </div>
     <div class="series-grid">
 
-      <div class="series-card">
+      <div class="series-card" data-video="assets/videos/microdramas-series-priest.mp4" role="button" tabindex="0">
         <div class="sc-img" style="background-image:url('assets/images/microdramas_series_priest.webp')"></div>
         <div class="sc-grad"></div>
         <div class="sc-badge free">EP. 1 FREE</div><div class="sc-eps">72 eps</div>
@@ -315,7 +325,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px
         </div>
       </div>
 
-      <div class="series-card">
+      <div class="series-card" data-video="assets/videos/microdramas-series-ventriloquist.mp4" role="button" tabindex="0">
         <div class="sc-img" style="background-image:url('assets/images/microdramas_series_ventriloquist.webp');background-position:center center"></div>
         <div class="sc-grad"></div>
         <div class="sc-badge new">NEW</div><div class="sc-eps">88 eps</div>
@@ -328,7 +338,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px
         </div>
       </div>
 
-      <div class="series-card">
+      <div class="series-card" data-video="assets/videos/microdramas-series-dont-research.mp4" role="button" tabindex="0">
         <div class="sc-img" style="background-image:url('assets/images/microdramas_series_dont_research.webp');background-position:center center"></div>
         <div class="sc-grad"></div>
         <div class="sc-badge free">EP. 1 FREE</div><div class="sc-eps">64 eps</div>
@@ -341,7 +351,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px
         </div>
       </div>
 
-      <div class="series-card"><div class="sc-img" style="background-image:url('assets/images/microdramas_series_alien_husband.webp');background-position:center top"></div>
+      <div class="series-card" data-video="assets/videos/microdramas-series-alien-husband.mp4" role="button" tabindex="0"><div class="sc-img" style="background-image:url('assets/images/microdramas_series_alien_husband.webp');background-position:center top"></div>
         <div class="sc-grad"></div>
         <div class="sc-badge new">NEW</div><div class="sc-eps">96 eps</div>
         <div class="sc-play"><svg width="14" height="16" viewBox="0 0 14 16"><path d="M0 0l14 8L0 16z" fill="#fff"/></svg></div>
@@ -571,6 +581,32 @@ animBars();
   setTimeout(function(){if(v.paused&&!hero.classList.contains('ended'))hero.classList.add('ended');},2500);
   snd.addEventListener('click',function(){v.muted=!v.muted;label();if(!v.muted&&hero.classList.contains('ended'))playOnce();});
   rep.addEventListener('click',playOnce);
+})();
+</script>
+<div class="sv-modal" id="svModal" aria-hidden="true">
+  <div class="sv-frame">
+    <div class="sv-title" id="svTitle"></div>
+    <button class="sv-close" id="svClose" aria-label="Close">&#10005;</button>
+    <video id="svVideo" playsinline controls preload="none"></video>
+  </div>
+</div>
+<script>
+(function(){
+  var m=document.getElementById('svModal'),v=document.getElementById('svVideo'),t=document.getElementById('svTitle');
+  function open(card){
+    v.src=card.dataset.video;v.muted=false;v.currentTime=0;
+    var ti=card.querySelector('.sc-title');t.textContent=ti?ti.textContent:'';
+    m.classList.add('open');m.setAttribute('aria-hidden','false');
+    var p=v.play();if(p&&p.catch)p.catch(function(){v.muted=true;v.play();});
+  }
+  function close(){m.classList.remove('open');m.setAttribute('aria-hidden','true');v.pause();}
+  document.querySelectorAll('.series-card[data-video]').forEach(function(c){
+    c.addEventListener('click',function(){open(c);});
+    c.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();open(c);}});
+  });
+  document.getElementById('svClose').addEventListener('click',close);
+  m.addEventListener('click',function(e){if(e.target===m)close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&m.classList.contains('open'))close();});
 })();
 </script>
 <script src="app.js"></script>
