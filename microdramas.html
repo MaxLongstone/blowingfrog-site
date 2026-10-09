@@ -165,14 +165,14 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px
 .pf-sub{font-size:12px;color:var(--muted);line-height:1.5}
 
 /* EASTER EGGS */
-.egg{position:fixed;z-index:999;width:230px;background:#141414;border:1px solid rgba(139,148,33,.4);border-left:3px solid var(--accent);padding:12px 14px 14px;pointer-events:none;opacity:0;transition:opacity .35s,transform .4s var(--ease)}
-.egg.from-left{left:-260px;top:40%;transform:translateX(0)}
-.egg.from-right{right:-260px;top:55%;transform:translateX(0)}
-.egg.from-left.show{opacity:1;transform:translateX(270px)}
-.egg.from-right.show{opacity:1;transform:translateX(-270px)}
-.egg-badge{font-size:9px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#0b0b0b;background:var(--accent);padding:2px 7px;display:inline-block;margin-bottom:8px}
-.egg-title{font-family:var(--fd);font-size:13px;font-weight:700;color:#fff;line-height:1.2;letter-spacing:.01em}
-.egg-hook{font-size:11px;color:rgba(255,255,255,.38);margin-top:5px;font-style:italic;line-height:1.3}
+.egg{position:fixed;z-index:999;width:min(380px,82vw);background:#141414;border:1px solid rgba(139,148,33,.45);border-left:5px solid var(--accent);padding:18px 20px 20px;pointer-events:none;opacity:0;box-shadow:0 18px 50px rgba(0,0,0,.6);transition:opacity .35s,transform .5s var(--ease)}
+.egg.from-left{left:0;transform:translateX(-110%) rotate(-2deg)}
+.egg.from-right{right:0;transform:translateX(110%) rotate(2deg)}
+.egg.from-left.show{opacity:1;transform:translateX(24px) rotate(-1deg)}
+.egg.from-right.show{opacity:1;transform:translateX(-24px) rotate(1deg)}
+.egg-badge{font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#0b0b0b;background:var(--accent);padding:3px 9px;display:inline-block;margin-bottom:10px}
+.egg-title{font-family:var(--fd);font-size:22px;font-weight:800;color:#fff;line-height:1.08;letter-spacing:.01em}
+.egg-hook{font-size:14px;color:rgba(255,255,255,.5);margin-top:8px;font-style:italic;line-height:1.35}
 
 
 /* Coming soon strip on cards */
@@ -481,46 +481,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px
 </footer>
 
 <!-- EASTER EGGS -->
-<div class="egg from-left" id="egg0">
-  <div class="egg-badge">EP. 1 FREE</div>
-  <div class="egg-title">MY BILLIONAIRE BOSS RECOGNIZED MY FACE</div>
-  <div class="egg-hook">She changed her name. Her face, apparently, was non-negotiable.</div>
-</div>
-<div class="egg from-right" id="egg1">
-  <div class="egg-badge">DARK COMEDY</div>
-  <div class="egg-title">I WAS BRAINWASHED BY A CULT AND NOW I SELL LIVING TUPPERWARE</div>
-  <div class="egg-hook">The containers breathe. Customers love it.</div>
-</div>
-<div class="egg from-left" id="egg2">
-  <div class="egg-badge">SCI-FI</div>
-  <div class="egg-title">MY HUSBAND WAS ABDUCTED BY ALIENS (OVERSEXED LOOKALIKE)</div>
-  <div class="egg-hook">She noticed on day three. She said nothing.</div>
-</div>
-<div class="egg from-right" id="egg3">
-  <div class="egg-badge">THRILLER</div>
-  <div class="egg-title">I WAS KIDNAPPED BY MALIBU SURFERS WHO ARE IN FACT NINJA SPIES</div>
-  <div class="egg-hook">The wave heights were classified information.</div>
-</div>
-<div class="egg from-left" id="egg4">
-  <div class="egg-badge">HORROR</div>
-  <div class="egg-title">A VAMPIRE ATE MY FAMILY AND NOW I'M OUT FOR REVENGE</div>
-  <div class="egg-hook">The support group was not prepared for her.</div>
-</div>
-<div class="egg from-right" id="egg5">
-  <div class="egg-badge">POLITICAL DRAMA</div>
-  <div class="egg-title">MY SON'S VENTRILOQUIST DOLL IS LEADING A LATIN AMERICAN REVOLUTION</div>
-  <div class="egg-hook">His approval ratings are inexplicably high.</div>
-</div>
-<div class="egg from-left" id="egg6">
-  <div class="egg-badge">DARK ROMANCE</div>
-  <div class="egg-title">MY THERAPIST IS ALSO MY HUSBAND'S THERAPIST AND WE'RE ALL IN LOVE</div>
-  <div class="egg-hook">This violates seven ethical guidelines. She checked.</div>
-</div>
-<div class="egg from-right" id="egg7">
-  <div class="egg-badge">MYSTERY</div>
-  <div class="egg-title">MY DOG CAN TALK BUT ONLY IN STOCK MARKET TIPS</div>
-  <div class="egg-hook">The SEC is not amused. She is retired.</div>
-</div>
+<div id="eggs"></div>
 
 <script>
 // Bar chart animation on scroll
@@ -540,31 +501,46 @@ function animBars() {
 window.addEventListener('scroll', animBars, {passive: true});
 animBars();
 
-// Easter eggs
-var eggs = [
-  {id:'egg0',trigger:0.18},
-  {id:'egg1',trigger:0.32},
-  {id:'egg2',trigger:0.45},
-  {id:'egg3',trigger:0.56},
-  {id:'egg4',trigger:0.65},
-  {id:'egg5',trigger:0.74},
-  {id:'egg6',trigger:0.83},
-  {id:'egg7',trigger:0.91}
-];
-var shownEggs = {};
-function checkEggs() {
-  var scrollPct = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
-  eggs.forEach(function(e) {
-    if (!shownEggs[e.id] && scrollPct >= e.trigger) {
-      shownEggs[e.id] = true;
-      var el = document.getElementById(e.id);
-      if (!el) return;
-      el.classList.add('show');
-      setTimeout(function() { el.classList.remove('show'); }, 4200);
-    }
-  });
-}
-window.addEventListener('scroll', checkEggs, {passive: true});
+// Easter eggs: a random episode card slides in every ~500px of scrolling
+(function(){
+  var pool=[
+    ['EP. 1 FREE','My billionaire boss recognized my face','She changed her name. Her face, apparently, was non-negotiable.'],
+    ['DARK COMEDY','I was brainwashed by a cult and now I sell living Tupperware','The containers breathe. Customers love it.'],
+    ['SCI-FI ROMANCE','My husband was abducted by aliens (who replaced him with an oversexed lookalike)','She noticed on day three. She said nothing.'],
+    ['ACTION','I was kidnapped by Malibu surfers who are in fact ninja spies','The wave heights were classified information.'],
+    ['HORROR','A vampire ate my family and now I’m out for revenge','The support group was not prepared for her.'],
+    ['POLITICAL DRAMA','My son’s ventriloquist doll is leading a Latin American revolution','His approval ratings are inexplicably high.'],
+    ['DARK ROMANCE','I married a former priest. My infant turned out to be possessed by the Devil','The Vatican knew. The baby definitely knew.'],
+    ['MYSTERY','My dog can talk, but only in stock market tips','The SEC is not amused. She is retired.'],
+    ['ROMANCE','My fiancé is secretly three raccoons in a trenchcoat','The wedding photos will be fine.'],
+    ['PARANORMAL','I inherited a haunted timeshare and the ghost wants its week back','Week 32. Non-negotiable.'],
+    ['CRIME','The mafia don’s grandma adopted me by mistake','Now I run Thanksgiving. And Brooklyn.'],
+    ['REVENGE','I divorced a billionaire and he came back as my intern','He makes terrible coffee. On purpose.'],
+    ['THRILLER','My smart fridge is blackmailing my husband','It knows about the cheesecake.'],
+    ['FANTASY','I woke up married to a mermaid in Ohio','Landlocked. Lovesick. Damp.'],
+    ['WEDDING DRAMA','The priest at my wedding was my ex’s evil twin','Speak now or forever hold your peace. He did not.'],
+    ['ACTION','My grandmother’s knitting circle is an assassins’ guild','Purl one. Knit one. Kill one.']
+  ];
+  var wrap=document.getElementById('eggs'), order=[], side=0, lastY=window.scrollY, travel=0, lastShow=0, busy={0:false,1:false};
+  function next(){if(!order.length){order=pool.map(function(_,i){return i}).sort(function(){return Math.random()-.5});}return pool[order.pop()];}
+  function show(){
+    var s=side; side=1-side;
+    if(busy[s]){s=1-s; if(busy[s])return;}
+    var d=next(), el=document.createElement('div');
+    el.className='egg '+(s?'from-right':'from-left');
+    el.style.top=(16+Math.random()*52)+'%';
+    el.innerHTML='<div class="egg-badge"></div><div class="egg-title"></div><div class="egg-hook"></div>';
+    el.children[0].textContent=d[0]; el.children[1].textContent=d[1].toUpperCase(); el.children[2].textContent=d[2];
+    wrap.appendChild(el); busy[s]=true;
+    requestAnimationFrame(function(){requestAnimationFrame(function(){el.classList.add('show');});});
+    setTimeout(function(){el.classList.remove('show');setTimeout(function(){el.remove();busy[s]=false;},600);},4200);
+  }
+  window.addEventListener('scroll',function(){
+    var y=window.scrollY; travel+=Math.abs(y-lastY); lastY=y;
+    var now=Date.now();
+    if(travel>=500&&now-lastShow>1600&&y>window.innerHeight*.6){travel=0;lastShow=now;show();}
+  },{passive:true});
+})();
 
 // Hero video: full play once, then loop dimmed behind the title
 (function(){
