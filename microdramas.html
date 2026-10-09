@@ -32,6 +32,24 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px
 .reel-col:nth-child(even){transform:translateY(-40px)}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,11,.4) 0%,rgba(11,11,11,0) 30%,rgba(11,11,11,0) 55%,rgba(11,11,11,1) 100%);pointer-events:none}
 
+
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;transition:opacity .5s,transform .5s,filter .5s}
+.hero.ended .hero-video{opacity:.22;filter:grayscale(.6) contrast(1.1);transform:scale(1.04)}
+.hero-overlay{z-index:1;opacity:0;transition:opacity .5s}
+.hero.ended .hero-overlay{opacity:1}
+.hero .hero-body,.hero .mq-wrap,.hero .hero-tagline{opacity:0;transition:opacity .4s}
+.hero.ended .hero-body,.hero.ended .mq-wrap,.hero.ended .hero-tagline{opacity:1}
+.hero.ended .hero-title{animation:titleSlam .45s cubic-bezier(.7,0,.3,1) both}
+@keyframes titleSlam{0%{transform:scale(2.4);opacity:0;filter:blur(8px)}70%{transform:scale(.97);opacity:1;filter:blur(0)}100%{transform:scale(1)}}
+.hero-ctrls{position:absolute;top:84px;right:28px;z-index:3;display:flex;gap:8px}
+.hero-btn{font-family:var(--fd);font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#fff;background:rgba(11,11,11,.55);border:1px solid rgba(255,255,255,.25);padding:9px 14px;cursor:pointer;backdrop-filter:blur(6px)}
+.hero-btn:hover{border-color:var(--accent-lt);color:var(--accent-lt)}
+#heroReplay{display:none}
+.hero.ended #heroReplay{display:inline-block}
+.hero-flash{position:absolute;inset:0;background:#000;z-index:1;pointer-events:none;opacity:0}
+.hero.ended .hero-flash{animation:heroFlash .5s ease-out}
+@keyframes heroFlash{0%{opacity:1}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.hero.ended .hero-title{animation:none}}
 .hero-body{position:relative;z-index:2;padding:0 44px;max-width:1200px;margin:0 auto;width:100%}
 .hero-eye{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-lt);margin-bottom:18px;display:flex;align-items:center;gap:12px}
 .hero-eye::before{content:'';width:26px;height:1px;background:var(--accent)}
@@ -183,14 +201,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-reel">
-    <div class="reel-col"><div class="reel-card"></div><div class="reel-card"></div><div class="reel-card"></div></div>
-    <div class="reel-col"><div class="reel-card"></div><div class="reel-card"></div><div class="reel-card"></div></div>
-    <div class="reel-col"><div class="reel-card"></div><div class="reel-card"></div><div class="reel-card"></div></div>
-    <div class="reel-col"><div class="reel-card"></div><div class="reel-card"></div><div class="reel-card"></div></div>
-    <div class="reel-col"><div class="reel-card"></div><div class="reel-card"></div><div class="reel-card"></div></div>
+  <video class="hero-video" id="heroVid" src="assets/videos/microdramas-hero.mp4" poster="assets/images/microdramas-hero-poster.jpg" autoplay muted playsinline preload="auto"></video>
+  <div class="hero-ctrls">
+    <button class="hero-btn" id="heroSound" aria-label="Turn sound on">🔈 Sound on</button>
+    <button class="hero-btn" id="heroReplay" aria-label="Replay">↺ Replay</button>
   </div>
   <div class="hero-overlay"></div>
+  <div class="hero-flash"></div>
   <div class="hero-body">
     <div class="hero-eye">Blowing Frog — Short Form Video</div>
     <h1 class="hero-title">MICRO<br>DRAMAS</h1>
@@ -546,4 +563,21 @@ function checkEggs() {
   });
 }
 window.addEventListener('scroll', checkEggs, {passive: true});
+
+// Hero video
+(function(){
+  var hero=document.querySelector('.hero'), v=document.getElementById('heroVid'),
+      snd=document.getElementById('heroSound'), rep=document.getElementById('heroReplay');
+  function end(){hero.classList.add('ended')}
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){v.removeAttribute('autoplay');v.pause();end();}
+  v.addEventListener('ended',end);
+  v.addEventListener('error',end);
+  setTimeout(function(){if(v.paused&&!hero.classList.contains('ended'))end()},2500);
+  snd.addEventListener('click',function(){
+    v.muted=!v.muted;
+    snd.textContent=v.muted?'🔈 Sound on':'🔊 Sound off';
+    if(!v.muted&&hero.classList.contains('ended')){hero.classList.remove('ended');v.currentTime=0;v.play();}
+  });
+  rep.addEventListener('click',function(){hero.classList.remove('ended');v.currentTime=0;v.play();});
+})();
 </script>
