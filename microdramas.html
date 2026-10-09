@@ -132,6 +132,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px
 .num-h{font-family:var(--fd);font-weight:900;font-size:clamp(36px,4vw,54px);line-height:1.0;color:var(--text);margin-bottom:22px;letter-spacing:-.01em}
 .num-desc{font-size:15px;line-height:1.8;color:var(--muted);font-weight:300;margin-bottom:12px}
 .num-desc strong{color:var(--text);font-weight:600}
+.num-film{margin-top:64px;aspect-ratio:16/9;width:100%;border:1px solid var(--border);background:#000;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.num-film iframe{width:100%;height:100%;border:0;display:block}
 .num-cta{display:inline-flex;align-items:center;gap:10px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);border:1px solid var(--border);padding:11px 22px;cursor:default;margin-top:12px}
 .num-chart{background:var(--bg-c);border:1px solid var(--border);padding:28px 28px 20px}
 .chart-title{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:20px}
@@ -347,11 +349,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px
   <div class="sec-in">
     <div class="num-grid">
       <div>
-        <div class="num-eye">Coming soon — Illustrated</div>
+        <div class="num-eye">Explained — 20 seconds</div>
         <h2 class="num-h">THE DATA<br>IS INSANE</h2>
         <p class="num-desc">China's short drama market went from <strong>$500 million in 2021</strong> to <strong>$7 billion in 2024</strong>. Global hit <strong>$11 billion in 2025</strong>. Projected <strong>$26 billion by 2030</strong>.</p>
-        <p class="num-desc">We're turning these numbers into something you'll actually want to look at — <strong>animated Vox-style infographics</strong>. The full anatomy of the format. How it spread, who's watching, why it works on a biological level, what it costs to make one, and why Hollywood is terrified.</p>
-        <div class="num-cta">⬡ &nbsp;Skill loading — check back soon</div>
+        <p class="num-desc">Numbers are boring. So we animated them. The whole format in 20 seconds — <strong>where it came from, how it hooks you, who's watching, and why Hollywood is suddenly paying union rates</strong> to get in on it.</p>
       </div>
       <div class="num-chart">
         <div class="chart-title">Global market revenue (USD)</div>
@@ -365,6 +366,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px
         </div>
         <div class="chart-note">* Projected — Source: Media Partners Asia, Vitrina.ai 2025</div>
       </div>
+    </div>
+    <div class="num-film">
+      <iframe src="microdramas-explainer.html" title="Microdramas explained in 20 seconds" loading="lazy"></iframe>
     </div>
   </div>
 </section>
