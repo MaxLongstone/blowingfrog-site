@@ -77,11 +77,10 @@ if (nav) {
   menu.className = 'mobile-menu';
   menu.id = 'mobileMenu';
 
-  [
-    { href: 'about.html',    label: 'About Us' },
-    { href: 'services.html', label: 'Services' },
-    { href: 'contact.html',  label: 'Contact'  },
-  ].forEach(({ href, label }) => {
+  // Mirror the desktop nav so both menus always list the same pages in the same order
+  Array.from(document.querySelectorAll('.nav-links .nav-link')).map(l => ({
+    href: l.getAttribute('href'), label: l.textContent.trim()
+  })).forEach(({ href, label }) => {
     const a = document.createElement('a');
     a.href = href;
     a.className = 'mobile-menu-link';
