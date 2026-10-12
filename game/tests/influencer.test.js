@@ -97,3 +97,22 @@ test('outbursts never repeat back to back, and the pool holds the ones that matt
   let last = -1; const rng = () => 0.5;
   for (let i = 0; i < 20; i++) { const j = pickOutburst(OUTBURSTS, rng, last); assert.notEqual(j, last); last = j; }
 });
+
+test('after enough stages without her she is certain to appear', () => {
+  const s = new InfluencerSchedule({ rng: seq(0.99), chance: 0.5, earliest: 5, latest: 5, patience: 2 });
+  s.arm('1');                                  // never rolls in
+  assert.equal(s.armed, false);
+  s.arm('1');                                  // one stage dry
+  assert.equal(s.armed, false);
+  s.arm('1');                                  // two dry: now certain
+  assert.equal(s.armed, true);
+});
+test('seeing her resets the wait', () => {
+  const s = new InfluencerSchedule({ rng: seq(0), chance: 1, earliest: 1, latest: 1, patience: 2 });
+  s.arm('1'); s.tick(2, true);                 // she appears
+  s.rng = seq(0.99); s.chance = 0.5;
+  s.arm('1');                                  // stage 2: rolls out, but she was just here
+  assert.equal(s.armed, false);
+  s.arm('1');
+  assert.equal(s.armed, false, 'only one dry stage so far');
+});

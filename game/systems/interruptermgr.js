@@ -7,8 +7,8 @@ import { INTERRUPTERS } from '../config/interrupters.js';
 
 const GAP = 20;                 // seconds between any two of these in one stage
 const MAX_PER_STAGE = 2;
-const CHANCE = 0.4;
-const WINDOW = [10, 35];
+const CHANCE = 0.5;
+const WINDOW = [8, 25];
 
 // One character's own memory: how many times seen (which is also their tier,
 // capped at 4), and the last line picked per tier so it is never repeated back

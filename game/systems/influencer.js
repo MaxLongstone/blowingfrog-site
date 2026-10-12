@@ -4,8 +4,10 @@
 import { INFLUENCER, tierForStage } from '../config/influencer.js';
 
 export class InfluencerSchedule {
-  constructor({ rng = Math.random, chance = 0.4, earliest = 10, latest = 35 } = {}) {
+  constructor({ rng = Math.random, chance = 0.5, earliest = 8, latest = 25, patience = 2 } = {}) {
     this.rng = rng; this.chance = chance; this.earliest = earliest; this.latest = latest;
+    // After this many stages without her, the next one is certain: she is rare, not absent.
+    this.patience = patience; this.dry = 0; this.stages = 0; this.appeared = false;
     this.tier = 1; this.at = null; this.elapsed = 0;
     this.seen = [new Set(), new Set(), new Set(), new Set()];
     this.last = null;                     // { tier, index }, never repeated back to back
@@ -13,9 +15,12 @@ export class InfluencerSchedule {
 
   // Called when an ordinary stage begins.
   arm(stageId) {
+    if (this.stages > 0) this.dry = this.appeared ? 0 : this.dry + 1;      // did the stage just ended have her in it?
+    this.stages += 1; this.appeared = false;
     this.tier = tierForStage(stageId);
     this.elapsed = 0;
-    this.at = this.rng() < this.chance ? this.earliest + this.rng() * (this.latest - this.earliest) : null;
+    const certain = this.dry >= this.patience;
+    this.at = certain || this.rng() < this.chance ? this.earliest + this.rng() * (this.latest - this.earliest) : null;
   }
 
   cancel() { this.at = null; }
@@ -29,7 +34,7 @@ export class InfluencerSchedule {
     this.elapsed += dt;
     if (this.elapsed < this.at) return null;
     if (!canFire) return null;
-    this.at = null;
+    this.at = null; this.appeared = true;
     return this.pick();
   }
 

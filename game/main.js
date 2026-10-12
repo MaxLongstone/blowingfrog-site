@@ -634,6 +634,14 @@ async function boot() {
     const carry = { sizeClass: 3, lives: 5, hearts: 3 };
     if (qs.get('skip')) game.startBoss(boss, carry, 0);
     else game.bossIntro(boss, carry, 0);
+  } else if (qs.get('distract')) {
+    // Dev: meet the Influencer and all three interrupters without playing a whole run.
+    ['landlord', 'neco', 'narrator'].forEach((b) => game.interrupters.unlock(b));
+    const st = getStage(qs.get('distract') === '1' ? 'K4' : qs.get('distract')) || getStage('K4');
+    game.audio.unlock();
+    game.start(st.id, { sizeClass: st.sizeClass, lives: st.lives, hearts: st.hearts }, 0);
+    game.influencer.at = 4;
+    if (game.interrupters.pending) game.interrupters.pending.at = 14;
   } else if (qs.get('hidden')) {
     game.audio.unlock();
     game.startHidden(0);
