@@ -32,6 +32,17 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px
 .sv-title{position:absolute;left:0;right:0;bottom:100%;padding-bottom:10px;font-family:var(--fd);font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#fff;line-height:1.25}
 .sv-close{position:absolute;top:10px;right:10px;width:38px;height:38px;border-radius:50%;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:18px;line-height:1;cursor:pointer;z-index:2}
 .sv-close:hover{border-color:var(--accent-lt);color:var(--accent-lt)}
+/* ALSO FROM — Empty Night */
+.also-from{display:flex;align-items:center;gap:40px;margin-top:56px;padding:28px;border:1px solid var(--border);background:#000;color:#fff;text-decoration:none;transition:border-color .3s}
+.also-from:hover{border-color:rgba(240,220,150,.45)}
+.af-poster{flex:0 0 auto;width:min(220px,38vw);aspect-ratio:9/16;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+.af-poster img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s var(--ease),filter .6s}
+.also-from:hover .af-poster img{transform:scale(1.04);filter:brightness(1.25) drop-shadow(0 0 18px rgba(240,220,150,.35))}
+.af-eye{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.af-title{font-family:var(--fd);font-weight:800;font-size:clamp(36px,6vw,64px);line-height:1;letter-spacing:.18em;text-transform:uppercase;color:#f0e3a8;text-shadow:0 0 22px rgba(240,220,150,.35)}
+.af-url{margin-top:18px;font-size:14px;letter-spacing:.08em;color:rgba(255,255,255,.7);border-bottom:1px solid rgba(240,220,150,.4);display:inline-block;padding-bottom:3px}
+.also-from:hover .af-url{color:#f0e3a8}
+@media(max-width:640px){.also-from{gap:20px;padding:18px;margin-top:40px}.af-title{letter-spacing:.1em}}
 /* HERO */
 .hero{min-height:100vh;background:#0b0b0b;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden}
 .hero-reel{position:absolute;inset:0;display:grid;grid-template-columns:repeat(5,1fr);gap:3px;opacity:.14;pointer-events:none}
@@ -373,6 +384,15 @@ body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px
       </div>
 
     </div>
+
+    <a class="also-from" href="https://emptynight.net" target="_blank" rel="noopener" aria-label="Empty Night — visit emptynight.net">
+      <div class="af-poster"><img src="assets/images/microdramas_empty_night_vertical.jpg" alt="Empty Night" loading="lazy"></div>
+      <div class="af-copy">
+        <div class="af-eye">Also from Blowing Frog</div>
+        <div class="af-title">Empty Night</div>
+        <div class="af-url">emptynight.net <span aria-hidden="true">&#8599;</span></div>
+      </div>
+    </a>
   </div>
 </section>
 
