@@ -6,6 +6,7 @@
 ## Media
 - Hero: assets/blogimages/ueno-atm-cornbread-line.png
 - Inline: assets/blogimages/ueno-robot-eye-coin-purse.png
+- Video: assets/videos/ueno-landlady-video.mp4
 
 ## TODO
 - REFRESH: story moves daily — recheck Senate outcome, Peña house arrest/charges, Ueno repayment/liquidation; update dateModified.
