@@ -6,6 +6,7 @@
 ## Media
 - Hero: assets/blogimages/argentina-birth-taxidermied-stork-cardigan-reading.png
 - Inline: assets/blogimages/argentina-birth-sculpture-real-shoes-stacked.png
+- Video: assets/videos/argentina-stork-video.mp4
 
 ## TODO
 # Open items: argentina-birth-rate-decline-demographic-dividend-ten-years
