@@ -8,6 +8,7 @@
 - Inline: assets/blogimages/dust-still-01-title-card.png
 - Inline: assets/blogimages/dust-still-03-driver.png
 - Inline: assets/blogimages/dust-still-04-dog-mirror.png
+- Video: assets/videos/godzilla-grindhouse-video.mp4
 
 ## TODO
 # Todo
