@@ -6,6 +6,7 @@
 ## Media
 - Hero: assets/blogimages/outsourcing-thinking-confessional-drive-thru.png
 - Inline: assets/blogimages/outsourcing-thinking-gelatin-brain.png
+- Video: assets/videos/outsourcing-drivethru-video.mp4
 
 ## TODO
 # Todo
