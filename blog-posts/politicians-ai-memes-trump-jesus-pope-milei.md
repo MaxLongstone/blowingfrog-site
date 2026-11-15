@@ -6,6 +6,7 @@
 ## Media
 - Hero: assets/blogimages/politicians-ai-memes-ring-light-halo.png
 - Inline: assets/blogimages/politicians-ai-memes-golden-calf-selfie.png
+- Video: assets/videos/politicians-memes-wrongmovieclub-video.mp4
 
 ## TODO
 - Source links still needed (per draft): Exodus 32, Nast cartoons (LoC/HarpWeek), Nixon Laugh-In 9/16/1968, Clinton Arsenio 1992, Obama Between Two Ferns 2014, Newsom press office parodies 2025, Louis XIV Ballet Royal de la Nuit 1653, Napoleon 1804, Jefferson/Callender, Leo XIV canon law doctorate + prior general 2001-2013.
