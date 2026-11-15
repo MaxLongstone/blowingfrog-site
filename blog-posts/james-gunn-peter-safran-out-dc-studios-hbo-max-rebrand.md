@@ -6,6 +6,7 @@
 ## Media
 - Hero: assets/blogimages/dc-reboot-wrecking-ball-painter.png
 - Inline: assets/blogimages/dc-reboot-seamstress-kintsugi.png
+- Video: assets/videos/dc-christening-video.mp4
 
 ## TODO
 # Todo
