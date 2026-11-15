@@ -6,6 +6,7 @@
 ## Media
 - Hero: assets/blogimages/last-jedi-photocopier-desert.png
 - Inline: assets/blogimages/last-jedi-motel-corridor.png
+- Video: assets/videos/last-jedi-photocopier-video.mp4
 
 ## TODO
 - Embed: official Lucasfilm clip (lightsaber toss or "let the past die") from the Star Wars YouTube channel; setup line: "Three seconds. One shrug. Sooo MUCH internet rage." No URL given.
