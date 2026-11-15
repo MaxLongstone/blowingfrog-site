@@ -6,6 +6,7 @@
 ## Media
 - Hero: assets/blogimages/lanterns-ring-box-tunnel.png
 - Inline: assets/blogimages/lanterns-bearded-marshmallow.png
+- Video: assets/videos/lanterns-vampire-video.mp4
 
 ## TODO
 - Double-check from general knowledge: Smallville 10 seasons/217 eps + "no tights, no flights"; Loki ep2 reveal; Moon Knight ep1 suit; WandaVision ep3; Agatha Salem Seven premiere; Rings of Power S1 Sauron finale; Lost co-creators; Mischel/Bing; Breaking Bad S1E2; Sopranos "College" S1E5.
