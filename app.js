@@ -331,7 +331,7 @@ if (track) {
   a.rel = 'noopener noreferrer';
   a.className = 'ig-float';
   a.setAttribute('aria-label', '@blowingfrog on Instagram');
-  a.innerHTML = '<img src="assets/files Icons/InstagramICON.png" alt="Instagram"><span class="ig-handle">@blowingfrog</span>';
+  a.innerHTML = '<img src="/assets/files%20Icons/InstagramICON.png" alt="Instagram"><span class="ig-handle">@blowingfrog</span>';
   document.body.appendChild(a);
 })();
 
