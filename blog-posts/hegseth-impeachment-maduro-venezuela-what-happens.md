@@ -5,3 +5,4 @@
 
 ## Media
 - Hero: assets/blogimages/hegseth-impeachment-maduro-venezuela-hero.png
+- Inline: assets/blogimages/hegseth-lost-and-found-counter.png
